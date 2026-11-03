@@ -1,0 +1,70 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/xbrl_midy_index_yss",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"date"},
+									{"index":8,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"prd_name",
+									"chaprt_name_yss",
+									"xbrl_elem_yss",
+									"xbrl_val_yss",
+									"xbrl_id",
+									"task_rs_id",
+									"dm_created_time",
+									"dm_src_info"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["xbrl_midy_index_yss"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table xbrl_midy_index_yss "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

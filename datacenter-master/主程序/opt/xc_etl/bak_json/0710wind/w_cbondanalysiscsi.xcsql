@@ -1,0 +1,30 @@
+# ******************************************************************
+#    修改者      版本号            修改日期        修改内容
+#    zone       1.2.9e         2023-02-13     初始化xcsql及改为系统来源分区表
+# ******************************************************************
+table: w_cbondanalysiscsi
+cols:
+    object_id  varchar2(100)
+    s_info_windcode  varchar2(40)
+    trade_dt  varchar2(8)
+    b_info_type  varchar2(50)
+    b_info_listingmarketnumbers  number(20,4)
+    b_anal_dirty_csi  number(20,4)
+    b_anal_yield_csi  number(20,4)
+    b_anal_modidura_csi  number(20,4)
+    b_anal_cnvxty_csi  number(20,4)
+    b_anal_net_csi  number(20,4)
+    b_anal_accrint_csi  number(20,4)
+    b_anal_full_ifexe  number(20,4)
+    b_anal_net_ifexe  number(20,4)
+    b_anal_ytm_ifexe  number(20,4)
+    b_anal_modidura_ifexe  number(20,4)
+    b_anal_cnvxty_ifexe  number(20,4)
+    recommended  bigint(1)
+    b_anal_est_couponrate  number(20,4)
+    [cdh] busi_month       bigint(10)       月份
+
+partition:
+  [cdh] busi_month
+cluster:
+index:

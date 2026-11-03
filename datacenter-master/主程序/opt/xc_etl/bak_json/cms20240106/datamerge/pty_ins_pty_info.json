@@ -1,0 +1,72 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/pty_ins_pty_info",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+                  {"index":10,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"ins_main_key",
+									"ins_name",
+									"is_pros_cust",
+									"is_ta_cust",
+									"is_ctbk",
+									"is_issr",
+									"is_undr_prsn",
+									"is_trd_cntp",
+									"is_advm_cptl",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["pty_ins_pty_info"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from pty_ins_pty_info"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

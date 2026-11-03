@@ -1,0 +1,129 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      report_period,
+                                      statement_type,
+                                      bd_loss,
+                                      inv_loss,
+                                      gi_loss,
+                                      gc_loss,
+                                      afa_loss,
+                                      hi_loss,
+                                      oth_loss,
+                                      lti_invinc,
+                                      fat_invinc,
+                                      afa_invinc,
+                                      paei_invinc,
+                                      fel_invinc,
+                                      cfeo_invinc,
+                                      othn_invinc,
+                                      lti_cost,
+                                      lur_orival,
+                                      lur_acca,
+                                      lur_imp,
+                                      lur_bookval,
+                                      lti_equ,
+                                      monf_res,
+                                      sal_cos,
+                                      sal_gex,
+                                      da_cos,
+                                      da_gex,
+                                      ren_cos,
+                                      ren_gex,
+                                      stc_cos,
+                                      ape_cos,
+                                      ltloan_1y,
+                                      bondpay_1y,
+                                      stfinbond,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_finnotesdetail.json' as task_rs_id
+                                from ${srcoradbname}.finnotesdetail"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_finnotesdetail",
+                        "fileName": "w_finnotesdetail",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"statement_type","type":"bigint"},
+                                      {"name":"bd_loss","type":"double"},
+                                      {"name":"inv_loss","type":"double"},
+                                      {"name":"gi_loss","type":"double"},
+                                      {"name":"gc_loss","type":"double"},
+                                      {"name":"afa_loss","type":"double"},
+                                      {"name":"hi_loss","type":"double"},
+                                      {"name":"oth_loss","type":"double"},
+                                      {"name":"lti_invinc","type":"double"},
+                                      {"name":"fat_invinc","type":"double"},
+                                      {"name":"afa_invinc","type":"double"},
+                                      {"name":"paei_invinc","type":"double"},
+                                      {"name":"fel_invinc","type":"double"},
+                                      {"name":"cfeo_invinc","type":"double"},
+                                      {"name":"othn_invinc","type":"double"},
+                                      {"name":"lti_cost","type":"double"},
+                                      {"name":"lur_orival","type":"double"},
+                                      {"name":"lur_acca","type":"double"},
+                                      {"name":"lur_imp","type":"double"},
+                                      {"name":"lur_bookval","type":"double"},
+                                      {"name":"lti_equ","type":"double"},
+                                      {"name":"monf_res","type":"double"},
+                                      {"name":"sal_cos","type":"double"},
+                                      {"name":"sal_gex","type":"double"},
+                                      {"name":"da_cos","type":"double"},
+                                      {"name":"da_gex","type":"double"},
+                                      {"name":"ren_cos","type":"double"},
+                                      {"name":"ren_gex","type":"double"},
+                                      {"name":"stc_cos","type":"double"},
+                                      {"name":"ape_cos","type":"double"},
+                                      {"name":"ltloan_1y","type":"double"},
+                                      {"name":"bondpay_1y","type":"double"},
+                                      {"name":"stfinbond","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

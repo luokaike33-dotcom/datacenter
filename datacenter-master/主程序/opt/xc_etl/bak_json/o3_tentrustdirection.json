@@ -1,0 +1,66 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select c_entrust_direction,c_market_no,vc_entrustdir_name,c_stock_direction,c_fund_direction,vc_report_direction,vc_busin_flag,c_trade_amount_type,c_trade_price_type,c_branch_prop,c_branch_bs,vc_busin_class,c_pricemode,l_list_order,vc_msgtype,vc_cancel_msgtype,vc_applid,c_side,c_platform_type,vc_binary_msgtype,vc_binary_cancel_msgtype,vc_timestamp,l_virtual_key from ${srcoradbname}.tentrustdirection"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_tentrustdirection", 
+                        "fileName": "o3_tentrustdirection",
+                        "column": [
+     {"name":"c_entrust_direction","type":"string"},
+     {"name":"c_market_no","type":"string"},
+     {"name":"vc_entrustdir_name","type":"string"},
+     {"name":"c_stock_direction","type":"string"},
+     {"name":"c_fund_direction","type":"string"},
+     {"name":"vc_report_direction","type":"string"},
+     {"name":"vc_busin_flag","type":"string"},
+     {"name":"c_trade_amount_type","type":"string"},
+     {"name":"c_trade_price_type","type":"string"},
+     {"name":"c_branch_prop","type":"string"},
+     {"name":"c_branch_bs","type":"string"},
+     {"name":"vc_busin_class","type":"string"},
+     {"name":"c_pricemode","type":"string"},
+     {"name":"l_list_order","type":"bigint"},
+     {"name":"vc_msgtype","type":"string"},
+     {"name":"vc_cancel_msgtype","type":"string"},
+     {"name":"vc_applid","type":"string"},
+     {"name":"c_side","type":"string"},
+     {"name":"c_platform_type","type":"string"},
+     {"name":"vc_binary_msgtype","type":"string"},
+     {"name":"vc_binary_cancel_msgtype","type":"string"},
+     {"name":"vc_timestamp","type":"string"},
+     {"name":"l_virtual_key","type":"bigint"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

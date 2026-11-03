@@ -1,0 +1,80 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									prd_code,
+									secu_id,
+									iss_ins_cd,
+									ext_ass_code,
+									secu_code,
+									ass_qnty,
+									ass_bal,
+									ass_pos,
+									ass_code,
+									hld_vol,
+									hld_bal,
+									batchno,
+									inserttime,
+									updatetime,
+									p_dt
+							FROM ${srcdbname}.frt_sba_prd_gfor_ass "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"secu_id",
+									"iss_ins_cd",
+									"ext_ass_code",
+									"secu_code",
+									"ass_qnty",
+									"ass_bal",
+									"ass_pos",
+									"ass_code",
+									"hld_vol",
+									"hld_bal",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["frt_sba_prd_gfor_ass"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table frt_sba_prd_gfor_ass"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

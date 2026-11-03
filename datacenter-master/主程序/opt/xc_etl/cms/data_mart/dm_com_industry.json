@@ -1,0 +1,92 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/dm_com_industry",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"date"},
+									{"index":19,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"id",
+									"com_full_name",
+									"com_uni_code",
+									"indu_level3_name",
+									"indu_level3_code",
+									"indu_level4_name",
+									"indu_level4_code",
+									"indu_level2_name",
+									"indu_level2_code",
+									"udic_status",
+									"indu_level1_code",
+									"indu_level1_name",
+									"edit_status",
+									"deleted",
+									"update_time_id",
+									"create_time",
+									"update_time",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["dm_com_industry"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table dm_com_industry"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

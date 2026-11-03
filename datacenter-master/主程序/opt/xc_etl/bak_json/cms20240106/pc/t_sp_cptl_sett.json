@@ -1,0 +1,86 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/t_sp_cptl_sett",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"bk_product",
+									"agencyno",
+									"issue_acct",
+									"liqu_acct",
+									"scrp_intr",
+									"scrp_pay_days",
+									"purc_pay_days",
+									"redp_pay_days",
+									"cash_bons_gant_date",
+									"xd_date",
+									"bons_rint_cfm_date",
+									"covt_in_clr_date",
+									"covt_out_sett_days",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["t_sp_cptl_sett"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from t_sp_cptl_sett"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

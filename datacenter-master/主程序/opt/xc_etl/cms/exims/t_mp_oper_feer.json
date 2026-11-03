@@ -1,0 +1,80 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/t_mp_oper_feer",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"bk_product_of_m",
+									"start_date",
+									"end_date",
+									"feer_type",
+									"year_days",
+									"bilg_type",
+									"feer_val",
+									"fix_balance",
+									"ctgt_ratio",
+									"memo",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["t_mp_oper_feer"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table t_mp_oper_feer"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

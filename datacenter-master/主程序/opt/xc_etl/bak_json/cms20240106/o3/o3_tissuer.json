@@ -1,0 +1,182 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/o3_tissuer",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"long"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"long"},
+									{"index":34,"type":"double"},
+									{"index":35,"type":"double"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"double"},
+									{"index":40,"type":"string"},
+									{"index":41,"type":"string"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"double"},
+									{"index":44,"type":"string"},
+									{"index":45,"type":"double"},
+									{"index":46,"type":"double"},
+									{"index":47,"type":"long"},
+									{"index":48,"type":"double"},
+									{"index":49,"type":"string"},
+									{"index":50,"type":"string"},
+									{"index":51,"type":"string"},
+									{"index":52,"type":"string"},
+									{"index":53,"type":"string"},
+									{"index":54,"type":"long"},
+									{"index":55,"type":"string"},
+									{"index":56,"type":"double"},
+									{"index":57,"type":"string"},
+									{"index":58,"type":"long"},
+									{"index":59,"type":"string"},
+									{"index":60,"type":"string"},
+									{"index":61,"type":"string"},
+									{"index":62,"type":"double"},
+									{"index":63,"type":"string"},
+									{"index":64,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_issuer_id",
+									"vc_issuer_name",
+									"l_mother_issuer_id",
+									"vc_linkman",
+									"vc_address",
+									"vc_phone",
+									"vc_fax",
+									"c_outer_appraise",
+									"vc_appraise_organ",
+									"c_inside_appraise",
+									"c_appraise",
+									"vc_summary",
+									"vc_full_name",
+									"vc_issuer_type",
+									"vc_transactor_name",
+									"vc_transactor_id_type",
+									"vc_transactor_id",
+									"vc_transactor_phone",
+									"vc_transactor_fax",
+									"vc_transactor_stamp",
+									"vc_pre_stamp",
+									"vc_issuer_code",
+									"en_issuer_asset",
+									"vc_asset_currency_no",
+									"vc_country_no",
+									"l_transactor_validity",
+									"en_credit_limit",
+									"c_guarantor_appraise",
+									"vc_external_code",
+									"vc_zx_ip",
+									"vc_zx_port",
+									"vc_zx_user",
+									"vc_zx_pass",
+									"l_outer_appraise_date",
+									"l_total_asset_amount",
+									"en_guarantor_limit",
+									"vc_pre_stamp2",
+									"vc_timestamp",
+									"c_level_expectation",
+									"en_last_year_net",
+									"c_issuer_other_appraise_one",
+									"c_issuer_other_appraise_two",
+									"c_outer_appraise1",
+									"l_lastquarter_asset",
+									"vc_provincecode",
+									"en_asset_liability_ratio",
+									"en_interest_earned_ratio",
+									"l_date",
+									"en_surplus_amount",
+									"c_org_type",
+									"vc_sec_credit_code",
+									"vc_financialorg_code",
+									"vc_agency_code",
+									"vc_inter_appraise_name",
+									"l_inter_appraise_date",
+									"vc_ca_stamp",
+									"en_lastyear_asset",
+									"c_finance_org",
+									"l_higher_issuer_id",
+									"c_guarantor_appraise2",
+									"c_other_appraise_three",
+									"c_other_appraise_four",
+									"en_belong_mother_asset",
+									"c_issuer_property",
+									"vc_city"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_tissuer"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from o3_tissuer"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

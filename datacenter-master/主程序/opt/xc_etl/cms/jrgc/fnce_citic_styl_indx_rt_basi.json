@@ -1,0 +1,72 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									secu_id,
+									chi_name,
+									sk_date,
+									indx_lstcprc,
+									indx_cprc,
+									basi_indx,
+									basi_lstcprc,
+									basi_cprc,
+									indx_rt_basi,
+									updatetime,
+									p_dt
+							FROM ${srcdbname}.fnce_citic_styl_indx_rt_basi where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"chi_name",
+									"sk_date",
+									"indx_lstcprc",
+									"indx_cprc",
+									"basi_indx",
+									"basi_lstcprc",
+									"basi_cprc",
+									"indx_rt_basi",
+									"updatetime",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fnce_citic_styl_indx_rt_basi"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fnce_citic_styl_indx_rt_basi where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

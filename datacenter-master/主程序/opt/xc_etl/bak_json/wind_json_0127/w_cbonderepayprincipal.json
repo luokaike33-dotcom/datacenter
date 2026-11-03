@@ -1,0 +1,48 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,b_info_repaypridt,b_info_repayprirate,b_info_erepaytpe from ${srcoradbname}.cbonderepayprincipal"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbonderepayprincipal",
+                        "fileName": "w_cbonderepayprincipal",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"b_info_repaypridt","type":"string"},
+                            {"name":"b_info_repayprirate","type":"double"},
+                            {"name":"b_info_erepaytpe","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

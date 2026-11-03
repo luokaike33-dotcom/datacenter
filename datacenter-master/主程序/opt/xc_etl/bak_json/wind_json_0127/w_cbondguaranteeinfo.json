@@ -1,0 +1,56 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,guarantor,guarantor_id,b_agency_guarantornature,b_agency_grnttype,b_agency_grnttypecode,b_info_guarterm,b_info_guarrange,b_agency_reguarantor,b_agency_reguarantorid,b_info_effective_dt,b_info_invalid_dt from ${srcoradbname}.cbondguaranteeinfo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondguaranteeinfo",
+                        "fileName": "w_cbondguaranteeinfo",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"guarantor","type":"STRING"},
+                        {"name":"guarantor_id","type":"STRING"},
+                        {"name":"b_agency_guarantornature","type":"STRING"},
+                        {"name":"b_agency_grnttype","type":"STRING"},
+                        {"name":"b_agency_grnttypecode","type":"DOUBLE"},
+                        {"name":"b_info_guarterm","type":"STRING"},
+                        {"name":"b_info_guarrange","type":"STRING"},
+                        {"name":"b_agency_reguarantor","type":"STRING"},
+                        {"name":"b_agency_reguarantorid","type":"STRING"},
+                        {"name":"b_info_effective_dt","type":"STRING"},
+                        {"name":"b_info_invalid_dt","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

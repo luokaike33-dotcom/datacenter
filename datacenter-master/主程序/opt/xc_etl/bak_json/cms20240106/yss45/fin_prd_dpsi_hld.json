@@ -1,0 +1,102 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fin_prd_dpsi_hld",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"double"},
+                                    {"index":12,"type":"double"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"string"},
+                                    {"index":17,"type":"double"},
+                                    {"index":18,"type":"double"},
+                                    {"index":19,"type":"double"},
+                                    {"index":20,"type":"double"},
+                                    {"index":21,"type":"double"},
+                                    {"index":22,"type":"double"},
+                                    {"index":23,"type":"long"},
+                                    {"index":24,"type":"string"},
+                                    {"index":25,"type":"date"},
+                                    {"index":26,"type":"string"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "prd_code",
+                                    "hld_dt",
+                                    "valuation_dimension",
+                                    "secu_id",
+                                    "typ_code",
+                                    "typ_codei",
+                                    "typ_codeii",
+                                    "var_secu_id",
+                                    "exch_code",
+                                    "chi_name",
+                                    "curr_code",
+                                    "hld_vol",
+                                    "hld_cost",
+                                    "hld_mval",
+                                    "prin_crse_code",
+                                    "recv_intr_crse_code",
+                                    "intr_incm_crse",
+                                    "accr_int",
+                                    "end_t_intr",
+                                    "ipmt_pvsn",
+                                    "ipmt_pvsn_i",
+                                    "ipmt_pvsn_ii",
+                                    "ipmt_pvsn_iii",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "dm_src_info"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["fin_prd_dpsi_hld"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from fin_prd_dpsi_hld where 1 =1 "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

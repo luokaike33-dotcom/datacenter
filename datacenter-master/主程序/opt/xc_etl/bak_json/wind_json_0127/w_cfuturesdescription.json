@@ -1,0 +1,62 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_info_code,s_info_name,s_info_ename,fs_info_sccode,fs_info_type,fs_info_cctype,s_info_exchmarket,s_info_listdate,s_info_delistdate,fs_info_dlmonth,fs_info_lprice,fs_info_ltdldate,s_info_fullname,s_info_voucherdate,s_info_paymentdate,opdate,opmode from ${srcoradbname}.cfuturesdescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cfuturesdescription",
+                        "fileName": "w_cfuturesdescription",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_info_code","type":"STRING"},
+                        {"name":"s_info_name","type":"STRING"},
+                        {"name":"s_info_ename","type":"STRING"},
+                        {"name":"fs_info_sccode","type":"STRING"},
+                        {"name":"fs_info_type","type":"DOUBLE"},
+                        {"name":"fs_info_cctype","type":"DOUBLE"},
+                        {"name":"s_info_exchmarket","type":"STRING"},
+                        {"name":"s_info_listdate","type":"STRING"},
+                        {"name":"s_info_delistdate","type":"STRING"},
+                        {"name":"fs_info_dlmonth","type":"STRING"},
+                        {"name":"fs_info_lprice","type":"DOUBLE"},
+                        {"name":"fs_info_ltdldate","type":"STRING"},
+                        {"name":"s_info_fullname","type":"STRING"},
+                        {"name":"s_info_voucherdate","type":"STRING"},
+                        {"name":"s_info_paymentdate","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

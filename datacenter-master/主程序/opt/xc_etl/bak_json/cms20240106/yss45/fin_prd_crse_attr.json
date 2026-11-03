@@ -1,0 +1,80 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fin_prd_crse_attr",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"long"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "crse_attr_code",
+                                    "crse_attr_name",
+                                    "typ_code",
+                                    "exch_code",
+                                    "acc_sob_no",
+                                    "l_dkfx",
+                                    "isvm_type",
+                                    "crse_type",
+                                    "crse_class",
+                                    "var_sts",
+                                    "take_id",
+                                    "isnew_id",
+                                    "cir_id",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["fin_prd_crse_attr"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from fin_prd_crse_attr where 1 =1 "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

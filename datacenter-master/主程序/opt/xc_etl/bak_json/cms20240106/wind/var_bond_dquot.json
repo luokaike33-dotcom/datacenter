@@ -1,0 +1,104 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_bond_dquot/p_dt=${p_dt}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"double"},
+                                    {"index":4,"type":"double"},
+                                    {"index":5,"type":"double"},
+                                    {"index":6,"type":"double"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"double"},
+                                    {"index":9,"type":"double"},
+                                    {"index":10,"type":"double"},
+                                    {"index":11,"type":"double"},
+                                    {"index":12,"type":"double"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"double"},
+                                    {"index":15,"type":"double"},
+                                    {"index":16,"type":"double"},
+                                    {"index":17,"type":"double"},
+                                    {"index":18,"type":"double"},
+                                    {"index":19,"type":"double"},
+                                    {"index":20,"type":"double"},
+                                    {"index":21,"type":"double"},
+                                    {"index":22,"type":"double"},
+                                    {"index":23,"type":"string"},
+                                    {"index":24,"type":"long"},
+                                    {"index":25,"type":"string"},
+                                    {"index":26,"type":"date"},
+                                    {"name":"p_dt","type":"long","value":"${p_dt}"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "trd_dt",
+                                    "trd_sts",
+                                    "prev_cls_nprc",
+                                    "open_nprc",
+                                    "high_nprc",
+                                    "low_nprc",
+                                    "avg_nprc",
+                                    "cls_nprc",
+                                    "prev_cls_fprc",
+                                    "open_fprc",
+                                    "high_fprc",
+                                    "low_fprc",
+                                    "avg_fprc",
+                                    "cls_fprc",
+                                    "accr_intr",
+                                    "tnv_vol",
+                                    "tnv_val",
+                                    "tnv_deal",
+                                    "day_chg",
+                                    "day_chg_rat",
+                                    "day_amp",
+                                    "tnv_rat",
+                                    "curr_code",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "p_dt"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_bond_dquot"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_bond_dquot where p_dt ='${p_dt}' and 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

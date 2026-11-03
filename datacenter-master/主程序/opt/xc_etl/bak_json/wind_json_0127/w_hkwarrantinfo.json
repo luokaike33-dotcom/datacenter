@@ -1,0 +1,74 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,warrant_name,corr_windcode,warrant_nature,warrant_type,warrant_form,boardlotunit,totalissuesnumber,issueprice,strikeprice,crncycode,s_info_par,par_crncycode,entitlementratio,releasedate,issuedate,listdate,expiredate,ann_date,leverageratio,act_leverageratio,impliedvolatility,premium,issuer,divisor,cumulativeamount,exercisecrncycode,lasttradedate,opdate,opmode from ${srcoradbname}.hkwarrantinfo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_hkwarrantinfo",
+                        "fileName": "w_hkwarrantinfo",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"warrant_name","type":"STRING"},
+                        {"name":"corr_windcode","type":"STRING"},
+                        {"name":"warrant_nature","type":"STRING"},
+                        {"name":"warrant_type","type":"STRING"},
+                        {"name":"warrant_form","type":"STRING"},
+                        {"name":"boardlotunit","type":"DOUBLE"},
+                        {"name":"totalissuesnumber","type":"DOUBLE"},
+                        {"name":"issueprice","type":"DOUBLE"},
+                        {"name":"strikeprice","type":"DOUBLE"},
+                        {"name":"crncycode","type":"STRING"},
+                        {"name":"s_info_par","type":"DOUBLE"},
+                        {"name":"par_crncycode","type":"STRING"},
+                        {"name":"entitlementratio","type":"DOUBLE"},
+                        {"name":"releasedate","type":"STRING"},
+                        {"name":"issuedate","type":"STRING"},
+                        {"name":"listdate","type":"STRING"},
+                        {"name":"expiredate","type":"STRING"},
+                        {"name":"ann_date","type":"STRING"},
+                        {"name":"leverageratio","type":"DOUBLE"},
+                        {"name":"act_leverageratio","type":"DOUBLE"},
+                        {"name":"impliedvolatility","type":"DOUBLE"},
+                        {"name":"premium","type":"DOUBLE"},
+                        {"name":"issuer","type":"STRING"},
+                        {"name":"divisor","type":"DOUBLE"},
+                        {"name":"cumulativeamount","type":"DOUBLE"},
+                        {"name":"exercisecrncycode","type":"STRING"},
+                        {"name":"lasttradedate","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

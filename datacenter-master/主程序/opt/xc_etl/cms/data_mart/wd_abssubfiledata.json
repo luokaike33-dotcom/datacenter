@@ -1,0 +1,92 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/w_abssubfiledata",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"double"},
+									{"index":3,"type":"double"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"long"},
+									{"index":18,"type":"date"},
+									{"index":19,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"yield_min",
+									"yield_max",
+									"s_info_compcode",
+									"b_anal_ptmyear",
+									"basic_assets",
+									"mobile_places",
+									"product_compname",
+									"start_date",
+									"end_date",
+									"product_manager",
+									"bookkeeping_manager",
+									"subdivide_code",
+									"intex_name",
+									"intex_code",
+									"intex_rate",
+									"repay_typecode",
+									"opdate",
+									"opmode"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_abssubfiledata"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from wd_abssubfiledata"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

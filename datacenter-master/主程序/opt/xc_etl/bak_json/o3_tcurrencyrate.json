@@ -1,0 +1,57 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["SELECT L_DATE, VC_CURRENCY_SOURCE, VC_CURRENCY_TARGET, EN_BID_PRICE, EN_ASK_PRICE, EN_MID_PRICE, L_UNIT_AMOUNT, L_PRIORITY_LEVEL, VC_ORIGIN, EN_DIRECT_PRICE, L_SET_NO, C_UPDATED, VC_TIMESTAMP, L_VIRTUAL_KEY from ${srcoradbname}.TCURRENCYRATE"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_tcurrencyrate", 
+                        "fileName": "o3_tcurrencyrate",
+                        "column": [
+     {"name":"l_date","type":"double"},
+                     {"name":"vc_currency_source","type":"string"},
+                     {"name":"vc_currency_target","type":"string"},
+                     {"name":"en_bid_price","type":"double"},
+                     {"name":"en_ask_price","type":"double"},
+                     {"name":"en_mid_price","type":"double"},
+                     {"name":"l_unit_amount","type":"double"},
+                     {"name":"l_priority_level","type":"double"},
+                     {"name":"vc_origin","type":"string"},
+                     {"name":"en_direct_price","type":"double"},
+                     {"name":"l_set_no","type":"double"},
+                     {"name":"c_updated","type":"string"},
+                     {"name":"vc_timestamp","type":"string"},
+                     {"name":"l_virtual_key","type":"double"},
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

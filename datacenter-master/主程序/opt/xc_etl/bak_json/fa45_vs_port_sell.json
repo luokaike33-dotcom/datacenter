@@ -1,0 +1,82 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,d_biz,c_port_code,c_asset_code,c_port_class,c_sell_net_code,c_td_number,c_od_number,c_ds_code,c_sec_code,n_td_amount,c_cury_code,d_trade_date,n_st_money,d_settle,c_ca_code,n_td_money,n_td_income,n_td_fee,n_td_gzc_fee,n_td_hd_fee,n_shf,n_zcf,n_wyf,n_bcf,n_yjbcf_yy,n_yjbcf,n_shfgzc,n_wyfgzc,n_bcfgzc,n_sgfgzc,n_hdsgf,n_hdzcf,c_sec_code_ot,c_update_time,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vs_port_sell.json' as task_rs_id from ${srcoradbname}.vs_port_sell"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vs_port_sell",
+                        "fileName": "fa45_vs_port_sell",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"d_biz","type":"date"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"c_asset_code","type":"string"},
+                            {"name":"c_port_class","type":"string"},
+                            {"name":"c_sell_net_code","type":"string"},
+                            {"name":"c_td_number","type":"string"},
+                            {"name":"c_od_number","type":"string"},
+                            {"name":"c_ds_code","type":"string"},
+                            {"name":"c_sec_code","type":"string"},
+                            {"name":"n_td_amount","type":"double"},
+                            {"name":"c_cury_code","type":"string"},
+                            {"name":"d_trade_date","type":"date"},
+                            {"name":"n_st_money","type":"double"},
+                            {"name":"d_settle","type":"date"},
+                            {"name":"c_ca_code","type":"string"},
+                            {"name":"n_td_money","type":"double"},
+                            {"name":"n_td_income","type":"double"},
+                            {"name":"n_td_fee","type":"double"},
+                            {"name":"n_td_gzc_fee","type":"double"},
+                            {"name":"n_td_hd_fee","type":"double"},
+                            {"name":"n_shf","type":"double"},
+                            {"name":"n_zcf","type":"double"},
+                            {"name":"n_wyf","type":"double"},
+                            {"name":"n_bcf","type":"double"},
+                            {"name":"n_yjbcf_yy","type":"double"},
+                            {"name":"n_yjbcf","type":"double"},
+                            {"name":"n_shfgzc","type":"double"},
+                            {"name":"n_wyfgzc","type":"double"},
+                            {"name":"n_bcfgzc","type":"double"},
+                            {"name":"n_sgfgzc","type":"double"},
+                            {"name":"n_hdsgf","type":"double"},
+                            {"name":"n_hdzcf","type":"double"},
+                            {"name":"c_sec_code_ot","type":"string"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

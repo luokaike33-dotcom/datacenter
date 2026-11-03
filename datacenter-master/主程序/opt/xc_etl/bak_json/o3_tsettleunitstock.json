@@ -1,0 +1,73 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select l_date, l_unit_id, l_basecombi_id, l_fund_id, c_invest_type, c_position_flag, vc_bind_seat, vc_stockholder_id, vc_inter_code, c_market_no, l_current_amount, l_buy_amount, l_sale_amount, en_buy_balance, en_sale_balance, en_buy_fee, en_sale_fee, en_untransfered_invest, en_accumulate_profit, en_turn_invest, en_turn_profit, l_asset_id, en_real_buy_fee, en_real_sale_fee, en_real_cost, en_uncarryover_real_cost, en_net_gain, en_uncarryover_net_gain, en_uncarryover_dividend, en_dividend from ${srcoradbname}.tsettleunitstock"],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_tsettleunitstock",
+            "fileName": "o3_tsettleunitstock",
+            "column": [
+              {"name":"l_date","type":"bigint"},
+              {"name":"l_unit_id","type":"bigint"},
+              {"name":"l_basecombi_id","type":"bigint"},
+              {"name":"l_fund_id","type":"bigint"},
+              {"name":"c_invest_type","type":"string"},
+              {"name":"c_position_flag","type":"string"},
+              {"name":"vc_bind_seat","type":"string"},
+              {"name":"vc_stockholder_id","type":"string"},
+              {"name":"vc_inter_code","type":"string"},
+              {"name":"c_market_no","type":"string"},
+              {"name":"l_current_amount","type":"double"},
+              {"name":"l_buy_amount","type":"double"},
+              {"name":"l_sale_amount","type":"double"},
+              {"name":"en_buy_balance","type":"double"},
+              {"name":"en_sale_balance","type":"double"},
+              {"name":"en_buy_fee","type":"double"},
+              {"name":"en_sale_fee","type":"double"},
+              {"name":"en_untransfered_invest","type":"double"},
+              {"name":"en_accumulate_profit","type":"double"},
+              {"name":"en_turn_invest","type":"double"},
+              {"name":"en_turn_profit","type":"double"},
+              {"name":"l_asset_id","type":"bigint"},
+              {"name":"en_real_buy_fee","type":"double"},
+              {"name":"en_real_sale_fee","type":"double"},
+              {"name":"en_real_cost","type":"double"},
+              {"name":"en_uncarryover_real_cost","type":"double"},
+              {"name":"en_net_gain","type":"double"},
+              {"name":"en_uncarryover_net_gain","type":"double"},
+              {"name":"en_uncarryover_dividend","type":"double"},
+              {"name":"en_dividend","type":"double"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

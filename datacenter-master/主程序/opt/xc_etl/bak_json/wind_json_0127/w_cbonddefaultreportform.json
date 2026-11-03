@@ -1,0 +1,65 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,b_info_windcode,b_announcementdate,b_default_date,b_default_code,b_default_reason,b_default_date_balance,b_defaultdate_payablecapital,b_defaultdate_payableinterest,b_defaultdate_payable_cap_int,b_defaultdate_paymentcapital,b_defaultdate_paymentinterest,b_defaultdate_payment_cap_int,b_principal_payable,b_anal_accruedinterest,b_payable_resale_payment,b_capital_resalepayment,b_payment_payable,b_payment_interest,b_payment_resale,b_payment_cap_int_resale,b_default_date_balance1 from ${srcoradbname}.cbonddefaultreportform"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbonddefaultreportform",
+                        "fileName": "w_cbonddefaultreportform",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"b_info_windcode","type":"STRING"},
+                        {"name":"b_announcementdate","type":"STRING"},
+                        {"name":"b_default_date","type":"STRING"},
+                        {"name":"b_default_code","type":"DOUBLE"},
+                        {"name":"b_default_reason","type":"STRING"},
+                        {"name":"b_default_date_balance","type":"DOUBLE"},
+                        {"name":"b_defaultdate_payablecapital","type":"DOUBLE"},
+                        {"name":"b_defaultdate_payableinterest","type":"DOUBLE"},
+                        {"name":"b_defaultdate_payable_cap_int","type":"DOUBLE"},
+                        {"name":"b_defaultdate_paymentcapital","type":"DOUBLE"},
+                        {"name":"b_defaultdate_paymentinterest","type":"DOUBLE"},
+                        {"name":"b_defaultdate_payment_cap_int","type":"DOUBLE"},
+                        {"name":"b_principal_payable","type":"DOUBLE"},
+                        {"name":"b_anal_accruedinterest","type":"DOUBLE"},
+                        {"name":"b_payable_resale_payment","type":"DOUBLE"},
+                        {"name":"b_capital_resalepayment","type":"DOUBLE"},
+                        {"name":"b_payment_payable","type":"DOUBLE"},
+                        {"name":"b_payment_interest","type":"DOUBLE"},
+                        {"name":"b_payment_resale","type":"DOUBLE"},
+                        {"name":"b_payment_cap_int_resale","type":"DOUBLE"},
+                        {"name":"b_default_date_balance1","type":"DOUBLE"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

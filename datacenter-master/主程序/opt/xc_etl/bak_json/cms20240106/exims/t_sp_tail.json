@@ -1,0 +1,98 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/t_sp_tail",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"long"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"bk_product",
+									"agencyno",
+									"cust_type",
+									"netno_code",
+									"cust_desc",
+									"bilg_type",
+									"feer_val",
+									"min_val",
+									"max_val",
+									"val_type",
+									"prgrs_cal_flag",
+									"hold_cal_mode",
+									"excr_cal_mode",
+									"year_days",
+									"start_date",
+									"end_date",
+									"pay_freq",
+									"memo",
+									"sub_prod_inr_code",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["t_sp_tail"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from t_sp_tail"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

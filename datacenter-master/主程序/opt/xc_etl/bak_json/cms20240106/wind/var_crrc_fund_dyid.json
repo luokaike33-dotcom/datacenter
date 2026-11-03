@@ -1,0 +1,82 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_crrc_fund_dyid",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"date"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"date"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"obj_id",
+									"secu_id",
+									"begn_date",
+									"end_date",
+									"unit_nav",
+									"aggr_unit_nav",
+									"micp_payf",
+									"wtd_anul_payf_rate",
+									"affi_date",
+									"warh_time",
+									"oper_typ",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["var_crrc_fund_dyid"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from var_crrc_fund_dyid"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

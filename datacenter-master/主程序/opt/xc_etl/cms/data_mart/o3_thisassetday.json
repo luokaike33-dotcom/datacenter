@@ -1,0 +1,177 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                
+					"reader": {
+						"name": "hivereader",
+						"parameter": {
+							"hive_cmd":"beeline",
+							"hiveSql":["
+        									SELECT l_date, l_asset_id, l_fund_id, en_begin_cash, en_current_cash, en_frozen_balance, en_unfrozen_balance, en_basic_frozen_balance, en_prebuy_balance, en_presale_balance, en_buy_balance, en_sale_balance, en_temp_frozen_balance, en_temp_unfrozen_balance, en_t1_temp_frozen_balance, en_t1_frozen_balance, en_buy_unsettle_balance, en_sale_unsettle_balance, en_stock_asset, en_bond_asset, en_fund_asset, en_hg_asset, en_warrant_asset, en_other_asset, en_accumulate_profit, en_ratio, en_receivable, en_payable, en_asset_share, en_asset_value_yesterday, en_payout_balance, en_futures_balance, en_futures_deposit, en_futures_prepare, en_futures_asset, en_asset_value, en_payin_balance, en_payin_total, en_payout_total, vc_currency_no, en_begin_t0_enable, en_begin_t1_enable, en_interest_balance, en_total_yj, l_begincalc_date, en_commision_ratio, d_lastupdate, en_principal_accrual, en_deposit_balance, en_nav, en_nav_yesterday, en_unit_dividends, en_total_unit_dividends, en_bond_interest, en_asset_total_value, en_begin_profit_ratio, en_secacc_bonus, en_future_temp_balance, en_trust_balance, en_t1_prebuy_balance, en_t1_presale_balance, en_rec_sec_asset, en_pay_sec_asset, en_futures_settle_deposit, en_asset_share_yesterday, en_preipo_deposit, en_option_asset, en_principal_daily, en_buy_unasset_balance, en_sale_unasset_balance, en_future_frozen_balance, en_t2_frozen_balance, en_t2_temp_frozen_balance, l_first_payin_date, en_otc_frzn_balance, en_otc_unfrzn_balance, en_t1otc_frzn_balance, en_buy_balance_hgt, en_sale_balance_hgt, en_buy_balance_sgt, en_sale_balance_sgt, en_t2_frozen_balance_sgt, en_t2_temp_frozen_balance_sgt, en_change_balance_jys, en_change_balance_yhj, en_cmm_prebuy_margin, en_t1change_balance_ggt, en_cmmopt_temp_balance, en_risk_ggt, en_accumulate_profit_gq, en_turn_profit_gq, en_net_gain_gq, en_uncarryover_net_gain_gq, en_interest_profit_gq, en_turn_interest_profit_gq, en_interest_gain_gq, en_turn_interest_gain_gq, en_beginyear_turn_profit_gq, en_beginyear_unturn_profit_gq, en_gold_asset, en_gold_profit, en_gold_deposit, en_begin_future_rights, en_stock_asset_ggt, en_stock_asset_noggt, en_bank_balance, en_bank_frozen_balance, en_eneralhg_deposit, en_redeem_ratio, en_bonus_ratio, en_broker_balance, en_gold_equity, en_gold_spot, en_irs_deposit, en_outflow_balance_ggt, en_fut_report_fee, en_guranteesecfut_balance, en_finadebt_asset, en_finadebt_interest, p_dt
+        								FROM ${srcdbname}.o3_thisassetday
+        								"],
+        							"defaultFS": "hdfs://${srchdfsurl}",
+        							"tmpDatabasePath":"${srchivedbpath}",
+        							"tmpDatabase":"${srcdbname}",
+        							"hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+        							"hive_ldap_user_name":"${srcusername}",
+        							"hive_ldap_password":"${srcpassword}",
+        							"haveKerberos": "${haveKerberos}",
+        							"kerberosKeytabFilePath": "${kbsfilepath}",
+        							"kerberosPrincipal": "${kbsprincipal}"
+                     }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_date",
+									"l_asset_id",
+									"l_fund_id",
+									"en_begin_cash",
+									"en_current_cash",
+									"en_frozen_balance",
+									"en_unfrozen_balance",
+									"en_basic_frozen_balance",
+									"en_prebuy_balance",
+									"en_presale_balance",
+									"en_buy_balance",
+									"en_sale_balance",
+									"en_temp_frozen_balance",
+									"en_temp_unfrozen_balance",
+									"en_t1_temp_frozen_balance",
+									"en_t1_frozen_balance",
+									"en_buy_unsettle_balance",
+									"en_sale_unsettle_balance",
+									"en_stock_asset",
+									"en_bond_asset",
+									"en_fund_asset",
+									"en_hg_asset",
+									"en_warrant_asset",
+									"en_other_asset",
+									"en_accumulate_profit",
+									"en_ratio",
+									"en_receivable",
+									"en_payable",
+									"en_asset_share",
+									"en_asset_value_yesterday",
+									"en_payout_balance",
+									"en_futures_balance",
+									"en_futures_deposit",
+									"en_futures_prepare",
+									"en_futures_asset",
+									"en_asset_value",
+									"en_payin_balance",
+									"en_payin_total",
+									"en_payout_total",
+									"vc_currency_no",
+									"en_begin_t0_enable",
+									"en_begin_t1_enable",
+									"en_interest_balance",
+									"en_total_yj",
+									"l_begincalc_date",
+									"en_commision_ratio",
+									"d_lastupdate",
+									"en_principal_accrual",
+									"en_deposit_balance",
+									"en_nav",
+									"en_nav_yesterday",
+									"en_unit_dividends",
+									"en_total_unit_dividends",
+									"en_bond_interest",
+									"en_asset_total_value",
+									"en_begin_profit_ratio",
+									"en_secacc_bonus",
+									"en_future_temp_balance",
+									"en_trust_balance",
+									"en_t1_prebuy_balance",
+									"en_t1_presale_balance",
+									"en_rec_sec_asset",
+									"en_pay_sec_asset",
+									"en_futures_settle_deposit",
+									"en_asset_share_yesterday",
+									"en_preipo_deposit",
+									"en_option_asset",
+									"en_principal_daily",
+									"en_buy_unasset_balance",
+									"en_sale_unasset_balance",
+									"en_future_frozen_balance",
+									"en_t2_frozen_balance",
+									"en_t2_temp_frozen_balance",
+									"l_first_payin_date",
+									"en_otc_frzn_balance",
+									"en_otc_unfrzn_balance",
+									"en_t1otc_frzn_balance",
+									"en_buy_balance_hgt",
+									"en_sale_balance_hgt",
+									"en_buy_balance_sgt",
+									"en_sale_balance_sgt",
+									"en_t2_frozen_balance_sgt",
+									"en_t2_temp_frozen_balance_sgt",
+									"en_change_balance_jys",
+									"en_change_balance_yhj",
+									"en_cmm_prebuy_margin",
+									"en_t1change_balance_ggt",
+									"en_cmmopt_temp_balance",
+									"en_risk_ggt",
+									"en_accumulate_profit_gq",
+									"en_turn_profit_gq",
+									"en_net_gain_gq",
+									"en_uncarryover_net_gain_gq",
+									"en_interest_profit_gq",
+									"en_turn_interest_profit_gq",
+									"en_interest_gain_gq",
+									"en_turn_interest_gain_gq",
+									"en_beginyear_turn_profit_gq",
+									"en_beginyear_unturn_profit_gq",
+									"en_gold_asset",
+									"en_gold_profit",
+									"en_gold_deposit",
+									"en_begin_future_rights",
+									"en_stock_asset_ggt",
+									"en_stock_asset_noggt",
+									"en_bank_balance",
+									"en_bank_frozen_balance",
+									"en_eneralhg_deposit",
+									"en_redeem_ratio",
+									"en_bonus_ratio",
+									"en_broker_balance",
+									"en_gold_equity",
+									"en_gold_spot",
+									"en_irs_deposit",
+									"en_outflow_balance_ggt",
+									"en_fut_report_fee",
+									"en_guranteesecfut_balance",
+									"en_finadebt_asset",
+									"en_finadebt_interest",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_thisassetday"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":[" truncate table o3_thisassetday "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

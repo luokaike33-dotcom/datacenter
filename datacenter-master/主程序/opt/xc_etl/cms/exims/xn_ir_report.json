@@ -1,0 +1,134 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/xnnp_ir_report",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"date"},
+									{"index":4,"type":"date"},
+									{"index":5,"type":"date"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"long"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"long"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"long"},
+									{"index":21,"type":"long"},
+									{"index":22,"type":"long"},
+									{"index":23,"type":"long"},
+									{"index":24,"type":"date"},
+									{"index":25,"type":"date"},
+									{"index":26,"type":"long"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"long"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"long"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"double"},
+									{"index":37,"type":"long"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"date"},
+									{"index":40,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"objid",
+									"summary",
+									"smscontent",
+									"writetime",
+									"submittime",
+									"archivetime",
+									"reporttypeid",
+									"sendflag",
+									"yeare",
+									"readcount",
+									"ratingtype",
+									"bondtype",
+									"ratingvalue",
+									"authornames",
+									"title",
+									"secondtitle",
+									"inputid",
+									"keyword",
+									"status",
+									"docversion",
+									"secret",
+									"importance",
+									"attachmentflag",
+									"commentflag",
+									"createtimestamp",
+									"updatetimestamp",
+									"version",
+									"entityname",
+									"smscontext",
+									"scodeinfo",
+									"emailreport",
+									"emailtitle",
+									"fundmanagername",
+									"fundmanageid",
+									"performancetype",
+									"performancecode",
+									"allscore",
+									"templatecopyid",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["xn_ir_report"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from xn_ir_report"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

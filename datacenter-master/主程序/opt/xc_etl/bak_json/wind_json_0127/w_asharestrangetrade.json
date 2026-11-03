@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_strange_bgdate,
+                                      s_strange_enddate,
+                                      s_strange_range,
+                                      s_strange_volume,
+                                      s_strange_amount,
+                                      s_strange_tradername,
+                                      s_strange_traderamount,
+                                      s_strange_buyamount,
+                                      s_strange_sellamount,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharestrangetrade.json' as task_rs_id
+                                from ${srcoradbname}.asharestrangetrade"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharestrangetrade",
+                        "fileName": "w_asharestrangetrade",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_strange_bgdate","type":"string"},
+                                      {"name":"s_strange_enddate","type":"string"},
+                                      {"name":"s_strange_range","type":"double"},
+                                      {"name":"s_strange_volume","type":"double"},
+                                      {"name":"s_strange_amount","type":"double"},
+                                      {"name":"s_strange_tradername","type":"string"},
+                                      {"name":"s_strange_traderamount","type":"double"},
+                                      {"name":"s_strange_buyamount","type":"double"},
+                                      {"name":"s_strange_sellamount","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

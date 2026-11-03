@@ -1,0 +1,70 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fut_dely_fee",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"double"},
+                                    {"index":3,"type":"double"},
+                                    {"index":4,"type":"double"},
+                                    {"index":5,"type":"double"},
+                                    {"index":6,"type":"double"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"long"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "trd_dt",
+                                    "trd_fee",
+                                    "trd_fee_rat",
+                                    "dely_fee",
+                                    "dely_fee_rat",
+                                    "cls_tdy_pos_fee",
+                                    "cls_tdy_pos_dis_rat",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_fut_dely_fee"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_fut_dely_fee where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

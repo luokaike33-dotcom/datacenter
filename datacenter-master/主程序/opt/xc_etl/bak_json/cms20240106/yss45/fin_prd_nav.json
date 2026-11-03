@@ -1,0 +1,152 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fin_prd_nav/p_dt=${p_dt}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"long"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"double"},
+                                    {"index":6,"type":"double"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"double"},
+                                    {"index":9,"type":"double"},
+                                    {"index":10,"type":"double"},
+                                    {"index":11,"type":"double"},
+                                    {"index":12,"type":"double"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"double"},
+                                    {"index":15,"type":"double"},
+                                    {"index":16,"type":"double"},
+                                    {"index":17,"type":"double"},
+                                    {"index":18,"type":"double"},
+                                    {"index":19,"type":"double"},
+                                    {"index":20,"type":"double"},
+                                    {"index":21,"type":"double"},
+                                    {"index":22,"type":"double"},
+                                    {"index":23,"type":"double"},
+                                    {"index":24,"type":"double"},
+                                    {"index":25,"type":"double"},
+                                    {"index":26,"type":"double"},
+                                    {"index":27,"type":"double"},
+                                    {"index":28,"type":"string"},
+                                    {"index":29,"type":"double"},
+                                    {"index":30,"type":"string"},
+                                    {"index":31,"type":"string"},
+                                    {"index":32,"type":"double"},
+                                    {"index":33,"type":"double"},
+                                    {"index":34,"type":"double"},
+                                    {"index":35,"type":"double"},
+                                    {"index":36,"type":"double"},
+                                    {"index":37,"type":"double"},
+                                    {"index":38,"type":"double"},
+                                    {"index":39,"type":"long"},
+                                    {"index":40,"type":"string"},
+                                    {"index":41,"type":"date"},
+                                    {"index":42,"type":"double"},
+                                    {"index":43,"type":"double"},
+                                    {"index":44,"type":"double"},
+                                    {"index":45,"type":"double"},
+                                    {"index":46,"type":"double"},
+                                    {"index":47,"type":"double"},
+                                    {"index":48,"type":"double"},
+                                    {"index":49,"type":"long"},
+                                    {"index":50,"type":"string"},
+                                    {"name":"p_dt""type":"long","value":"${p_dt}"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "prd_code",
+                                    "sub_code",
+                                    "fofs_code",
+                                    "nav_dt",
+                                    "prd_typ",
+                                    "ttl_navl",
+                                    "ttl_shr",
+                                    "unit_nval",
+                                    "aggr_unit_nval",
+                                    "nav_add_rat",
+                                    "aggr_nav_add_rat",
+                                    "unit_yld",
+                                    "aggr_unit_yld_setp",
+                                    "ann_yld_rat",
+                                    "ttl_ast",
+                                    "ttl_liab",
+                                    "paid_capi",
+                                    "f_savc",
+                                    "f_maty",
+                                    "f_eval_dvat_val",
+                                    "f_eval_dvat_rat",
+                                    "real_incm_d",
+                                    "real_incm_m",
+                                    "real_incm_y",
+                                    "prfi_ttl",
+                                    "prftrd_unit",
+                                    "prftrd_loss_unreal",
+                                    "prftrd_loss_real",
+                                    "curr_code",
+                                    "cash_nav_rat",
+                                    "prd_stat",
+                                    "prd_stat_yest",
+                                    "shr_add",
+                                    "shr_reduce",
+                                    "prd_rtn_yest",
+                                    "prfi_ttl_un",
+                                    "grt_val",
+                                    "nav_mth_rat",
+                                    "nav_year_rat",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "cash_pos",
+                                    "aggr_cadi_amt",
+                                    "tot_secu_ivsm",
+                                    "stk_ivsm",
+                                    "bond_ivsm",
+                                    "cvtb_ivsm",
+                                    "fnd_ivs",
+                                    "supp_dt",
+                                    "dm_src_info"
+                                    "p_dt"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["fin_prd_nav"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from fin_prd_nav where p_dt ='${p_dt}' and 1 =1 "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

@@ -1,0 +1,123 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/pro_repo_tnv_info",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"long"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"long"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"date"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"ast_unit_code",
+									"pfl_code",
+									"occu_dt",
+									"secu_id",
+									"typ_code",
+									"typ_codei",
+									"typ_codeii",
+									"exch_code",
+									"repo_trd_mode",
+									"repo_days",
+									"clr_sped",
+									"inta_days",
+									"tnv_dt",
+									"buyb_dt",
+									"fir_deli_dt",
+									"end_deli_dt",
+									"fir_deli_mode",
+									"end_deli_mode",
+									"pos_id",
+									"repo_rat",
+									"fir_net_prc",
+									"end_net_prc",
+									"fir_hd_intr",
+									"end_hd_intr",
+									"tnv_vol",
+									"tnv_val",
+									"buyb_val",
+									"repo_intr",
+									"repo_fee",
+									"clr_typ",
+									"trd_cntp_id",
+									"tnv_no",
+									"var_secu_id",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["pro_repo_tnv_info"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table pro_repo_tnv_info"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

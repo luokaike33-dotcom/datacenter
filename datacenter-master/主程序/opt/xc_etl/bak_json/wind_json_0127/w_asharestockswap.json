@@ -1,0 +1,125 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      transferer_windcode,
+                                      transferer_name,
+                                      progress,
+                                      targetcomp_windcode,
+                                      targetcomp_name,
+                                      transferer_conversionprice,
+                                      targetcomp_conversionprice,
+                                      conversionratio,
+                                      is_cashoption,
+                                      cashoption,
+                                      cashoption_reportstartdate,
+                                      cashoption_reportenddate,
+                                      cashoption_applicationcode,
+                                      cashoption_sharepurchaser,
+                                      cashoption_applicantname,
+                                      is_overalllisting,
+                                      prelandate,
+                                      mtstartdate,
+                                      smtgrecdate,
+                                      smtganncedate,
+                                      iecannouncementdate,
+                                      anncedate,
+                                      anncelstdate,
+                                      ann_dt,
+                                      traderesumptiondate,
+                                      lasttradedate,
+                                      equityregistrationdate,
+                                      listdate,
+                                      consolidationbasedate,
+                                      financialadvisor,
+                                      plandescription,
+                                      casharrivaldate,
+                                      effectivereportedshares,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharestockswap.json' as task_rs_id
+                                from ${srcoradbname}.asharestockswap"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharestockswap",
+                        "fileName": "w_asharestockswap",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"transferer_windcode","type":"string"},
+                                      {"name":"transferer_name","type":"string"},
+                                      {"name":"progress","type":"string"},
+                                      {"name":"targetcomp_windcode","type":"string"},
+                                      {"name":"targetcomp_name","type":"string"},
+                                      {"name":"transferer_conversionprice","type":"double"},
+                                      {"name":"targetcomp_conversionprice","type":"double"},
+                                      {"name":"conversionratio","type":"double"},
+                                      {"name":"is_cashoption","type":"bigint"},
+                                      {"name":"cashoption","type":"double"},
+                                      {"name":"cashoption_reportstartdate","type":"string"},
+                                      {"name":"cashoption_reportenddate","type":"string"},
+                                      {"name":"cashoption_applicationcode","type":"string"},
+                                      {"name":"cashoption_sharepurchaser","type":"string"},
+                                      {"name":"cashoption_applicantname","type":"string"},
+                                      {"name":"is_overalllisting","type":"bigint"},
+                                      {"name":"prelandate","type":"string"},
+                                      {"name":"mtstartdate","type":"string"},
+                                      {"name":"smtgrecdate","type":"string"},
+                                      {"name":"smtganncedate","type":"string"},
+                                      {"name":"iecannouncementdate","type":"string"},
+                                      {"name":"anncedate","type":"string"},
+                                      {"name":"anncelstdate","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"traderesumptiondate","type":"string"},
+                                      {"name":"lasttradedate","type":"string"},
+                                      {"name":"equityregistrationdate","type":"string"},
+                                      {"name":"listdate","type":"string"},
+                                      {"name":"consolidationbasedate","type":"string"},
+                                      {"name":"financialadvisor","type":"string"},
+                                      {"name":"plandescription","type":"string"},
+                                      {"name":"casharrivaldate","type":"string"},
+                                      {"name":"effectivereportedshares","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

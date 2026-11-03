@@ -1,0 +1,88 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/oa_matrixtable_3",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"double"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"date"},
+									{"index":17,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"uuid",
+									"dataorder",
+									"fb",
+									"bm",
+									"sjzg",
+									"bmfzr",
+									"fgld",
+									"hggly",
+									"bmfzr_bhhg",
+									"bmfzr_zzhg",
+									"sjzg_noit",
+									"fgld_bhzjl",
+									"qxgly",
+									"legal_staff",
+									"zt",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["oa_matrixtable_3"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from oa_matrixtable_3"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

@@ -1,0 +1,81 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_change_date,
+                                      s_info_code_old,
+                                      s_info_name_old,
+                                      s_exercise_price_old,
+                                      s_unit_old,
+                                      s_info_code_new,
+                                      s_info_name_new,
+                                      s_exercise_price_new,
+                                      s_unit_new,
+                                      s_change_reason,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_coptiondescriptionchange.json' as task_rs_id
+                                from ${srcoradbname}.coptiondescriptionchange"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_coptiondescriptionchange",
+                        "fileName": "w_coptiondescriptionchange",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_change_date","type":"string"},
+                                      {"name":"s_info_code_old","type":"string"},
+                                      {"name":"s_info_name_old","type":"string"},
+                                      {"name":"s_exercise_price_old","type":"double"},
+                                      {"name":"s_unit_old","type":"double"},
+                                      {"name":"s_info_code_new","type":"string"},
+                                      {"name":"s_info_name_new","type":"string"},
+                                      {"name":"s_exercise_price_new","type":"double"},
+                                      {"name":"s_unit_new","type":"double"},
+                                      {"name":"s_change_reason","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

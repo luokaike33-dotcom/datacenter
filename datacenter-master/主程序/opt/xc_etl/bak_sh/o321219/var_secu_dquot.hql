@@ -1,0 +1,28 @@
+------------------------------------------------------------------------
+-- 模块名称：证券日行情
+-- 模块编号：
+-- 开发人员：sa,Bert,Travis
+-- 目前版本：
+-- 创建时间：20201204,20220530,20220614
+-- 版    权：
+-- 功    能：
+-- 修改记录：
+------------------------------------------------------------------------
+----set hive.vectorized.execution.enabled=false;
+----set hive.strict.checks.type.safety=false;
+----set hive.exec.dynamic.partition.mode=nonstrict;
+----set hive.execution.engine=spark;
+----set hive.exec.max.dynamic.partitions.pernode=10000;
+----set hive.exec.max.dynamic.partitions=10000;
+----set hive.exec.max.created.files=10000;
+----set hive.auto.convert.join=true;
+----set hive.merge.sparkfiles=true;
+----set hive.optimize.sort.dynamic.partition=true;
+----set hive.merge.orcfile.stripe.level=false;
+----set spark.memory.fraction=0.8;
+----set hive.exec.dynamic.partition=true;
+----set hive.crud.dynamic.partition=true;
+----set spark.serializer=org.apache.spark.serializer.KryoSerializer;
+----set hive.cbo.enable=false;
+
+

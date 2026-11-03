@@ -1,0 +1,49 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,b_info_windcode,b_info_repurchaseprice,b_info_bgndt,b_info_enddt,b_info_trnsrt from ${srcoradbname}.ccbondrepurchasepricerate"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_ccbondrepurchasepricerate",
+                        "fileName": "w_ccbondrepurchasepricerate",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"b_info_windcode","type":"STRING"},
+                        {"name":"b_info_repurchaseprice","type":"DOUBLE"},
+                        {"name":"b_info_bgndt","type":"STRING"},
+                        {"name":"b_info_enddt","type":"STRING"},
+                        {"name":"b_info_trnsrt","type":"DOUBLE"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

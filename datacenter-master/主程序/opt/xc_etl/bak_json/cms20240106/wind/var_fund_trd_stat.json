@@ -1,0 +1,70 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fund_trd_stat",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"long"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"long"},
+                                    {"index":5,"type":"long"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "busi_date",
+                                    "secu_id",
+                                    "sts_code",
+                                    "info_sour",
+                                    "pub_dt",
+                                    "chg_dt",
+                                    "sts_desc",
+                                    "chg_rsn_code",
+                                    "chg_rsn_desc",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_fund_trd_stat"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_fund_trd_stat where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

@@ -1,0 +1,118 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/dw_var_issue_industry",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"long"},
+									{"index":23,"type":"date"},
+									{"index":24,"type":"date"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"date"},
+									{"index":31,"type":"string"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sk_issue",
+									"industry_sw_lv1",
+									"industry_sw_lv2",
+									"industry_sw_lv3",
+									"industry_sw_lv4",
+									"industry_zx_lv1",
+									"industry_zx_lv2",
+									"industry_zx_lv3",
+									"industry_zx_lv4",
+									"industry_wind_lv1",
+									"industry_wind_lv2",
+									"industry_wind_lv3",
+									"industry_wind_lv4",
+									"industry_zjh_lv1",
+									"industry_zjh_lv2",
+									"industry_zjh_lv3",
+									"industry_zjh_lv4",
+									"industry_zjh2012_lv1",
+									"industry_zjh2012_lv2",
+									"industry_zjh2012_lv3",
+									"industry_zjh2012_lv4",
+									"dk_system_of_upd",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"industry_zz_lv1",
+									"industry_zz_lv2",
+									"industry_zz_lv3",
+									"industry_zz_lv4",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["dw_var_issue_industry"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from dw_var_issue_industry"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

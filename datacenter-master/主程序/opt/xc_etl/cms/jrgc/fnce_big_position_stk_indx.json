@@ -1,0 +1,102 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									prd_code,
+									hld_dt,
+									secu_id,
+									secu_sht,
+									com_id,
+									sw_ind_level1,
+									sw_ind_level2,
+									citics_ind_level,
+									hs_ind,
+									ind_type,
+									ind_type_2,
+									posi_rank,
+									hold_nav_rt,
+									hold_ast_rt,
+									wind_secu_id,
+									yield_1m,
+									yield_3m,
+									yield_6m,
+									yield_12m,
+									pb,
+									pe_ttm,
+									est_pe,
+									est_pb,
+									ttl_val,
+									roe,
+									p_dt
+							FROM ${srcdbname}.fnce_big_position_stk_indx where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"hld_dt",
+									"secu_id",
+									"secu_sht",
+									"com_id",
+									"sw_ind_level1",
+									"sw_ind_level2",
+									"citics_ind_level",
+									"hs_ind",
+									"ind_type",
+									"ind_type_2",
+									"posi_rank",
+									"hold_nav_rt",
+									"hold_ast_rt",
+									"wind_secu_id",
+									"yield_1m",
+									"yield_3m",
+									"yield_6m",
+									"yield_12m",
+									"pb",
+									"pe_ttm",
+									"est_pe",
+									"est_pb",
+									"ttl_val",
+									"roe",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fnce_big_position_stk_indx"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fnce_big_position_stk_indx where p_dt between ${beg_date} and ${end_date} "]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

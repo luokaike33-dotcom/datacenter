@@ -1,0 +1,89 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_info_indexwindcode,
+                                      s_info_bgndt,
+                                      s_info_enddt,
+                                      s_info_indexweg,
+                                      s_info_operators,
+                                      s_info_constant,
+                                      s_info_aftertaxornot,
+                                      cur_sign,
+                                      ann_dt,
+                                      s_info_fxcode,
+                                      s_inc_sequence,
+                                      sec_id,
+                                      sec_id2,
+                                      is_compound,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_chinamutualfundbenchmark.json' as task_rs_id
+                                from ${srcoradbname}.chinamutualfundbenchmark"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundbenchmark",
+                        "fileName": "w_chinamutualfundbenchmark",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_info_indexwindcode","type":"string"},
+                                      {"name":"s_info_bgndt","type":"string"},
+                                      {"name":"s_info_enddt","type":"string"},
+                                      {"name":"s_info_indexweg","type":"double"},
+                                      {"name":"s_info_operators","type":"string"},
+                                      {"name":"s_info_constant","type":"double"},
+                                      {"name":"s_info_aftertaxornot","type":"bigint"},
+                                      {"name":"cur_sign","type":"bigint"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"s_info_fxcode","type":"string"},
+                                      {"name":"s_inc_sequence","type":"bigint"},
+                                      {"name":"sec_id","type":"string"},
+                                      {"name":"sec_id2","type":"string"},
+                                      {"name":"is_compound","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,88 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_stk_com_capt_hk",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"long"},
+                                    {"index":3,"type":"long"},
+                                    {"index":4,"type":"double"},
+                                    {"index":5,"type":"double"},
+                                    {"index":6,"type":"double"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"double"},
+                                    {"index":9,"type":"double"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"string"},
+                                    {"index":17,"type":"long"},
+                                    {"index":18,"type":"string"},
+                                    {"index":19,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "com_id",
+                                    "pub_dt",
+                                    "chg_dt",
+                                    "sn",
+                                    "h_shr",
+                                    "h_shr_circ",
+                                    "pay_up_cptl",
+                                    "reg_shr",
+                                    "reg_cptl",
+                                    "par_val",
+                                    "curr_code",
+                                    "pfd_shr_typ",
+                                    "shr_typ",
+                                    "chg_rsn_code",
+                                    "chg_rsn_desc",
+                                    "area_ref_code",
+                                    "com_name",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_stk_com_capt_hk"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_stk_com_capt_hk where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

@@ -1,0 +1,74 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,
+															s_info_windcode ,
+															b_info_benchmarkcode,
+															b_info_marketrateornot,
+															b_info_interestcode ,
+															b_info_interestfloor,
+															b_info_paymentdaytype,
+															b_info_interestpreci,
+															benchmark_dt,
+															interest_content,
+															benchmarkcode_period,
+															libor_crncy_code,
+															prc_dtrmntn_date,
+															null as b_info_benchmark,
+															opdate,
+															opmode from ${srcoradbname}.cbondfloatingrate"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondfloatingrate",
+                        "fileName": "w_cbondfloatingrate",
+                        "column": [
+                        {"name":"object_id","type":"string"},
+                        {"name":"s_info_windcode","type":"string"},
+                        {"name":"b_info_benchmarkcode","type":"double"},
+                        {"name":"b_info_marketrateornot","type":"double"},						
+                        {"name":"b_info_interestcode","type":"string"},
+                        {"name":"b_info_interestfloor","type":"double"},
+                        {"name":"b_info_paymentdaytype","type":"string"},
+                        {"name":"b_info_interestpreci","type":"double"},
+                        {"name":"benchmark_dt","type":"string"},
+                        {"name":"interest_content","type":"string"},
+                        {"name":"benchmarkcode_period","type":"string"},
+                        {"name":"libor_crncy_code","type":"string"},
+                        {"name":"prc_dtrmntn_date","type":"string"},
+                        {"name":"b_info_benchmark","type":"string"},
+                        {"name":"opdate","type":"date"},
+                        {"name":"opmode","type":"string"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

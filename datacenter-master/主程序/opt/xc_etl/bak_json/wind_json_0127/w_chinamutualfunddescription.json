@@ -1,0 +1,107 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,f_info_windcode,f_info_front_code,f_info_backend_code,f_info_fullname,f_info_name,f_info_corp_fundmanagementcomp,f_info_custodianbank,f_info_firstinvesttype,f_info_setupdate,f_info_maturitydate,f_issue_totalunit,f_info_managementfeeratio,f_info_custodianfeeratio,crny_code,f_info_ptmyear,f_issue_oef_startdateinst,f_issue_oef_dnddateinst,f_info_parvalue,f_info_trusttype,f_info_trustee,f_pchredm_pchstartdate,f_info_redmstartdate,f_info_minbuyamount,f_info_expectedrateofreturn,f_info_issuingplace,f_info_benchmark,f_info_status,f_info_restrictedornot,f_info_structuredornot,f_info_exchmarket,f_info_firstinveststyle,f_info_issuedate,f_info_type,f_info_isinitial,f_info_pinyin,f_info_investscope,f_info_investobject,f_info_investconception,f_info_decision_basis,is_indexfund,f_info_delistdate,f_info_corp_fundmanagementid,f_info_custodianbankid,max_num_holder,max_num_coltarget,investstrategy,risk_return,f_pchredm_pchminamt,f_pchredm_pchminamt_ex,f_info_listdate,f_info_anndate,f_closed_operation_period,f_closed_operation_interval,f_info_registrant,f_personal_startdateind,f_personal_enddateind,f_info_fund_id,f_sales_service_rate,f_investment_area,null as close_institu_oef_down,null as close_institu_oef_up,opdate,opmode from ${srcoradbname}.chinamutualfunddescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfunddescription",
+                        "fileName": "w_chinamutualfunddescription",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"f_info_windcode","type":"string"},
+                            {"name":"f_info_front_code","type":"string"},
+                            {"name":"f_info_backend_code","type":"string"},
+                            {"name":"f_info_fullname","type":"string"},
+                            {"name":"f_info_name","type":"string"},
+                            {"name":"f_info_corp_fundmanagementcomp","type":"string"},
+                            {"name":"f_info_custodianbank","type":"string"},
+                            {"name":"f_info_firstinvesttype","type":"string"},
+                            {"name":"f_info_setupdate","type":"string"},
+                            {"name":"f_info_maturitydate","type":"string"},
+                            {"name":"f_issue_totalunit","type":"double"},
+                            {"name":"f_info_managementfeeratio","type":"double"},
+                            {"name":"f_info_custodianfeeratio","type":"double"},
+                            {"name":"crny_code","type":"string"},
+                            {"name":"f_info_ptmyear","type":"double"},
+                            {"name":"f_issue_oef_startdateinst","type":"string"},
+                            {"name":"f_issue_oef_dnddateinst","type":"string"},
+                            {"name":"f_info_parvalue","type":"double"},
+                            {"name":"f_info_trusttype","type":"string"},
+                            {"name":"f_info_trustee","type":"string"},
+                            {"name":"f_pchredm_pchstartdate","type":"string"},
+                            {"name":"f_info_redmstartdate","type":"string"},
+                            {"name":"f_info_minbuyamount","type":"double"},
+                            {"name":"f_info_expectedrateofreturn","type":"double"},
+                            {"name":"f_info_issuingplace","type":"string"},
+                            {"name":"f_info_benchmark","type":"string"},
+                            {"name":"f_info_status","type":"double"},
+                            {"name":"f_info_restrictedornot","type":"string"},
+                            {"name":"f_info_structuredornot","type":"double"},
+                            {"name":"f_info_exchmarket","type":"string"},
+                            {"name":"f_info_firstinveststyle","type":"string"},
+                            {"name":"f_info_issuedate","type":"string"},
+                            {"name":"f_info_type","type":"string"},
+                            {"name":"f_info_isinitial","type":"double"},
+                            {"name":"f_info_pinyin","type":"string"},
+                            {"name":"f_info_investscope","type":"string"},
+                            {"name":"f_info_investobject","type":"string"},
+                            {"name":"f_info_investconception","type":"string"},
+                            {"name":"f_info_decision_basis","type":"string"},
+                            {"name":"is_indexfund","type":"double"},
+                            {"name":"f_info_delistdate","type":"string"},
+                            {"name":"f_info_corp_fundmanagementid","type":"string"},
+                            {"name":"f_info_custodianbankid","type":"string"},
+                            {"name":"max_num_holder","type":"double"},
+                            {"name":"max_num_coltarget","type":"double"},
+                            {"name":"investstrategy","type":"string"},
+                            {"name":"risk_return","type":"string"},
+                            {"name":"f_pchredm_pchminamt","type":"double"},
+                            {"name":"f_pchredm_pchminamt_ex","type":"double"},
+                            {"name":"f_info_listdate","type":"string"},
+                            {"name":"f_info_anndate","type":"string"},
+                            {"name":"f_closed_operation_period","type":"double"},
+                            {"name":"f_closed_operation_interval","type":"double"},
+                            {"name":"f_info_registrant","type":"string"},
+                            {"name":"f_personal_startdateind","type":"string"},
+                            {"name":"f_personal_enddateind","type":"string"},
+                            {"name":"f_info_fund_id","type":"string"},
+                            {"name":"f_sales_service_rate","type":"double"},
+                            {"name":"f_investment_area","type":"string"},
+                            {"name":"close_institu_oef_down","type":"double"},
+                            {"name":"close_institu_oef_up","type":"double"},
+                            {"name":"opdate","type":"date"},
+                            {"name":"opmode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

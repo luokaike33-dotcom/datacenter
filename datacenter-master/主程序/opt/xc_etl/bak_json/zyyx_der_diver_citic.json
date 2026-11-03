@@ -1,0 +1,75 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      id,
+                                      industry_code,
+                                      industry_name,
+                                      industry_level,
+                                      con_date,
+                                      con_year,
+                                      eps_diver,
+                                      np_diver,
+                                      entrytime,
+                                      updatetime,
+                                      tmstamp,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'zyyx_der_diver_citic.json' as task_rs_id
+                                from ${srcoradbname}.der_diver_citic"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${is_kbs}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/zyyx_der_diver_citic",
+                        "fileName": "zyyx_der_diver_citic",
+                        "column": [
+                                      {"name":"id","type":"bigint"},
+                                      {"name":"industry_code","type":"string"},
+                                      {"name":"industry_name","type":"string"},
+                                      {"name":"industry_level","type":"bigint"},
+                                      {"name":"con_date","type":"timestamp"},
+                                      {"name":"con_year","type":"bigint"},
+                                      {"name":"eps_diver","type":"double"},
+                                      {"name":"np_diver","type":"double"},
+                                      {"name":"entrytime","type":"timestamp"},
+                                      {"name":"updatetime","type":"timestamp"},
+                                      {"name":"tmstamp","type":"bigint"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

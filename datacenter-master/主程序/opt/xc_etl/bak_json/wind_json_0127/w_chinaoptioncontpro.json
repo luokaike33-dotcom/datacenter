@@ -1,0 +1,75 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_info_code,s_info_name,s_info_ename,s_info_exname,s_info_type,s_info_euroamericanbermuda,s_info_settlementmethod,s_info_listeddate,s_info_delistdate,s_info_strikeratio,s_info_cevalue,s_info_covalue,s_info_lsmonth,s_info_minpricefluct,s_info_thours,s_info_lasttradingdate,s_info_lsdate,s_info_lastsettle,s_info_tradefee,s_info_poslimit,s_info_minposlimit,s_info_optionprice,s_info_exercisingend,s_info_strikeprice,s_info_simulation,s_info_quoteunit,s_info_counit,s_info_counitdimension,s_info_id,null as s_info_udlsecid from ${srcoradbname}.chinaoptioncontpro"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinaoptioncontpro",
+                        "fileName": "w_chinaoptioncontpro",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"s_info_code","type":"string"},
+                            {"name":"s_info_name","type":"string"},
+                            {"name":"s_info_ename","type":"string"},
+                            {"name":"s_info_exname","type":"string"},
+                            {"name":"s_info_type","type":"string"},
+                            {"name":"s_info_euroamericanbermuda","type":"string"},
+                            {"name":"s_info_settlementmethod","type":"string"},
+                            {"name":"s_info_listeddate","type":"string"},
+                            {"name":"s_info_delistdate","type":"string"},
+                            {"name":"s_info_strikeratio","type":"double"},
+                            {"name":"s_info_cevalue","type":"double"},
+                            {"name":"s_info_covalue","type":"string"},
+                            {"name":"s_info_lsmonth","type":"string"},
+                            {"name":"s_info_minpricefluct","type":"string"},
+                            {"name":"s_info_thours","type":"string"},
+                            {"name":"s_info_lasttradingdate","type":"string"},
+                            {"name":"s_info_lsdate","type":"string"},
+                            {"name":"s_info_lastsettle","type":"string"},
+                            {"name":"s_info_tradefee","type":"string"},
+                            {"name":"s_info_poslimit","type":"string"},
+                            {"name":"s_info_minposlimit","type":"string"},
+                            {"name":"s_info_optionprice","type":"string"},
+                            {"name":"s_info_exercisingend","type":"string"},
+                            {"name":"s_info_strikeprice","type":"string"},
+                            {"name":"s_info_simulation","type":"string"},
+                            {"name":"s_info_quoteunit","type":"string"},
+                            {"name":"s_info_counit","type":"double"},
+                            {"name":"s_info_counitdimension","type":"string"},
+                            {"name":"s_info_id","type":"string"},
+                            {"name":"s_info_udlsecid","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

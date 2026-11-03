@@ -1,0 +1,61 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,f_info_windcode,ann_dt,report_period,stock_change_fair_value,bond_change_fair_value,bond1_change_fair_value,warrant_change_fair_value,tot_change_fair_value,abs_change_fair_value,forward_change_fair_value,fund_change_fair_value,other,memo,null as precious_metal_ivt_fvvi,null as futures_ivt_fvvi,null as autd_ivt_fvvi,null as fair_value_tax_fp from ${srcoradbname}.cmffairvaluechangeprofit"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cmffairvaluechangeprofit",
+                        "fileName": "w_cmffairvaluechangeprofit",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"f_info_windcode","type":"string"},
+                            {"name":"ann_dt","type":"string"},
+                            {"name":"report_period","type":"string"},
+                            {"name":"stock_change_fair_value","type":"double"},
+                            {"name":"bond_change_fair_value","type":"double"},
+                            {"name":"bond1_change_fair_value","type":"double"},
+                            {"name":"warrant_change_fair_value","type":"double"},
+                            {"name":"tot_change_fair_value","type":"double"},
+                            {"name":"abs_change_fair_value","type":"double"},
+                            {"name":"forward_change_fair_value","type":"double"},
+                            {"name":"fund_change_fair_value","type":"double"},
+                            {"name":"other","type":"double"},
+                            {"name":"memo","type":"string"},
+                            {"name":"precious_metal_ivt_fvvi","type":"double"},
+                            {"name":"futures_ivt_fvvi","type":"double"},
+                            {"name":"autd_ivt_fvvi","type":"double"},
+                            {"name":"fair_value_tax_fp","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,90 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/rx_trivalquotagroup",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"date"},
+									{"index":18,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"rivalgroup_id",
+									"rivalgroup_name",
+									"biz_type_list",
+									"side_code_list",
+									"quota_control_layer",
+									"layer_id_list",
+									"use_flag",
+									"remark",
+									"update_time",
+									"limit_amt_flag",
+									"limit_mode",
+									"limit_amt",
+									"productnet_rate_flag",
+									"productnet_rate",
+									"productnet_compare_direction",
+									"net_value",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["rx_trivalquotagroup"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table rx_trivalquotagroup"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":0}
+        }
+    }
+}
+
+

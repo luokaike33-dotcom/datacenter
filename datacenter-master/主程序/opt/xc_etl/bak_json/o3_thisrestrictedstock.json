@@ -1,0 +1,58 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select l_unit_id,l_date,l_restricted_amount,c_restricted_type,l_rsend_date,en_buy_balance,en_buy_fee,l_sale_amount,en_untransfered_invest,c_lockrestricted_type,c_deal_flag,l_adjust_amount,l_stgplc_frozen_amount,vc_custom_restricted from ${srcoradbname}.thisrestrictedstock where l_date = ${p_dt}"],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_thisrestrictedstock/p_dt=${p_dt}",
+            "fileName": "o3_thisrestrictedstock",
+            "column": [
+              {"name":"l_unit_id","type":"bigint"},
+              {"name":"l_date","type":"bigint"},
+              {"name":"l_restricted_amount","type":"double"},
+              {"name":"c_restricted_type","type":"string"},
+              {"name":"l_rsend_date","type":"bigint"},
+              {"name":"en_buy_balance","type":"double"},
+              {"name":"en_buy_fee","type":"double"},
+              {"name":"l_sale_amount","type":"double"},
+              {"name":"en_untransfered_invest","type":"double"},
+              {"name":"c_lockrestricted_type","type":"string"},
+              {"name":"c_deal_flag","type":"string"},
+              {"name":"l_adjust_amount","type":"double"},
+              {"name":"l_stgplc_frozen_amount","type":"double"},
+              {"name":"vc_custom_restricted","type":"string"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}
+

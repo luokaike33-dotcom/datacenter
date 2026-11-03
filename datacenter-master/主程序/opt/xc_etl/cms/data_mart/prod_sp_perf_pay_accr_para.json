@@ -1,0 +1,83 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/prod_sp_perf_pay_accr_para",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"double"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sprd_code",
+									"dk_perf_pay_comp",
+									"accr_invl_type",
+									"invl_min_val",
+									"invl_max_val",
+									"draw_ratio",
+									"start_date",
+									"spcl_mode_dtl",
+									"prd_inr_code",
+									"inserttime",
+									"updatetime",
+									"delete_flag",
+									"src_system",
+									"last_update_request",
+									"id",
+									"batchno",
+									"task_rs_id",
+									"mprd_code"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["prod_sp_perf_pay_accr_para"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table prod_sp_perf_pay_accr_para"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

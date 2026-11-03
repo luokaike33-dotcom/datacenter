@@ -1,0 +1,103 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compname,
+                                      s_info_compcode,
+                                      ann_dt,
+                                      progress_code,
+                                      bondtype,
+                                      amount,
+                                      description,
+                                      is_max_amount,
+                                      duration,
+                                      rate,
+                                      leadunderwriter,
+                                      is_approved,
+                                      is_issue_shareholder,
+                                      arrangement,
+                                      s_info_usage,
+                                      effectiveperiod,
+                                      ann_date_board,
+                                      ann_date_shareholder,
+                                      ann_date_ndrc,
+                                      ann_date_csiec,
+                                      ann_date_sfc,
+                                      ann_date_implement,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_bondissuanceplan.json' as task_rs_id
+                                from ${srcoradbname}.bondissuanceplan"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_bondissuanceplan",
+                        "fileName": "w_bondissuanceplan",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compname","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"progress_code","type":"bigint"},
+                                      {"name":"bondtype","type":"string"},
+                                      {"name":"amount","type":"double"},
+                                      {"name":"description","type":"string"},
+                                      {"name":"is_max_amount","type":"bigint"},
+                                      {"name":"duration","type":"string"},
+                                      {"name":"rate","type":"string"},
+                                      {"name":"leadunderwriter","type":"string"},
+                                      {"name":"is_approved","type":"bigint"},
+                                      {"name":"is_issue_shareholder","type":"bigint"},
+                                      {"name":"arrangement","type":"string"},
+                                      {"name":"s_info_usage","type":"string"},
+                                      {"name":"effectiveperiod","type":"string"},
+                                      {"name":"ann_date_board","type":"string"},
+                                      {"name":"ann_date_shareholder","type":"string"},
+                                      {"name":"ann_date_ndrc","type":"string"},
+                                      {"name":"ann_date_csiec","type":"string"},
+                                      {"name":"ann_date_sfc","type":"string"},
+                                      {"name":"ann_date_implement","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

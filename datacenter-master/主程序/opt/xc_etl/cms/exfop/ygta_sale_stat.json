@@ -1,0 +1,94 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+										id,
+										gmt_create,
+										gmt_modified,
+										holding_date,
+										confirm_date,
+										fund_code,
+										distributor_code,
+										total_shares,
+										total_balance,
+										allocate_profit,
+										total_share_pre,
+										manage_fare,
+										service_fare,
+										tail_fare,
+										last_work_share,
+										slice_id,
+										force_redeem_income,
+										inserttime,
+										updatetime,
+										batchno,
+										tano,
+										srcsys
+							FROM ${srcdbname}.ygta_sale_stat "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"id",
+									"gmt_create",
+									"gmt_modified",
+									"holding_date",
+									"confirm_date",
+									"fund_code",
+									"distributor_code",
+									"total_shares",
+									"total_balance",
+									"allocate_profit",
+									"total_share_pre",
+									"manage_fare",
+									"service_fare",
+									"tail_fare",
+									"last_work_share",
+									"slice_id",
+									"force_redeem_income",
+									"inserttime",
+									"updatetime",
+									"batchno",
+									"tano",
+									"srcsys"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["ygta_sale_stat"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table ygta_sale_stat"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

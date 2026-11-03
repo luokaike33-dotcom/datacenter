@@ -1,0 +1,68 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,c_port_code,d_hold,c_sec_code,c_cury_code,c_mkt_code,c_ivt_clss,c_pa_code,c_hld_attr,c_td_attr,c_ml_attr,n_hldamt,n_hldcst,n_hldcst_locl,n_hldmkv,n_hldmkv_locl,n_hldvva,n_hldvva_l,n_valprice,n_valrate,c_update_time,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vh_deposit.json' as task_rs_id from ${srcoradbname}.vh_deposit"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vh_deposit",
+                        "fileName": "fa45_vh_deposit",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"d_hold","type":"date"},
+                            {"name":"c_sec_code","type":"string"},
+                            {"name":"c_cury_code","type":"string"},
+                            {"name":"c_mkt_code","type":"string"},
+                            {"name":"c_ivt_clss","type":"string"},
+                            {"name":"c_pa_code","type":"string"},
+                            {"name":"c_hld_attr","type":"string"},
+                            {"name":"c_td_attr","type":"string"},
+                            {"name":"c_ml_attr","type":"string"},
+                            {"name":"n_hldamt","type":"double"},
+                            {"name":"n_hldcst","type":"double"},
+                            {"name":"n_hldcst_locl","type":"double"},
+                            {"name":"n_hldmkv","type":"double"},
+                            {"name":"n_hldmkv_locl","type":"double"},
+                            {"name":"n_hldvva","type":"double"},
+                            {"name":"n_hldvva_l","type":"double"},
+                            {"name":"n_valprice","type":"double"},
+                            {"name":"n_valrate","type":"double"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,f_info_chinesename,f_info_englishname,f_info_shortname,f_info_mgrcomp,f_info_custodianbank,f_info_type,f_info_investype,f_issue_date,f_issue_colperiod,f_issue_maxcolshare,f_issue_netpchshare,f_issue_netpchnum,f_info_parvalue,f_info_ptmyear,f_info_manafeeratio,f_info_custfeeratio,f_info_salefeeratio,f_info_setupdate,f_info_maturitydate,f_issue_shares,s_fellow_distor,f_info_listdate,f_pch_startdate,f_redm_startdate,f_issue_startdateind,f_issue_enddateind,f_issue_minamtind,f_issue_maxamtind,f_pchredm_pchminamt,f_pchredm_redmminamt,f_pchredm_hugeredmpro,crncy_code,f_info_issueprice,f_info_ovrsubratio from ${srcoradbname}.chinamutualfundissue"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundissue",
+                        "fileName": "w_chinamutualfundissue",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"f_info_chinesename","type":"string"},
+                            {"name":"f_info_englishname","type":"string"},
+                            {"name":"f_info_shortname","type":"string"},
+                            {"name":"f_info_mgrcomp","type":"string"},
+                            {"name":"f_info_custodianbank","type":"string"},
+                            {"name":"f_info_type","type":"double"},
+                            {"name":"f_info_investype","type":"double"},
+                            {"name":"f_issue_date","type":"string"},
+                            {"name":"f_issue_colperiod","type":"string"},
+                            {"name":"f_issue_maxcolshare","type":"double"},
+                            {"name":"f_issue_netpchshare","type":"double"},
+                            {"name":"f_issue_netpchnum","type":"double"},
+                            {"name":"f_info_parvalue","type":"double"},
+                            {"name":"f_info_ptmyear","type":"double"},
+                            {"name":"f_info_manafeeratio","type":"double"},
+                            {"name":"f_info_custfeeratio","type":"double"},
+                            {"name":"f_info_salefeeratio","type":"double"},
+                            {"name":"f_info_setupdate","type":"string"},
+                            {"name":"f_info_maturitydate","type":"string"},
+                            {"name":"f_issue_shares","type":"double"},
+                            {"name":"s_fellow_distor","type":"double"},
+                            {"name":"f_info_listdate","type":"string"},
+                            {"name":"f_pch_startdate","type":"string"},
+                            {"name":"f_redm_startdate","type":"string"},
+                            {"name":"f_issue_startdateind","type":"string"},
+                            {"name":"f_issue_enddateind","type":"string"},
+                            {"name":"f_issue_minamtind","type":"double"},
+                            {"name":"f_issue_maxamtind","type":"double"},
+                            {"name":"f_pchredm_pchminamt","type":"double"},
+                            {"name":"f_pchredm_redmminamt","type":"double"},
+                            {"name":"f_pchredm_hugeredmpro","type":"double"},
+                            {"name":"crncy_code","type":"string"},
+                            {"name":"f_info_issueprice","type":"double"},
+                            {"name":"f_info_ovrsubratio","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,105 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select l_date,l_realdeal_serial_no,l_entrust_serial_no,l_fund_id,c_market_no,vc_stockholder_id,vc_report_seat,vc_report_code,c_stock_type,c_entrust_direction,l_business_time,l_deal_amount,en_deal_price,l_daily_instruction_no,l_index_daily_modify,l_report_serial_no,vc_inter_code,l_basecombi_id,l_settle_date,c_close_type,en_fee_jy,en_fee_yh,en_fee_gh,en_fee_yj,en_fee_js,en_fee_zg,en_fee_qt,en_fee_js2,en_fee_jg,d_datetime,vc_deal_no,l_market_date,c_cancel_time,c_source,l_operator_no,c_match_flag,c_valid,vc_broker_no,c_busin_class,l_realdeal_cancel_no,c_external_deal_flag,c_fixsend_flag,c_trade_option,en_fee_jy_true,en_fee_yj_true,en_fee_gh_total,en_balance,c_margined_out,l_trade_rival_no,l_hg_days,l_origin_open_date,vc_origin_deal_no,c_special_flag,vc_contract_no,c_hgxz,vc_rivaltrader_id,en_fut_close_profit,vc_summary,l_natural_day,null as bath_dt,sysdate as data_ins_time,null as task_rs_id from ${srcoradbname}.trealdeal"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_trealdeal", 
+                        "fileName": "o3_trealdeal",
+                        "column": [
+     {"name":"l_date","type":"int"},
+     {"name":"l_realdeal_serial_no","type":"bigint"},
+     {"name":"l_entrust_serial_no","type":"bigint"},
+     {"name":"l_fund_id","type":"int"},
+     {"name":"c_market_no","type":"string"},
+     {"name":"vc_stockholder_id","type":"string"},
+     {"name":"vc_report_seat","type":"string"},
+     {"name":"vc_report_code","type":"string"},
+     {"name":"c_stock_type","type":"string"},
+     {"name":"c_entrust_direction","type":"string"},
+     {"name":"l_business_time","type":"int"},
+     {"name":"l_deal_amount","type":"bigint"},
+     {"name":"en_deal_price","type":"double"},
+     {"name":"l_daily_instruction_no","type":"bigint"},
+     {"name":"l_index_daily_modify","type":"bigint"},
+     {"name":"l_report_serial_no","type":"bigint"},
+     {"name":"vc_inter_code","type":"string"},
+     {"name":"l_basecombi_id","type":"bigint"},
+     {"name":"l_settle_date","type":"int"},
+     {"name":"c_close_type","type":"string"},
+     {"name":"en_fee_jy","type":"double"},
+     {"name":"en_fee_yh","type":"double"},
+     {"name":"en_fee_gh","type":"double"},
+     {"name":"en_fee_yj","type":"double"},
+     {"name":"en_fee_js","type":"double"},
+     {"name":"en_fee_zg","type":"double"},
+     {"name":"en_fee_qt","type":"double"},
+     {"name":"en_fee_js2","type":"double"},
+     {"name":"en_fee_jg","type":"double"},
+     {"name":"d_datetime","type":"string"},
+     {"name":"vc_deal_no","type":"string"},
+     {"name":"l_market_date","type":"int"},
+     {"name":"c_cancel_time","type":"int"},
+     {"name":"c_source","type":"string"},
+     {"name":"l_operator_no","type":"int"},
+     {"name":"c_match_flag","type":"string"},
+     {"name":"c_valid","type":"string"},
+     {"name":"vc_broker_no","type":"string"},
+     {"name":"c_busin_class","type":"string"},
+     {"name":"l_realdeal_cancel_no","type":"bigint"},
+     {"name":"c_external_deal_flag","type":"string"},
+     {"name":"c_fixsend_flag","type":"string"},
+     {"name":"c_trade_option","type":"string"},
+     {"name":"en_fee_jy_true","type":"double"},
+     {"name":"en_fee_yj_true","type":"double"},
+     {"name":"en_fee_gh_total","type":"double"},
+     {"name":"en_balance","type":"double"},
+     {"name":"c_margined_out","type":"string"},
+     {"name":"l_trade_rival_no","type":"bigint"},
+     {"name":"l_hg_days","type":"bigint"},
+     {"name":"l_origin_open_date","type":"int"},
+     {"name":"vc_origin_deal_no","type":"string"},
+     {"name":"c_special_flag","type":"string"},
+     {"name":"vc_contract_no","type":"string"},
+     {"name":"c_hgxz","type":"string"},
+     {"name":"vc_rivaltrader_id","type":"string"},
+     {"name":"en_fut_close_profit","type":"double"},
+     {"name":"vc_summary","type":"string"},
+     {"name":"l_natural_day","type":"int"},
+     {"name":"bath_dt","type":"string"},
+     {"name":"data_ins_time","type":"timestamp"},
+     {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,143 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,trade_dt,buy_value_exlarge_order,sell_value_exlarge_order,buy_value_large_order,sell_value_large_order,buy_value_med_order,sell_value_med_order,buy_value_small_order,sell_value_small_order,buy_volume_exlarge_order,sell_volume_exlarge_order,buy_volume_large_order,sell_volume_large_order,buy_volume_med_order,sell_volume_med_order,buy_volume_small_order,sell_volume_small_order,trades_count,buy_trades_exlarge_order,sell_trades_exlarge_order,buy_trades_large_order,sell_trades_large_order,buy_trades_med_order,sell_trades_med_order,buy_trades_small_order,sell_trades_small_order,volume_diff_small_trader,volume_diff_small_trader_act,volume_diff_med_trader,volume_diff_med_trader_act,volume_diff_large_trader,volume_diff_large_trader_act,volume_diff_institute,volume_diff_institute_act,value_diff_small_trader,value_diff_small_trader_act,value_diff_med_trader,value_diff_med_trader_act,value_diff_large_trader,value_diff_large_trader_act,value_diff_institute,value_diff_institute_act,s_mfd_inflowvolume,net_inflow_rate_volume,s_mfd_inflow_openvolume,open_net_inflow_rate_volume,s_mfd_inflow_closevolume,close_net_inflow_rate_volume,s_mfd_inflow,net_inflow_rate_value,s_mfd_inflow_open,open_net_inflow_rate_value,s_mfd_inflow_close,close_net_inflow_rate_value,tot_volume_bid,tot_volume_ask,moneyflow_pct_volume,open_moneyflow_pct_volume,close_moneyflow_pct_volume,moneyflow_pct_value,open_moneyflow_pct_value,close_moneyflow_pct_value,s_mfd_inflowvolume_large_order,net_inflow_rate_volume_l,s_mfd_inflow_large_order,net_inflow_rate_value_l,moneyflow_pct_volume_l,moneyflow_pct_value_l,s_mfd_inflow_openvolume_l,open_net_inflow_rate_volume_l,s_mfd_inflow_open_large_order,open_net_inflow_rate_value_l,open_moneyflow_pct_volume_l,open_moneyflow_pct_value_l,s_mfd_inflow_closevolume_l,close_net_inflow_rate_volume_l,s_mfd_inflow_close_large_order,close_net_inflow_rate_valu_l,close_moneyflow_pct_volume_l,close_moneyflow_pct_value_l,buy_value_exlarge_order_act,sell_value_exlarge_order_act,buy_value_large_order_act,sell_value_large_order_act,buy_value_med_order_act,sell_value_med_order_act,buy_value_small_order_act,sell_value_small_order_act,buy_volume_exlarge_order_act,sell_volume_exlarge_order_act,buy_volume_large_order_act,sell_volume_large_order_act,buy_volume_med_order_act,sell_volume_med_order_act,buy_volume_small_order_act,sell_volume_small_order_act,opdate,opmode from ${srcoradbname}.asharemoneyflow where trade_dt between '${busi_month}'||'01' and to_char(add_months(to_date('${busi_month}'||01,'yyyyMMdd'),1)-1,'yyyyMMdd')"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}", 
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_asharemoneyflow/busi_month=${busi_month}",
+                        "fileName": "w_asharemoneyflow",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"trade_dt","type":"string"},
+                            {"name":"buy_value_exlarge_order","type":"double"},
+                            {"name":"sell_value_exlarge_order","type":"double"},
+                            {"name":"buy_value_large_order","type":"double"},
+                            {"name":"sell_value_large_order","type":"double"},
+                            {"name":"buy_value_med_order","type":"double"},
+                            {"name":"sell_value_med_order","type":"double"},
+                            {"name":"buy_value_small_order","type":"double"},
+                            {"name":"sell_value_small_order","type":"double"},
+                            {"name":"buy_volume_exlarge_order","type":"double"},
+                            {"name":"sell_volume_exlarge_order","type":"double"},
+                            {"name":"buy_volume_large_order","type":"double"},
+                            {"name":"sell_volume_large_order","type":"double"},
+                            {"name":"buy_volume_med_order","type":"double"},
+                            {"name":"sell_volume_med_order","type":"double"},
+                            {"name":"buy_volume_small_order","type":"double"},
+                            {"name":"sell_volume_small_order","type":"double"},
+                            {"name":"trades_count","type":"double"},
+                            {"name":"buy_trades_exlarge_order","type":"double"},
+                            {"name":"sell_trades_exlarge_order","type":"double"},
+                            {"name":"buy_trades_large_order","type":"double"},
+                            {"name":"sell_trades_large_order","type":"double"},
+                            {"name":"buy_trades_med_order","type":"double"},
+                            {"name":"sell_trades_med_order","type":"double"},
+                            {"name":"buy_trades_small_order","type":"double"},
+                            {"name":"sell_trades_small_order","type":"double"},
+                            {"name":"volume_diff_small_trader","type":"double"},
+                            {"name":"volume_diff_small_trader_act","type":"double"},
+                            {"name":"volume_diff_med_trader","type":"double"},
+                            {"name":"volume_diff_med_trader_act","type":"double"},
+                            {"name":"volume_diff_large_trader","type":"double"},
+                            {"name":"volume_diff_large_trader_act","type":"double"},
+                            {"name":"volume_diff_institute","type":"double"},
+                            {"name":"volume_diff_institute_act","type":"double"},
+                            {"name":"value_diff_small_trader","type":"double"},
+                            {"name":"value_diff_small_trader_act","type":"double"},
+                            {"name":"value_diff_med_trader","type":"double"},
+                            {"name":"value_diff_med_trader_act","type":"double"},
+                            {"name":"value_diff_large_trader","type":"double"},
+                            {"name":"value_diff_large_trader_act","type":"double"},
+                            {"name":"value_diff_institute","type":"double"},
+                            {"name":"value_diff_institute_act","type":"double"},
+                            {"name":"s_mfd_inflowvolume","type":"double"},
+                            {"name":"net_inflow_rate_volume","type":"double"},
+                            {"name":"s_mfd_inflow_openvolume","type":"double"},
+                            {"name":"open_net_inflow_rate_volume","type":"double"},
+                            {"name":"s_mfd_inflow_closevolume","type":"double"},
+                            {"name":"close_net_inflow_rate_volume","type":"double"},
+                            {"name":"s_mfd_inflow","type":"double"},
+                            {"name":"net_inflow_rate_value","type":"double"},
+                            {"name":"s_mfd_inflow_open","type":"double"},
+                            {"name":"open_net_inflow_rate_value","type":"double"},
+                            {"name":"s_mfd_inflow_close","type":"double"},
+                            {"name":"close_net_inflow_rate_value","type":"double"},
+                            {"name":"tot_volume_bid","type":"double"},
+                            {"name":"tot_volume_ask","type":"double"},
+                            {"name":"moneyflow_pct_volume","type":"double"},
+                            {"name":"open_moneyflow_pct_volume","type":"double"},
+                            {"name":"close_moneyflow_pct_volume","type":"double"},
+                            {"name":"moneyflow_pct_value","type":"double"},
+                            {"name":"open_moneyflow_pct_value","type":"double"},
+                            {"name":"close_moneyflow_pct_value","type":"double"},
+                            {"name":"s_mfd_inflowvolume_large_order","type":"double"},
+                            {"name":"net_inflow_rate_volume_l","type":"double"},
+                            {"name":"s_mfd_inflow_large_order","type":"double"},
+                            {"name":"net_inflow_rate_value_l","type":"double"},
+                            {"name":"moneyflow_pct_volume_l","type":"double"},
+                            {"name":"moneyflow_pct_value_l","type":"double"},
+                            {"name":"s_mfd_inflow_openvolume_l","type":"double"},
+                            {"name":"open_net_inflow_rate_volume_l","type":"double"},
+                            {"name":"s_mfd_inflow_open_large_order","type":"double"},
+                            {"name":"open_net_inflow_rate_value_l","type":"double"},
+                            {"name":"open_moneyflow_pct_volume_l","type":"double"},
+                            {"name":"open_moneyflow_pct_value_l","type":"double"},
+                            {"name":"s_mfd_inflow_closevolume_l","type":"double"},
+                            {"name":"close_net_inflow_rate_volume_l","type":"double"},
+                            {"name":"s_mfd_inflow_close_large_order","type":"double"},
+                            {"name":"close_net_inflow_rate_valu_l","type":"double"},
+                            {"name":"close_moneyflow_pct_volume_l","type":"double"},
+                            {"name":"close_moneyflow_pct_value_l","type":"double"},
+                            {"name":"buy_value_exlarge_order_act","type":"double"},
+                            {"name":"sell_value_exlarge_order_act","type":"double"},
+                            {"name":"buy_value_large_order_act","type":"double"},
+                            {"name":"sell_value_large_order_act","type":"double"},
+                            {"name":"buy_value_med_order_act","type":"double"},
+                            {"name":"sell_value_med_order_act","type":"double"},
+                            {"name":"buy_value_small_order_act","type":"double"},
+                            {"name":"sell_value_small_order_act","type":"double"},
+                            {"name":"buy_volume_exlarge_order_act","type":"double"},
+                            {"name":"sell_volume_exlarge_order_act","type":"double"},
+                            {"name":"buy_volume_large_order_act","type":"double"},
+                            {"name":"sell_volume_large_order_act","type":"double"},
+                            {"name":"buy_volume_med_order_act","type":"double"},
+                            {"name":"sell_volume_med_order_act","type":"double"},
+                            {"name":"buy_volume_small_order_act","type":"double"},
+                            {"name":"sell_volume_small_order_act","type":"double"},
+                            {"name":"opdate","type":"date"},
+                            {"name":"opmode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

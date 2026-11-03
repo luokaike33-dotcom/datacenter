@@ -1,0 +1,103 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_info_compcode,
+                                      ann_dt,
+                                      title,
+                                      introduction,
+                                      accuser,
+                                      defendant,
+                                      pro_type,
+                                      amount,
+                                      crncy_code,
+                                      prosecute_dt,
+                                      court,
+                                      judge_dt,
+                                      result,
+                                      is_appeal,
+                                      appellant,
+                                      court2,
+                                      judge_dt2,
+                                      result2,
+                                      resultamount,
+                                      briefresult,
+                                      execution,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareprosecution.json' as task_rs_id
+                                from ${srcoradbname}.ashareprosecution"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareprosecution",
+                        "fileName": "w_ashareprosecution",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"title","type":"string"},
+                                      {"name":"introduction","type":"string"},
+                                      {"name":"accuser","type":"string"},
+                                      {"name":"defendant","type":"string"},
+                                      {"name":"pro_type","type":"string"},
+                                      {"name":"amount","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"prosecute_dt","type":"string"},
+                                      {"name":"court","type":"string"},
+                                      {"name":"judge_dt","type":"string"},
+                                      {"name":"result","type":"string"},
+                                      {"name":"is_appeal","type":"bigint"},
+                                      {"name":"appellant","type":"string"},
+                                      {"name":"court2","type":"string"},
+                                      {"name":"judge_dt2","type":"string"},
+                                      {"name":"result2","type":"string"},
+                                      {"name":"resultamount","type":"double"},
+                                      {"name":"briefresult","type":"string"},
+                                      {"name":"execution","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

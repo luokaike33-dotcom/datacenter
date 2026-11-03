@@ -1,0 +1,51 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select l_date, vc_inter_code, l_rsend_date, l_rsresidue_day, en_flow_discount_ratio, l_modify_date, l_virtual_key, vc_timestamp from ${srcoradbname}.thisflowdiscountratio where l_date = ${p_dt}"],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_thisflowdiscountratio/p_dt=${p_dt}",
+            "fileName": "o3_thisflowdiscountratio",
+            "column": [
+              {"name":"l_date","type":"bigint"},
+              {"name":"vc_inter_code","type":"string"},
+              {"name":"l_rsend_date","type":"bigint"},
+              {"name":"l_rsresidue_day","type":"bigint"},
+              {"name":"en_flow_discount_ratio","type":"double"},
+              {"name":"l_modify_date","type":"bigint"},
+              {"name":"l_virtual_key","type":"bigint"},
+              {"name":"vc_timestamp","type":"string"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

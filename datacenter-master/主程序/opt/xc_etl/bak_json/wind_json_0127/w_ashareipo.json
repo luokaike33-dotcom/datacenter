@@ -1,0 +1,132 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,crncy_code,s_ipo_price,s_ipo_pre_dilutedpe,s_ipo_dilutedpe,s_ipo_amount,s_ipo_amtbyplacing,s_ipo_amttojur,s_ipo_collection,s_ipo_cashratio,s_ipo_purchasecode,s_ipo_subdate,s_ipo_jurisdate,s_ipo_instisdate,s_ipo_expectlistdate,s_ipo_fundverificationdate,s_ipo_ratiodate,s_fellow_unfrozedate,s_ipo_listdate,s_ipo_puboffrdate,s_ipo_anncedate,s_ipo_anncelstdate,s_ipo_roadshowstartdate,s_ipo_roadshowenddate,s_ipo_placingdate,s_ipo_applystartdate,s_ipo_applyenddate,s_ipo_priceannouncedate,s_ipo_placingresultdate,s_ipo_fundenddate,s_ipo_capverificationdate,s_ipo_refunddate,s_ipo_expectedcollection,s_ipo_list_fee,s_ipo_lpurnameonl,s_ipo_cashamtuplimit,s_ipo_cashmoneyuplimit,s_ipo_namebyplacing,s_ipo_showpricedownlimit,s_ipo_par,s_ipo_purchaseuplimit,s_ipo_op_uplimit,s_ipo_op_downlimit,s_ipo_purchasemv_dt,s_ipo_pubosdtotisscoll,s_ipo_osdexpoffamount,s_ipo_osdexpoffamountup,s_ipo_osdactoffamount,s_ipo_osdactoffprice,s_ipo_osdunderwritingfees,s_ipo_pureffsubratio,s_ipo_reporate,ann_dt,is_failure,s_ipo_otc_cash_pct,min_applyunit,mv_calculation_date,s_ipo_mv_threshold,s_ipo_paymentdate,s_fellow_issuetype,s_val_pe,s_ipo_new_facevalue,s_ipo_mv_threshold_a,s_info_underwriting,online_effective_number,online_effective_quantity,s_info_ovrsubratio,effective_quote_ovrsubratio,under_subscription,applicationdeadline,applicationdeadline_time,strategy_placing_quantity,offline_releases_num,s_ipo_mv_threshold_stib,s_ipo_commission_rate,s_placing_result_ann_day,balance_sub_quantity,preliminary_inquiry_lower,preliminary_inquiry_upper,exclude_highest_bid_limit,exclude_highest_bid_offer,prel_inq_ann_dt,prel_inq_result_ann_dt,is_addup_showprice,prel_inq_effect_qt_num,is_leadunderwriter,opdate,opmode from ${srcoradbname}.ashareipo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareipo",
+                        "fileName": "w_ashareipo",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"s_ipo_price","type":"DOUBLE"},
+                        {"name":"s_ipo_pre_dilutedpe","type":"DOUBLE"},
+                        {"name":"s_ipo_dilutedpe","type":"DOUBLE"},
+                        {"name":"s_ipo_amount","type":"DOUBLE"},
+                        {"name":"s_ipo_amtbyplacing","type":"DOUBLE"},
+                        {"name":"s_ipo_amttojur","type":"DOUBLE"},
+                        {"name":"s_ipo_collection","type":"DOUBLE"},
+                        {"name":"s_ipo_cashratio","type":"DOUBLE"},
+                        {"name":"s_ipo_purchasecode","type":"STRING"},
+                        {"name":"s_ipo_subdate","type":"STRING"},
+                        {"name":"s_ipo_jurisdate","type":"STRING"},
+                        {"name":"s_ipo_instisdate","type":"STRING"},
+                        {"name":"s_ipo_expectlistdate","type":"STRING"},
+                        {"name":"s_ipo_fundverificationdate","type":"STRING"},
+                        {"name":"s_ipo_ratiodate","type":"STRING"},
+                        {"name":"s_fellow_unfrozedate","type":"STRING"},
+                        {"name":"s_ipo_listdate","type":"STRING"},
+                        {"name":"s_ipo_puboffrdate","type":"STRING"},
+                        {"name":"s_ipo_anncedate","type":"STRING"},
+                        {"name":"s_ipo_anncelstdate","type":"STRING"},
+                        {"name":"s_ipo_roadshowstartdate","type":"STRING"},
+                        {"name":"s_ipo_roadshowenddate","type":"STRING"},
+                        {"name":"s_ipo_placingdate","type":"STRING"},
+                        {"name":"s_ipo_applystartdate","type":"STRING"},
+                        {"name":"s_ipo_applyenddate","type":"STRING"},
+                        {"name":"s_ipo_priceannouncedate","type":"STRING"},
+                        {"name":"s_ipo_placingresultdate","type":"STRING"},
+                        {"name":"s_ipo_fundenddate","type":"STRING"},
+                        {"name":"s_ipo_capverificationdate","type":"STRING"},
+                        {"name":"s_ipo_refunddate","type":"STRING"},
+                        {"name":"s_ipo_expectedcollection","type":"DOUBLE"},
+                        {"name":"s_ipo_list_fee","type":"DOUBLE"},
+                        {"name":"s_ipo_lpurnameonl","type":"STRING"},
+                        {"name":"s_ipo_cashamtuplimit","type":"DOUBLE"},
+                        {"name":"s_ipo_cashmoneyuplimit","type":"DOUBLE"},
+                        {"name":"s_ipo_namebyplacing","type":"STRING"},
+                        {"name":"s_ipo_showpricedownlimit","type":"DOUBLE"},
+                        {"name":"s_ipo_par","type":"DOUBLE"},
+                        {"name":"s_ipo_purchaseuplimit","type":"DOUBLE"},
+                        {"name":"s_ipo_op_uplimit","type":"DOUBLE"},
+                        {"name":"s_ipo_op_downlimit","type":"DOUBLE"},
+                        {"name":"s_ipo_purchasemv_dt","type":"STRING"},
+                        {"name":"s_ipo_pubosdtotisscoll","type":"DOUBLE"},
+                        {"name":"s_ipo_osdexpoffamount","type":"DOUBLE"},
+                        {"name":"s_ipo_osdexpoffamountup","type":"DOUBLE"},
+                        {"name":"s_ipo_osdactoffamount","type":"DOUBLE"},
+                        {"name":"s_ipo_osdactoffprice","type":"DOUBLE"},
+                        {"name":"s_ipo_osdunderwritingfees","type":"DOUBLE"},
+                        {"name":"s_ipo_pureffsubratio","type":"DOUBLE"},
+                        {"name":"s_ipo_reporate","type":"DOUBLE"},
+                        {"name":"ann_dt","type":"STRING"},
+                        {"name":"is_failure","type":"DOUBLE"},
+                        {"name":"s_ipo_otc_cash_pct","type":"DOUBLE"},
+                        {"name":"min_applyunit","type":"DOUBLE"},
+                        {"name":"mv_calculation_date","type":"STRING"},
+                        {"name":"s_ipo_mv_threshold","type":"DOUBLE"},
+                        {"name":"s_ipo_paymentdate","type":"STRING"},
+                        {"name":"s_fellow_issuetype","type":"STRING"},
+                        {"name":"s_val_pe","type":"DOUBLE"},
+                        {"name":"s_ipo_new_facevalue","type":"DOUBLE"},
+                        {"name":"s_ipo_mv_threshold_a","type":"DOUBLE"},
+                        {"name":"s_info_underwriting","type":"STRING"},
+                        {"name":"online_effective_number","type":"DOUBLE"},
+                        {"name":"online_effective_quantity","type":"DOUBLE"},
+                        {"name":"s_info_ovrsubratio","type":"DOUBLE"},
+                        {"name":"effective_quote_ovrsubratio","type":"DOUBLE"},
+                        {"name":"under_subscription","type":"DOUBLE"},
+                        {"name":"applicationdeadline","type":"STRING"},
+                        {"name":"applicationdeadline_time","type":"STRING"},
+                        {"name":"strategy_placing_quantity","type":"DOUBLE"},
+                        {"name":"offline_releases_num","type":"DOUBLE"},
+                        {"name":"s_ipo_mv_threshold_stib","type":"DOUBLE"},
+                        {"name":"s_ipo_commission_rate","type":"DOUBLE"},
+                        {"name":"s_placing_result_ann_day","type":"STRING"},
+                        {"name":"balance_sub_quantity","type":"DOUBLE"},
+                        {"name":"preliminary_inquiry_lower","type":"DOUBLE"},
+                        {"name":"preliminary_inquiry_upper","type":"DOUBLE"},
+                        {"name":"exclude_highest_bid_limit","type":"DOUBLE"},
+                        {"name":"exclude_highest_bid_offer","type":"DOUBLE"},
+                        {"name":"prel_inq_ann_dt","type":"STRING"},
+                        {"name":"prel_inq_result_ann_dt","type":"STRING"},
+                        {"name":"is_addup_showprice","type":"DOUBLE"},
+                        {"name":"prel_inq_effect_qt_num","type":"DOUBLE"},
+                        {"name":"is_leadunderwriter","type":"DOUBLE"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

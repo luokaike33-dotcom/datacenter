@@ -1,0 +1,66 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_fellow_issuetype,s_fellow_offeringobject,s_fellow_price,s_fellow_amount,s_fellow_esticollection,s_fellow_collection,s_fellow_cost,s_fellow_progress,ann_dt,s_fellow_year,s_fellow_preplandate,s_fellow_smtganncedate,s_fellow_passdate,s_fellow_approveddate,s_fellow_offeringdate,s_fellow_subinvitationdt,s_fellow_date,s_fellow_otcdate,null as s_stock_listing_date,opdate,opmode from ${srcoradbname}.cpsseo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cpsseo",
+                        "fileName": "w_cpsseo",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_fellow_issuetype","type":"DOUBLE"},
+                        {"name":"s_fellow_offeringobject","type":"STRING"},
+                        {"name":"s_fellow_price","type":"DOUBLE"},
+                        {"name":"s_fellow_amount","type":"DOUBLE"},
+                        {"name":"s_fellow_esticollection","type":"DOUBLE"},
+                        {"name":"s_fellow_collection","type":"DOUBLE"},
+                        {"name":"s_fellow_cost","type":"DOUBLE"},
+                        {"name":"s_fellow_progress","type":"DOUBLE"},
+                        {"name":"ann_dt","type":"STRING"},
+                        {"name":"s_fellow_year","type":"STRING"},
+                        {"name":"s_fellow_preplandate","type":"STRING"},
+                        {"name":"s_fellow_smtganncedate","type":"STRING"},
+                        {"name":"s_fellow_passdate","type":"STRING"},
+                        {"name":"s_fellow_approveddate","type":"STRING"},
+                        {"name":"s_fellow_offeringdate","type":"STRING"},
+                        {"name":"s_fellow_subinvitationdt","type":"STRING"},
+                        {"name":"s_fellow_date","type":"STRING"},
+                        {"name":"s_fellow_otcdate","type":"STRING"},
+                        {"name":"s_stock_listing_date","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

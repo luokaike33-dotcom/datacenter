@@ -1,0 +1,56 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select object_id,s_info_windcode,trade_dt,s_info_listdate,s_anal_matu_cnbd,s_info_delistdate,s_info_code,s_expected_volatility,s_anal_yield,s_fair_value,s_option_value,s_liquidity_discount,s_valuation from ${srcoradbname}.cbondstockvaluationcnbd"],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/w_cbondstockvaluationcnbd",
+            "fileName": "w_cbondstockvaluationcnbd",
+            "column": [
+              {"name":"object_id","type":"string"},
+              {"name":"s_info_windcode","type":"string"},
+              {"name":"trade_dt","type":"string"},
+              {"name":"s_info_listdate","type":"string"},
+              {"name":"s_anal_matu_cnbd","type":"double"},
+              {"name":"s_info_delistdate","type":"string"},
+              {"name":"s_info_code","type":"string"},
+              {"name":"s_expected_volatility","type":"double"},
+              {"name":"s_anal_yield","type":"double"},
+              {"name":"s_fair_value","type":"double"},
+              {"name":"s_option_value","type":"double"},
+              {"name":"s_liquidity_discount","type":"double"},
+              {"name":"s_valuation","type":"double"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

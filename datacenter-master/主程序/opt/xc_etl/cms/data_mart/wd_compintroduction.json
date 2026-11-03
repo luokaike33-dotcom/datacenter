@@ -1,0 +1,128 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/w_compintroduction",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"long"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"long"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"long"},
+									{"index":36,"type":"date"},
+									{"index":37,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"comp_id",
+									"comp_name",
+									"comp_sname",
+									"comp_name_eng",
+									"comp_snameeng",
+									"province",
+									"city",
+									"address",
+									"office",
+									"zipcode",
+									"phone",
+									"fax",
+									"email",
+									"website",
+									"registernumber",
+									"chairman",
+									"president",
+									"discloser",
+									"regcapital",
+									"currencycode",
+									"founddate",
+									"enddate",
+									"briefing",
+									"comp_type",
+									"comp_property",
+									"country",
+									"businessscope",
+									"company_type",
+									"s_info_totalemployees",
+									"main_business",
+									"social_credit_code",
+									"s_info_org_code",
+									"is_listed",
+									"s_info_comptype",
+									"is_registered",
+									"opdate",
+									"opmode"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_compintroduction"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table wd_compintroduction"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

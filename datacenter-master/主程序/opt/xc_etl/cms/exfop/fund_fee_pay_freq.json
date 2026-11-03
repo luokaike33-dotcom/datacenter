@@ -1,0 +1,72 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+                                    prd_code,
+                                    prd_name,
+                                    fee_type,
+                                    pay_freq,
+                                    offset_day,
+                                    pay_date,
+                                    pay_mode,
+                                    batchno,
+                                    inserttime,
+                                    updatetime,
+                                    sk_month
+							FROM ${srcdbname}.fop_fund_fee_pay_freq "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"prd_name",
+									"fee_type",
+									"pay_freq",
+									"offset_day",
+									"pay_date",
+									"pay_mode",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"sk_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fund_fee_pay_freq"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table fund_fee_pay_freq"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

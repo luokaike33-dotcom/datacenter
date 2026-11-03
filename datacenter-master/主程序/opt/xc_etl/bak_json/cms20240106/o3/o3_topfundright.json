@@ -1,0 +1,76 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/o3_topfundright",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"date"},
+									{"index":11,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_role_id",
+									"l_operator_no",
+									"c_layer",
+									"l_fund_id",
+									"l_asset_id",
+									"l_basecombi_id",
+									"vc_rights",
+									"l_virtual_key",
+									"vc_timestamp",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_topfundright"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from o3_topfundright"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

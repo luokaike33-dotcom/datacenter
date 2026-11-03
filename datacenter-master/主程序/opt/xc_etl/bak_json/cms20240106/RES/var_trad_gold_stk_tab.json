@@ -1,0 +1,90 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_trad_gold_stk_tab/busi_month=${busi_month}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"date"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"date"},
+									{"value":"busi_month","type":"long","value":"${busi_month}"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"jour_num",
+									"rept_id",
+									"titl",
+									"rept_typ",
+									"com_id",
+									"ins_abbr",
+									"recr_name",
+									"rept_date",
+									"secu_id",
+									"stk_abbr",
+									"recm_resn",
+									"recm_year",
+									"recm_pd",
+									"recm_pd_typ",
+									"is_eff",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"busi_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["var_trad_gold_stk_tab"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from  data_mart.var_trad_gold_stk_tab where busi_month=${busi_month} and 1=1 "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

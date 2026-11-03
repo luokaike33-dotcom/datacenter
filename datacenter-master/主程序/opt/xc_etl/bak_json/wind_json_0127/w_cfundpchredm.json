@@ -1,0 +1,101 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      f_info_windcode,
+                                      f_info_issuedate,
+                                      f_info_setupdate,
+                                      f_info_invshare,
+                                      f_info_invtotrto,
+                                      f_info_issuetype,
+                                      f_info_issue_object,
+                                      f_info_sub_mode,
+                                      f_info_approved_date,
+                                      f_info_trade,
+                                      f_info_fundmanagementcomp,
+                                      f_info_susredmday1,
+                                      f_info_suspchday,
+                                      f_info_susredmday2,
+                                      f_info_susredmday3,
+                                      f_info_suspchday1,
+                                      f_info_susredmday4,
+                                      f_info_typecode,
+                                      f_info_tdsetmtypecode,
+                                      f_info_valmetcode,
+                                      f_minm_holding_prd,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cfundpchredm.json' as task_rs_id
+                                from ${srcoradbname}.cfundpchredm"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cfundpchredm",
+                        "fileName": "w_cfundpchredm",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"f_info_windcode","type":"string"},
+                                      {"name":"f_info_issuedate","type":"string"},
+                                      {"name":"f_info_setupdate","type":"string"},
+                                      {"name":"f_info_invshare","type":"double"},
+                                      {"name":"f_info_invtotrto","type":"double"},
+                                      {"name":"f_info_issuetype","type":"bigint"},
+                                      {"name":"f_info_issue_object","type":"bigint"},
+                                      {"name":"f_info_sub_mode","type":"bigint"},
+                                      {"name":"f_info_approved_date","type":"string"},
+                                      {"name":"f_info_trade","type":"bigint"},
+                                      {"name":"f_info_fundmanagementcomp","type":"bigint"},
+                                      {"name":"f_info_susredmday1","type":"double"},
+                                      {"name":"f_info_suspchday","type":"double"},
+                                      {"name":"f_info_susredmday2","type":"double"},
+                                      {"name":"f_info_susredmday3","type":"double"},
+                                      {"name":"f_info_suspchday1","type":"double"},
+                                      {"name":"f_info_susredmday4","type":"double"},
+                                      {"name":"f_info_typecode","type":"bigint"},
+                                      {"name":"f_info_tdsetmtypecode","type":"bigint"},
+                                      {"name":"f_info_valmetcode","type":"bigint"},
+                                      {"name":"f_minm_holding_prd","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

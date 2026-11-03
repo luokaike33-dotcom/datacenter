@@ -1,0 +1,59 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select sk_date_busi,bk_portfolio,dk_iss_type,issue_code_of_mkt,sk_market,adjust_direction,assetval,QUANTITY,ACCTCODE,DK_ACCOUNTING_ITEM,DK_ACCUNTING_CLASS,DK_ACCOUNT_CLASS,dk_account_class_splitcomm,dk_assets_property,dk_position_state,query_date from ${srcoradbname}.V_IRDB2XC_FACT_PORTASSETS_COMP"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_fact_portassets",
+                        "fileName": "fa45_fact_portassets",
+                        "column": [
+						    {"name":"sk_date_busi","type":"string"},
+                            {"name":"bk_portfolio","type":"string"},
+                            {"name":"dk_iss_type","type":"string"},
+                            {"name":"issue_code_of_mkt","type":"string"},
+                            {"name":"sk_market","type":"string"},
+                            {"name":"adjust_direction","type":"string"},
+                            {"name":"assetval","type":"string"},
+                            {"name":"QUANTITY","type":"string"},
+                            {"name":"acctcode","type":"string"},
+                            {"name":"DK_ACCOUNTING_ITEM","type":"string"},
+                            {"name":"DK_ACCUNTING_CLASS","type":"string"},
+                            {"name":"DK_ACCOUNT_CLASS","type":"string"},
+                            {"name":"dk_account_class_splitcomm","type":"string"},
+                            {"name":"dk_assets_property","type":"string"},
+                            {"name":"dk_position_state","type":"string"},
+						    {"name":"query_date","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

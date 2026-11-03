@@ -1,0 +1,127 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      boll_mid,
+                                      boll_upper,
+                                      boll_lower,
+                                      bbiboll_bbi,
+                                      bbiboll_upr,
+                                      bbiboll_dwn,
+                                      cdp,
+                                      cdp_ah,
+                                      cdp_al,
+                                      cdp_nh,
+                                      cdp_nl,
+                                      env_upper,
+                                      env_lower,
+                                      mike_wr,
+                                      mike_mr,
+                                      mike_sr,
+                                      mike_ws,
+                                      mike_ms,
+                                      mike_ss,
+                                      mfi,
+                                      obv,
+                                      obv_obv,
+                                      pvt,
+                                      wvad_wvad,
+                                      wvad_mawvad,
+                                      arbr_ar,
+                                      arbr_br,
+                                      cr,
+                                      psy,
+                                      psyma,
+                                      wad,
+                                      mawad,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareenergyindex.json' as task_rs_id
+                                from ${srcoradbname}.ashareenergyindex WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareenergyindex/busi_month=${busi_month}",
+                        "fileName": "w_ashareenergyindex",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"boll_mid","type":"bigint"},
+                                      {"name":"boll_upper","type":"bigint"},
+                                      {"name":"boll_lower","type":"bigint"},
+                                      {"name":"bbiboll_bbi","type":"bigint"},
+                                      {"name":"bbiboll_upr","type":"bigint"},
+                                      {"name":"bbiboll_dwn","type":"bigint"},
+                                      {"name":"cdp","type":"bigint"},
+                                      {"name":"cdp_ah","type":"bigint"},
+                                      {"name":"cdp_al","type":"bigint"},
+                                      {"name":"cdp_nh","type":"bigint"},
+                                      {"name":"cdp_nl","type":"bigint"},
+                                      {"name":"env_upper","type":"bigint"},
+                                      {"name":"env_lower","type":"bigint"},
+                                      {"name":"mike_wr","type":"bigint"},
+                                      {"name":"mike_mr","type":"bigint"},
+                                      {"name":"mike_sr","type":"bigint"},
+                                      {"name":"mike_ws","type":"bigint"},
+                                      {"name":"mike_ms","type":"bigint"},
+                                      {"name":"mike_ss","type":"bigint"},
+                                      {"name":"mfi","type":"bigint"},
+                                      {"name":"obv","type":"bigint"},
+                                      {"name":"obv_obv","type":"bigint"},
+                                      {"name":"pvt","type":"bigint"},
+                                      {"name":"wvad_wvad","type":"bigint"},
+                                      {"name":"wvad_mawvad","type":"bigint"},
+                                      {"name":"arbr_ar","type":"bigint"},
+                                      {"name":"arbr_br","type":"bigint"},
+                                      {"name":"cr","type":"bigint"},
+                                      {"name":"psy","type":"bigint"},
+                                      {"name":"psyma","type":"bigint"},
+                                      {"name":"wad","type":"bigint"},
+                                      {"name":"mawad","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_compcode,ann_date,change_date,issued_shares,mainland_outstd_shr,hk_outstd_shr,overseas_outstd_shr,non_tradable_shr,preferredshare,outstandingshares,treasurystock,share_changereason,overseas_shr_cntrycode,opdate,opmode from ${srcoradbname}.hkequitystruc"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_hkequitystruc",
+                        "fileName": "w_hkequitystruc",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_compcode","type":"STRING"},
+                        {"name":"ann_date","type":"STRING"},
+                        {"name":"change_date","type":"STRING"},
+                        {"name":"issued_shares","type":"DOUBLE"},
+                        {"name":"mainland_outstd_shr","type":"DOUBLE"},
+                        {"name":"hk_outstd_shr","type":"DOUBLE"},
+                        {"name":"overseas_outstd_shr","type":"DOUBLE"},
+                        {"name":"non_tradable_shr","type":"DOUBLE"},
+                        {"name":"preferredshare","type":"DOUBLE"},
+                        {"name":"outstandingshares","type":"DOUBLE"},
+                        {"name":"treasurystock","type":"DOUBLE"},
+                        {"name":"share_changereason","type":"STRING"},
+                        {"name":"overseas_shr_cntrycode","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

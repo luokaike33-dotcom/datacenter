@@ -1,0 +1,99 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_lu_annissuedate,
+                                      s_lu_issuedate,
+                                      s_lu_issuetype,
+                                      s_lu_totalissuecollection,
+                                      s_lu_totalissueexpenses,
+                                      s_lu_totaluderandsponefee,
+                                      s_lu_number,
+                                      s_lu_name,
+                                      s_lu_institype,
+                                      s_lu_aux_type,
+                                      s_info_compcode,
+                                      all_lu,
+                                      meeting_dt,
+                                      pass_dt,
+                                      s_info_listdate,
+                                      type,
+                                      netcollection,
+                                      avg_totalcoll,
+                                      avg_netcoll,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareleadunderwriter.json' as task_rs_id
+                                from ${srcoradbname}.ashareleadunderwriter"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareleadunderwriter",
+                        "fileName": "w_ashareleadunderwriter",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_lu_annissuedate","type":"string"},
+                                      {"name":"s_lu_issuedate","type":"string"},
+                                      {"name":"s_lu_issuetype","type":"string"},
+                                      {"name":"s_lu_totalissuecollection","type":"double"},
+                                      {"name":"s_lu_totalissueexpenses","type":"double"},
+                                      {"name":"s_lu_totaluderandsponefee","type":"double"},
+                                      {"name":"s_lu_number","type":"string"},
+                                      {"name":"s_lu_name","type":"string"},
+                                      {"name":"s_lu_institype","type":"string"},
+                                      {"name":"s_lu_aux_type","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"all_lu","type":"string"},
+                                      {"name":"meeting_dt","type":"string"},
+                                      {"name":"pass_dt","type":"string"},
+                                      {"name":"s_info_listdate","type":"string"},
+                                      {"name":"type","type":"string"},
+                                      {"name":"netcollection","type":"double"},
+                                      {"name":"avg_totalcoll","type":"double"},
+                                      {"name":"avg_netcoll","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

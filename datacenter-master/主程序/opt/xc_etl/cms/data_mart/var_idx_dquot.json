@@ -1,0 +1,70 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": [" select secu_id, trd_dt, prev_cls_prc, open_prc, high_prc, low_prc, cls_prc, tnv_vol, tnv_val, tnv_deal, day_chg, day_chg_rat, curr_code, busi_date, task_rs_id, dm_created_time, p_dt, sys_rs_id from 
+						${srcdbname}.var_idx_dquot where p_dt  between ${beg_date} and ${end_date}  "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "trd_dt",
+                                    "prev_cls_prc",
+                                    "open_prc",
+                                    "high_prc",
+                                    "low_prc",
+                                    "cls_prc",
+                                    "tnv_vol",
+                                    "tnv_val",
+                                    "tnv_deal",
+                                    "day_chg",
+                                    "day_chg_rat",
+                                    "curr_code",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "p_dt",
+									"sys_rs_id"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_idx_dquot"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_idx_dquot where p_dt  between ${beg_date} and ${end_date} "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

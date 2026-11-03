@@ -1,0 +1,88 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select l_date, c_market_no, vc_report_code, vc_etf_code, vc_fund_code, l_report_unit, en_maxcash_ratio, c_publish, c_creationredem_type, l_record_num, en_estimatecash, l_tradeing_day, l_pre_trading_day, en_cash, en_nav_percu, en_nav, vc_path, l_file_date, l_file_time, c_import_flag, vc_fund_code2, l_fund_code2_settle_days, c_import_type, c_type, null as c_rival_market, l_ws_cash_begin_date, l_ws_cash_end_date, l_wx_cash_begin_date, l_wx_cash_end_date, l_wx_stock_begin_date, l_wx_stock_end_date, c_today_can_redeem, c_etf_type, l_code2_purchase_settle_days, l_creation_limit_peruser, l_redemption_limit_peruser, l_asset_deal_days, en_impact_cost_rate, c_exec_type, vc_timestamp, l_virtual_key, vc_fund_code3, en_redeem_estimatecash, en_redeem_cash from ${srcoradbname}.tetfbasicinfo "],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_tetfbasicinfo",
+            "fileName": "o3_tetfbasicinfo",
+            "column": [
+             {"name":"l_date","type":"bigint"},
+             {"name":"c_market_no","type":"string"},
+             {"name":"vc_report_code","type":"string"},
+             {"name":"vc_etf_code","type":"string"},
+             {"name":"vc_fund_code","type":"string"},
+             {"name":"l_report_unit","type":"bigint"},
+             {"name":"en_maxcash_ratio","type":"double"},
+             {"name":"c_publish","type":"string"},
+             {"name":"c_creationredem_type","type":"string"},
+             {"name":"l_record_num","type":"bigint"},
+             {"name":"en_estimatecash","type":"double"},
+             {"name":"l_tradeing_day","type":"bigint"},
+             {"name":"l_pre_trading_day","type":"bigint"},
+             {"name":"en_cash","type":"double"},
+             {"name":"en_nav_percu","type":"double"},
+             {"name":"en_nav","type":"double"},
+             {"name":"vc_path","type":"string"},
+             {"name":"l_file_date","type":"bigint"},
+             {"name":"l_file_time","type":"bigint"},
+             {"name":"c_import_flag","type":"string"},
+             {"name":"vc_fund_code2","type":"string"},
+             {"name":"l_fund_code2_settle_days","type":"bigint"},
+             {"name":"c_import_type","type":"string"},
+             {"name":"c_type","type":"string"},
+             {"name":"c_rival_market","type":"string"},
+             {"name":"l_ws_cash_begin_date","type":"bigint"},
+             {"name":"l_ws_cash_end_date","type":"bigint"},
+             {"name":"l_wx_cash_begin_date","type":"bigint"},
+             {"name":"l_wx_cash_end_date","type":"bigint"},
+             {"name":"l_wx_stock_begin_date","type":"bigint"},
+             {"name":"l_wx_stock_end_date","type":"bigint"},
+             {"name":"c_today_can_redeem","type":"string"},
+             {"name":"c_etf_type","type":"string"},
+             {"name":"l_code2_purchase_settle_days","type":"bigint"},
+             {"name":"l_creation_limit_peruser","type":"bigint"},
+             {"name":"l_redemption_limit_peruser","type":"bigint"},
+             {"name":"l_asset_deal_days","type":"bigint"},
+             {"name":"en_impact_cost_rate","type":"double"},
+             {"name":"c_exec_type","type":"string"},
+             {"name":"vc_timestamp","type":"string"},
+             {"name":"l_virtual_key","type":"bigint"},
+             {"name":"vc_fund_code3","type":"string"},
+             {"name":"en_redeem_estimatecash","type":"double"},
+             {"name":"en_redeem_cash","type":"double"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t",
+            "encoding":"utf-8"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

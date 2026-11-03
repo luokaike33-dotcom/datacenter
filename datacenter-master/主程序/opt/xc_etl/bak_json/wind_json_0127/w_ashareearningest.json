@@ -1,0 +1,149 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      wind_code,
+                                      research_inst_name,
+                                      analyst_name,
+                                      est_dt,
+                                      reporting_period,
+                                      est_eps_diluted,
+                                      est_net_profit,
+                                      est_main_bus_inc,
+                                      est_ebit,
+                                      est_ebitda,
+                                      est_base_cap,
+                                      ann_dt,
+                                      s_est_cps,
+                                      s_est_dps,
+                                      s_est_bps,
+                                      s_est_ebt,
+                                      s_est_roa,
+                                      s_est_roe,
+                                      s_est_oprofit,
+                                      s_est_epsdiluted,
+                                      s_est_epsbasic,
+                                      s_est_oc,
+                                      s_est_npcal,
+                                      s_est_epscal,
+                                      s_est_nprate,
+                                      s_est_epsrate,
+                                      s_est_pe,
+                                      s_est_pb,
+                                      s_est_evebitda,
+                                      s_est_dividendyield,
+                                      s_est_enddate,
+                                      s_est_ope,
+                                      analyst_id,
+                                      collect_time,
+                                      first_optime,
+                                      report_typecode,
+                                      report_name,
+                                      report_summary,
+                                      est_base_cap_dif_code,
+                                      s_est_value_calculation,
+                                      report_id,
+                                      research_inst_compcode,
+                                      s_est_ps,
+                                      s_est_gross_profit_margin,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareearningest.json' as task_rs_id
+                                from ${srcoradbname}.ashareearningest"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareearningest",
+                        "fileName": "w_ashareearningest",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"wind_code","type":"string"},
+                                      {"name":"research_inst_name","type":"string"},
+                                      {"name":"analyst_name","type":"string"},
+                                      {"name":"est_dt","type":"string"},
+                                      {"name":"reporting_period","type":"string"},
+                                      {"name":"est_eps_diluted","type":"double"},
+                                      {"name":"est_net_profit","type":"double"},
+                                      {"name":"est_main_bus_inc","type":"double"},
+                                      {"name":"est_ebit","type":"double"},
+                                      {"name":"est_ebitda","type":"double"},
+                                      {"name":"est_base_cap","type":"double"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"s_est_cps","type":"double"},
+                                      {"name":"s_est_dps","type":"double"},
+                                      {"name":"s_est_bps","type":"double"},
+                                      {"name":"s_est_ebt","type":"double"},
+                                      {"name":"s_est_roa","type":"double"},
+                                      {"name":"s_est_roe","type":"double"},
+                                      {"name":"s_est_oprofit","type":"double"},
+                                      {"name":"s_est_epsdiluted","type":"double"},
+                                      {"name":"s_est_epsbasic","type":"double"},
+                                      {"name":"s_est_oc","type":"double"},
+                                      {"name":"s_est_npcal","type":"double"},
+                                      {"name":"s_est_epscal","type":"double"},
+                                      {"name":"s_est_nprate","type":"double"},
+                                      {"name":"s_est_epsrate","type":"double"},
+                                      {"name":"s_est_pe","type":"double"},
+                                      {"name":"s_est_pb","type":"double"},
+                                      {"name":"s_est_evebitda","type":"double"},
+                                      {"name":"s_est_dividendyield","type":"double"},
+                                      {"name":"s_est_enddate","type":"string"},
+                                      {"name":"s_est_ope","type":"double"},
+                                      {"name":"analyst_id","type":"string"},
+                                      {"name":"collect_time","type":"timestamp"},
+                                      {"name":"first_optime","type":"timestamp"},
+                                      {"name":"report_typecode","type":"bigint"},
+                                      {"name":"report_name","type":"string"},
+                                      {"name":"report_summary","type":"string"},
+                                      {"name":"est_base_cap_dif_code","type":"bigint"},
+                                      {"name":"s_est_value_calculation","type":"bigint"},
+                                      {"name":"report_id","type":"string"},
+                                      {"name":"research_inst_compcode","type":"string"},
+                                      {"name":"s_est_ps","type":"double"},
+                                      {"name":"s_est_gross_profit_margin","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

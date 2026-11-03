@@ -1,0 +1,114 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/ec_t_lqt_01_summary/p_dt=${end_date}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"double"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"report_date",
+									"org_code",
+									"prd_code",
+									"prd_name",
+									"data_date",
+									"org_name",
+									"org_uscc",
+									"org_cust_ratio",
+									"top_10_hldr_shr_ratio",
+									"max_hldr_shr_ratio",
+									"prd_dvt",
+									"prd_resi_matu",
+									"bond_resi_matu",
+									"prd_post_levg_stat_coup",
+									"prd_scal",
+									"prd_plat_scal",
+									"annu_yld_rat",
+									"dmnd_dpsi_scal",
+									"sch_dpsi_scal",
+									"fix_dpsi_scal",
+									"break_fix_dpsi_scal",
+									"bond_scal",
+									"intr_bond_scal",
+									"ncd_scal",
+									"under_aa_plus_ncd_scal",
+									"cb_abs_scal",
+									"under_aa_plus_cb_abs_scal",
+									"oth_ast_scal",
+									"rev_repo_scal",
+									"total_ast",
+									"pos_repo_scal"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["t_lqt_01_summary"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from ${tgrusername}.t_lqt_01_summary where report_date=${end_date}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

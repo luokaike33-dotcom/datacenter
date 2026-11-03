@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      associated_name,
+                                      associated_funding_amount,
+                                      associated_funding_balance,
+                                      ashare_funding_amount,
+                                      ashare_funding_balance,
+                                      report_period,
+                                      ann_dt,
+                                      crncy_code,
+                                      connection_relation,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharerelatedclaimsdebts.json' as task_rs_id
+                                from ${srcoradbname}.asharerelatedclaimsdebts"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharerelatedclaimsdebts",
+                        "fileName": "w_asharerelatedclaimsdebts",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"associated_name","type":"string"},
+                                      {"name":"associated_funding_amount","type":"double"},
+                                      {"name":"associated_funding_balance","type":"double"},
+                                      {"name":"ashare_funding_amount","type":"double"},
+                                      {"name":"ashare_funding_balance","type":"double"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"connection_relation","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

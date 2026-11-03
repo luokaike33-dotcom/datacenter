@@ -1,0 +1,141 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									a.prd_code,
+									a.vou_dt,
+									a.acc_year,
+									a.acc_mth,
+									a.vou_typ,
+									a.vou_typ_name,
+									a.vou_clafy,
+									a.vou_no,
+									a.vou_etnb,
+									a.vou_abs,
+									a.crse_code,
+									a.crse_dir,
+									a.crse_dim,
+									a.crse_dim_code,
+									a.crse_type,
+									a.crse_typ,
+									a.inv_typ,
+									a.cir_id,
+									a.secu_code,
+									a.secu_name,
+									a.secu_typ,
+									a.secu_typi,
+									a.secu_typii,
+									a.mkt_typ,
+									a.ast_stat,
+									a.curr_code,
+									a.pos_dir,
+									a.trd_typ,
+									a.lcrrc_deb_val,
+									a.lcrrc_cs_val,
+									a.frc_val,
+									a.sett_crrc,
+									a.vol,
+									a.excr,
+									a.is_true,
+									a.is_add_manu,
+									a.busi_date,
+									a.task_rs_id,
+									a.dm_created_time,
+									a.dm_src_info,
+									a.olcy_deb_val,
+									a.olcy_cs_val,
+									a.p_dt,
+									a.sys_rs_id
+							FROM ${srcdbname}.fin_prd_vou_min a 
+							where p_dt between ${beg_date} and ${end_date} 
+                and a.crse_code like '2%'
+              "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"vou_dt",
+									"acc_year",
+									"acc_mth",
+									"vou_typ",
+									"vou_typ_name",
+									"vou_clafy",
+									"vou_no",
+									"vou_etnb",
+									"vou_abs",
+									"crse_code",
+									"crse_dir",
+									"crse_dim",
+									"crse_dim_code",
+									"crse_type",
+									"crse_typ",
+									"inv_typ",
+									"cir_id",
+									"secu_code",
+									"secu_name",
+									"secu_typ",
+									"secu_typi",
+									"secu_typii",
+									"mkt_typ",
+									"ast_stat",
+									"curr_code",
+									"pos_dir",
+									"trd_typ",
+									"lcrrc_deb_val",
+									"lcrrc_cs_val",
+									"frc_val",
+									"sett_crrc",
+									"vol",
+									"excr",
+									"is_true",
+									"is_add_manu",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"dm_src_info",
+									"olcy_deb_val",
+									"olcy_cs_val",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fin_prd_vou_min"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fin_prd_vou_min where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

@@ -1,0 +1,71 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      end_dt,
+                                      ann_dt,
+                                      s_info_totalemployees,
+                                      s_info_totalemployees2,
+                                      memo,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cdrstaff.json' as task_rs_id
+                                from ${srcoradbname}.cdrstaff"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cdrstaff",
+                        "fileName": "w_cdrstaff",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"end_dt","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"s_info_totalemployees","type":"double"},
+                                      {"name":"s_info_totalemployees2","type":"bigint"},
+                                      {"name":"memo","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

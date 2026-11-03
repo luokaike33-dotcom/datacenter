@@ -1,0 +1,73 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_compcode,ann_dt,report_period,statement_type,crncy_code,capi_ade_ratio,core_capi_ade_ratio,npl_ratio,loan_depo_ratio,total_loan,total_deposit,loan_loss_provision,bad_load_five_class,npl_provision_coverage,cost_income_ratio,net_capital,core_capi_net_amount,risk_weight_asset,interest_bearing_asset,net_interest_margin,net_interest_spread,loanreservesratio,coretier1_net_capi,tier1_net_capi,net_capital_2013,coretier1capi_ade_ratio,tier1capi_ade_ratio,capi_ade_ratio_2013,risk_weight_net_asset_2013 from ${srcoradbname}.hksharebankindicator"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_hksharebankindicator",
+                        "fileName": "w_hksharebankindicator",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_compcode","type":"string"},
+                            {"name":"ann_dt","type":"string"},
+                            {"name":"report_period","type":"string"},
+                            {"name":"statement_type","type":"double"},
+                            {"name":"crncy_code","type":"string"},
+                            {"name":"capi_ade_ratio","type":"double"},
+                            {"name":"core_capi_ade_ratio","type":"double"},
+                            {"name":"npl_ratio","type":"double"},
+                            {"name":"loan_depo_ratio","type":"double"},
+                            {"name":"total_loan","type":"double"},
+                            {"name":"total_deposit","type":"double"},
+                            {"name":"loan_loss_provision","type":"double"},
+                            {"name":"bad_load_five_class","type":"double"},
+                            {"name":"npl_provision_coverage","type":"double"},
+                            {"name":"cost_income_ratio","type":"double"},
+                            {"name":"net_capital","type":"double"},
+                            {"name":"core_capi_net_amount","type":"double"},
+                            {"name":"risk_weight_asset","type":"double"},
+                            {"name":"interest_bearing_asset","type":"double"},
+                            {"name":"net_interest_margin","type":"double"},
+                            {"name":"net_interest_spread","type":"double"},
+                            {"name":"loanreservesratio","type":"double"},
+                            {"name":"coretier1_net_capi","type":"double"},
+                            {"name":"tier1_net_capi","type":"double"},
+                            {"name":"net_capital_2013","type":"double"},
+                            {"name":"coretier1capi_ade_ratio","type":"double"},
+                            {"name":"tier1capi_ade_ratio","type":"double"},
+                            {"name":"capi_ade_ratio_2013","type":"double"},
+                            {"name":"risk_weight_net_asset_2013","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

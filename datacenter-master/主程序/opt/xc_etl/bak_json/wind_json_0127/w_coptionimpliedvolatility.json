@@ -1,0 +1,75 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      contract_id,
+                                      s_info_sccode,
+                                      volatility_type,
+                                      term,
+                                      w_anal_underlyingimpliedvol,
+                                      apply_model,
+                                      source1,
+                                      trade_dt,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_coptionimpliedvolatility.json' as task_rs_id
+                                from ${srcoradbname}.coptionimpliedvolatility"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_coptionimpliedvolatility",
+                        "fileName": "w_coptionimpliedvolatility",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"contract_id","type":"string"},
+                                      {"name":"s_info_sccode","type":"string"},
+                                      {"name":"volatility_type","type":"bigint"},
+                                      {"name":"term","type":"string"},
+                                      {"name":"w_anal_underlyingimpliedvol","type":"double"},
+                                      {"name":"apply_model","type":"string"},
+                                      {"name":"source1","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

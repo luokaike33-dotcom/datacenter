@@ -1,0 +1,146 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_stk_iss_cn",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"long"},
+									{"index":17,"type":"long"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"long"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"long"},
+									{"index":31,"type":"long"},
+									{"index":32,"type":"double"},
+									{"index":33,"type":"double"},
+									{"index":34,"type":"double"},
+									{"index":35,"type":"double"},
+									{"index":36,"type":"double"},
+									{"index":37,"type":"double"},
+									{"index":38,"type":"double"},
+									{"index":39,"type":"long"},
+									{"index":40,"type":"long"},
+									{"index":41,"type":"double"},
+									{"index":42,"type":"long"},
+									{"index":43,"type":"string"},
+									{"name":"dm_created_time","type":"string","value":"${kerberosPrincipal}"},
+									{"index":45,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"com_id",
+									"rs_typ",
+									"curr_code",
+									"plan_ntc_dt",
+									"sub_dt_on",
+									"sub_dt_off",
+									"sub_code",
+									"iss_prc",
+									"iss_ntc_dt",
+									"lst_dt",
+									"iss_shr_plan_min",
+									"iss_shr_plan_max",
+									"iss_shr_on_plan",
+									"iss_shr_off_plan",
+									"priv_shr_plan",
+									"si_pla_shr_plan",
+									"over_sub_shr_plan",
+									"iss_prc_min",
+									"iss_prc_max",
+									"ld_uw",
+									"spon",
+									"vice_uw",
+									"glob_coord",
+									"uw_typ",
+									"iss_typ",
+									"iss_obj",
+									"alot_num_on",
+									"frz_fnd_on",
+									"succ_rat_on",
+									"act_iss_shr_on",
+									"ttl_shr_aft",
+									"eps_bfr",
+									"eps_aft",
+									"bps_bfr",
+									"bps_aft",
+									"pe_bfr",
+									"pe_aft",
+									"pb_iss",
+									"lst_shr",
+									"lst_dt_tlc",
+									"ofle_res_rati",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:mysql://${tgrurl}/",
+                                "selectedDatabase": "${selectedDatabase}", 
+                                "table": ["var_stk_iss_cn"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "loadUrl":[${loadUrl}],
+                        "preSql":["truncate table data_mart.var_stk_iss_cn"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

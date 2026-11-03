@@ -1,0 +1,90 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/pty_prd_fund_magr_info",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"long"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"long"},
+                                    {"index":8,"type":"long"},
+                                    {"index":9,"type":"long"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"string"},
+                                    {"index":17,"type":"string"},
+                                    {"index":18,"type":"long"},
+                                    {"index":19,"type":"string"},
+                                    {"index":20,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "fund_mngr_id",
+                                    "fund_mngr_code",
+                                    "fund_mngr_name",
+                                    "cert_typ",
+                                    "cert_num",
+                                    "aoff_dt",
+                                    "aoff_stat",
+                                    "end_dt",
+                                    "pub_dt",
+                                    "birth_dt",
+                                    "cert_no",
+                                    "gen",
+                                    "edu",
+                                    "ctry_code",
+                                    "per_syn",
+                                    "duty",
+                                    "intr",
+                                    "rmk",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["pty_prd_fund_magr_info"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from pty_prd_fund_magr_info where 1 =1 "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

@@ -1,0 +1,126 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+								sk_mproduct,
+								bus_date,
+								ta_nav_date,
+								ta_cfm_date,
+								fa_bus_date,
+								fa_cfm_date,
+								dk_tano,
+								dk_prod_status_of_cur,
+								dk_prod_status_of_lst,
+								dk_prod_cvt_sts,
+								dk_prod_mip_sts,
+								dk_prod_trst_sts,
+								dk_prod_mrgsplt_sts,
+								net_value,
+								comp_net_value,
+								total_net_value,
+								d90_incm_rate,
+								m_unt_incm,
+								total_m_unt_incm,
+								d7_incm_rate,
+								rlz_d7_assets,
+								back_adj_factor,
+								back_adj_net_value,
+								back_adj_net_growth_rate,
+								dk_is_nav_published,
+								dk_nav_confirm_flag,
+								dk_is_current,
+								dk_is_valid,
+								sdata_serialno,
+								memo,
+								ddvc,
+								dk_system_of_upd,
+								batchno,
+								inserttime,
+								updatetime,
+								last_shares,
+								last_assets,
+								dk_system_of_sdata
+							FROM ${srcdbname}.prod_mnav where ta_nav_date between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sk_mproduct",
+									"bus_date",
+									"ta_nav_date",
+									"ta_cfm_date",
+									"fa_bus_date",
+									"fa_cfm_date",
+									"dk_tano",
+									"dk_prod_status_of_cur",
+									"dk_prod_status_of_lst",
+									"dk_prod_cvt_sts",
+									"dk_prod_mip_sts",
+									"dk_prod_trst_sts",
+									"dk_prod_mrgsplt_sts",
+									"net_value",
+									"comp_net_value",
+									"total_net_value",
+									"d90_incm_rate",
+									"m_unt_incm",
+									"total_m_unt_incm",
+									"d7_incm_rate",
+									"rlz_d7_assets",
+									"back_adj_factor",
+									"back_adj_net_value",
+									"back_adj_net_growth_rate",
+									"dk_is_nav_published",
+									"dk_nav_confirm_flag",
+									"dk_is_current",
+									"dk_is_valid",
+									"sdata_serialno",
+									"memo",
+									"ddvc",
+									"dk_system_of_upd",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"last_shares",
+									"last_assets",
+									"dk_system_of_sdata"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["cdh_prod_mnav"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from cdh_prod_mnav where ta_nav_date between ${beg_date} and ${end_date} "]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

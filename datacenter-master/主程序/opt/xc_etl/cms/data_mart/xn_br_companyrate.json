@@ -1,0 +1,88 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/xnnp_br_companyrate",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"date"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"date"},
+									{"index":11,"type":"date"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"date"},
+									{"index":17,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"objid",
+									"approvestatus",
+									"companycode",
+									"longrate",
+									"shortrate",
+									"expectrate",
+									"submittime",
+									"inputid",
+									"sourceentity",
+									"sourceid",
+									"createtimestamp",
+									"updatetimestamp",
+									"version",
+									"entityname",
+									"watchrate",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["xn_br_companyrate"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table xn_br_companyrate"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

@@ -1,0 +1,81 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      id,
+                                      organ_id,
+                                      organ_name,
+                                      py_organ_name,
+                                      organ_type,
+                                      is_con_forecast_organ,
+                                      is_over_50_reports,
+                                      is_hk_reports_organ,
+                                      entrytime,
+                                      updatetime,
+                                      tmstamp,
+                                      organ_full_name,
+                                      is_foreign_organ,
+                                      uscc,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'zyyx_rpt_organ_information.json' as task_rs_id
+                                from ${srcoradbname}.rpt_organ_information"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${is_kbs}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/zyyx_rpt_organ_information",
+                        "fileName": "zyyx_rpt_organ_information",
+                        "column": [
+                                      {"name":"id","type":"bigint"},
+                                      {"name":"organ_id","type":"bigint"},
+                                      {"name":"organ_name","type":"string"},
+                                      {"name":"py_organ_name","type":"string"},
+                                      {"name":"organ_type","type":"bigint"},
+                                      {"name":"is_con_forecast_organ","type":"bigint"},
+                                      {"name":"is_over_50_reports","type":"bigint"},
+                                      {"name":"is_hk_reports_organ","type":"bigint"},
+                                      {"name":"entrytime","type":"timestamp"},
+                                      {"name":"updatetime","type":"timestamp"},
+                                      {"name":"tmstamp","type":"bigint"},
+                                      {"name":"organ_full_name","type":"string"},
+                                      {"name":"is_foreign_organ","type":"bigint"},
+                                      {"name":"uscc","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

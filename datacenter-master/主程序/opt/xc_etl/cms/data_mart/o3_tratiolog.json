@@ -1,0 +1,153 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/o3_tratiolog",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"long"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"long"},
+									{"index":28,"type":"long"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"long"},
+									{"index":32,"type":"long"},
+									{"index":33,"type":"long"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"long"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"long"},
+									{"index":38,"type":"long"},
+									{"index":39,"type":"long"},
+									{"index":40,"type":"string"},
+									{"index":41,"type":"string"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"string"},
+									{"index":44,"type":"long"},
+									{"index":45,"type":"long"},
+									{"index":46,"type":"string"},
+									{"index":47,"type":"long"},
+									{"index":48,"type":"string"},
+									{"index":49,"type":"long"},
+									{"index":50,"type":"string"},
+									{"index":51,"type":"string"},
+									{"index":52,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_date",
+									"l_serial_no",
+									"l_time",
+									"l_fund_id",
+									"l_basecombi_id",
+									"vc_seat_id",
+									"vc_stockholder_id",
+									"vc_inter_code",
+									"en_value",
+									"en_setvalue",
+									"l_operator_no",
+									"l_instruction_no",
+									"l_index_modify_instruction",
+									"l_daily_instruction_no",
+									"l_index_daily_modify",
+									"l_entrust_serial_no",
+									"vc_connection_id",
+									"vc_computer_name",
+									"vc_mac",
+									"vc_volserial_no",
+									"vc_summary",
+									"vc_reason",
+									"l_risk_serial_no",
+									"c_risk_type",
+									"c_warn_level",
+									"c_warn_operation",
+									"vc_trigger_remark",
+									"l_temp_no",
+									"l_layer_id",
+									"c_entrust_direction",
+									"c_invest_type",
+									"l_fact_layer_id",
+									"l_stock_serial_no",
+									"l_dimension_id",
+									"c_log_source",
+									"l_create_date",
+									"vc_order_no",
+									"l_etrade_serial_no",
+									"l_section_no",
+									"l_settle_speed",
+									"vc_log_keys",
+									"vc_acctgrp_name",
+									"c_layer",
+									"vc_riskwarn_approve",
+									"l_inquire_id",
+									"l_modify_index",
+									"c_original_entrust_direction",
+									"l_ratiolog_batch_no",
+									"vc_detail",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_tratiolog"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table o3_tratiolog"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

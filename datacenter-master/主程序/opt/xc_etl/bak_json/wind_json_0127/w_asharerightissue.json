@@ -1,0 +1,97 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_rightsissue_progress,s_rightsissue_price,s_rightsissue_ratio,s_rightsissue_amount,s_rightsissue_amountact,s_rightsissue_netcollection,s_rightsissue_regdateshareb,s_rightsissue_exdividenddate,s_rightsissue_listeddate,s_rightsissue_paystartdate,s_rightsissue_payenddate,s_rightsissue_preplandate,s_rightsissue_smtganncedate,s_rightsissue_passdate,s_rightsissue_approveddate,s_rightsissue_anncedate,s_rightsissue_resultdate,s_rightsissue_listanndate,s_rightsissue_guarantor,s_rightsissue_guartype,s_rightsissue_code,ann_dt,s_rightsissue_year,s_rightsissue_content,s_rightsissue_name, null as s_ratio_denominator, null as s_ratio_molecular, null as s_subscription_method, null as s_expected_fund_raising, null as s_rightsissue_cost, null as s_rightsissue_regdate_bshare, null as s_allotment_object, null as s_price_cap, null as s_lower_price_limit, null as s_underwriting_method, null as s_underwriter_subscription, null as s_state_owned_share_num, null as s_legal_person_share_num, null as s_employee_stock_share_num, null as s_transfer_share_num, null as s_circulated_share_num, null as s_state_owned_share_num1, null as s_legal_person_share_num1, null as s_employee_stock_share_num1, null as s_transfer_share_num1, null as s_circulated_share_num1, null as s_holder_held_number, null as s_holder_subscription_number1, null as s_holder_subscription_number, null as s_holder_subscription_method, null as opdate, null as opmode from  ${srcoradbname}.asharerightissue"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_asharerightissue",
+                        "fileName": "w_asharerightissue",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_rightsissue_progress","type":"STRING"},
+                        {"name":"s_rightsissue_price","type":"DOUBLE"},
+                        {"name":"s_rightsissue_ratio","type":"DOUBLE"},
+                        {"name":"s_rightsissue_amount","type":"DOUBLE"},
+                        {"name":"s_rightsissue_amountact","type":"DOUBLE"},
+                        {"name":"s_rightsissue_netcollection","type":"DOUBLE"},
+                        {"name":"s_rightsissue_regdateshareb","type":"STRING"},
+                        {"name":"s_rightsissue_exdividenddate","type":"STRING"},
+                        {"name":"s_rightsissue_listeddate","type":"STRING"},
+                        {"name":"s_rightsissue_paystartdate","type":"STRING"},
+                        {"name":"s_rightsissue_payenddate","type":"STRING"},
+                        {"name":"s_rightsissue_preplandate","type":"STRING"},
+                        {"name":"s_rightsissue_smtganncedate","type":"STRING"},
+                        {"name":"s_rightsissue_passdate","type":"STRING"},
+                        {"name":"s_rightsissue_approveddate","type":"STRING"},
+                        {"name":"s_rightsissue_anncedate","type":"STRING"},
+                        {"name":"s_rightsissue_resultdate","type":"STRING"},
+                        {"name":"s_rightsissue_listanndate","type":"STRING"},
+                        {"name":"s_rightsissue_guarantor","type":"STRING"},
+                        {"name":"s_rightsissue_guartype","type":"DOUBLE"},
+                        {"name":"s_rightsissue_code","type":"STRING"},
+                        {"name":"ann_dt","type":"STRING"},
+                        {"name":"s_rightsissue_year","type":"STRING"},
+                        {"name":"s_rightsissue_content","type":"STRING"},
+                        {"name":"s_rightsissue_name","type":"STRING"},
+                        {"name":"s_ratio_denominator","type":"DOUBLE"},
+                        {"name":"s_ratio_molecular","type":"DOUBLE"},
+                        {"name":"s_subscription_method","type":"STRING"},
+                        {"name":"s_expected_fund_raising","type":"DOUBLE"},
+                        {"name":"s_rightsissue_cost","type":"DOUBLE"},
+                        {"name":"s_rightsissue_regdate_bshare","type":"STRING"},
+                        {"name":"s_allotment_object","type":"STRING"},
+                        {"name":"s_price_cap","type":"DOUBLE"},
+                        {"name":"s_lower_price_limit","type":"DOUBLE"},
+                        {"name":"s_underwriting_method","type":"STRING"},
+                        {"name":"s_underwriter_subscription","type":"DOUBLE"},
+                        {"name":"s_state_owned_share_num","type":"DOUBLE"},
+                        {"name":"s_legal_person_share_num","type":"DOUBLE"},
+                        {"name":"s_employee_stock_share_num","type":"DOUBLE"},
+                        {"name":"s_transfer_share_num","type":"DOUBLE"},
+                        {"name":"s_circulated_share_num","type":"DOUBLE"},
+                        {"name":"s_state_owned_share_num1","type":"DOUBLE"},
+                        {"name":"s_legal_person_share_num1","type":"DOUBLE"},
+                        {"name":"s_employee_stock_share_num1","type":"DOUBLE"},
+                        {"name":"s_transfer_share_num1","type":"DOUBLE"},
+                        {"name":"s_circulated_share_num1","type":"DOUBLE"},
+                        {"name":"s_holder_held_number","type":"DOUBLE"},
+                        {"name":"s_holder_subscription_number1","type":"DOUBLE"},
+                        {"name":"s_holder_subscription_number","type":"DOUBLE"},
+                        {"name":"s_holder_subscription_method","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

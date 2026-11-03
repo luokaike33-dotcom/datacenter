@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      b_info_windcode,
+                                      b_announcementdate,
+                                      b_actual_payment,
+                                      b_payment_code,
+                                      b_payment_front_balance,
+                                      b_payment_amount,
+                                      b_principal_amount,
+                                      b_principal_interest_amount,
+                                      b_principal_amount_tot,
+                                      b_principal_int_amount_tot,
+                                      b_resale_payment_tot,
+                                      b_resale_payment_tot1,
+                                      b_payment_after_balance,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbonddefaultpayment.json' as task_rs_id
+                                from ${srcoradbname}.cbonddefaultpayment"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbonddefaultpayment",
+                        "fileName": "w_cbonddefaultpayment",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"b_info_windcode","type":"string"},
+                                      {"name":"b_announcementdate","type":"string"},
+                                      {"name":"b_actual_payment","type":"string"},
+                                      {"name":"b_payment_code","type":"bigint"},
+                                      {"name":"b_payment_front_balance","type":"double"},
+                                      {"name":"b_payment_amount","type":"double"},
+                                      {"name":"b_principal_amount","type":"double"},
+                                      {"name":"b_principal_interest_amount","type":"double"},
+                                      {"name":"b_principal_amount_tot","type":"double"},
+                                      {"name":"b_principal_int_amount_tot","type":"double"},
+                                      {"name":"b_resale_payment_tot","type":"double"},
+                                      {"name":"b_resale_payment_tot1","type":"double"},
+                                      {"name":"b_payment_after_balance","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

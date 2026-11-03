@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      comp_id,
+                                      prob_id,
+                                      letters_event_id,
+                                      number1,
+                                      prob_type,
+                                      prob_txt,
+                                      answ_txt,
+                                      sup_answ_txt,
+                                      is_valid,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharecorpoletinfor.json' as task_rs_id
+                                from ${srcoradbname}.asharecorpoletinfor"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharecorpoletinfor",
+                        "fileName": "w_asharecorpoletinfor",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"comp_id","type":"string"},
+                                      {"name":"prob_id","type":"bigint"},
+                                      {"name":"letters_event_id","type":"string"},
+                                      {"name":"number1","type":"bigint"},
+                                      {"name":"prob_type","type":"string"},
+                                      {"name":"prob_txt","type":"string"},
+                                      {"name":"answ_txt","type":"string"},
+                                      {"name":"sup_answ_txt","type":"string"},
+                                      {"name":"is_valid","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,92 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_cha_cvtb_devd_indx",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"double"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"string"},
+									{"name":"dm_created_time","type":"string","value":"${kerberosPrincipal}"},
+									{"index":18,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+									"obj_id",
+									"secu_id",
+									"trd_trd_dt",
+									"has_inta_days",
+									"accr_intr",
+									"thue_yld",
+									"bond_ytm",
+									"bond_val",
+									"bond_prem",
+									"bond_prem_rate",
+									"tran_stk_prc",
+									"trs_rati",
+									"trs_val",
+									"trs_prem",
+									"trs_prem_rate",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:mysql://${tgrurl}/",
+                                "selectedDatabase": "${selectedDatabase}", 
+                                "table": ["var_cha_cvtb_devd_indx"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "loadUrl":[${loadUrl}],
+                        "preSql":["truncate table data_mart.var_cha_cvtb_devd_indx"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

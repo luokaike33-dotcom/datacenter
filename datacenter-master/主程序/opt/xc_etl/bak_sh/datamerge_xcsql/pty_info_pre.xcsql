@@ -1,0 +1,60 @@
+# ******************************************************************
+#    修改者      版本号            修改日期        修改内容
+#    zone        1.2.10C           2023-06-16       初始化xcsql及改为系统来源分区表
+
+# ******************************************************************
+table:pty_info_pre 机构基本信息
+cols:
+    COM_ID VARCHAR2(50) 机构编号
+    COM_NAME VARCHAR2(200) 机构名称
+    CHI_SHT VARCHAR2(200) 中文简称
+    ENG_NAME VARCHAR2(200) 英文名称
+    ENG_SHT VARCHAR2(100) 英文简称
+    NATR_BIZ VARCHAR2(20) 公司企业性质
+    NATR_ECON VARCHAR2(20) 公司经济性质
+    FOUND_DT bigint 成立日期
+    REG_CPTL NUMBER(20,4) 注册资本
+    LGL_REPR VARCHAR2(100) 法人代表
+    REG_ADDR VARCHAR2(500) 注册地址描述
+    CTRY_CODE VARCHAR2(20) 注册国家代码
+    CTRY_NAME VARCHAR2(100) 注册国家描述
+    REG_PROV VARCHAR2(20) 注册省市代码
+    REG_CITY VARCHAR2(20) 注册城市代码
+    reg_cnty VARCHAR2(20) 注册县代码
+    OFS_ADDR VARCHAR2(500) 办公地址描述
+    POSC VARCHAR2(20) 邮政编码
+    TEL VARCHAR2(100) 电话号码
+    FAX VARCHAR2(100) 传真号码
+    EMAIL VARCHAR2(200) 电子邮箱
+    WEB_SITE VARCHAR2(200) 公司网址
+    REG_NUM_BIZ VARCHAR2(50) 社会统一编码
+    IS_EXIST VARCHAR2(5) 是否存在
+    CANL_DT TIMESTAMP 注销时间
+    ORG_CODE VARCHAR2(10) 组织机构代码
+    IS_INNO_COM VARCHAR2(5) 是否创新企业
+    BIZ_SCO clob 经营范围
+    IS_LIST VARCHAR2(10) 是否上市
+    BK_DESC clob 背景简介
+    GEN_MNGR VARCHAR2(50) 总经理字段
+    is_bach_ins VARCHAR2(10) 是否分支机构
+    LEGP_IDTY_ID	VARCHAR2(50)    法人识别码
+    COM_CORP_SCAL	VARCHAR2(10)    机构企业规模
+    IS_HIGH_TEGY	VARCHAR2(10)    是否高新企业
+    BNK_INS_CLAS  VARCHAR2(50) 银行业机构分类
+    IS_VIE  VARCHAR2(10) 是否VIE(协议控制)
+    IS_PROF  VARCHAR2(10) 是否盈利
+    BUSI_DATE bigint 业务日期
+    SYS_RS_ID VARCHAR2(20) 系统来源标识
+    TASK_RS_ID VARCHAR2(100) 任务来源标识
+    DM_CREATED_TIME TIMESTAMP 数据中台创建时间
+partition:
+    [cdh] sys_rs_id
+    [tdh] sys_rs_id
+cluster:
+	[gp] random
+	[starrocks] COM_ID 5
+	[tdh] COM_ID 5
+index:
+  [oracle] idx_pty_info_pre(com_id,natr_biz,natr_econ)
+  [mysql]  idx_pty_info_pre(com_id,natr_biz,natr_econ)
+  [starrocks] duplicate_key(com_id) duplicatekey

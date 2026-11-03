@@ -1,0 +1,76 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_stk_virtual",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"long"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"date"},
+                                    {"index":14,"type":"string"}
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "trd_code",
+                                    "chi_name",
+                                    "exch_code",
+                                    "exch_name",
+                                    "typ_code",
+                                    "typ_codei",
+                                    "typ_codeii",
+                                    "typ_desc",
+                                    "curr_code",
+                                    "busi_date",
+                                    ,
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "capl_acc"
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_stk_virtual"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["truncate table var_stk_virtual"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

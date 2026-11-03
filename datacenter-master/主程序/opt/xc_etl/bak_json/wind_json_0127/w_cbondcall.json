@@ -1,0 +1,81 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      b_info_redemptiondate,
+                                      b_info_redemptionprice,
+                                      b_info_callannouncementdate,
+                                      b_info_callexdate,
+                                      b_info_callamount,
+                                      b_info_calloutstanding,
+                                      b_redemptiondate,
+                                      b_info_call_reason,
+                                      b_info_call_arrival_day,
+                                      b_info_call_record_day,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondcall.json' as task_rs_id
+                                from ${srcoradbname}.cbondcall"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondcall",
+                        "fileName": "w_cbondcall",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"b_info_redemptiondate","type":"string"},
+                                      {"name":"b_info_redemptionprice","type":"double"},
+                                      {"name":"b_info_callannouncementdate","type":"string"},
+                                      {"name":"b_info_callexdate","type":"string"},
+                                      {"name":"b_info_callamount","type":"double"},
+                                      {"name":"b_info_calloutstanding","type":"double"},
+                                      {"name":"b_redemptiondate","type":"string"},
+                                      {"name":"b_info_call_reason","type":"string"},
+                                      {"name":"b_info_call_arrival_day","type":"string"},
+                                      {"name":"b_info_call_record_day","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

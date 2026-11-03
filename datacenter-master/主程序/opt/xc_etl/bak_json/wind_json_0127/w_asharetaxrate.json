@@ -1,0 +1,73 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      report_period,
+                                      tax_rate,
+                                      begin_mon,
+                                      end_mon,
+                                      discount_reason,
+                                      memo,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharetaxrate.json' as task_rs_id
+                                from ${srcoradbname}.asharetaxrate"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharetaxrate",
+                        "fileName": "w_asharetaxrate",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"tax_rate","type":"double"},
+                                      {"name":"begin_mon","type":"bigint"},
+                                      {"name":"end_mon","type":"bigint"},
+                                      {"name":"discount_reason","type":"string"},
+                                      {"name":"memo","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,101 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									sk_date,
+									sk_portfolio,
+									bk_portfolio,
+									portfolio_short_name,
+									sk_issue,
+									issue_short_name,
+									mkt_issue_code,
+									sk_market,
+									mkt_short_name,
+									dk_iss_type,
+									iss_type_name,
+									iss_sub_type,
+									industry_sw_lv1,
+									quantity,
+									assetval,
+									cost,
+									weight,
+									yield,
+									income,
+									yield_contrib,
+									inserttime,
+									p_dt,
+									sys_rs_id
+							FROM ${srcdbname}.res_xq_fact_holding WHERE p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sk_date",
+									"sk_portfolio",
+									"bk_portfolio",
+									"portfolio_short_name",
+									"sk_issue",
+									"issue_short_name",
+									"mkt_issue_code",
+									"sk_market",
+									"mkt_short_name",
+									"dk_iss_type",
+									"iss_type_name",
+									"iss_sub_type",
+									"industry_sw_lv1",
+									"quantity",
+									"assetval",
+									"cost",
+									"weight",
+									"yield",
+									"income",
+									"yield_contrib",
+									"inserttime",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["res_xq_fact_holding"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["DELETE FROM res_xq_fact_holding WHERE p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

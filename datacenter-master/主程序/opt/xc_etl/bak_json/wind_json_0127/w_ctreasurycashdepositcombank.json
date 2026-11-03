@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      tender_date,
+                                      tender_ann_dt,
+                                      tender_time,
+                                      tender_result_ann_dt,
+                                      carry_date,
+                                      maturity_date,
+                                      term_day,
+                                      tender_type,
+                                      tender_amount,
+                                      bid_amount,
+                                      bid_rate,
+                                      term_word,
+                                      tender_name,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ctreasurycashdepositcombank.json' as task_rs_id
+                                from ${srcoradbname}.ctreasurycashdepositcombank"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ctreasurycashdepositcombank",
+                        "fileName": "w_ctreasurycashdepositcombank",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"tender_date","type":"string"},
+                                      {"name":"tender_ann_dt","type":"string"},
+                                      {"name":"tender_time","type":"string"},
+                                      {"name":"tender_result_ann_dt","type":"string"},
+                                      {"name":"carry_date","type":"string"},
+                                      {"name":"maturity_date","type":"string"},
+                                      {"name":"term_day","type":"double"},
+                                      {"name":"tender_type","type":"string"},
+                                      {"name":"tender_amount","type":"double"},
+                                      {"name":"bid_amount","type":"double"},
+                                      {"name":"bid_rate","type":"double"},
+                                      {"name":"term_word","type":"string"},
+                                      {"name":"tender_name","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

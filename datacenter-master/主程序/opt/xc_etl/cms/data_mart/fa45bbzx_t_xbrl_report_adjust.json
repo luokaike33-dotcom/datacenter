@@ -1,0 +1,118 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT  
+								n_id,
+								c_port_code,
+								d_report_date,
+								c_element_code,
+								n_order,
+								c_report_template,
+								c_user,
+								c_update_time,
+								c_parent_code,
+								n_type,
+								n_state,
+								c_value,
+								c_context,
+								c_xbrl_element_code,
+								c_query_id,
+								c_value_long,
+								x_order,
+								c_sql_id,
+								c_element_attr,
+								c_period,
+								c_report_type,
+								c_remark,
+								c_chapter_id,
+								c_edit_state,
+								c_port_class,
+								c_report_id,
+								c_index_arrt,
+								c_validate_state,
+								bath_dt,
+								data_ins_time,
+								task_rs_id
+							FROM ${srcdbname}.fa45bbzx_t_xbrl_report_adjust WHERE 
+							year(d_report_date) between  
+year(cast(from_unixtime(unix_timestamp(cast(${end_date} as string),'yyyyMMdd'),'yyyy-MM-dd') as date)  - interval 1 YEAR) and 
+year(from_unixtime(unix_timestamp(cast(${end_date} as string),'yyyyMMdd'),'yyyy-MM-dd')) "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"n_id",
+									"c_port_code",
+									"d_report_date",
+									"c_element_code",
+									"n_order",
+									"c_report_template",
+									"c_user",
+									"c_update_time",
+									"c_parent_code",
+									"n_type",
+									"n_state",
+									"c_value",
+									"c_context",
+									"c_xbrl_element_code",
+									"c_query_id",
+									"c_value_long",
+									"x_order",
+									"c_sql_id",
+									"c_element_attr",
+									"c_period",
+									"c_report_type",
+									"c_remark",
+									"c_chapter_id",
+									"c_edit_state",
+									"c_port_class",
+									"c_report_id",
+									"c_index_arrt",
+									"c_validate_state",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fa45bbzx_t_xbrl_report_adjust"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fa45bbzx_t_xbrl_report_adjust t where 
+						to_char(d_report_date,'yyyy')  between 
+						to_char(to_date(CAST(${end_date} AS varchar2(10)),'yyyyMMdd')-365,'yyyy') and 
+						to_char(to_date(CAST(${end_date} AS varchar2(10)),'yyyyMMdd'),'yyyy')"]
+                    }
+                }
+            }
+        ]
+    }
+}
+
+

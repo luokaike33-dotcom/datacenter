@@ -1,0 +1,126 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_stk_not_peri_pl",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"double"},
+									{"index":31,"type":"double"},
+									{"index":32,"type":"long"},
+									{"index":33,"type":"long"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"date"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"com_id",
+									"affi_date",
+									"rept_pd",
+									"rept_typ",
+									"crrc_code",
+									"not_liqu_ast_dspl_pl",
+									"tax_ret",
+									"gove_comp",
+									"cptl_occp_fee",
+									"corp_merg_prdu_loss",
+									"not_crrc_chg_loss",
+									"entr_ivsm_pl",
+									"ast_pfi",
+									"debt_regr_pl",
+									"corp_regr_fee",
+									"trd_prc_no_fair",
+									"prdu_sub_corp_net_loss",
+									"expe_liab_prdu_loss",
+									"oth_busi_bop_namt",
+									"oth_proj",
+									"not_regu_loss",
+									"inct_efct_num",
+									"min_sh_pl_efct_num",
+									"not_regu_pl_proj_tot",
+									"dedu_not_regu_pl_aft_net_prof",
+									"belg_corp_sh_net_prof",
+									"liab_prdu_fair_val_chg_loss",
+									"recv_mony_item_pfi_tubk",
+									"extn_entr_loan_draw_payf",
+									"met_ivsm_estt_val_chg_loss",
+									"regs_requ_one_loss_adj_efct",
+									"trus_oper_draw_cstd_fee_incm",
+									"is_pub",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["var_stk_not_peri_pl"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from var_stk_not_peri_pl"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

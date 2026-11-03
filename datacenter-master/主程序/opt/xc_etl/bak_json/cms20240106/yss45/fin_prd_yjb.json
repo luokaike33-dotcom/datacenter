@@ -1,0 +1,118 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fin_prd_yjb",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"long"},
+                                    {"index":4,"type":"long"},
+                                    {"index":5,"type":"double"},
+                                    {"index":6,"type":"double"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"double"},
+                                    {"index":9,"type":"double"},
+                                    {"index":10,"type":"double"},
+                                    {"index":11,"type":"double"},
+                                    {"index":12,"type":"double"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"string"},
+                                    {"index":17,"type":"string"},
+                                    {"index":18,"type":"string"},
+                                    {"index":19,"type":"string"},
+                                    {"index":20,"type":"string"},
+                                    {"index":21,"type":"string"},
+                                    {"index":22,"type":"string"},
+                                    {"index":23,"type":"string"},
+                                    {"index":24,"type":"string"},
+                                    {"index":25,"type":"string"},
+                                    {"index":26,"type":"string"},
+                                    {"index":27,"type":"string"},
+                                    {"index":28,"type":"string"},
+                                    {"index":29,"type":"string"},
+                                    {"index":30,"type":"string"},
+                                    {"index":31,"type":"long"},
+                                    {"index":32,"type":"string"},
+                                    {"index":33,"type":"date"},
+                                    {"index":34,"type":"string"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "prd_code",
+                                    "vou_dt",
+                                    "crse_code",
+                                    "acc_year",
+                                    "acc_mth",
+                                    "lcrrc_bal",
+                                    "olcy_bal",
+                                    "vol_bal",
+                                    "lcrrc_deb_val",
+                                    "lcrrc_cs_val",
+                                    "olcy_deb_val",
+                                    "olcy_cs_val",
+                                    "deb_vol",
+                                    "cs_vol",
+                                    "sett_crrc",
+                                    "crse_dim_code",
+                                    "crse_dim",
+                                    "crse_type",
+                                    "crse_class",
+                                    "cir_id",
+                                    "ast_stat",
+                                    "pos_dir",
+                                    "inv_typ",
+                                    "secu_code",
+                                    "secu_typ",
+                                    "secu_typi",
+                                    "secu_typii",
+                                    "mkt_typ",
+                                    "secu_name",
+                                    "is_true",
+                                    "is_add_manu",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "dm_src_info"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["fin_prd_yjb"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from fin_prd_yjb where 1 =1 "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

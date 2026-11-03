@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      bank_id,
+                                      bid_clean_price,
+                                      ask_clean_price,
+                                      b_anal_ptmyear,
+                                      b_anal_ytm,
+                                      bid_amount,
+                                      ask_amount,
+                                      b_anal_accruedinterest,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondcounterprice.json' as task_rs_id
+                                from ${srcoradbname}.cbondcounterprice"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondcounterprice",
+                        "fileName": "w_cbondcounterprice",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"bank_id","type":"string"},
+                                      {"name":"bid_clean_price","type":"double"},
+                                      {"name":"ask_clean_price","type":"double"},
+                                      {"name":"b_anal_ptmyear","type":"double"},
+                                      {"name":"b_anal_ytm","type":"double"},
+                                      {"name":"bid_amount","type":"double"},
+                                      {"name":"ask_amount","type":"double"},
+                                      {"name":"b_anal_accruedinterest","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

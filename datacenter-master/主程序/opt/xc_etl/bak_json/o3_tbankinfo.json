@@ -1,0 +1,63 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select l_bank_no,vc_bank_name,vc_country_no,c_custodian,en_lastyear_capital,en_capital_ratio,vc_balance_setting,vc_export_name,vc_holding_setting,vc_bic_code,vc_bank_no,en_core_capital_ratio,l_issuer_id,en_lastyear_asset,c_bank_type,c_outer_appraise,c_inside_appraise,vc_timestamp,vc_fisp_bank_no,c_status from ${srcoradbname}.tbankinfo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_tbankinfo", 
+                        "fileName": "o3_tbankinfo",
+                        "column": [
+     {"name":"l_bank_no","type":"bigint"},
+     {"name":"vc_bank_name","type":"string"},
+     {"name":"vc_country_no","type":"string"},
+     {"name":"c_custodian","type":"string"},
+     {"name":"en_lastyear_capital","type":"bigint"},
+     {"name":"en_capital_ratio","type":"double"},
+     {"name":"vc_balance_setting","type":"string"},
+     {"name":"vc_export_name","type":"string"},
+     {"name":"vc_holding_setting","type":"string"},
+     {"name":"vc_bic_code","type":"string"},
+     {"name":"vc_bank_no","type":"string"},
+     {"name":"en_core_capital_ratio","type":"double"},
+     {"name":"l_issuer_id","type":"bigint"},
+     {"name":"en_lastyear_asset","type":"bigint"},
+     {"name":"c_bank_type","type":"string"},
+     {"name":"c_outer_appraise","type":"string"},
+     {"name":"c_inside_appraise","type":"string"},
+     {"name":"vc_timestamp","type":"string"},
+     {"name":"vc_fisp_bank_no","type":"string"},
+     {"name":"c_status","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

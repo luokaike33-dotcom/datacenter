@@ -1,0 +1,89 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/prod_mp_commission_rate_qj",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"long"},
+									{"index":19,"type":"long"},
+									{"index":20,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"mprd_code",
+									"seat_code",
+									"agency_branch_no",
+									"agency_branch_name",
+									"fund_account",
+									"invest_type",
+									"invest_type_detail",
+									"platform",
+									"fee_rate",
+									"min_fee",
+									"attachment_file",
+									"use_date",
+									"is_valid",
+									"id",
+									"inserttime",
+									"updatetime",
+									"src_system",
+									"delete_flag",
+									"last_update_request",
+									"batchno",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["prod_mp_commission_rate_qj"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table prod_mp_commission_rate_qj"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

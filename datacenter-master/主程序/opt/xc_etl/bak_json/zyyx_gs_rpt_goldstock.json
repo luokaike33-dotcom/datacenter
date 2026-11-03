@@ -1,0 +1,89 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      id,
+                                      report_id,
+                                      title,
+                                      report_type,
+                                      organ_id,
+                                      organ_name,
+                                      author_name,
+                                      create_date,
+                                      stock_code,
+                                      stock_name,
+                                      reco_reason,
+                                      report_year,
+                                      report_period,
+                                      report_period_type,
+                                      is_valid,
+                                      entrytime,
+                                      updatetime,
+                                      tmstamp,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'zyyx_gs_rpt_goldstock.json' as task_rs_id
+                                from ${srcoradbname}.gs_rpt_goldstock WHERE create_date BETWEEN '${beg_date}'||'01' AND to_char(add_months(to_date('${beg_date}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${is_kbs}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/zyyx_gs_rpt_goldstock/busi_month=${busi_month}",
+                        "fileName": "zyyx_gs_rpt_goldstock",
+                        "column": [
+                                      {"name":"id","type":"bigint"},
+                                      {"name":"report_id","type":"bigint"},
+                                      {"name":"title","type":"string"},
+                                      {"name":"report_type","type":"bigint"},
+                                      {"name":"organ_id","type":"bigint"},
+                                      {"name":"organ_name","type":"string"},
+                                      {"name":"author_name","type":"string"},
+                                      {"name":"create_date","type":"timestamp"},
+                                      {"name":"stock_code","type":"string"},
+                                      {"name":"stock_name","type":"string"},
+                                      {"name":"reco_reason","type":"string"},
+                                      {"name":"report_year","type":"bigint"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"report_period_type","type":"bigint"},
+                                      {"name":"is_valid","type":"bigint"},
+                                      {"name":"entrytime","type":"timestamp"},
+                                      {"name":"updatetime","type":"timestamp"},
+                                      {"name":"tmstamp","type":"bigint"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

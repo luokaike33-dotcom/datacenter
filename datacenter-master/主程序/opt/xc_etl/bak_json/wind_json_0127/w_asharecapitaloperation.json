@@ -1,0 +1,77 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_dt,
+                                      s_capitaloperation_enddate,
+                                      s_capitaloperation_share,
+                                      s_capitaloperation_amount,
+                                      crncy_code,
+                                      s_capitaloperation_companyname,
+                                      s_capitaloperat_compwindcode,
+                                      s_end_bal,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharecapitaloperation.json' as task_rs_id
+                                from ${srcoradbname}.asharecapitaloperation"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharecapitaloperation",
+                        "fileName": "w_asharecapitaloperation",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"s_capitaloperation_enddate","type":"string"},
+                                      {"name":"s_capitaloperation_share","type":"double"},
+                                      {"name":"s_capitaloperation_amount","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"s_capitaloperation_companyname","type":"string"},
+                                      {"name":"s_capitaloperat_compwindcode","type":"string"},
+                                      {"name":"s_end_bal","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

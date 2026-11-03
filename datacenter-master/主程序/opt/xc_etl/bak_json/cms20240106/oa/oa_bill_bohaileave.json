@@ -1,0 +1,124 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/oa_bill_bohaileave",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"long"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"long"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"long"},
+									{"index":27,"type":"long"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"long"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"date"},
+									{"index":35,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"id",
+									"resourceid",
+									"departmentid",
+									"leavetype",
+									"otherleavetype",
+									"fromdate",
+									"fromtime",
+									"todate",
+									"totime",
+									"leavereason",
+									"requestid",
+									"lastyearannualdays",
+									"thisyearannualdays",
+									"allannualdays",
+									"field_1849761955",
+									"leavedays",
+									"manager",
+									"lastyearpsldays",
+									"thisyearpsldays",
+									"allpsldays",
+									"field_1010978692",
+									"field_1367315723",
+									"field_1645325476_20160810bak",
+									"field_1279742928",
+									"field_1545447612",
+									"field_1239306318",
+									"field_1690980395",
+									"field_1267712292",
+									"newleavetype",
+									"vacationinfo",
+									"field_1645325476",
+									"field_1403662708",
+									"field_1317469729",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["oa_bill_bohaileave"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from oa_bill_bohaileave"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

@@ -1,0 +1,118 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fin_prd_valu/p_dt=${p_dt}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"long"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"double"},
+                                    {"index":9,"type":"double"},
+                                    {"index":10,"type":"double"},
+                                    {"index":11,"type":"double"},
+                                    {"index":12,"type":"double"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"double"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"string"},
+                                    {"index":17,"type":"double"},
+                                    {"index":18,"type":"double"},
+                                    {"index":19,"type":"double"},
+                                    {"index":20,"type":"double"},
+                                    {"index":21,"type":"string"},
+                                    {"index":22,"type":"string"},
+                                    {"index":23,"type":"string"},
+                                    {"index":24,"type":"string"},
+                                    {"index":25,"type":"string"},
+                                    {"index":26,"type":"string"},
+                                    {"index":27,"type":"string"},
+                                    {"index":28,"type":"string"},
+                                    {"index":29,"type":"string"},
+                                    {"index":30,"type":"long"},
+                                    {"index":31,"type":"string"},
+                                    {"index":32,"type":"date"},
+                                    {"index":33,"type":"string"},
+                                    {"name":"p_dt""type":"long","value":"${p_dt}"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "jour_no",
+                                    "prd_code",
+                                    "secu_id",
+                                    "crse_code",
+                                    "proj_code",
+                                    "valu_dt",
+                                    "crse_name",
+                                    "vol",
+                                    "cost_unit",
+                                    "cost",
+                                    "cost_netva",
+                                    "quot_prc",
+                                    "mval",
+                                    "mval_netva",
+                                    "valu_appre",
+                                    "crse_debc_dir",
+                                    "sett_crrc",
+                                    "excr",
+                                    "cost_frc",
+                                    "frc_quot",
+                                    "frc_mval",
+                                    "trd_code",
+                                    "trd_mkt",
+                                    "also_info",
+                                    "inv_typ",
+                                    "cir_id",
+                                    "ast_stat",
+                                    "pos_id",
+                                    "data_typ",
+                                    "acg_proj",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "dm_src_info"
+                                    "p_dt"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["fin_prd_valu"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from fin_prd_valu where p_dt ='${p_dt}' and 1 =1 "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

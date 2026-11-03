@@ -1,0 +1,90 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/pty_ipo_init_inqy_dtl/busi_month=${busi_month}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"date"},
+									{"name":"sys_rs_id","type":"string","value":"WIND"},
+									{"name":"busi_month","type":"long","value":"${busi_month}"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"affi_date",
+									"inqy_obj_name",
+									"inqy_obj_name_id",
+									"ivst_clas_code",
+									"ratn_obj_name",
+									"rep_prc_stk",
+									"purc_vol_tshr",
+									"is_eff_ofer_ivst",
+									"ratn_obj_name1",
+									"ratn_vol",
+									"ratn_obj_name_id",
+									"by_elm_purc_stk_num_tshr",
+									"actl_purc_vol_tshr",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id",
+									"busi_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["pty_ipo_init_inqy_dtl"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from pty_ipo_init_inqy_dtl where busi_month=${busi_month} and 1=1"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

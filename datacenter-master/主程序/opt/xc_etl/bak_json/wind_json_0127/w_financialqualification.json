@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      organization_name,
+                                      financial_type,
+                                      acquisition_date,
+                                      revoke_date,
+                                      is_effective,
+                                      s_info_name,
+                                      agency_typcode,
+                                      s_info_compcode,
+                                      financial_type_num,
+                                      qualification_code,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_financialqualification.json' as task_rs_id
+                                from ${srcoradbname}.financialqualification"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_financialqualification",
+                        "fileName": "w_financialqualification",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"organization_name","type":"string"},
+                                      {"name":"financial_type","type":"string"},
+                                      {"name":"acquisition_date","type":"string"},
+                                      {"name":"revoke_date","type":"string"},
+                                      {"name":"is_effective","type":"bigint"},
+                                      {"name":"s_info_name","type":"string"},
+                                      {"name":"agency_typcode","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"financial_type_num","type":"bigint"},
+                                      {"name":"qualification_code","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

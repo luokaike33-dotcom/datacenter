@@ -1,0 +1,112 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/o3_tstocktype",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"long"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"c_stock_type",
+									"c_market_no",
+									"c_asset_class",
+									"vc_stocktype_name",
+									"c_fund_frozen_class",
+									"l_amount_per_hand",
+									"l_buy_unit",
+									"l_sale_unit",
+									"en_face_values",
+									"en_mindifference_price",
+									"vc_entrust_right",
+									"vc_entrust_class",
+									"c_report_unit",
+									"c_default_price",
+									"vc_instruction_interface",
+									"l_buy_max",
+									"l_sale_max",
+									"c_type_unit",
+									"c_can_split",
+									"c_unit_control_type",
+									"vc_omgeo_stock_type",
+									"vc_permit_invest_types",
+									"vc_alert_stock_type",
+									"vc_special_code",
+									"en_market_limit_price",
+									"vc_foreign_stock_type",
+									"vc_fee_types",
+									"en_min_quantity_unit",
+									"vc_timestamp",
+									"l_virtual_key"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_tstocktype"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table o3_tstocktype"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

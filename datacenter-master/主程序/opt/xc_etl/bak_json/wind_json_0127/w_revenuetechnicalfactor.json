@@ -1,0 +1,139 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      s_risk_earning_day,
+                                      s_risk_variance20,
+                                      s_risk_variance30,
+                                      s_risk_variance60,
+                                      s_risk_variance120,
+                                      s_risk_gainvariance20,
+                                      s_risk_gainvariance60,
+                                      s_risk_gainvariance120,
+                                      s_risk_lossvariance20,
+                                      s_risk_lossvariance60,
+                                      s_risk_lossvariance120,
+                                      s_risk_glvarianceratio20,
+                                      s_risk_glvarianceratio60,
+                                      s_risk_glvarianceratio120,
+                                      s_risk_revsvarratio,
+                                      s_risk_kurtosis20,
+                                      s_risk_kurtosis60,
+                                      s_risk_kurtosis120,
+                                      s_risk_beta20,
+                                      s_risk_beta60,
+                                      s_risk_beta120,
+                                      s_risk_treynorratio20,
+                                      s_risk_treynorratio60,
+                                      s_risk_treynorratio120,
+                                      s_tech_revs5,
+                                      s_tech_revs10,
+                                      s_tech_revs20,
+                                      s_tech_revs60,
+                                      s_tech_revs120,
+                                      s_tech_revs250,
+                                      s_tech_revs750,
+                                      s_tech_revs5m20,
+                                      s_tech_revs5m60,
+                                      s_tech_rank1m,
+                                      s_tech_revs6m20,
+                                      s_tech_revs12m20,
+                                      s_tech_revs12m6m,
+                                      s_tech_revs1mmax,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_revenuetechnicalfactor.json' as task_rs_id
+                                from ${srcoradbname}.revenuetechnicalfactor WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_revenuetechnicalfactor/busi_month=${busi_month}",
+                        "fileName": "w_revenuetechnicalfactor",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"s_risk_earning_day","type":"double"},
+                                      {"name":"s_risk_variance20","type":"double"},
+                                      {"name":"s_risk_variance30","type":"double"},
+                                      {"name":"s_risk_variance60","type":"double"},
+                                      {"name":"s_risk_variance120","type":"double"},
+                                      {"name":"s_risk_gainvariance20","type":"double"},
+                                      {"name":"s_risk_gainvariance60","type":"double"},
+                                      {"name":"s_risk_gainvariance120","type":"double"},
+                                      {"name":"s_risk_lossvariance20","type":"double"},
+                                      {"name":"s_risk_lossvariance60","type":"double"},
+                                      {"name":"s_risk_lossvariance120","type":"double"},
+                                      {"name":"s_risk_glvarianceratio20","type":"double"},
+                                      {"name":"s_risk_glvarianceratio60","type":"double"},
+                                      {"name":"s_risk_glvarianceratio120","type":"double"},
+                                      {"name":"s_risk_revsvarratio","type":"double"},
+                                      {"name":"s_risk_kurtosis20","type":"double"},
+                                      {"name":"s_risk_kurtosis60","type":"double"},
+                                      {"name":"s_risk_kurtosis120","type":"double"},
+                                      {"name":"s_risk_beta20","type":"double"},
+                                      {"name":"s_risk_beta60","type":"double"},
+                                      {"name":"s_risk_beta120","type":"double"},
+                                      {"name":"s_risk_treynorratio20","type":"double"},
+                                      {"name":"s_risk_treynorratio60","type":"double"},
+                                      {"name":"s_risk_treynorratio120","type":"double"},
+                                      {"name":"s_tech_revs5","type":"double"},
+                                      {"name":"s_tech_revs10","type":"double"},
+                                      {"name":"s_tech_revs20","type":"double"},
+                                      {"name":"s_tech_revs60","type":"double"},
+                                      {"name":"s_tech_revs120","type":"double"},
+                                      {"name":"s_tech_revs250","type":"double"},
+                                      {"name":"s_tech_revs750","type":"double"},
+                                      {"name":"s_tech_revs5m20","type":"double"},
+                                      {"name":"s_tech_revs5m60","type":"double"},
+                                      {"name":"s_tech_rank1m","type":"double"},
+                                      {"name":"s_tech_revs6m20","type":"double"},
+                                      {"name":"s_tech_revs12m20","type":"double"},
+                                      {"name":"s_tech_revs12m6m","type":"double"},
+                                      {"name":"s_tech_revs1mmax","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

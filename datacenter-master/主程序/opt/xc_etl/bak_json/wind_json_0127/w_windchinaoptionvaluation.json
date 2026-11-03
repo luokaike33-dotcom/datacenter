@@ -1,0 +1,77 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      w_anal_underlyingimpliedvol,
+                                      theore_price,
+                                      w_anal_delta,
+                                      w_anal_theta,
+                                      w_anal_gamma,
+                                      w_anal_vega,
+                                      w_anal_rho,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_windchinaoptionvaluation.json' as task_rs_id
+                                from ${srcoradbname}.windchinaoptionvaluation"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_windchinaoptionvaluation",
+                        "fileName": "w_windchinaoptionvaluation",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"w_anal_underlyingimpliedvol","type":"double"},
+                                      {"name":"theore_price","type":"double"},
+                                      {"name":"w_anal_delta","type":"double"},
+                                      {"name":"w_anal_theta","type":"double"},
+                                      {"name":"w_anal_gamma","type":"double"},
+                                      {"name":"w_anal_vega","type":"double"},
+                                      {"name":"w_anal_rho","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

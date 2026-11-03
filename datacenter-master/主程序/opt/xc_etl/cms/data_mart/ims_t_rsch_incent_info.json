@@ -1,0 +1,164 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/ims_t_rsch_incent_info",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"long"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"date"},
+									{"index":21,"type":"long"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"long"},
+									{"index":30,"type":"long"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"date"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"date"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"date"},
+									{"index":37,"type":"long"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"string"},
+									{"index":41,"type":"string"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"string"},
+									{"index":44,"type":"string"},
+									{"index":45,"type":"string"},
+									{"index":46,"type":"long"},
+									{"index":47,"type":"long"},
+									{"index":48,"type":"double"},
+									{"index":49,"type":"string"},
+									{"index":50,"type":"double"},
+									{"index":51,"type":"double"},
+									{"index":52,"type":"string"},
+									{"index":53,"type":"string"},
+									{"index":54,"type":"date"},
+									{"index":55,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"id",
+									"incentive_object_username",
+									"incentive_object_name",
+									"security_code",
+									"security_name",
+									"market_no",
+									"wind_code",
+									"latest_recommend_date",
+									"application_date",
+									"avg_market_value",
+									"industry_type1",
+									"industry_name1",
+									"industry_rank1",
+									"industry_total1",
+									"incentive_amount",
+									"purchase_date",
+									"purchase_price",
+									"purchase_amount",
+									"process_status",
+									"purchase_check_user",
+									"purchase_check_time",
+									"cashing_type",
+									"cashing_remark",
+									"sell_date",
+									"sell_price",
+									"sell_amount",
+									"price_ratio",
+									"industry_type2",
+									"industry_name2",
+									"industry_rank2",
+									"industry_total2",
+									"sell_check_user",
+									"sell_check_time",
+									"insert_user",
+									"insert_time",
+									"update_user",
+									"update_time",
+									"status",
+									"sell_check_remark",
+									"purchase_check_remark",
+									"avg_market_start_date",
+									"purchase_price_date",
+									"sell_price_date",
+									"purchase_check_name",
+									"sell_check_name",
+									"certificate_number",
+									"purchase_oa_flag",
+									"sell_oa_flag",
+									"on_way_amount",
+									"apply_request_id",
+									"hold_price_ratio",
+									"hold_avg_assets",
+									"fund_detail",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["ims_t_rsch_incent_info"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table ims_t_rsch_incent_info"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

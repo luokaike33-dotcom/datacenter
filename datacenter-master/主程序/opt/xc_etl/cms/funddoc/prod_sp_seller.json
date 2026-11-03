@@ -1,0 +1,109 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/prod_sp_seller",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"long"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"long"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"long"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sprd_code",
+									"dk_agency_type",
+									"agency_no",
+									"agency_name",
+									"start_date",
+									"is_open_allot",
+									"is_open_regular_allot",
+									"is_open_covt",
+									"is_open_redeem",
+									"subscribe_orgn",
+									"allot_orgn",
+									"regular_allot_orgn",
+									"min_redeem_shares",
+									"min_covt",
+									"min_hold",
+									"min_hold_days",
+									"max_hold_days",
+									"agency_dsnt",
+									"elec_agmt_mode",
+									"elec_agmt_chk_lvl",
+									"id",
+									"inserttime",
+									"updatetime",
+									"last_update_request",
+									"delete_flag",
+									"sub_prd_inr_code",
+									"src_system",
+									"batchno",
+									"datacenter_inserttime",
+									"datacenter_updatetime",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["prod_sp_seller"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table prod_sp_seller"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

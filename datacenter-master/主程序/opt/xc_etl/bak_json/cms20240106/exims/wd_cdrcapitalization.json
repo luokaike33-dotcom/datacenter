@@ -1,0 +1,170 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/w_cdrcapitalization",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"double"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"double"},
+									{"index":31,"type":"double"},
+									{"index":32,"type":"double"},
+									{"index":33,"type":"double"},
+									{"index":34,"type":"double"},
+									{"index":35,"type":"double"},
+									{"index":36,"type":"double"},
+									{"index":37,"type":"double"},
+									{"index":38,"type":"double"},
+									{"index":39,"type":"double"},
+									{"index":40,"type":"string"},
+									{"index":41,"type":"string"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"long"},
+									{"index":44,"type":"double"},
+									{"index":45,"type":"double"},
+									{"index":46,"type":"double"},
+									{"index":47,"type":"double"},
+									{"index":48,"type":"double"},
+									{"index":49,"type":"double"},
+									{"index":50,"type":"double"},
+									{"index":51,"type":"double"},
+									{"index":52,"type":"double"},
+									{"index":53,"type":"long"},
+									{"index":54,"type":"date"},
+									{"index":55,"type":"string"},
+									{"index":56,"type":"string"},
+									{"index":57,"type":"date"},
+									{"index":58,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"change_dt",
+									"tot_shr",
+									"float_shr",
+									"float_a_shr",
+									"float_b_shr",
+									"float_h_shr",
+									"float_overseas_shr",
+									"restricted_a_shr",
+									"s_share_rtd_state",
+									"s_share_rtd_statejur",
+									"s_share_rtd_subotherdomes",
+									"s_share_rtd_domesjur",
+									"s_share_rtd_inst",
+									"s_share_rtd_domesnp",
+									"s_share_rtd_senmanager",
+									"s_share_rtd_subfrgn",
+									"s_share_rtd_frgnjur",
+									"s_share_rtd_frgnnp",
+									"restricted_b_shr",
+									"other_restricted_shr",
+									"non_tradable_shr",
+									"s_share_ntrd_state_pct",
+									"s_share_ntrd_state",
+									"s_share_ntrd_statjur",
+									"s_share_ntrd_subdomesjur",
+									"s_share_ntrd_domesinitor",
+									"s_share_ntrd_ipojuris",
+									"s_share_ntrd_genjuris",
+									"s_share_ntrd_strtinvestor",
+									"s_share_ntrd_fundbal",
+									"s_share_ntrd_ipoinip",
+									"s_share_ntrd_trfnshare",
+									"s_share_ntrd_snormnger",
+									"s_share_ntrd_insderemp",
+									"s_share_ntrd_prfshare",
+									"s_share_ntrd_nonlstfrgn",
+									"s_share_ntrd_staq",
+									"s_share_ntrd_net",
+									"s_share_changereason",
+									"ann_dt",
+									"change_dt1",
+									"cur_sign",
+									"s_share_totala",
+									"s_share_totalb",
+									"s_share_otca",
+									"s_share_otcb",
+									"s_share_totalotc",
+									"s_share_h",
+									"s_share_totaltradable",
+									"s_share_totalrestricted",
+									"s_share_nontradable",
+									"is_valid",
+									"opdate",
+									"opmode",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_cdrcapitalization"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from wd_cdrcapitalization"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

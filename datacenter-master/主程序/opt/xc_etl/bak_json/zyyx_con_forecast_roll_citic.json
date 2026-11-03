@@ -1,0 +1,95 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      id,
+                                      industry_code,
+                                      industry_name,
+                                      industry_level,
+                                      con_date,
+                                      index_code,
+                                      con_or_roll,
+                                      con_np_roll,
+                                      con_eps_roll,
+                                      con_na_roll,
+                                      con_pb_roll,
+                                      con_ps_roll,
+                                      con_pe_roll,
+                                      con_peg_roll,
+                                      con_roe_roll,
+                                      con_npcgrate_2y_roll,
+                                      con_or_yoy_roll,
+                                      con_np_yoy_roll,
+                                      entrytime,
+                                      updatetime,
+                                      tmstamp,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'zyyx_con_forecast_roll_citic.json' as task_rs_id
+                                from ${srcoradbname}.con_forecast_roll_citic WHERE con_date BETWEEN '${beg_date}'||'01' AND to_char(add_months(to_date('${beg_date}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${is_kbs}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/zyyx_con_forecast_roll_citic/busi_month=${busi_month}",
+                        "fileName": "zyyx_con_forecast_roll_citic",
+                        "column": [
+                                      {"name":"id","type":"bigint"},
+                                      {"name":"industry_code","type":"string"},
+                                      {"name":"industry_name","type":"string"},
+                                      {"name":"industry_level","type":"bigint"},
+                                      {"name":"con_date","type":"timestamp"},
+                                      {"name":"index_code","type":"string"},
+                                      {"name":"con_or_roll","type":"double"},
+                                      {"name":"con_np_roll","type":"double"},
+                                      {"name":"con_eps_roll","type":"double"},
+                                      {"name":"con_na_roll","type":"double"},
+                                      {"name":"con_pb_roll","type":"double"},
+                                      {"name":"con_ps_roll","type":"double"},
+                                      {"name":"con_pe_roll","type":"double"},
+                                      {"name":"con_peg_roll","type":"double"},
+                                      {"name":"con_roe_roll","type":"double"},
+                                      {"name":"con_npcgrate_2y_roll","type":"double"},
+                                      {"name":"con_or_yoy_roll","type":"double"},
+                                      {"name":"con_np_yoy_roll","type":"double"},
+                                      {"name":"entrytime","type":"timestamp"},
+                                      {"name":"updatetime","type":"timestamp"},
+                                      {"name":"tmstamp","type":"bigint"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

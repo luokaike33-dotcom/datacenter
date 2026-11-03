@@ -1,0 +1,107 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/wdb_amb_sl_cust_hold/file_date=${p_dt}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"long"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"name":"file_date""type":"long","value":"${file_date}"},
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"jgdm",
+									"bgnd",
+									"bgqj",
+									"sjrq",
+									"cpdm",
+									"cytzzsl",
+									"grtzzsl",
+									"jgtzzsl",
+									"cptzzsl",
+									"dbwt300wysdtzzsl",
+									"dbwt300wyxdtzzsl",
+									"zykhsl",
+									"zyfs",
+									"zyje",
+									"dytzzztlb",
+									"dytzzlx",
+									"dytzzzjlx",
+									"dytzzzjhm",
+									"dytzzmc",
+									"jfje",
+									"tqje",
+									"wtje",
+									"jwcytzzsl",
+									"bz",
+									"uuid",
+									"status",
+									"file_date"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wdb_amb_sl_cust_hold"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from wdb_amb_sl_cust_hold where file_date=${p_dt}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

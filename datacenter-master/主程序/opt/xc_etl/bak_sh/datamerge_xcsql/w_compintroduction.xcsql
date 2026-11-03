@@ -1,0 +1,51 @@
+# ******************************************************************
+#    修改者      版本号            修改日期        修改内容
+#    Bert       1.2.8A           2022-05-05     初始化xcsql及改为系统来源分区表
+#    Travis     1.2.10B          2023-05-19     增加补充是否工商注册企业字段
+# ******************************************************************
+table:w_compintroduction 万得机构基本信息表
+cols:
+   OBJECT_ID varchar2(200)
+   COMP_ID varchar2(80)
+   COMP_NAME varchar2(400)
+   COMP_SNAME varchar2(120)
+   COMP_NAME_ENG varchar2(200)
+   COMP_SNAMEENG varchar2(200)
+   PROVINCE varchar2(40)
+   CITY varchar2(100)
+   ADDRESS varchar2(400)
+   OFFICE varchar2(800)
+   ZIPCODE varchar2(20)
+   PHONE varchar2(160)
+   FAX varchar2(100)
+   EMAIL varchar2(400)
+   WEBSITE varchar2(400)
+   REGISTERNUMBER varchar2(40)
+   CHAIRMAN varchar2(200)
+   PRESIDENT varchar2(200)
+   DISCLOSER varchar2(1000)
+   REGCAPITAL number(20,4)
+   CURRENCYCODE varchar2(20)
+   FOUNDDATE varchar2(16)
+   ENDDATE varchar2(16)
+   BRIEFING varchar2(4000)
+   COMP_TYPE varchar2(200)
+   COMP_PROPERTY varchar2(200)
+   COUNTRY varchar2(40)
+   BUSINESSSCOPE clob
+   COMPANY_TYPE varchar2(20)
+   S_INFO_TOTALEMPLOYEES number(20,0)
+   MAIN_BUSINESS varchar2(2800)
+   SOCIAL_CREDIT_CODE varchar2(60)
+   S_INFO_ORG_CODE varchar2(60)
+   IS_LISTED  int
+   S_INFO_COMPTYPE varchar2(20)
+   IS_REGISTERED	NUMBER(1,0)
+   OPDATE date
+   OPMODE varchar2(2)
+
+partition:
+
+cluster:
+
+index:

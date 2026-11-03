@@ -1,0 +1,118 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select l_date,l_time,vc_deal_no,l_daily_instruction_no,l_fund_id,l_basecombi_id,c_invest_type,c_entrust_direction,vc_inter_code,en_balance,en_rate,en_first_settle_interest,en_first_net_price,en_first_full_price,en_first_clear_balance,en_first_mature_yield,en_second_clear_balance,en_second_mature_yield,l_first_settle_date,l_second_settle_date,l_hg_days,l_settle_speed,l_use_days,c_first_settle_type,c_second_settle_type,c_cancel_flag,c_status,l_entrust_serial_no,l_trade_rival_no,en_fee,c_busin_class,vc_remark,l_serial_no,c_source,l_index_daily_modify,vc_original_deal_no,c_external_deal_flag,en_mature_net_price,en_mature_settle_interest,vc_broker_no,c_lock_flag,vc_match_info,c_fixsend_flag,l_stock_serial_no,l_instr_date,vc_instrid,vc_source_no,vc_quote_id,vc_rivaltrader_name,l_rivalaccount_no,c_clear_type,vc_bank_account,vc_operator_name,l_bank_id,vc_confirm_no,l_deal_amount,en_deal_balance,l_instance_id,l_operator_no,vc_alert_method,vc_rivaltrader_id,c_trade_type,l_org_id,l_dept_id,l_exec_confirm_no,c_account_mode,vc_selftrader_name,l_rivalbank_id,vc_unique_deal_serial_no,l_modify_no,l_lock_operator,c_settle_flag,null as bath_dt,sysdate as data_ins_time,null as task_rs_id from ${srcoradbname}.thisbankrealdeal where l_date = ${p_dt}"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_thisbankrealdeal/p_dt=${p_dt}",
+                        "fileName": "o3_thisbankrealdeal",
+                        "column": [
+     {"name":"l_date","type":"bigint"},
+     {"name":"l_time","type":"bigint"},
+     {"name":"vc_deal_no","type":"string"},
+     {"name":"l_daily_instruction_no","type":"bigint"},
+     {"name":"l_fund_id","type":"bigint"},
+     {"name":"l_basecombi_id","type":"bigint"},
+     {"name":"c_invest_type","type":"string"},
+     {"name":"c_entrust_direction","type":"string"},
+     {"name":"vc_inter_code","type":"string"},
+     {"name":"en_balance","type":"double"},
+     {"name":"en_rate","type":"double"},
+     {"name":"en_first_settle_interest","type":"double"},
+     {"name":"en_first_net_price","type":"double"},
+     {"name":"en_first_full_price","type":"double"},
+     {"name":"en_first_clear_balance","type":"double"},
+     {"name":"en_first_mature_yield","type":"double"},
+     {"name":"en_second_clear_balance","type":"double"},
+     {"name":"en_second_mature_yield","type":"double"},
+     {"name":"l_first_settle_date","type":"bigint"},
+     {"name":"l_second_settle_date","type":"bigint"},
+     {"name":"l_hg_days","type":"bigint"},
+     {"name":"l_settle_speed","type":"bigint"},
+     {"name":"l_use_days","type":"bigint"},
+     {"name":"c_first_settle_type","type":"string"},
+     {"name":"c_second_settle_type","type":"string"},
+     {"name":"c_cancel_flag","type":"string"},
+     {"name":"c_status","type":"string"},
+     {"name":"l_entrust_serial_no","type":"bigint"},
+     {"name":"l_trade_rival_no","type":"bigint"},
+     {"name":"en_fee","type":"double"},
+     {"name":"c_busin_class","type":"string"},
+     {"name":"vc_remark","type":"string"},
+     {"name":"l_serial_no","type":"bigint"},
+     {"name":"c_source","type":"string"},
+     {"name":"l_index_daily_modify","type":"bigint"},
+     {"name":"vc_original_deal_no","type":"string"},
+     {"name":"c_external_deal_flag","type":"string"},
+     {"name":"en_mature_net_price","type":"double"},
+     {"name":"en_mature_settle_interest","type":"double"},
+     {"name":"vc_broker_no","type":"string"},
+     {"name":"c_lock_flag","type":"string"},
+     {"name":"vc_match_info","type":"string"},
+     {"name":"c_fixsend_flag","type":"string"},
+     {"name":"l_stock_serial_no","type":"bigint"},
+     {"name":"l_instr_date","type":"bigint"},
+     {"name":"vc_instrid","type":"string"},
+     {"name":"vc_source_no","type":"string"},
+     {"name":"vc_quote_id","type":"string"},
+     {"name":"vc_rivaltrader_name","type":"string"},
+     {"name":"l_rivalaccount_no","type":"bigint"},
+     {"name":"c_clear_type","type":"string"},
+     {"name":"vc_bank_account","type":"string"},
+     {"name":"vc_operator_name","type":"string"},
+     {"name":"l_bank_id","type":"bigint"},
+     {"name":"vc_confirm_no","type":"string"},
+     {"name":"l_deal_amount","type":"double"},
+     {"name":"en_deal_balance","type":"double"},
+     {"name":"l_instance_id","type":"bigint"},
+     {"name":"l_operator_no","type":"bigint"},
+     {"name":"vc_alert_method","type":"string"},
+     {"name":"vc_rivaltrader_id","type":"string"},
+     {"name":"c_trade_type","type":"string"},
+     {"name":"l_org_id","type":"bigint"},
+     {"name":"l_dept_id","type":"bigint"},
+     {"name":"l_exec_confirm_no","type":"bigint"},
+     {"name":"c_account_mode","type":"string"},
+     {"name":"vc_selftrader_name","type":"string"},
+     {"name":"l_rivalbank_id","type":"bigint"},
+     {"name":"vc_unique_deal_serial_no","type":"string"},
+     {"name":"l_modify_no","type":"bigint"},
+     {"name":"l_lock_operator","type":"bigint"},
+     {"name":"c_settle_flag","type":"string"},
+     {"name":"bath_dt","type":"string"},
+     {"name":"data_ins_time","type":"timestamp"},
+     {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

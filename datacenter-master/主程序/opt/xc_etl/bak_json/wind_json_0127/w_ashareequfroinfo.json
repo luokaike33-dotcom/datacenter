@@ -1,0 +1,91 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      ann_date,
+                                      s_fro_bgdate,
+                                      s_fro_enddate,
+                                      s_holder_name,
+                                      s_fro_shares,
+                                      frozen_institution,
+                                      disfrozen_time,
+                                      s_holder_type_code,
+                                      s_holder_id,
+                                      shr_category_code,
+                                      is_turn_frozen,
+                                      is_disfrozen,
+                                      s_total_holding_shr,
+                                      s_fro_shr_ratio,
+                                      s_total_holding_shr_ratio,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareequfroinfo.json' as task_rs_id
+                                from ${srcoradbname}.ashareequfroinfo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareequfroinfo",
+                        "fileName": "w_ashareequfroinfo",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"s_fro_bgdate","type":"string"},
+                                      {"name":"s_fro_enddate","type":"string"},
+                                      {"name":"s_holder_name","type":"string"},
+                                      {"name":"s_fro_shares","type":"double"},
+                                      {"name":"frozen_institution","type":"string"},
+                                      {"name":"disfrozen_time","type":"string"},
+                                      {"name":"s_holder_type_code","type":"bigint"},
+                                      {"name":"s_holder_id","type":"string"},
+                                      {"name":"shr_category_code","type":"bigint"},
+                                      {"name":"is_turn_frozen","type":"bigint"},
+                                      {"name":"is_disfrozen","type":"bigint"},
+                                      {"name":"s_total_holding_shr","type":"double"},
+                                      {"name":"s_fro_shr_ratio","type":"double"},
+                                      {"name":"s_total_holding_shr_ratio","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

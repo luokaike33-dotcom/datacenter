@@ -1,0 +1,80 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									prd_code,
+									sk_date,
+									endm,
+									idx_secu_id,
+									wind_idx_secu_id,
+									secu_sht,
+									idx_stly,
+									pct_stk_rt,
+									pct_basi_rt,
+									over_pct,
+									batchno,
+									inserttime,
+									updatetime,
+									dk_system_of_sdata,
+									p_dt
+							FROM ${srcdbname}.fnce_citic_styl_indx_ex where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"sk_date",
+									"endm",
+									"idx_secu_id",
+									"wind_idx_secu_id",
+									"secu_sht",
+									"idx_stly",
+									"pct_stk_rt",
+									"pct_basi_rt",
+									"over_pct",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"dk_system_of_sdata",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fnce_citic_styl_indx_ex"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fnce_citic_styl_indx_ex where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

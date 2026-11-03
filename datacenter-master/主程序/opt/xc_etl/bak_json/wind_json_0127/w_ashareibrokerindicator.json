@@ -1,0 +1,117 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      report_period,
+                                      ann_dt,
+                                      statement_type,
+                                      iflisted_data,
+                                      net_capital,
+                                      trusted_capital,
+                                      net_gearing_ratio,
+                                      prop_equity_ratio,
+                                      longterm_invest_ratio,
+                                      fixed_capital_ratio,
+                                      fee_business_ratio,
+                                      total_capital_return,
+                                      net_capital_yield,
+                                      current_ratio,
+                                      asset_liability_ratio,
+                                      asset_turnover_ratio,
+                                      net_capital_return,
+                                      contingent_liability_ratio,
+                                      prop_securities,
+                                      treasury_bond,
+                                      investment_funds,
+                                      stocks,
+                                      convertible_bond,
+                                      per_capita_profits,
+                                      net_cap_total_riskprov,
+                                      net_cap_net_assets,
+                                      prop_equ_der_netcap,
+                                      prop_fixedincome_netcap,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareibrokerindicator.json' as task_rs_id
+                                from ${srcoradbname}.ashareibrokerindicator"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareibrokerindicator",
+                        "fileName": "w_ashareibrokerindicator",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"statement_type","type":"string"},
+                                      {"name":"iflisted_data","type":"bigint"},
+                                      {"name":"net_capital","type":"double"},
+                                      {"name":"trusted_capital","type":"double"},
+                                      {"name":"net_gearing_ratio","type":"double"},
+                                      {"name":"prop_equity_ratio","type":"double"},
+                                      {"name":"longterm_invest_ratio","type":"double"},
+                                      {"name":"fixed_capital_ratio","type":"double"},
+                                      {"name":"fee_business_ratio","type":"double"},
+                                      {"name":"total_capital_return","type":"double"},
+                                      {"name":"net_capital_yield","type":"double"},
+                                      {"name":"current_ratio","type":"double"},
+                                      {"name":"asset_liability_ratio","type":"double"},
+                                      {"name":"asset_turnover_ratio","type":"double"},
+                                      {"name":"net_capital_return","type":"double"},
+                                      {"name":"contingent_liability_ratio","type":"double"},
+                                      {"name":"prop_securities","type":"double"},
+                                      {"name":"treasury_bond","type":"double"},
+                                      {"name":"investment_funds","type":"double"},
+                                      {"name":"stocks","type":"double"},
+                                      {"name":"convertible_bond","type":"double"},
+                                      {"name":"per_capita_profits","type":"double"},
+                                      {"name":"net_cap_total_riskprov","type":"double"},
+                                      {"name":"net_cap_net_assets","type":"double"},
+                                      {"name":"prop_equ_der_netcap","type":"double"},
+                                      {"name":"prop_fixedincome_netcap","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

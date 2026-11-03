@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      trade_dt,
+                                      s_info_typecode,
+                                      b_dq_type,
+                                      b_dq_number,
+                                      b_dq_nochange,
+                                      b_dq_tradingvalue,
+                                      b_dq_vchange,
+                                      b_dq_wavrate,
+                                      b_dq_bpchange,
+                                      b_dq_nomembersinvo,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondibrmbmondmaroview.json' as task_rs_id
+                                from ${srcoradbname}.cbondibrmbmondmaroview"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondibrmbmondmaroview",
+                        "fileName": "w_cbondibrmbmondmaroview",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"s_info_typecode","type":"string"},
+                                      {"name":"b_dq_type","type":"string"},
+                                      {"name":"b_dq_number","type":"double"},
+                                      {"name":"b_dq_nochange","type":"double"},
+                                      {"name":"b_dq_tradingvalue","type":"double"},
+                                      {"name":"b_dq_vchange","type":"double"},
+                                      {"name":"b_dq_wavrate","type":"double"},
+                                      {"name":"b_dq_bpchange","type":"double"},
+                                      {"name":"b_dq_nomembersinvo","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

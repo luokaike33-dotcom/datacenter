@@ -1,0 +1,132 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									prd_code,
+									unit_code,
+									secu_id,
+									bk_market,
+									dk_comb_busintype,
+									entr_dir,
+									trd_seat,
+									trd_holder,
+									trd_no,
+									ivsm_type,
+									crrc_type,
+									trd_date,
+									busi_date,
+									sett_date,
+									tnv_time,
+									trd_price,
+									trd_qnty,
+									trd_bal,
+									sett_bal,
+									trd_fee,
+									stamp_duty,
+									ta_fee,
+									commission,
+									hand_fee,
+									sfee,
+									other_fee,
+									repo_intr,
+									clea_rptl,
+									sett_fee,
+									deli_fee,
+									crse_occur_bal,
+									bond_intr,
+									acctcode,
+									clr_sped,
+									hks_tnv_bal,
+									hks_liqu_bal,
+									bus_date,
+									task_rs_id,
+									updatetime,
+									p_dt,
+									sys_rs_id
+							FROM ${srcdbname}.fin_prd_trd_sum where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"unit_code",
+									"secu_id",
+									"bk_market",
+									"dk_comb_busintype",
+									"entr_dir",
+									"trd_seat",
+									"trd_holder",
+									"trd_no",
+									"ivsm_type",
+									"crrc_type",
+									"trd_date",
+									"busi_date",
+									"sett_date",
+									"tnv_time",
+									"trd_price",
+									"trd_qnty",
+									"trd_bal",
+									"sett_bal",
+									"trd_fee",
+									"stamp_duty",
+									"ta_fee",
+									"commission",
+									"hand_fee",
+									"sfee",
+									"other_fee",
+									"repo_intr",
+									"clea_rptl",
+									"sett_fee",
+									"deli_fee",
+									"crse_occur_bal",
+									"bond_intr",
+									"acctcode",
+									"clr_sped",
+									"hks_tnv_bal",
+									"hks_liqu_bal",
+									"bus_date",
+									"task_rs_id",
+									"updatetime",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fin_prd_trd_sum"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fin_prd_trd_sum where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

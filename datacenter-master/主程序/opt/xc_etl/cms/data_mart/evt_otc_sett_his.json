@@ -1,0 +1,118 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									busi_sys_id,
+									trd_src_id,
+									occu_dt,
+									ord_time,
+									sett_onum,
+									tnv_onum,
+									tnv_no,
+									tnv_dt,
+									prd_code,
+									ast_unit_code,
+									pfl_code,
+									inv_typ,
+									secu_id,
+									exch_code,
+									secu_code,
+									src_secu_id,
+									src_secu_trd_id,
+									pos_id,
+									curr_code,
+									entr_dir,
+									busi_typ,
+									busi_clas,
+									sett_clas,
+									sett_vol,
+									sett_val,
+									actl_sett_val,
+									cptl_sett_stat,
+									secu_sett_stat,
+									oper_no,
+									busi_date,
+									task_rs_id,
+									dm_created_time,
+									p_dt,
+									sys_rs_id
+							FROM ${srcdbname}.evt_otc_sett_his where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"busi_sys_id",
+									"trd_src_id",
+									"occu_dt",
+									"ord_time",
+									"sett_onum",
+									"tnv_onum",
+									"tnv_no",
+									"tnv_dt",
+									"prd_code",
+									"ast_unit_code",
+									"pfl_code",
+									"inv_typ",
+									"secu_id",
+									"exch_code",
+									"secu_code",
+									"src_secu_id",
+									"src_secu_trd_id",
+									"pos_id",
+									"curr_code",
+									"entr_dir",
+									"busi_typ",
+									"busi_clas",
+									"sett_clas",
+									"sett_vol",
+									"sett_val",
+									"actl_sett_val",
+									"cptl_sett_stat",
+									"secu_sett_stat",
+									"oper_no",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["evt_otc_sett_his"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from evt_otc_sett_his where (p_dt < to_number(to_char(to_date(to_char(${end_date}), 'yyyyMMdd') -90, 'yyyyMMdd'))) or (p_dt between ${beg_date} and ${end_date})"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

@@ -1,0 +1,89 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      index_number,
+                                      i_tech_uppct,
+                                      i_tech_downpct,
+                                      i_tech_limituppct,
+                                      i_tech_limitdownpct,
+                                      i_val_pe2,
+                                      i_val_pb2,
+                                      i_val_pe1,
+                                      i_val_pb1,
+                                      i_val_pe3,
+                                      i_val_pb3,
+                                      i_val_pe_ttm_ex_nv,
+                                      i_div_effect,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_indexvaluationfactor.json' as task_rs_id
+                                from ${srcoradbname}.indexvaluationfactor WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_indexvaluationfactor/busi_month=${busi_month}",
+                        "fileName": "w_indexvaluationfactor",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"index_number","type":"double"},
+                                      {"name":"i_tech_uppct","type":"double"},
+                                      {"name":"i_tech_downpct","type":"double"},
+                                      {"name":"i_tech_limituppct","type":"double"},
+                                      {"name":"i_tech_limitdownpct","type":"double"},
+                                      {"name":"i_val_pe2","type":"double"},
+                                      {"name":"i_val_pb2","type":"double"},
+                                      {"name":"i_val_pe1","type":"double"},
+                                      {"name":"i_val_pb1","type":"double"},
+                                      {"name":"i_val_pe3","type":"double"},
+                                      {"name":"i_val_pb3","type":"double"},
+                                      {"name":"i_val_pe_ttm_ex_nv","type":"double"},
+                                      {"name":"i_div_effect","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

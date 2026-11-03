@@ -1,0 +1,126 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									t.d_cdate,
+									t.c_fundcode,
+									t.c_agencyno,
+									t.f_share,
+									t.f_balance,
+									t.f_oribalance,
+									t.f_holdratio,
+									t.f_managerfee,
+									t.f_servicefare,
+									t.f_income,
+									t.f_reinvestshare,
+									t.f_reinvestbalance,
+									t.f_reinvestoribalance,
+									t.f_outershares,
+									t.f_outerbalance,
+									t.f_innershares,
+									t.f_innerbalance,
+									t.f_serviceratio,
+									t.d_lastservicefaredate,
+									t.f_tailratio,
+									t.f_tailfare,
+									t.f_tailratio1,
+									t.f_tailfare1,
+									t.f_tailratio2,
+									t.f_tailfare2,
+									t.f_protectbalance,
+									t.f_protectshares,
+									t.f_totalmonthincome,
+									t.f_cservicefare,
+									t.inserttime,
+									t.updatetime,
+									t.batchno,
+									t.tano,
+									t.srcsys,
+									t.f_investshare,
+									t.f_investbalance,
+									t.d_holddate
+							FROM ${srcdbname}.hsta4_tsalestat t
+							INNER JOIN ods.prod_product t1 on t.c_fundcode =t1.bk_product and t1.dk_is_money_fund='Y'
+							where d_holddate between '${beg_date}' and '${end_date}'  "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"d_cdate",
+									"c_fundcode",
+									"c_agencyno",
+									"f_share",
+									"f_balance",
+									"f_oribalance",
+									"f_holdratio",
+									"f_managerfee",
+									"f_servicefare",
+									"f_income",
+									"f_reinvestshare",
+									"f_reinvestbalance",
+									"f_reinvestoribalance",
+									"f_outershares",
+									"f_outerbalance",
+									"f_innershares",
+									"f_innerbalance",
+									"f_serviceratio",
+									"d_lastservicefaredate",
+									"f_tailratio",
+									"f_tailfare",
+									"f_tailratio1",
+									"f_tailfare1",
+									"f_tailratio2",
+									"f_tailfare2",
+									"f_protectbalance",
+									"f_protectshares",
+									"f_totalmonthincome",
+									"f_cservicefare",
+									"inserttime",
+									"updatetime",
+									"batchno",
+									"tano",
+									"srcsys",
+									"f_investshare",
+									"f_investbalance",
+									"d_holddate"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["hsta4_tsalestat"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from hsta4_tsalestat where d_holddate between '${beg_date}' and '${end_date}'"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

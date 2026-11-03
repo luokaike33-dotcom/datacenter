@@ -1,0 +1,80 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select l_combi_id,l_fund_id,vc_combi_no,vc_combi_name,c_combi_class,l_asset_id,l_setup_date,l_end_date,c_combi_status,en_remark,vc_remark,c_invest_type,vc_stocktype_right,vc_entrdire_right,l_param_id,c_join_distribute,en_fund_value_ratio,en_target_balance,vc_combi_identifier,vc_permit_market,vc_permit_busin_class,l_exponent_id,c_invest_type_pa,c_futures_invest_type,c_append_entrust,c_append_entrust_qh,vc_ws_tradelevel,vc_wx_tradelevel,vc_apply_busin_class,c_fair_trade,l_bid_combi_id,l_bail_combi_id,vc_timestamp,c_asset_type,null as bath_dt,sysdate as data_ins_time,null as task_rs_id from ${srcoradbname}.tcombi"],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_tcombi/sys_rs_id=O3",
+            "fileName": "o3_tcombi",
+            "column": [
+              {"name":"l_combi_id","type":"bigint"},
+              {"name":"l_fund_id","type":"int"},
+              {"name":"vc_combi_no","type":"string"},
+              {"name":"vc_combi_name","type":"string"},
+              {"name":"c_combi_class","type":"string"},
+              {"name":"l_asset_id","type":"int"},
+              {"name":"l_setup_date","type":"int"},
+              {"name":"l_end_date","type":"int"},
+              {"name":"c_combi_status","type":"string"},
+              {"name":"en_remark","type":"double"},
+              {"name":"vc_remark","type":"string"},
+              {"name":"c_invest_type","type":"string"},
+              {"name":"vc_stocktype_right","type":"string"},
+              {"name":"vc_entrdire_right","type":"string"},
+              {"name":"l_param_id","type":"bigint"},
+              {"name":"c_join_distribute","type":"string"},
+              {"name":"en_fund_value_ratio","type":"double"},
+              {"name":"en_target_balance","type":"double"},
+              {"name":"vc_combi_identifier","type":"string"},
+              {"name":"vc_permit_market","type":"string"},
+              {"name":"vc_permit_busin_class","type":"string"},
+              {"name":"l_exponent_id","type":"int"},
+              {"name":"c_invest_type_pa","type":"string"},
+              {"name":"c_futures_invest_type","type":"string"},
+              {"name":"c_append_entrust","type":"string"},
+              {"name":"c_append_entrust_qh","type":"string"},
+              {"name":"vc_ws_tradelevel","type":"string"},
+              {"name":"vc_wx_tradelevel","type":"string"},
+              {"name":"vc_apply_busin_class","type":"string"},
+              {"name":"c_fair_trade","type":"string"},
+              {"name":"l_bid_combi_id","type":"int"},
+              {"name":"l_bail_combi_id","type":"int"},
+              {"name":"vc_timestamp","type":"string"},
+              {"name":"c_asset_type","type":"string"},
+              {"name":"bath_dt","type":"string"},
+              {"name":"data_ins_time","type":"timestamp"},
+              {"name":"task_rs_id","type":"string"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

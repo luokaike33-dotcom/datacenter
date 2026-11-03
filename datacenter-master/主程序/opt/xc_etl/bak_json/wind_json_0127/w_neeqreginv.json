@@ -1,0 +1,73 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      comp_id,
+                                      s_info_windcode,
+                                      sur_institute,
+                                      sur_reasons,
+                                      str_anndate,
+                                      end_anndate,
+                                      str_date,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_neeqreginv.json' as task_rs_id
+                                from ${srcoradbname}.neeqreginv"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_neeqreginv",
+                        "fileName": "w_neeqreginv",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"comp_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"sur_institute","type":"string"},
+                                      {"name":"sur_reasons","type":"string"},
+                                      {"name":"str_anndate","type":"string"},
+                                      {"name":"end_anndate","type":"string"},
+                                      {"name":"str_date","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

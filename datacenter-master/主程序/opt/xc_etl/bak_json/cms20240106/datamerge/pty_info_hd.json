@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["SELECT com_id,com_name,chi_sht,eng_name,eng_sht,natr_biz,natr_econ,found_dt,reg_cptl,lgl_repr,reg_addr,ctry_code,ctry_name,reg_prov,reg_city,reg_cnty,ofs_addr,posc,tel,fax,email,web_site,reg_num_biz,is_exist,canl_dt,org_code,is_inno_com,biz_sco,is_list,bk_desc,gen_mngr,is_bach_ins,busi_date,task_rs_id,dm_created_time,sys_rs_id from ${srcoradbname}.pty_info "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/pty_info_hd",
+                        "fileName": "pty_info_hd",
+                        "column": [
+                            {"name":"com_id","type":"string"},
+                            {"name":"com_name","type":"string"},
+                            {"name":"chi_sht","type":"string"},
+                            {"name":"eng_name","type":"string"},
+                            {"name":"eng_sht","type":"string"},
+                            {"name":"natr_biz","type":"string"},
+                            {"name":"natr_econ","type":"string"},
+                            {"name":"found_dt","type":"string"},
+                            {"name":"reg_cptl","type":"double"},
+                            {"name":"lgl_repr","type":"string"},
+                            {"name":"reg_addr","type":"string"},
+                            {"name":"ctry_code","type":"string"},
+                            {"name":"ctry_name","type":"string"},
+                            {"name":"reg_prov","type":"string"},
+                            {"name":"reg_city","type":"string"},
+                            {"name":"reg_cnty","type":"string"},
+                            {"name":"ofs_addr","type":"string"},
+                            {"name":"posc","type":"string"},
+                            {"name":"tel","type":"string"},
+                            {"name":"fax","type":"string"},
+                            {"name":"email","type":"string"},
+                            {"name":"web_site","type":"string"},
+                            {"name":"reg_num_biz","type":"string"},
+                            {"name":"is_exist","type":"string"},
+                            {"name":"canl_dt","type":"string"},
+                            {"name":"org_code","type":"string"},
+                            {"name":"is_inno_com","type":"string"},
+                            {"name":"biz_sco","type":"string"},
+                            {"name":"is_list","type":"string"},
+                            {"name":"bk_desc","type":"string"},
+                            {"name":"gen_mngr","type":"string"},
+                            {"name":"is_bach_ins","type":"string"},
+                            {"name":"busi_date","type":"string"},
+                            {"name":"task_rs_id","type":"string"},
+                            {"name":"dm_created_time","type":"timestamp"},
+                            {"name":"sys_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "3"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

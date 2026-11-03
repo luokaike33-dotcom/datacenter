@@ -1,0 +1,57 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,industriescode,industriesname,levelnum,used,industriesalias,sequence,memo,chinesedefinition,wind_name_eng,industriescode_old,region_code,opdate,opmode from ${srcoradbname}.ashareindustriescode"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareindustriescode",
+                        "fileName": "w_ashareindustriescode",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"industriescode","type":"STRING"},
+                        {"name":"industriesname","type":"STRING"},
+                        {"name":"levelnum","type":"DOUBLE"},
+                        {"name":"used","type":"DOUBLE"},
+                        {"name":"industriesalias","type":"STRING"},
+                        {"name":"sequence","type":"DOUBLE"},
+                        {"name":"memo","type":"STRING"},
+                        {"name":"chinesedefinition","type":"STRING"},
+                        {"name":"wind_name_eng","type":"STRING"},
+                        {"name":"industriescode_old","type":"STRING"},
+                        {"name":"region_code","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

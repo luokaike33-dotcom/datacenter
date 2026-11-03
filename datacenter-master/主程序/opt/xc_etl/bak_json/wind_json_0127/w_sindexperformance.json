@@ -1,0 +1,111 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      pct_chg_recent1m,
+                                      pct_chg_recent3m,
+                                      pct_chg_recent6m,
+                                      pct_chg_recent1y,
+                                      pct_chg_recent2y,
+                                      pct_chg_recent3y,
+                                      pct_chg_recent4y,
+                                      pct_chg_recent5y,
+                                      pct_chg_recent6y,
+                                      pct_chg_thisweek,
+                                      pct_chg_thismonth,
+                                      pct_chg_thisquarter,
+                                      pct_chg_thisyear,
+                                      si_pct_chg,
+                                      annualyeild,
+                                      std_dev_6m,
+                                      std_dev_1y,
+                                      std_dev_2y,
+                                      std_dev_3y,
+                                      sharpratio_6m,
+                                      sharpratio_1y,
+                                      sharpratio_2y,
+                                      sharpratio_3y,
+                                      pct_chg_recent1w,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_sindexperformance.json' as task_rs_id
+                                from ${srcoradbname}.sindexperformance WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_sindexperformance/busi_month=${busi_month}",
+                        "fileName": "w_sindexperformance",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"pct_chg_recent1m","type":"double"},
+                                      {"name":"pct_chg_recent3m","type":"double"},
+                                      {"name":"pct_chg_recent6m","type":"double"},
+                                      {"name":"pct_chg_recent1y","type":"double"},
+                                      {"name":"pct_chg_recent2y","type":"double"},
+                                      {"name":"pct_chg_recent3y","type":"double"},
+                                      {"name":"pct_chg_recent4y","type":"double"},
+                                      {"name":"pct_chg_recent5y","type":"double"},
+                                      {"name":"pct_chg_recent6y","type":"double"},
+                                      {"name":"pct_chg_thisweek","type":"double"},
+                                      {"name":"pct_chg_thismonth","type":"double"},
+                                      {"name":"pct_chg_thisquarter","type":"double"},
+                                      {"name":"pct_chg_thisyear","type":"double"},
+                                      {"name":"si_pct_chg","type":"double"},
+                                      {"name":"annualyeild","type":"double"},
+                                      {"name":"std_dev_6m","type":"double"},
+                                      {"name":"std_dev_1y","type":"double"},
+                                      {"name":"std_dev_2y","type":"double"},
+                                      {"name":"std_dev_3y","type":"double"},
+                                      {"name":"sharpratio_6m","type":"double"},
+                                      {"name":"sharpratio_1y","type":"double"},
+                                      {"name":"sharpratio_2y","type":"double"},
+                                      {"name":"sharpratio_3y","type":"double"},
+                                      {"name":"pct_chg_recent1w","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

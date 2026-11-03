@@ -1,0 +1,117 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fa45_t_p_ab_port",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"date"},
+									{"index":9,"type":"date"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"date"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"date"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"date"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"date"},
+									{"index":34,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"c_iden",
+									"c_port_code",
+									"c_port_name",
+									"c_dat_code",
+									"c_port_name_st",
+									"c_port_name_en",
+									"c_ass_code",
+									"c_dc_code",
+									"d_build",
+									"d_close",
+									"c_desc",
+									"n_check_state",
+									"c_update_by",
+									"c_update_time",
+									"c_check_by",
+									"c_check_time",
+									"c_port_code_p",
+									"c_dv_port_code",
+									"c_hday_code",
+									"c_dat_cls",
+									"c_dv_prod_state",
+									"d_clear",
+									"c_port_unit",
+									"c_bk_rela_id",
+									"c_prod_rela_id",
+									"c_path_type",
+									"c_assets_code",
+									"d_colse_acc",
+									"c_kh_nature",
+									"c_lastdqdate",
+									"d_record",
+									"c_dat_mxcode",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fa45_t_p_ab_port"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table fa45_t_p_ab_port"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

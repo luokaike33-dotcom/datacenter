@@ -1,0 +1,92 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,d_biz,c_port_code,c_asset_code,c_port_class,c_subj_code,c_subj_name,c_cury_code,c_pa_code,c_mkt_code,c_td_attr,c_ivt_clss,c_hld_attr,c_ml_attr,c_tdchan_code,c_sec_code,c_ca_code,c_fee_code,n_hldamt,n_hldcst,n_hldcst_locl,n_hldmkv,n_hldmkv_locl,n_hldvva,n_hldvva_l,c_sec_var_mx,n_cb_jz_bl,n_sz_jz_bl,c_subpend,c_rights,n_valprice,n_valrate,n_way,c_subj_code_t,c_dv_km_cls,n_amdcst,n_amdcst_locl,c_non_pub,c_circulate,c_subpend_date,c_ca_type,c_ds_code,c_dv_fee_type,n_price_cost,c_update_time,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vn_financial_val.json' as task_rs_id from ${srcoradbname}.vn_financial_val where to_char(d_biz,'yyyyMMdd')='${p_dt}'"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vn_financial_val/p_dt=${p_dt}",
+                        "fileName": "fa45_vn_financial_val",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"d_biz","type":"date"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"c_asset_code","type":"string"},
+                            {"name":"c_port_class","type":"string"},
+                            {"name":"c_subj_code","type":"string"},
+                            {"name":"c_subj_name","type":"string"},
+                            {"name":"c_cury_code","type":"string"},
+                            {"name":"c_pa_code","type":"string"},
+                            {"name":"c_mkt_code","type":"string"},
+                            {"name":"c_td_attr","type":"string"},
+                            {"name":"c_ivt_clss","type":"string"},
+                            {"name":"c_hld_attr","type":"string"},
+                            {"name":"c_ml_attr","type":"string"},
+                            {"name":"c_tdchan_code","type":"string"},
+                            {"name":"c_sec_code","type":"string"},
+                            {"name":"c_ca_code","type":"string"},
+                            {"name":"c_fee_code","type":"string"},
+                            {"name":"n_hldamt","type":"double"},
+                            {"name":"n_hldcst","type":"double"},
+                            {"name":"n_hldcst_locl","type":"double"},
+                            {"name":"n_hldmkv","type":"double"},
+                            {"name":"n_hldmkv_locl","type":"double"},
+                            {"name":"n_hldvva","type":"double"},
+                            {"name":"n_hldvva_l","type":"double"},
+                            {"name":"c_sec_var_mx","type":"string"},
+                            {"name":"n_cb_jz_bl","type":"double"},
+                            {"name":"n_sz_jz_bl","type":"double"},
+                            {"name":"c_subpend","type":"string"},
+                            {"name":"c_rights","type":"string"},
+                            {"name":"n_valprice","type":"double"},
+                            {"name":"n_valrate","type":"double"},
+                            {"name":"n_way","type":"int"},
+                            {"name":"c_subj_code_t","type":"string"},
+                            {"name":"c_dv_km_cls","type":"string"},
+                            {"name":"n_amdcst","type":"double"},
+                            {"name":"n_amdcst_locl","type":"double"},
+                            {"name":"c_non_pub","type":"string"},
+                            {"name":"c_circulate","type":"string"},
+                            {"name":"c_subpend_date","type":"date"},
+                            {"name":"c_ca_type","type":"string"},
+                            {"name":"c_ds_code","type":"string"},
+                            {"name":"c_dv_fee_type","type":"string"},
+                            {"name":"n_price_cost","type":"double"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

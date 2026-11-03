@@ -1,0 +1,137 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      id,
+                                      stock_code,
+                                      company_code,
+                                      stock_fullname,
+                                      stock_name,
+                                      spell_name,
+                                      declare_date,
+                                      list_date,
+                                      delist_date,
+                                      list_status,
+                                      exchange,
+                                      issue_type,
+                                      issue_object,
+                                      online_offline,
+                                      org_regulation,
+                                      pattern,
+                                      lead_underwriter,
+                                      deputy_underwriter,
+                                      distributor,
+                                      list_sponsor,
+                                      sponsor,
+                                      pbv,
+                                      issue_price,
+                                      ex_tot_capital,
+                                      issue_capital,
+                                      circ_capital,
+                                      tot_placement,
+                                      net_placement,
+                                      issue_cost,
+                                      issue_status,
+                                      befissu_eps,
+                                      afissu_eps,
+                                      issu_pb,
+                                      befissu_naps,
+                                      afissu_naps,
+                                      issue_text,
+                                      is_valid,
+                                      entrytime,
+                                      updatetime,
+                                      tmstamp,
+                                      secu_type,
+                                      stock_cdr_ratio,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'zyyx_bas_stk_information.json' as task_rs_id
+                                from ${srcoradbname}.bas_stk_information"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${is_kbs}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/zyyx_bas_stk_information",
+                        "fileName": "zyyx_bas_stk_information",
+                        "column": [
+                                      {"name":"id","type":"bigint"},
+                                      {"name":"stock_code","type":"string"},
+                                      {"name":"company_code","type":"string"},
+                                      {"name":"stock_fullname","type":"string"},
+                                      {"name":"stock_name","type":"string"},
+                                      {"name":"spell_name","type":"string"},
+                                      {"name":"declare_date","type":"timestamp"},
+                                      {"name":"list_date","type":"timestamp"},
+                                      {"name":"delist_date","type":"timestamp"},
+                                      {"name":"list_status","type":"bigint"},
+                                      {"name":"exchange","type":"string"},
+                                      {"name":"issue_type","type":"string"},
+                                      {"name":"issue_object","type":"string"},
+                                      {"name":"online_offline","type":"bigint"},
+                                      {"name":"org_regulation","type":"string"},
+                                      {"name":"pattern","type":"string"},
+                                      {"name":"lead_underwriter","type":"string"},
+                                      {"name":"deputy_underwriter","type":"string"},
+                                      {"name":"distributor","type":"string"},
+                                      {"name":"list_sponsor","type":"string"},
+                                      {"name":"sponsor","type":"string"},
+                                      {"name":"pbv","type":"double"},
+                                      {"name":"issue_price","type":"double"},
+                                      {"name":"ex_tot_capital","type":"double"},
+                                      {"name":"issue_capital","type":"double"},
+                                      {"name":"circ_capital","type":"double"},
+                                      {"name":"tot_placement","type":"double"},
+                                      {"name":"net_placement","type":"double"},
+                                      {"name":"issue_cost","type":"double"},
+                                      {"name":"issue_status","type":"string"},
+                                      {"name":"befissu_eps","type":"double"},
+                                      {"name":"afissu_eps","type":"double"},
+                                      {"name":"issu_pb","type":"double"},
+                                      {"name":"befissu_naps","type":"double"},
+                                      {"name":"afissu_naps","type":"double"},
+                                      {"name":"issue_text","type":"string"},
+                                      {"name":"is_valid","type":"bigint"},
+                                      {"name":"entrytime","type":"timestamp"},
+                                      {"name":"updatetime","type":"timestamp"},
+                                      {"name":"tmstamp","type":"bigint"},
+                                      {"name":"secu_type","type":"string"},
+                                      {"name":"stock_cdr_ratio","type":"double"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,126 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									sk_date,
+									prd_code,
+									portfolio_name,
+									secu_id,
+									s_info_windcode,
+									issue_short_name,
+									s_dq_pctchange,
+									pct,
+									pctt_pre,
+									pct_to_stk,
+									pct_to_stk_pre,
+									dx_cost,
+									dx_cost_xg_qnty,
+									quantity,
+									flag_newshare,
+									ast_stat,
+									cir_status,
+									trade_added_value,
+									holding_added_value,
+									added_value,
+									buy_date,
+									issue_date,
+									lab_date,
+									start_sell_date,
+									full_sell_date,
+									asset_incm_ctbn,
+									hld_cost,
+									hld_val,
+									accr_intr,
+									recv_divd,
+									valu_add,
+									olcy_hld_cost,
+									olcy_hld_val,
+									olcy_accr_intr,
+									olcy_recv_divd,
+									olcy_valu_add,
+									p_dt,
+									sys_rs_id
+							FROM ${srcdbname}.fnce_cir_res_tmp WHERE p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sk_date",
+									"prd_code",
+									"portfolio_name",
+									"secu_id",
+									"s_info_windcode",
+									"issue_short_name",
+									"s_dq_pctchange",
+									"pct",
+									"pctt_pre",
+									"pct_to_stk",
+									"pct_to_stk_pre",
+									"dx_cost",
+									"dx_cost_xg_qnty",
+									"quantity",
+									"flag_newshare",
+									"ast_stat",
+									"cir_status",
+									"trade_added_value",
+									"holding_added_value",
+									"added_value",
+									"buy_date",
+									"issue_date",
+									"lab_date",
+									"start_sell_date",
+									"full_sell_date",
+									"asset_incm_ctbn",
+									"hld_cost",
+									"hld_val",
+									"accr_intr",
+									"recv_divd",
+									"valu_add",
+									"olcy_hld_cost",
+									"olcy_hld_val",
+									"olcy_accr_intr",
+									"olcy_recv_divd",
+									"olcy_valu_add",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fnce_cir_res_tmp"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["DELETE FROM fnce_cir_res_tmp WHERE p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ]
+    }
+}
+
+

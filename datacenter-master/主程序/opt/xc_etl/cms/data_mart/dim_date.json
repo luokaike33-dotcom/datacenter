@@ -1,0 +1,142 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+								SELECT 
+								    sk_date, 
+									bk_date, 
+									dt_year, 
+									dt_quarter, 
+									dt_month, 
+									dt_day, 
+									weekno, 
+									dt_yearmth, 
+									sk_date_mthend, 
+									monthly_days, 
+									quarterly_days, 
+									yearly_days, 
+									dk_monthbgn_flag, 
+									dk_quarterbgn_flag, 
+									dk_yearbgn_flag, 
+									dk_monthend_flag, 
+									dk_quarterend_flag, 
+									dk_yearend_flag, 
+									workday_flag, 
+									workday_no, 
+									dk_week_last_workday, 
+									dk_mth_last_workday, 
+									dk_qrt_last_workday, 
+									dk_yly_last_workday, 
+									dk_week_fst_workday, 
+									dk_mth_fst_workday, 
+									dk_qrt_fst_workday, 
+									dk_yly_fst_workday, 
+									pre_wkdate, 
+									latest_wkdate, 
+									last_wkdate, 
+									next_wkdate, 
+									week_fst_wkdate, 
+									mth_fst_wkdate, 
+									qtr_fst_wkdate, 
+									yly_fst_wkdate, 
+									week_last_wkdate, 
+									mth_last_wkdate, 
+									qtr_last_wkdate, 
+									yly_last_wkdate, 
+									ddvc, 
+									memo, 
+									dk_system_of_upd, 
+									batchno, 
+									inserttime, 
+									updatetime
+							FROM ${srcdbname}.dim_date  "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sk_date",
+									"bk_date",
+									"dt_year",
+									"dt_quarter",
+									"dt_month",
+									"dt_day",
+									"weekno",
+									"dt_yearmth",
+									"sk_date_mthend",
+									"monthly_days",
+									"quarterly_days",
+									"yearly_days",
+									"dk_monthbgn_flag",
+									"dk_quarterbgn_flag",
+									"dk_yearbgn_flag",
+									"dk_monthend_flag",
+									"dk_quarterend_flag",
+									"dk_yearend_flag",
+									"workday_flag",
+									"workday_no",
+									"dk_week_last_workday",
+									"dk_mth_last_workday",
+									"dk_qrt_last_workday",
+									"dk_yly_last_workday",
+									"dk_week_fst_workday",
+									"dk_mth_fst_workday",
+									"dk_qrt_fst_workday",
+									"dk_yly_fst_workday",
+									"pre_wkdate",
+									"latest_wkdate",
+									"last_wkdate",
+									"next_wkdate",
+									"week_fst_wkdate",
+									"mth_fst_wkdate",
+									"qtr_fst_wkdate",
+									"yly_fst_wkdate",
+									"week_last_wkdate",
+									"mth_last_wkdate",
+									"qtr_last_wkdate",
+									"yly_last_wkdate",
+									"ddvc",
+									"memo",
+									"dk_system_of_upd",
+									"batchno",
+									"inserttime",
+									"updatetime"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["dim_date"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table dim_date"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

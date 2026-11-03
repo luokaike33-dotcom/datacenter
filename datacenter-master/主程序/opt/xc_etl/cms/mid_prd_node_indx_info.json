@@ -1,0 +1,167 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      prd_code,
+                                      cal_date,
+                                      guid,
+                                      ast_tree_id,
+                                      node_id,
+                                      parn_id,
+                                      node_nm,
+                                      node_chi_nm,
+                                      hirc_inr_seq,
+                                      node_hirc,
+                                      up_day_hld_cost_wght_exe,
+                                      sgle_pd_payf_ctbn_exer,
+                                      sgle_pd_trd_ctbn_exer,
+                                      sgle_pd_coup_ctbn_exer,
+                                      sgle_pd_hold_ctbn_exer,
+                                      sgle_pd_cnvx_ctbn_exer,
+                                      sgle_pd_trea_spr_ctbn_exer,
+                                      sgle_pd_trea_rid_ctbn_exer,
+                                      sgle_pd_cred_spr_ctbn_exer,
+                                      sgle_pd_cred_rid_ctbn_exer,
+                                      sgle_pd_stru_ctbn_exer,
+                                      sgle_pd_selt_ctbn_exer,
+                                      sgle_pd_payf_ctbn_not_exer,
+                                      sgle_pd_trd_ctbn_not_exer,
+                                      sgle_pd_coup_ctbn_not_exer,
+                                      sgle_pd_hold_ctbn_not_exer,
+                                      sgle_pd_cnvx_ctbn_not_exer,
+                                      sgle_pd_trea_spr_ctbn_not_exer,
+                                      sgle_pd_trea_rid_ctbn_not_exer,
+                                      sgle_pd_cred_spr_ctbn_not_exer,
+                                      sgle_pd_cred_rid_ctbn_not_exer,
+                                      sgle_pd_stru_ctbn_not_exer,
+                                      sgle_pd_selt_ctbn_not_exer,
+                                      sgle_pd_payf_ctbn_recm,
+                                      sgle_pd_trd_ctbn_recm,
+                                      sgle_pd_coup_ctbn_recm,
+                                      sgle_pd_hold_ctbn_recm,
+                                      sgle_pd_cnvx_ctbn_recm,
+                                      sgle_pd_trea_spr_ctbn_recm,
+                                      sgle_pd_trea_rid_ctbn_recm,
+                                      sgle_pd_cred_spr_ctbn_recm,
+                                      sgle_pd_cred_rid_ctbn_recm,
+                                      sgle_pd_stru_ctbn_recm,
+                                      sgle_pd_selt_ctbn_recm,
+                                      sgle_pd_payf_ctbn_not_recm,
+                                      sgle_pd_trd_ctbn_not_recm,
+                                      sgle_pd_coup_ctbn_not_recm,
+                                      sgle_pd_hold_ctbn_not_recm,
+                                      sgle_pd_cnvx_ctbn_not_recm,
+                                      sgle_pd_trea_spr_ctbn_not_recm,
+                                      sgle_pd_trea_rid_ctbn_not_recm,
+                                      sgle_pd_cred_spr_ctbn_not_recm,
+                                      sgle_pd_cred_rid_ctbn_not_recm,
+                                      sgle_pd_stru_ctbn_not_recm,
+                                      sgle_pd_selt_ctbn_not_recm,
+                                      p_dt,
+                                      sys_rs_id,
+                                      task_rs_id,
+                                      dm_created_time
+                                from ${srcoradbname}.mid_prd_node_indx_info WHERE p_dt = '${p_dt}'"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+                                    "prd_code",
+                                    "cal_date",
+                                    "guid",
+                                    "ast_tree_id",
+                                    "node_id",
+                                    "parn_id",
+                                    "node_nm",
+                                    "node_chi_nm",
+                                    "hirc_inr_seq",
+                                    "node_hirc",
+                                    "up_day_hld_cost_wght_exe",
+                                    "sgle_pd_payf_ctbn_exer",
+                                    "sgle_pd_trd_ctbn_exer",
+                                    "sgle_pd_coup_ctbn_exer",
+                                    "sgle_pd_hold_ctbn_exer",
+                                    "sgle_pd_cnvx_ctbn_exer",
+                                    "sgle_pd_trea_spr_ctbn_exer",
+                                    "sgle_pd_trea_rid_ctbn_exer",
+                                    "sgle_pd_cred_spr_ctbn_exer",
+                                    "sgle_pd_cred_rid_ctbn_exer",
+                                    "sgle_pd_stru_ctbn_exer",
+                                    "sgle_pd_selt_ctbn_exer",
+                                    "sgle_pd_payf_ctbn_not_exer",
+                                    "sgle_pd_trd_ctbn_not_exer",
+                                    "sgle_pd_coup_ctbn_not_exer",
+                                    "sgle_pd_hold_ctbn_not_exer",
+                                    "sgle_pd_cnvx_ctbn_not_exer",
+                                    "sgle_pd_trea_spr_ctbn_not_exer",
+                                    "sgle_pd_trea_rid_ctbn_not_exer",
+                                    "sgle_pd_cred_spr_ctbn_not_exer",
+                                    "sgle_pd_cred_rid_ctbn_not_exer",
+                                    "sgle_pd_stru_ctbn_not_exer",
+                                    "sgle_pd_selt_ctbn_not_exer",
+                                    "sgle_pd_payf_ctbn_recm",
+                                    "sgle_pd_trd_ctbn_recm",
+                                    "sgle_pd_coup_ctbn_recm",
+                                    "sgle_pd_hold_ctbn_recm",
+                                    "sgle_pd_cnvx_ctbn_recm",
+                                    "sgle_pd_trea_spr_ctbn_recm",
+                                    "sgle_pd_trea_rid_ctbn_recm",
+                                    "sgle_pd_cred_spr_ctbn_recm",
+                                    "sgle_pd_cred_rid_ctbn_recm",
+                                    "sgle_pd_stru_ctbn_recm",
+                                    "sgle_pd_selt_ctbn_recm",
+                                    "sgle_pd_payf_ctbn_not_recm",
+                                    "sgle_pd_trd_ctbn_not_recm",
+                                    "sgle_pd_coup_ctbn_not_recm",
+                                    "sgle_pd_hold_ctbn_not_recm",
+                                    "sgle_pd_cnvx_ctbn_not_recm",
+                                    "sgle_pd_trea_spr_ctbn_not_recm",
+                                    "sgle_pd_trea_rid_ctbn_not_recm",
+                                    "sgle_pd_cred_spr_ctbn_not_recm",
+                                    "sgle_pd_cred_rid_ctbn_not_recm",
+                                    "sgle_pd_stru_ctbn_not_recm",
+                                    "sgle_pd_selt_ctbn_not_recm",
+                                    "p_dt",
+                                    "sys_rs_id",
+                                    "task_rs_id",
+                                    "dm_created_time"    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:mysql://${tgrurl}",
+                              "selectedDatabase": "${selectedDatabase}",
+                              "table": ["mid_prd_node_indx_info"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "loadUrl": [${loadUrl}],
+                        "loadProps": {"column_separator": "\\x01","row_delimiter":"\\x02"},
+                        "preSql":["delete from data_mart.mid_prd_node_indx_info where p_dt ='${p_dt}' "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

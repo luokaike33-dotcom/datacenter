@@ -1,0 +1,95 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      bill_name,
+                                      issue_ann_date,
+                                      list_ann_date,
+                                      issue_date,
+                                      list_date,
+                                      ptotal_num_issues,
+                                      total_num_issues,
+                                      issue_type,
+                                      s_info_par,
+                                      term,
+                                      paymentdate,
+                                      carry_date,
+                                      maturity_date,
+                                      tender_method,
+                                      issue_price,
+                                      tendrst_referyield,
+                                      issue_gobject,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondbillissuance.json' as task_rs_id
+                                from ${srcoradbname}.cbondbillissuance"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondbillissuance",
+                        "fileName": "w_cbondbillissuance",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"bill_name","type":"string"},
+                                      {"name":"issue_ann_date","type":"string"},
+                                      {"name":"list_ann_date","type":"string"},
+                                      {"name":"issue_date","type":"string"},
+                                      {"name":"list_date","type":"string"},
+                                      {"name":"ptotal_num_issues","type":"double"},
+                                      {"name":"total_num_issues","type":"double"},
+                                      {"name":"issue_type","type":"string"},
+                                      {"name":"s_info_par","type":"double"},
+                                      {"name":"term","type":"double"},
+                                      {"name":"paymentdate","type":"string"},
+                                      {"name":"carry_date","type":"string"},
+                                      {"name":"maturity_date","type":"string"},
+                                      {"name":"tender_method","type":"string"},
+                                      {"name":"issue_price","type":"double"},
+                                      {"name":"tendrst_referyield","type":"double"},
+                                      {"name":"issue_gobject","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

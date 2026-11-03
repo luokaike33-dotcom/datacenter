@@ -1,0 +1,128 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fa45_vc_trade_en",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"date"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"date"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"date"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"date"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"date"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"date"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"double"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"date"},
+									{"index":37,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"n_id",
+									"n_id_sub",
+									"c_port_code",
+									"c_asset_code",
+									"c_dt_code",
+									"c_sec_code",
+									"c_td_type",
+									"c_td_plat",
+									"c_td_attr",
+									"c_ml_attr",
+									"c_tdchan_code",
+									"c_ivt_clss",
+									"c_td_code",
+									"d_trade_date",
+									"n_td_money",
+									"n_sett_money_due",
+									"d_sett_due",
+									"c_dc_code",
+									"c_dc_code_sett",
+									"c_ca_code_sett_due",
+									"d_sett_fact",
+									"c_cury_code_equ",
+									"c_td_number",
+									"d_biz",
+									"c_dv_state",
+									"d_trade_back",
+									"n_sett_money_fact",
+									"n_td_amount",
+									"d_reg",
+									"n_td_income",
+									"n_rate",
+									"c_mkt_code",
+									"c_desc",
+									"c_update_time",
+									"c_timestamp",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fa45_vc_trade_en"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table fa45_vc_trade_en"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

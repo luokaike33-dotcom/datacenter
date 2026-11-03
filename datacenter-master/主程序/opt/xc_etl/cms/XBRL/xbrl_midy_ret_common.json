@@ -1,0 +1,81 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["SELECT
+                                       '${end_date}' as d_report_date,
+                                       prd_code as c_port_code,
+                                       '${tablename}' as c_chapter_name,
+                                       xbrl_elem as c_element_name,
+                                       case p_dt
+                                         when '${end_date}' then '本期'
+                                         when (cast(substr('${end_date}',1,4) as int) -1) || '0630' then '上年度末'
+                                       end as c_element_type,
+                                       xbrl_rn as n_order,
+                                       xbrl_val as c_value,
+                                       'xbrl_endy_ret_result_pre' as task_rs_id,
+                                       current_timestamp as dm_created_time,
+                                       '${tablename}' as dm_src_info,
+                                       p_dt
+                                     FROM ${srcdbname}.${tablename}
+                                     WHERE p_dt in(${end_date}, (cast(substr(${end_date},1,4) as int) -1)||'0630')"
+                        ],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                            "d_report_date",
+                            "c_port_code",
+                            "c_chapter_name",
+                            "c_element_name",
+                            "c_element_type",
+                            "n_order",
+                            "c_value",
+                            "task_rs_id",
+                            "dm_created_time",
+                            "dm_src_info",
+                            "p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["xbrl_endy_ret_result_pre"]
+                            }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql": ["delete from xbrl_endy_ret_result_pre where d_report_date = '${end_date}' and c_chapter_name = '${tablename}'"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

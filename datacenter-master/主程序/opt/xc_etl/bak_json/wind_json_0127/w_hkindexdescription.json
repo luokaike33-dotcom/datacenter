@@ -1,0 +1,68 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_info_code,s_info_name,s_info_compname,s_info_exchmarket,s_info_index_baseper,s_info_index_basept,s_info_listdate,s_info_index_style,null as s_info_index_ename,null as weight_type,null as weighting_method_start_date,null as weighting_method_end_date,null as component_stocks_num,null as index_region_code,null as index_category_code,null as exponential_scale_code,null as weight_type_code,null as market_own_code,null as income_processing_method,null as expire_date,null as index_category_type,opdate,opmode from ${srcoradbname}.hkindexdescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_hkindexdescription",
+                        "fileName": "w_hkindexdescription",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_info_code","type":"STRING"},
+                        {"name":"s_info_name","type":"STRING"},
+                        {"name":"s_info_compname","type":"STRING"},
+                        {"name":"s_info_exchmarket","type":"STRING"},
+                        {"name":"s_info_index_baseper","type":"STRING"},
+                        {"name":"s_info_index_basept","type":"DOUBLE"},
+                        {"name":"s_info_listdate","type":"STRING"},
+                        {"name":"s_info_index_style","type":"STRING"},
+                        {"name":"s_info_index_ename","type":"STRING"},
+                        {"name":"weight_type","type":"STRING"},
+                        {"name":"weighting_method_start_date","type":"STRING"},
+                        {"name":"weighting_method_end_date","type":"STRING"},
+                        {"name":"component_stocks_num","type":"DOUBLE"},
+                        {"name":"index_region_code","type":"DOUBLE"},
+                        {"name":"index_category_code","type":"DOUBLE"},
+                        {"name":"exponential_scale_code","type":"DOUBLE"},
+                        {"name":"weight_type_code","type":"DOUBLE"},
+                        {"name":"market_own_code","type":"DOUBLE"},
+                        {"name":"income_processing_method","type":"DOUBLE"},
+                        {"name":"expire_date","type":"STRING"},
+                        {"name":"index_category_type","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

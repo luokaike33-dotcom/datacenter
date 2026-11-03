@@ -1,0 +1,103 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+								SELECT sk_agency, 
+								sk_invpty_of_inst, 
+								hiear_level, 
+								bk_channelno, 
+								dk_sale_channel, 
+								dk_agency_type, 
+								agencyno, 
+								agency_name, 
+								agency_full_name, 
+								agency_branch_name, 
+								agency_branch_full_name, 
+								dk_helpself, 
+								dk_is_virtual_chnl, 
+								sk_region, 
+								dk_3party_chnl, 
+								dk_service_flag, 
+								bk_invpty_src, 
+								dk_is_valid, 
+								dk_system_of_sdata, 
+								sdata_serialno, 
+								memo, 
+								ddvc, 
+								dk_system_of_upd, 
+								batchno, 
+								inserttime, 
+								updatetime, 
+								priority
+							FROM ${srcdbname}.ip_agency where hiear_level = 1 "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sk_agency",
+									"sk_invpty_of_inst",
+									"hiear_level",
+									"bk_channelno",
+									"dk_sale_channel",
+									"dk_agency_type",
+									"agencyno",
+									"agency_name",
+									"agency_full_name",
+									"agency_branch_name",
+									"agency_branch_full_name",
+									"dk_helpself",
+									"dk_is_virtual_chnl",
+									"sk_region",
+									"dk_3party_chnl",
+									"dk_service_flag",
+									"bk_invpty_src",
+									"dk_is_valid",
+									"dk_system_of_sdata",
+									"sdata_serialno",
+									"memo",
+									"ddvc",
+									"dk_system_of_upd",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"priority"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["ip_agency"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table ip_agency"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

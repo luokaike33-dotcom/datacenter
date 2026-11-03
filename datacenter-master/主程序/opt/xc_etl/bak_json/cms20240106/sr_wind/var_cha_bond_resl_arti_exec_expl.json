@@ -1,0 +1,84 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_cha_bond_resl_arti_exec_expl",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"string"},
+									{"name":"dm_created_time","type":"string","value":"${kerberosPrincipal}"},
+									{"index":14,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+									"obj_id",
+									"secu_id",
+									"resl_cptl_arre_day",
+									"resl_affi_day",
+									"resl_perf_rslt_affi_day",
+									"resl_exec_strt_day",
+									"resl_exec_end_day",
+									"resl_day",
+									"resl_code",
+									"rsale_strt_day",
+									"rsale_end_day",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:mysql://${tgrurl}/",
+                                "selectedDatabase": "${selectedDatabase}", 
+                                "table": ["var_cha_bond_resl_arti_exec_expl"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "loadUrl":[${loadUrl}],
+                        "preSql":["truncate table data_mart.var_cha_bond_resl_arti_exec_expl"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

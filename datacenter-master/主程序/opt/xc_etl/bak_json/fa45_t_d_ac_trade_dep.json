@@ -1,0 +1,113 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select c_iden,c_iden_sub,c_td_type,c_dv_type_sub,c_port_code,c_sec_code,c_dt_code,c_dv_invest_cls,c_td_chan_code,d_trade,n_td_money,n_income,n_sett_money_due,d_sett_due,c_ca_code_sett_due,d_sett_fact,c_td_no,c_dv_rta,c_expr_code,n_rate,c_dv_state,c_data_idf,c_cfg_code,d_date,c_desc,n_check_state,c_update_by,c_update_time,c_check_by,c_check_time,n_spread,n_upper_limit,n_lower_limit,d_ins_begin,c_dv_inv,c_dta_code,c_open_addr,c_open_acc_no,c_open_acc_name,c_dv_sett,c_port_code_sub,c_busi_type,d_td_back,n_sett_money_fact,n_rate_zq,c_ca_code_sett_fact,c_linked_code,n_sliding_rate,c_usage,c_open_acc_name_i,c_open_addr_i,c_open_bank_code_i,c_open_bank_code,c_open_acc_no_i,c_vir_sec_code,c_dta_syqx,c_td_cj_no,n_base_rate,c_zllsh,d_ins_begin_first,c_sec_name,c_sec_var_code,n_period_income,c_bz,c_dsfzh,c_adv_withdrawal,c_org_code,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_t_d_ac_trade_dep.json' as task_rs_id from ${srcoradbname}.t_d_ac_trade_dep"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_t_d_ac_trade_dep",
+                        "fileName": "fa45_t_d_ac_trade_dep",
+                        "column": [
+                            {"name":"c_iden","type":"string"},
+                            {"name":"c_iden_sub","type":"string"},
+                            {"name":"c_td_type","type":"string"},
+                            {"name":"c_dv_type_sub","type":"string"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"c_sec_code","type":"string"},
+                            {"name":"c_dt_code","type":"string"},
+                            {"name":"c_dv_invest_cls","type":"string"},
+                            {"name":"c_td_chan_code","type":"string"},
+                            {"name":"d_trade","type":"date"},
+                            {"name":"n_td_money","type":"double"},
+                            {"name":"n_income","type":"double"},
+                            {"name":"n_sett_money_due","type":"double"},
+                            {"name":"d_sett_due","type":"date"},
+                            {"name":"c_ca_code_sett_due","type":"string"},
+                            {"name":"d_sett_fact","type":"date"},
+                            {"name":"c_td_no","type":"string"},
+                            {"name":"c_dv_rta","type":"string"},
+                            {"name":"c_expr_code","type":"string"},
+                            {"name":"n_rate","type":"double"},
+                            {"name":"c_dv_state","type":"string"},
+                            {"name":"c_data_idf","type":"string"},
+                            {"name":"c_cfg_code","type":"string"},
+                            {"name":"d_date","type":"date"},
+                            {"name":"c_desc","type":"string"},
+                            {"name":"n_check_state","type":"int"},
+                            {"name":"c_update_by","type":"string"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_check_by","type":"string"},
+                            {"name":"c_check_time","type":"string"},
+                            {"name":"n_spread","type":"double"},
+                            {"name":"n_upper_limit","type":"double"},
+                            {"name":"n_lower_limit","type":"double"},
+                            {"name":"d_ins_begin","type":"date"},
+                            {"name":"c_dv_inv","type":"string"},
+                            {"name":"c_dta_code","type":"string"},
+                            {"name":"c_open_addr","type":"string"},
+                            {"name":"c_open_acc_no","type":"string"},
+                            {"name":"c_open_acc_name","type":"string"},
+                            {"name":"c_dv_sett","type":"string"},
+                            {"name":"c_port_code_sub","type":"string"},
+                            {"name":"c_busi_type","type":"string"},
+                            {"name":"d_td_back","type":"date"},
+                            {"name":"n_sett_money_fact","type":"double"},
+                            {"name":"n_rate_zq","type":"double"},
+                            {"name":"c_ca_code_sett_fact","type":"string"},
+                            {"name":"c_linked_code","type":"string"},
+                            {"name":"n_sliding_rate","type":"double"},
+                            {"name":"c_usage","type":"string"},
+                            {"name":"c_open_acc_name_i","type":"string"},
+                            {"name":"c_open_addr_i","type":"string"},
+                            {"name":"c_open_bank_code_i","type":"string"},
+                            {"name":"c_open_bank_code","type":"string"},
+                            {"name":"c_open_acc_no_i","type":"string"},
+                            {"name":"c_vir_sec_code","type":"string"},
+                            {"name":"c_dta_syqx","type":"string"},
+                            {"name":"c_td_cj_no","type":"string"},
+                            {"name":"n_base_rate","type":"double"},
+                            {"name":"c_zllsh","type":"string"},
+                            {"name":"d_ins_begin_first","type":"date"},
+                            {"name":"c_sec_name","type":"string"},
+                            {"name":"c_sec_var_code","type":"string"},
+                            {"name":"n_period_income","type":"double"},
+                            {"name":"c_bz","type":"string"},
+                            {"name":"c_dsfzh","type":"string"},
+                            {"name":"c_adv_withdrawal","type":"string"},
+                            {"name":"c_org_code","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

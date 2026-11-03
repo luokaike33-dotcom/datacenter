@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_info_code,
+                                      ann_date,
+                                      warehouse_region,
+                                      warehouse_name,
+                                      deliverable_w,
+                                      on_warrant_w,
+                                      available_warehouse_w,
+                                      quantity_unit,
+                                      warehouse_in,
+                                      warehouse_out,
+                                      cancelled_warrants,
+                                      effective_forecast,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cfutureswarehousestocks.json' as task_rs_id
+                                from ${srcoradbname}.cfutureswarehousestocks"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cfutureswarehousestocks",
+                        "fileName": "w_cfutureswarehousestocks",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_info_code","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"warehouse_region","type":"string"},
+                                      {"name":"warehouse_name","type":"string"},
+                                      {"name":"deliverable_w","type":"double"},
+                                      {"name":"on_warrant_w","type":"double"},
+                                      {"name":"available_warehouse_w","type":"double"},
+                                      {"name":"quantity_unit","type":"string"},
+                                      {"name":"warehouse_in","type":"double"},
+                                      {"name":"warehouse_out","type":"double"},
+                                      {"name":"cancelled_warrants","type":"double"},
+                                      {"name":"effective_forecast","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

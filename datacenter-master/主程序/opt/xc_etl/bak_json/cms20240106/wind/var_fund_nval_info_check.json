@@ -1,0 +1,82 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fund_nval_info_check/busi_month=${busi_month}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"long"},
+                                    {"index":3,"type":"double"},
+                                    {"index":4,"type":"double"},
+                                    {"index":5,"type":"double"},
+                                    {"index":6,"type":"double"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"double"},
+                                    {"index":9,"type":"double"},
+                                    {"index":10,"type":"double"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"long"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"date"},
+                                    {"index":15,"type":"long"},
+                                    {"name":"busi_month","type":"long","value":"${busi_month}"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "rel_dt",
+                                    "trd_dt",
+                                    "shr_nval",
+                                    "shr_aggr_nval",
+                                    "unit_yld",
+                                    "ann_yld_rat",
+                                    "aft_chk_unit_nval",
+                                    "chk_aggr_unit_nav",
+                                    "chk_ftor",
+                                    "ttl_ast",
+                                    "curr_code",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "p_dt"
+                                    "busi_month",
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_fund_nval_info_check"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_fund_nval_info_check where busi_month ='${busi_month}' and 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

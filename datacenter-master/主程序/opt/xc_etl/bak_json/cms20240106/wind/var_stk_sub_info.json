@@ -1,0 +1,142 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_stk_sub_info",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"long"},
+                                    {"index":5,"type":"long"},
+                                    {"index":6,"type":"long"},
+                                    {"index":7,"type":"long"},
+                                    {"index":8,"type":"long"},
+                                    {"index":9,"type":"long"},
+                                    {"index":10,"type":"long"},
+                                    {"index":11,"type":"long"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"long"},
+                                    {"index":15,"type":"long"},
+                                    {"index":16,"type":"long"},
+                                    {"index":17,"type":"long"},
+                                    {"index":18,"type":"long"},
+                                    {"index":19,"type":"long"},
+                                    {"index":20,"type":"long"},
+                                    {"index":21,"type":"double"},
+                                    {"index":22,"type":"double"},
+                                    {"index":23,"type":"long"},
+                                    {"index":24,"type":"long"},
+                                    {"index":25,"type":"long"},
+                                    {"index":26,"type":"long"},
+                                    {"index":27,"type":"double"},
+                                    {"index":28,"type":"long"},
+                                    {"index":29,"type":"long"},
+                                    {"index":30,"type":"long"},
+                                    {"index":31,"type":"long"},
+                                    {"index":32,"type":"long"},
+                                    {"index":33,"type":"double"},
+                                    {"index":34,"type":"double"},
+                                    {"index":35,"type":"double"},
+                                    {"index":36,"type":"double"},
+                                    {"index":37,"type":"double"},
+                                    {"index":38,"type":"long"},
+                                    {"index":39,"type":"long"},
+                                    {"index":40,"type":"long"},
+                                    {"index":41,"type":"long"},
+                                    {"index":42,"type":"long"},
+                                    {"index":43,"type":"long"},
+                                    {"index":44,"type":"long"},
+                                    {"index":45,"type":"string"},
+                                    {"index":46,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "com_id",
+                                    "info_sour",
+                                    "rs_typ",
+                                    "sub_bgn_dt_off",
+                                    "sub_end_dt_off",
+                                    "sub_fnd_cfm_off",
+                                    "rfd_dt_off",
+                                    "sub_bgn_dt_on",
+                                    "sub_end_dt_on",
+                                    "sub_fnd_cfm_on",
+                                    "rfd_dt_on",
+                                    "sub_code",
+                                    "sub_name",
+                                    "sub_unit_on",
+                                    "sub_shr_max_on",
+                                    "sub_shr_min_on",
+                                    "sub_unit_off",
+                                    "sub_shr_max_off",
+                                    "sub_shr_min_off",
+                                    "accu_sub_shr_max",
+                                    "old_sh_sub_rat",
+                                    "old_sh_act_sub_rat",
+                                    "old_sh_num_valid",
+                                    "old_sh_sub_shr_valid",
+                                    "sh_num_valid_on",
+                                    "sub_shr_valid_on",
+                                    "over_sub_on",
+                                    "inq_num_off",
+                                    "sub_num_off",
+                                    "sub_shr_off",
+                                    "sub_shr_valid_off",
+                                    "sh_num_valid_off",
+                                    "over_sub_off",
+                                    "sub_alot_rat_off",
+                                    "alot_rat_off",
+                                    "succ_rat_off",
+                                    "sub_frz_fnd_off",
+                                    "act_sub_shr_off",
+                                    "abs_shr_on",
+                                    "payin_shr_off",
+                                    "abs_shr_off",
+                                    "payin_shr_on",
+                                    "plan_ntc_dt",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_stk_sub_info"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_stk_sub_info where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

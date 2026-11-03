@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compname,
+                                      s_info_compcode,
+                                      ann_dt,
+                                      enddate,
+                                      relation_type,
+                                      s_holder_name,
+                                      s_holder_code,
+                                      s_holder_type,
+                                      s_holder_pct,
+                                      is_actualcontroller,
+                                      actualcontroller_type,
+                                      actualcontroller_is_ann,
+                                      actualcontroller_intro,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_hkshareequityrelationships.json' as task_rs_id
+                                from ${srcoradbname}.hkshareequityrelationships"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_hkshareequityrelationships",
+                        "fileName": "w_hkshareequityrelationships",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compname","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"enddate","type":"string"},
+                                      {"name":"relation_type","type":"string"},
+                                      {"name":"s_holder_name","type":"string"},
+                                      {"name":"s_holder_code","type":"string"},
+                                      {"name":"s_holder_type","type":"bigint"},
+                                      {"name":"s_holder_pct","type":"double"},
+                                      {"name":"is_actualcontroller","type":"bigint"},
+                                      {"name":"actualcontroller_type","type":"string"},
+                                      {"name":"actualcontroller_is_ann","type":"bigint"},
+                                      {"name":"actualcontroller_intro","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

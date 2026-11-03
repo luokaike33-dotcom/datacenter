@@ -1,0 +1,127 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      pool_name,
+                                      ann_dt,
+                                      start_dt,
+                                      end_dr,
+                                      laon_num,
+                                      laon_balance,
+                                      oveloans1_30d_num,
+                                      oveloans1_30d__balance,
+                                      oveloans31_60d_num,
+                                      oveloans31_60d__balance,
+                                      oveloans61_90d_num,
+                                      oveloans61_90d__balance,
+                                      seri_arr_laon_num,
+                                      seri_arr_laon_balance,
+                                      def_laon_num,
+                                      def_laon_balance,
+                                      new_def_laon_num,
+                                      new_def_laon_balance,
+                                      proc_noarr_laon_num,
+                                      proc_noarr_laon_balance,
+                                      nonprose_proc_laon_num,
+                                      nonprose_proc_laon_balance,
+                                      readyprose_laon_num,
+                                      readyprose_laon_balance,
+                                      acceptprose_laon_num,
+                                      acceptprose_laon_balance,
+                                      execauction_laon_num,
+                                      execauction_laon_balance,
+                                      settle_proc_laon_num,
+                                      settle_proc_laon_balance,
+                                      cancel_proc_laon_num,
+                                      cancel_proc_laon_balance,
+                                      redm_bb_rep_laon_num,
+                                      redm_bb_rep_laon_balance,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_scloanofthepool.json' as task_rs_id
+                                from ${srcoradbname}.scloanofthepool"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_scloanofthepool",
+                        "fileName": "w_scloanofthepool",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"pool_name","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"start_dt","type":"string"},
+                                      {"name":"end_dr","type":"string"},
+                                      {"name":"laon_num","type":"double"},
+                                      {"name":"laon_balance","type":"double"},
+                                      {"name":"oveloans1_30d_num","type":"double"},
+                                      {"name":"oveloans1_30d__balance","type":"double"},
+                                      {"name":"oveloans31_60d_num","type":"double"},
+                                      {"name":"oveloans31_60d__balance","type":"double"},
+                                      {"name":"oveloans61_90d_num","type":"double"},
+                                      {"name":"oveloans61_90d__balance","type":"double"},
+                                      {"name":"seri_arr_laon_num","type":"double"},
+                                      {"name":"seri_arr_laon_balance","type":"double"},
+                                      {"name":"def_laon_num","type":"double"},
+                                      {"name":"def_laon_balance","type":"double"},
+                                      {"name":"new_def_laon_num","type":"double"},
+                                      {"name":"new_def_laon_balance","type":"double"},
+                                      {"name":"proc_noarr_laon_num","type":"double"},
+                                      {"name":"proc_noarr_laon_balance","type":"double"},
+                                      {"name":"nonprose_proc_laon_num","type":"double"},
+                                      {"name":"nonprose_proc_laon_balance","type":"double"},
+                                      {"name":"readyprose_laon_num","type":"double"},
+                                      {"name":"readyprose_laon_balance","type":"double"},
+                                      {"name":"acceptprose_laon_num","type":"double"},
+                                      {"name":"acceptprose_laon_balance","type":"double"},
+                                      {"name":"execauction_laon_num","type":"double"},
+                                      {"name":"execauction_laon_balance","type":"double"},
+                                      {"name":"settle_proc_laon_num","type":"double"},
+                                      {"name":"settle_proc_laon_balance","type":"double"},
+                                      {"name":"cancel_proc_laon_num","type":"double"},
+                                      {"name":"cancel_proc_laon_balance","type":"double"},
+                                      {"name":"redm_bb_rep_laon_num","type":"double"},
+                                      {"name":"redm_bb_rep_laon_balance","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

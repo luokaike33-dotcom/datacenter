@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      term,
+                                      ann_dt,
+                                      status,
+                                      name,
+                                      age,
+                                      gender,
+                                      professional,
+                                      degree,
+                                      unit,
+                                      post,
+                                      title,
+                                      typecode,
+                                      valid_dt,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_iecmemberlist.json' as task_rs_id
+                                from ${srcoradbname}.iecmemberlist"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_iecmemberlist",
+                        "fileName": "w_iecmemberlist",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"term","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"status","type":"string"},
+                                      {"name":"name","type":"string"},
+                                      {"name":"age","type":"bigint"},
+                                      {"name":"gender","type":"string"},
+                                      {"name":"professional","type":"string"},
+                                      {"name":"degree","type":"string"},
+                                      {"name":"unit","type":"string"},
+                                      {"name":"post","type":"string"},
+                                      {"name":"title","type":"string"},
+                                      {"name":"typecode","type":"bigint"},
+                                      {"name":"valid_dt","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

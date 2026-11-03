@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      event_id,
+                                      ann_dt,
+                                      end_dt,
+                                      status,
+                                      exp_dt,
+                                      qty,
+                                      amt,
+                                      s_dq_high,
+                                      s_dq_low,
+                                      crncy_code,
+                                      stock_repo_objective_code,
+                                      s_share_lsttypecode,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharestockrepo.json' as task_rs_id
+                                from ${srcoradbname}.asharestockrepo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharestockrepo",
+                        "fileName": "w_asharestockrepo",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"event_id","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"end_dt","type":"string"},
+                                      {"name":"status","type":"bigint"},
+                                      {"name":"exp_dt","type":"string"},
+                                      {"name":"qty","type":"double"},
+                                      {"name":"amt","type":"double"},
+                                      {"name":"s_dq_high","type":"double"},
+                                      {"name":"s_dq_low","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"stock_repo_objective_code","type":"bigint"},
+                                      {"name":"s_share_lsttypecode","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

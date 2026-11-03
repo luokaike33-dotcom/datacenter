@@ -1,0 +1,122 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/ims_bond_info",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"double"},
+									{"index":31,"type":"double"},
+							        {"index":32,"type":"double"},
+									{"index":33,"type":"double"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"string"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+								"secu_id",
+									"com_id",
+									"com_name",
+									"exch_code",
+									"trd_code",
+									"name_sht",
+									"typ_codei",
+									"typ_codei_desc",
+									"typ_codeii_desc",
+									"dlst_dt",
+									"task_rs_id",
+									"secu_var",
+									"end_dt",
+									"is_pub_iss",
+									"is_prc_bond",
+									"is_ccib_bond",
+									"is_ptl",
+									"is_righ",
+									"is_inds_bond",
+									"guar_id",
+									"guar_com_name",
+									"is_sub_debt",
+									"cnsc_ytm",
+									"cnsc_yte",
+									"cnbd_ytm",
+									"cnbd_yte",
+									"cnsc_imp_rating",
+									"cnbd_imp_rating",
+									"exer_date",
+									"issue_limit",
+									"due_limit",
+									"exer_limit",
+									"plan_issue_total_qty",
+									"actl_issue_total_qty",
+									"cnbd_dur",
+									"cnsc_dur",
+									"sys_rs_id",
+									
+									
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["ims_bond_info"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table ims_bond_info"]
+                    }
+                }
+            }
+        ]
+    }
+}
+
+

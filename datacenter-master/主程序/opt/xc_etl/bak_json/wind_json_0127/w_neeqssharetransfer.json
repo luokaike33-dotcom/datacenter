@@ -1,0 +1,62 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_info_compcode,ann_date,s_right_ann_date,s_transfer_ann_date,s_right_start_date,s_transfer_start_date,s_host_broker,s_deputy_host_broker,s_custodian,s_type,s_transfer_a_num,s_transfer_b_num,s_value,s_list_price,s_host_broker_id,opdate,opmode from ${srcoradbname}.neeqssharetransfer"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_neeqssharetransfer",
+                        "fileName": "w_neeqssharetransfer",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_info_compcode","type":"STRING"},
+                        {"name":"ann_date","type":"STRING"},
+                        {"name":"s_right_ann_date","type":"STRING"},
+                        {"name":"s_transfer_ann_date","type":"STRING"},
+                        {"name":"s_right_start_date","type":"STRING"},
+                        {"name":"s_transfer_start_date","type":"STRING"},
+                        {"name":"s_host_broker","type":"STRING"},
+                        {"name":"s_deputy_host_broker","type":"STRING"},
+                        {"name":"s_custodian","type":"STRING"},
+                        {"name":"s_type","type":"STRING"},
+                        {"name":"s_transfer_a_num","type":"DOUBLE"},
+                        {"name":"s_transfer_b_num","type":"DOUBLE"},
+                        {"name":"s_value","type":"DOUBLE"},
+                        {"name":"s_list_price","type":"DOUBLE"},
+                        {"name":"s_host_broker_id","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

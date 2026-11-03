@@ -1,0 +1,66 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_info_code,s_info_name,s_info_compname,s_info_exchmarket,s_info_index_baseper,s_info_index_basept,s_info_listdate,s_info_index_weightsrule,s_info_publisher,s_info_indexcode,s_info_indexstyle,index_intro,weight_type,expire_date,income_processing_method,null as change_history,null as s_info_pinyin,null as weight_type_name,null as s_info_indextype,opdate,opmode from ${srcoradbname}.aindexdescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_aindexdescription",
+                        "fileName": "w_aindexdescription",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_info_code","type":"STRING"},
+                        {"name":"s_info_name","type":"STRING"},
+                        {"name":"s_info_compname","type":"STRING"},
+                        {"name":"s_info_exchmarket","type":"STRING"},
+                        {"name":"s_info_index_baseper","type":"STRING"},
+                        {"name":"s_info_index_basept","type":"DOUBLE"},
+                        {"name":"s_info_listdate","type":"STRING"},
+                        {"name":"s_info_index_weightsrule","type":"STRING"},
+                        {"name":"s_info_publisher","type":"STRING"},
+                        {"name":"s_info_indexcode","type":"DOUBLE"},
+                        {"name":"s_info_indexstyle","type":"STRING"},
+                        {"name":"index_intro","type":"STRING"},
+                        {"name":"weight_type","type":"DOUBLE"},
+                        {"name":"expire_date","type":"STRING"},
+                        {"name":"income_processing_method","type":"STRING"},
+                        {"name":"change_history","type":"STRING"},
+                        {"name":"s_info_pinyin","type":"STRING"},
+                        {"name":"weight_type_name","type":"STRING"},
+                        {"name":"s_info_indextype","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,82 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_bond_rat",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"long"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"long"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"long"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "pub_dt",
+                                    "info_sour",
+                                    "rat_dt",
+                                    "rat_agy_code",
+                                    "rat_com_name",
+                                    "rat_typ",
+                                    "rat_name",
+                                    "rat_desc",
+                                    "rat_name_lst",
+                                    "rat_chg",
+                                    "rat_expt_typ",
+                                    "rat_sign",
+                                    "rat_com_dict_code",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_bond_rat"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_bond_rat where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

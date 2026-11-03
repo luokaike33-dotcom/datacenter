@@ -1,0 +1,68 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select c_org_code,c_org_name,c_org_name_st,c_org_name_en,c_org_type,c_org_parent,c_cury_code,n_reg_capital,n_corp_repr,c_reg_addr,c_offic_addr,d_found_time,c_www_addr,c_post_code,c_link_man,c_link_tel,c_mo_tel,c_email,c_dv_manager,c_dv_invest_adviser,c_dv_trustee,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vb_orginfo.json' as task_rs_id from ${srcoradbname}.vb_orginfo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vb_orginfo",
+                        "fileName": "fa45_vb_orginfo",
+                        "column": [
+                            {"name":"c_org_code","type":"string"},
+                            {"name":"c_org_name","type":"string"},
+                            {"name":"c_org_name_st","type":"string"},
+                            {"name":"c_org_name_en","type":"string"},
+                            {"name":"c_org_type","type":"string"},
+                            {"name":"c_org_parent","type":"string"},
+                            {"name":"c_cury_code","type":"string"},
+                            {"name":"n_reg_capital","type":"double"},
+                            {"name":"n_corp_repr","type":"string"},
+                            {"name":"c_reg_addr","type":"string"},
+                            {"name":"c_offic_addr","type":"string"},
+                            {"name":"d_found_time","type":"date"},
+                            {"name":"c_www_addr","type":"string"},
+                            {"name":"c_post_code","type":"string"},
+                            {"name":"c_link_man","type":"string"},
+                            {"name":"c_link_tel","type":"string"},
+                            {"name":"c_mo_tel","type":"string"},
+                            {"name":"c_email","type":"string"},
+                            {"name":"c_dv_manager","type":"string"},
+                            {"name":"c_dv_invest_adviser","type":"string"},
+                            {"name":"c_dv_trustee","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

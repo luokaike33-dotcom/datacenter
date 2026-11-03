@@ -1,0 +1,136 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									l_date,
+									l_daily_instruction_no,
+									l_index_daily_modify,
+									l_fund_id,
+									l_basecombi_id,
+									vc_inter_code,
+									l_operator_no,
+									l_time,
+									l_market_deal_amount,
+									en_market_deal_balance,
+									l_valid_deal_amount,
+									en_valid_deal_balance,
+									en_last_price,
+									l_cplt_valid_deal_amount,
+									en_cplt_valid_deal_balance,
+									en_disp_last_price,
+									en_cplt_last_price,
+									en_end_last_price,
+									l_disp_deal_amount,
+									en_disp_deal_balance,
+									l_cplt_deal_amount,
+									en_cplt_deal_balance,
+									l_end_deal_amount,
+									en_end_deal_balance,
+									en_index_disp_price,
+									en_time_last_price,
+									l_time_deal_amount,
+									en_time_deal_balance,
+									l_time_valid_deal_amount,
+									en_time_valid_deal_balance,
+									en_cplt_cal_price_total,
+									l_cplt_cal_time,
+									en_end_cal_price_total,
+									l_end_cal_time,
+									c_entrust_direction,
+									c_invest_type,
+									l_first_entrust_deal_amount,
+									en_first_entrust_deal_balance,
+									batchno,
+									inserttime,
+									updatetime,
+									task_rs_id,
+									p_dt
+							FROM ${srcdbname}.o3_thisinstructionmarketinfo where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_date",
+									"l_daily_instruction_no",
+									"l_index_daily_modify",
+									"l_fund_id",
+									"l_basecombi_id",
+									"vc_inter_code",
+									"l_operator_no",
+									"l_time",
+									"l_market_deal_amount",
+									"en_market_deal_balance",
+									"l_valid_deal_amount",
+									"en_valid_deal_balance",
+									"en_last_price",
+									"l_cplt_valid_deal_amount",
+									"en_cplt_valid_deal_balance",
+									"en_disp_last_price",
+									"en_cplt_last_price",
+									"en_end_last_price",
+									"l_disp_deal_amount",
+									"en_disp_deal_balance",
+									"l_cplt_deal_amount",
+									"en_cplt_deal_balance",
+									"l_end_deal_amount",
+									"en_end_deal_balance",
+									"en_index_disp_price",
+									"en_time_last_price",
+									"l_time_deal_amount",
+									"en_time_deal_balance",
+									"l_time_valid_deal_amount",
+									"en_time_valid_deal_balance",
+									"en_cplt_cal_price_total",
+									"l_cplt_cal_time",
+									"en_end_cal_price_total",
+									"l_end_cal_time",
+									"c_entrust_direction",
+									"c_invest_type",
+									"l_first_entrust_deal_amount",
+									"en_first_entrust_deal_balance",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"task_rs_id",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_thisinstructionmarketinfo"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from o3_thisinstructionmarketinfo where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

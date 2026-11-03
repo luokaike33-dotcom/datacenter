@@ -1,0 +1,118 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_bond_bid",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"long"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"date"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"long"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"date"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"obj_id",
+									"secu_id",
+									"affi_date",
+									"bidt_date",
+									"bidt_mode",
+									"bidt_subj",
+									"plan_bidt_gamt",
+									"comp_bidt_gamt",
+									"basi_undr_lmt",
+									"basi_undr_amt_add_righ",
+									"basi_undr_amt_appd_rati",
+									"bid_fpri_lowl",
+									"bid_fpri_topl",
+									"basi_bid_unit",
+									"per_mstp_low_bid_qty",
+									"per_mstp_high_bid_qty",
+									"pay_date",
+									"cptl_at_cnfm_time",
+									"bond_tran_time",
+									"dstb_begn_date",
+									"dstb_end_date",
+									"ctlt_feer",
+									"mstp_stp",
+									"is_requ_mstp_cotn",
+									"bidt_time",
+									"pay_end_day",
+									"over_ratn_vol",
+									"warh_time",
+									"oper_typ",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["var_bond_bid"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from var_bond_bid"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

@@ -1,0 +1,78 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "hdfsreader",
+          "parameter": {
+            "path": "${srchivedbpath}/pty_info_sh",
+            "defaultFS": "hdfs://${srchdfsurl}",
+            
+      "column": [
+        {"index":0,"type":"string"},
+        {"index":1,"type":"long"},
+        {"index":2,"type":"long"},
+        {"index":3,"type":"string"},
+        {"index":4,"type":"string"},
+        {"index":5,"type":"long"},
+        {"index":6,"type":"double"},
+        {"index":7,"type":"double"},
+        {"index":8,"type":"string"},
+        {"index":9,"type":"double"},
+        {"index":10,"type":"long"},
+        {"index":11,"type":"string"},
+        {"index":12,"type":"date"},
+        
+      ],
+      "fileType": "orc",
+      "encoding": "UTF-8",
+      "fieldDelimiter": "\t",
+      "haveKerberos": "${haveKerberos}",
+      "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+      "kerberosPrincipal": "${kerberosPrincipal}",
+      "kerberosConfFilePath": "${kerberosConfFilePath}"
+      }
+    },
+      "writer": {
+        "name": "oraclewriter",
+        "parameter": {
+          "column": [
+            "com_id",
+            "bgn_dt",
+            "pub_dt",
+            "sh_name",
+            "sh_id",
+            "sh_rank",
+            "hold_rat",
+            "hold_vol",
+            "hold_con",
+            "hold_vol_chg",
+            "busi_date",
+            "task_rs_id",
+            "dm_created_time"
+            
+          ],
+          "connection": [
+            {
+              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+              "table": ["pty_info_sh"]
+            }
+          ],
+          "password": "${tgrpassword}",
+          "username": "${tgrusername}",
+          "preSql":["delete from pty_info_sh where 1=1"]
+        }
+      }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"
+      },
+      "errorLimit": {
+        "record": "0",
+        "percentage": "0"
+      }
+    }
+  }
+}

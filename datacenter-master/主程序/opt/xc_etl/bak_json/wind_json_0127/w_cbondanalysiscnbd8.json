@@ -1,0 +1,78 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,trade_dt,b_anal_matu_cnbd,b_anal_dirty_cnbd,b_anal_accrint_cnbd,b_anal_net_cnbd,b_anal_yield_cnbd,b_anal_modidura_cnbd,b_anal_cnvxty_cnbd,b_anal_vobp_cnbd,b_anal_sprdura_cnbd,b_anal_sprcnxt_cnbd,b_anal_accrintclose_cnbd,b_anal_price,b_anal_netprice,b_anal_yield,b_anal_modifiedduration,b_anal_convexity,b_anal_bpvalue,b_anal_sduration,b_anal_scnvxty,b_anal_interestduration_cnbd,b_anal_interestcnvxty_cnbd,b_anal_interestduration,b_anal_interestcnvxty,b_anal_price_cnbd,b_anal_bpyield,b_anal_exchange,b_anal_credibility,b_anal_residualpri,b_anal_exercise_rate,b_anal_priority,opdate,opmode from ${srcoradbname}.cbondanalysiscnbd8 where trade_dt between '${busi_month}'||'01' and to_char(add_months(to_date('${busi_month}'||01,'yyyyMMdd'),1)-1,'yyyyMMdd')"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondanalysiscnbd8/busi_month=${busi_month}",
+                        "fileName": "w_cbondanalysiscnbd8",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"trade_dt","type":"string"},
+                            {"name":"b_anal_matu_cnbd","type":"double"},
+                            {"name":"b_anal_dirty_cnbd","type":"double"},
+                            {"name":"b_anal_accrint_cnbd","type":"double"},
+                            {"name":"b_anal_net_cnbd","type":"double"},
+                            {"name":"b_anal_yield_cnbd","type":"double"},
+                            {"name":"b_anal_modidura_cnbd","type":"double"},
+                            {"name":"b_anal_cnvxty_cnbd","type":"double"},
+                            {"name":"b_anal_vobp_cnbd","type":"double"},
+                            {"name":"b_anal_sprdura_cnbd","type":"double"},
+                            {"name":"b_anal_sprcnxt_cnbd","type":"double"},
+                            {"name":"b_anal_accrintclose_cnbd","type":"double"},
+                            {"name":"b_anal_price","type":"double"},
+                            {"name":"b_anal_netprice","type":"double"},
+                            {"name":"b_anal_yield","type":"double"},
+                            {"name":"b_anal_modifiedduration","type":"double"},
+                            {"name":"b_anal_convexity","type":"double"},
+                            {"name":"b_anal_bpvalue","type":"double"},
+                            {"name":"b_anal_sduration","type":"double"},
+                            {"name":"b_anal_scnvxty","type":"double"},
+                            {"name":"b_anal_interestduration_cnbd","type":"double"},
+                            {"name":"b_anal_interestcnvxty_cnbd","type":"double"},
+                            {"name":"b_anal_interestduration","type":"double"},
+                            {"name":"b_anal_interestcnvxty","type":"double"},
+                            {"name":"b_anal_price_cnbd","type":"double"},
+                            {"name":"b_anal_bpyield","type":"double"},
+                            {"name":"b_anal_exchange","type":"string"},
+                            {"name":"b_anal_credibility","type":"string"},
+                            {"name":"b_anal_residualpri","type":"double"},
+                            {"name":"b_anal_exercise_rate","type":"double"},
+                            {"name":"b_anal_priority","type":"double"},
+                            {"name":"opdate","type":"date"},
+                            {"name":"opmode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

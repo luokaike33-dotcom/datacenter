@@ -1,0 +1,74 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["SELECT VC_BROKER_NO, VC_PARENT_BROKER_NO, VC_BROKER_NAME, VC_COUNTRY_NO, VC_BIC_CODE, C_FIX_ALLOCATION, VC_OMGEO_BROKER_TYPE, VC_OMGEO_BROKER_CODE, VC_OMGEO_BRMG, VC_TRADE_MEMBER, C_TYPE, C_PROFIT_AVAILABLE, VC_EXTERNAL_BROKER_NO, C_RIGHT_CONFIRM, C_ACCOUNTCHECK_TYPE, VC_SIGN_FUNDS, VC_REPORTCODE_TYPE, C_ENTRUSTS_COMBI, VC_CLIENT_ID, VC_TRADE_MEMBER_SQ, VC_TRADE_MEMBER_ZZ, VC_TRADE_MEMBER_DL, VC_PRICE_TYPE, VC_TRADE_MEMBER_NY, L_SH_REPORT_NUMBER_DIGITS, L_SZ_REPORT_NUMBER_DIGITS, L_GZ_REPORT_NUMBER_DIGITS, VC_TIMESTAMP, L_VIRTUAL_KEY, VC_LIQCOMPANY_NAME, VC_SELLTE_MEMBER from ${srcoradbname}.TBROKER"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_tbroker", 
+                        "fileName": "o3_tbroker",
+                        "column": [
+      {"name":"vc_broker_no","type":"string"},
+                      {"name":"vc_parent_broker_no","type":"string"},
+                      {"name":"vc_broker_name","type":"string"},
+                      {"name":"vc_country_no","type":"string"},
+                      {"name":"vc_bic_code","type":"string"},
+                      {"name":"c_fix_allocation","type":"string"},
+                      {"name":"vc_omgeo_broker_type","type":"string"},
+                      {"name":"vc_omgeo_broker_code","type":"string"},
+                      {"name":"vc_omgeo_brmg","type":"string"},
+                      {"name":"vc_trade_member","type":"string"},
+                      {"name":"c_type","type":"string"},
+                      {"name":"c_profit_available","type":"string"},
+                      {"name":"vc_external_broker_no","type":"string"},
+                      {"name":"c_right_confirm","type":"string"},
+                      {"name":"c_accountcheck_type","type":"string"},
+                      {"name":"vc_sign_funds","type":"string"},
+                      {"name":"vc_reportcode_type","type":"string"},
+                      {"name":"c_entrusts_combi","type":"string"},
+                      {"name":"vc_client_id","type":"string"},
+                      {"name":"vc_trade_member_sq","type":"string"},
+                      {"name":"vc_trade_member_zz","type":"string"},
+                      {"name":"vc_trade_member_dl","type":"string"},
+                      {"name":"vc_price_type","type":"string"},
+                      {"name":"vc_trade_member_ny","type":"string"},
+                      {"name":"l_sh_report_number_digits","type":"double"},
+                      {"name":"l_sz_report_number_digits","type":"double"},
+                      {"name":"l_gz_report_number_digits","type":"double"},
+                      {"name":"vc_timestamp","type":"string"},
+                      {"name":"l_virtual_key","type":"double"},
+                      {"name":"vc_liqcompany_name","type":"string"},
+                      {"name":"vc_sellte_member","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

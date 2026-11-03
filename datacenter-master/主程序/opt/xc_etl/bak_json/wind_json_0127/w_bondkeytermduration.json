@@ -1,0 +1,95 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      dura1m,
+                                      dura3m,
+                                      dura6m,
+                                      dura1y,
+                                      dura2y,
+                                      dura3y,
+                                      dura4y,
+                                      dura5y,
+                                      dura7y,
+                                      dura9y,
+                                      dura10y,
+                                      dura15y,
+                                      dura20y,
+                                      dura30y,
+                                      durast,
+                                      duralg,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_bondkeytermduration.json' as task_rs_id
+                                from ${srcoradbname}.bondkeytermduration WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_bondkeytermduration/busi_month=${busi_month}",
+                        "fileName": "w_bondkeytermduration",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"dura1m","type":"double"},
+                                      {"name":"dura3m","type":"double"},
+                                      {"name":"dura6m","type":"double"},
+                                      {"name":"dura1y","type":"double"},
+                                      {"name":"dura2y","type":"double"},
+                                      {"name":"dura3y","type":"double"},
+                                      {"name":"dura4y","type":"double"},
+                                      {"name":"dura5y","type":"double"},
+                                      {"name":"dura7y","type":"double"},
+                                      {"name":"dura9y","type":"double"},
+                                      {"name":"dura10y","type":"double"},
+                                      {"name":"dura15y","type":"double"},
+                                      {"name":"dura20y","type":"double"},
+                                      {"name":"dura30y","type":"double"},
+                                      {"name":"durast","type":"double"},
+                                      {"name":"duralg","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

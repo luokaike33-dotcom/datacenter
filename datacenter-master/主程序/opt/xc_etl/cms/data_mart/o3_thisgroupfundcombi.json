@@ -1,0 +1,79 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+                                                                        l_date,
+									l_group_id,
+									l_fund_id,
+									l_basecombi_id,
+									l_asset_id,
+									l_virtual_key,
+									vc_timestamp,
+									c_groupfa_default_asset,
+									bath_dt,
+									data_ins_time,
+									task_rs_id,
+                                                                        p_dt
+							FROM ${srcdbname}.o3_thisgroupfundcombi WHERE p_dt between ${beg_date} and ${end_date}"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [                  
+                                                                        "l_date",
+									"l_group_id",
+									"l_fund_id",
+									"l_basecombi_id",
+									"l_asset_id",
+									"l_virtual_key",
+									"vc_timestamp",
+									"c_groupfa_default_asset",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id",
+                                                                        "p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_thisgroupfundcombi"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["DELETE FROM o3_thisgroupfundcombi WHERE p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

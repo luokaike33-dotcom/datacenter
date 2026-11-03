@@ -1,0 +1,91 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      hksc_holder_quantity,
+                                      shhksc_holder_quantity,
+                                      szhksc_holder_quantity,
+                                      hkagency_holder_quantity,
+                                      cagency_holder_quantity,
+                                      iagencyt_holder_quantity,
+                                      hksc_holder_quantity_pct,
+                                      shhksc_holder_quantity_pct,
+                                      szhksc_holder_quantity_pct,
+                                      hkagency_holder_quantity_pct,
+                                      cagency_holder_quantity_pct,
+                                      iagency_holder_quantity_pct,
+                                      top5_holder_concentration,
+                                      top10_holder_concentration,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_hkshareagencyholdings.json' as task_rs_id
+                                from ${srcoradbname}.hkshareagencyholdings"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_hkshareagencyholdings",
+                        "fileName": "w_hkshareagencyholdings",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"hksc_holder_quantity","type":"double"},
+                                      {"name":"shhksc_holder_quantity","type":"double"},
+                                      {"name":"szhksc_holder_quantity","type":"double"},
+                                      {"name":"hkagency_holder_quantity","type":"double"},
+                                      {"name":"cagency_holder_quantity","type":"double"},
+                                      {"name":"iagencyt_holder_quantity","type":"double"},
+                                      {"name":"hksc_holder_quantity_pct","type":"double"},
+                                      {"name":"shhksc_holder_quantity_pct","type":"double"},
+                                      {"name":"szhksc_holder_quantity_pct","type":"double"},
+                                      {"name":"hkagency_holder_quantity_pct","type":"double"},
+                                      {"name":"cagency_holder_quantity_pct","type":"double"},
+                                      {"name":"iagency_holder_quantity_pct","type":"double"},
+                                      {"name":"top5_holder_concentration","type":"double"},
+                                      {"name":"top10_holder_concentration","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

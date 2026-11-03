@@ -1,0 +1,136 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/dw_var_bondinfo",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"long"},
+									{"index":25,"type":"long"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"double"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"date"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sk_issue",
+									"sk_currency",
+									"issue_name",
+									"issue_breifname",
+									"dk_bond_varieties",
+									"dk_deadline_class",
+									"issue_scale",
+									"onmkt_date",
+									"anno_date",
+									"issue_date",
+									"due_date",
+									"value_date",
+									"end_date",
+									"dk_per_annum_way",
+									"dk_payment_of_interest",
+									"number_of_intrest",
+									"dk_cal_interest_mthd",
+									"coupon_rate",
+									"diff_interest_rate",
+									"face_value",
+									"cur_face_value",
+									"issue_price",
+									"dk_issu_type",
+									"dk_isredeem",
+									"payment_date",
+									"delisting_date",
+									"dk_saving_bonds",
+									"dk_sub_term_debt",
+									"dk_hybrid_bonds",
+									"dk_sub_debt",
+									"dk_short_terms_bonds",
+									"dk_corp_bonds",
+									"dk_coll_bill",
+									"dk_shortest_terms_bonds",
+									"bond_years",
+									"yes_or_no_of_cityinv",
+									"yes_or_no_of_cvt",
+									"bondtp1",
+									"dm_src_info",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["dw_var_bondinfo"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from dw_var_bondinfo"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

@@ -1,0 +1,77 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      trade_dt,
+                                      trade_tm,
+                                      b_info_tradetypcode,
+                                      b_info_tradeside,
+                                      b_info_amountmn,
+                                      b_info_interest,
+                                      b_anal_ptm,
+                                      b_info_accepttype,
+                                      b_info_billtype,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbillbtransdiscountquote.json' as task_rs_id
+                                from ${srcoradbname}.cbillbtransdiscountquote WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbillbtransdiscountquote/busi_month=${busi_month}",
+                        "fileName": "w_cbillbtransdiscountquote",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"trade_tm","type":"string"},
+                                      {"name":"b_info_tradetypcode","type":"bigint"},
+                                      {"name":"b_info_tradeside","type":"bigint"},
+                                      {"name":"b_info_amountmn","type":"double"},
+                                      {"name":"b_info_interest","type":"double"},
+                                      {"name":"b_anal_ptm","type":"string"},
+                                      {"name":"b_info_accepttype","type":"bigint"},
+                                      {"name":"b_info_billtype","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,103 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      event_id,
+                                      s_info_windcode,
+                                      ann_date,
+                                      buy_company_name,
+                                      s_relation_typcode,
+                                      s_issuer_name,
+                                      s_issuer_id,
+                                      s_fullname,
+                                      s_info_code,
+                                      s_underlying,
+                                      s_subscription_date,
+                                      s_subscription_amount,
+                                      s_crncy_code,
+                                      s_incomestartdate,
+                                      s_incomeenddate,
+                                      s_commission,
+                                      s_expyidld_min,
+                                      s_expyield_max,
+                                      s_sources_funds_code,
+                                      is_connection_relation,
+                                      s_net_assets_ratio,
+                                      s_summary,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharecorporatefinance.json' as task_rs_id
+                                from ${srcoradbname}.asharecorporatefinance"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharecorporatefinance",
+                        "fileName": "w_asharecorporatefinance",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"event_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"buy_company_name","type":"string"},
+                                      {"name":"s_relation_typcode","type":"bigint"},
+                                      {"name":"s_issuer_name","type":"string"},
+                                      {"name":"s_issuer_id","type":"string"},
+                                      {"name":"s_fullname","type":"string"},
+                                      {"name":"s_info_code","type":"string"},
+                                      {"name":"s_underlying","type":"bigint"},
+                                      {"name":"s_subscription_date","type":"string"},
+                                      {"name":"s_subscription_amount","type":"double"},
+                                      {"name":"s_crncy_code","type":"string"},
+                                      {"name":"s_incomestartdate","type":"string"},
+                                      {"name":"s_incomeenddate","type":"string"},
+                                      {"name":"s_commission","type":"string"},
+                                      {"name":"s_expyidld_min","type":"double"},
+                                      {"name":"s_expyield_max","type":"double"},
+                                      {"name":"s_sources_funds_code","type":"bigint"},
+                                      {"name":"is_connection_relation","type":"bigint"},
+                                      {"name":"s_net_assets_ratio","type":"double"},
+                                      {"name":"s_summary","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

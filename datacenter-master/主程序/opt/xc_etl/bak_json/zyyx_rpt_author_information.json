@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      id,
+                                      author_id,
+                                      author_name,
+                                      organ_id,
+                                      organ_name,
+                                      is_incumbent,
+                                      y1,
+                                      m1,
+                                      y2,
+                                      m2,
+                                      entrytime,
+                                      updatetime,
+                                      tmstamp,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'zyyx_rpt_author_information.json' as task_rs_id
+                                from ${srcoradbname}.rpt_author_information"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${is_kbs}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/zyyx_rpt_author_information",
+                        "fileName": "zyyx_rpt_author_information",
+                        "column": [
+                                      {"name":"id","type":"bigint"},
+                                      {"name":"author_id","type":"bigint"},
+                                      {"name":"author_name","type":"string"},
+                                      {"name":"organ_id","type":"bigint"},
+                                      {"name":"organ_name","type":"string"},
+                                      {"name":"is_incumbent","type":"bigint"},
+                                      {"name":"y1","type":"bigint"},
+                                      {"name":"m1","type":"bigint"},
+                                      {"name":"y2","type":"bigint"},
+                                      {"name":"m2","type":"bigint"},
+                                      {"name":"entrytime","type":"timestamp"},
+                                      {"name":"updatetime","type":"timestamp"},
+                                      {"name":"tmstamp","type":"bigint"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

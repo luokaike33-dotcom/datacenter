@@ -1,0 +1,81 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      crncy_code,
+                                      s_wq_pctchange,
+                                      s_wq_turn,
+                                      s_wq_avgturn,
+                                      s_wq_amount,
+                                      s_risk_betar100,
+                                      s_wq_varpctchange100,
+                                      s_wq_devpctchange100,
+                                      s_wq_avgpctchange100,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareweeklyyield.json' as task_rs_id
+                                from ${srcoradbname}.ashareweeklyyield WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd')"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareweeklyyield/busi_month=${busi_month}",
+                        "fileName": "w_ashareweeklyyield",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"s_wq_pctchange","type":"double"},
+                                      {"name":"s_wq_turn","type":"double"},
+                                      {"name":"s_wq_avgturn","type":"double"},
+                                      {"name":"s_wq_amount","type":"double"},
+                                      {"name":"s_risk_betar100","type":"double"},
+                                      {"name":"s_wq_varpctchange100","type":"double"},
+                                      {"name":"s_wq_devpctchange100","type":"double"},
+                                      {"name":"s_wq_avgpctchange100","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

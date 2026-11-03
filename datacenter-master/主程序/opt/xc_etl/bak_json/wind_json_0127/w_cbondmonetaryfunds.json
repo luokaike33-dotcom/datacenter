@@ -1,0 +1,81 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      report_period,
+                                      ann_date,
+                                      s_rmb,
+                                      s_us,
+                                      s_jpy,
+                                      s_eur,
+                                      s_hkd,
+                                      s_gbp,
+                                      s_other,
+                                      capital_tot,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondmonetaryfunds.json' as task_rs_id
+                                from ${srcoradbname}.cbondmonetaryfunds WHERE report_period BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondmonetaryfunds/busi_month=${busi_month}",
+                        "fileName": "w_cbondmonetaryfunds",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"s_rmb","type":"double"},
+                                      {"name":"s_us","type":"double"},
+                                      {"name":"s_jpy","type":"double"},
+                                      {"name":"s_eur","type":"double"},
+                                      {"name":"s_hkd","type":"double"},
+                                      {"name":"s_gbp","type":"double"},
+                                      {"name":"s_other","type":"double"},
+                                      {"name":"capital_tot","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

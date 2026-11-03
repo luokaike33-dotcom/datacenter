@@ -1,0 +1,133 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      yhcode,
+                                      fundcode,
+                                      estabdate,
+                                      closedate,
+                                      activedirection,
+                                      banksname,
+                                      effdate,
+                                      equityfunddetailed,
+                                      equityfundtype,
+                                      esg_type,
+                                      expdate,
+                                      f_fname,
+                                      fundname,
+                                      fundsname,
+                                      fundtype,
+                                      intestway,
+                                      isequityfund,
+                                      isetf,
+                                      isetflink,
+                                      isfof,
+                                      isforgninvest,
+                                      isform,
+                                      ishkfund,
+                                      isholding,
+                                      isinitiative,
+                                      islaunchfund,
+                                      islof,
+                                      isregularly,
+                                      isreit,
+                                      level1id,
+                                      level1name,
+                                      level2id,
+                                      level2name,
+                                      level3id,
+                                      level3name,
+                                      managerbusitype,
+                                      operatemode,
+                                      settlementmode,
+                                      yhbankcode,
+                                      yhmngcode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'yhjj_t_prfnd_level_classify.json' as task_rs_id
+                                from ${srcoradbname}.t_prfnd_level_classify"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/yhjj_t_prfnd_level_classify",
+                        "fileName": "yhjj_t_prfnd_level_classify",
+                        "column": [
+                                      {"name":"yhcode","type":"string"},
+                                      {"name":"fundcode","type":"string"},
+                                      {"name":"estabdate","type":"string"},
+                                      {"name":"closedate","type":"string"},
+                                      {"name":"activedirection","type":"string"},
+                                      {"name":"banksname","type":"string"},
+                                      {"name":"effdate","type":"string"},
+                                      {"name":"equityfunddetailed","type":"string"},
+                                      {"name":"equityfundtype","type":"string"},
+                                      {"name":"esg_type","type":"string"},
+                                      {"name":"expdate","type":"string"},
+                                      {"name":"f_fname","type":"string"},
+                                      {"name":"fundname","type":"string"},
+                                      {"name":"fundsname","type":"string"},
+                                      {"name":"fundtype","type":"string"},
+                                      {"name":"intestway","type":"string"},
+                                      {"name":"isequityfund","type":"string"},
+                                      {"name":"isetf","type":"string"},
+                                      {"name":"isetflink","type":"string"},
+                                      {"name":"isfof","type":"string"},
+                                      {"name":"isforgninvest","type":"string"},
+                                      {"name":"isform","type":"string"},
+                                      {"name":"ishkfund","type":"string"},
+                                      {"name":"isholding","type":"string"},
+                                      {"name":"isinitiative","type":"string"},
+                                      {"name":"islaunchfund","type":"string"},
+                                      {"name":"islof","type":"string"},
+                                      {"name":"isregularly","type":"string"},
+                                      {"name":"isreit","type":"string"},
+                                      {"name":"level1id","type":"string"},
+                                      {"name":"level1name","type":"string"},
+                                      {"name":"level2id","type":"string"},
+                                      {"name":"level2name","type":"string"},
+                                      {"name":"level3id","type":"string"},
+                                      {"name":"level3name","type":"string"},
+                                      {"name":"managerbusitype","type":"string"},
+                                      {"name":"operatemode","type":"string"},
+                                      {"name":"settlementmode","type":"string"},
+                                      {"name":"yhbankcode","type":"string"},
+                                      {"name":"yhmngcode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_info_compname,s_info_compcode,div_facerate,div_ratetype,div_content,redemp_condition,redemp_price,conv_price,conv_condition,conv_pricebasis,type_code,null as s_info_name,opdate,opmode from ${srcoradbname}.cpsdescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cpsdescription",
+                        "fileName": "w_cpsdescription",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_info_compname","type":"STRING"},
+                        {"name":"s_info_compcode","type":"STRING"},
+                        {"name":"div_facerate","type":"DOUBLE"},
+                        {"name":"div_ratetype","type":"DOUBLE"},
+                        {"name":"div_content","type":"STRING"},
+                        {"name":"redemp_condition","type":"STRING"},
+                        {"name":"redemp_price","type":"STRING"},
+                        {"name":"conv_price","type":"DOUBLE"},
+                        {"name":"conv_condition","type":"STRING"},
+                        {"name":"conv_pricebasis","type":"STRING"},
+                        {"name":"type_code","type":"STRING"},
+                        {"name":"s_info_name","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,133 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      report_type,
+                                      statement_type,
+                                      begindate,
+                                      enddate,
+                                      eps_basic,
+                                      eps_diluted,
+                                      bps,
+                                      grps,
+                                      cash_flows_opera_activ_per,
+                                      net_profit_rate,
+                                      grossprofitmargin,
+                                      opprofit_rate,
+                                      profit_bef_tax_rate,
+                                      roe,
+                                      roa,
+                                      roic,
+                                      effe_income_tax_rate,
+                                      ocftoor,
+                                      debttoequity,
+                                      assetstoequity,
+                                      debttoassets,
+                                      tot_liab_investcapital,
+                                      parsh_int_investcapital,
+                                      quick_ratio,
+                                      current_ratio,
+                                      cashtoliqdebt,
+                                      non_cur_assets_to_equity,
+                                      ffo_to_tot_liab,
+                                      ffo_to_tot_cur_liab,
+                                      invturn,
+                                      caturn,
+                                      faturn,
+                                      assetsturn,
+                                      input_costs,
+                                      crncy_code,
+                                      ann_dt,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_hkfinancialindicator.json' as task_rs_id
+                                from ${srcoradbname}.hkfinancialindicator WHERE enddate BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_hkfinancialindicator/busi_month=${busi_month}",
+                        "fileName": "w_hkfinancialindicator",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"report_type","type":"string"},
+                                      {"name":"statement_type","type":"string"},
+                                      {"name":"begindate","type":"string"},
+                                      {"name":"enddate","type":"string"},
+                                      {"name":"eps_basic","type":"double"},
+                                      {"name":"eps_diluted","type":"double"},
+                                      {"name":"bps","type":"double"},
+                                      {"name":"grps","type":"double"},
+                                      {"name":"cash_flows_opera_activ_per","type":"double"},
+                                      {"name":"net_profit_rate","type":"double"},
+                                      {"name":"grossprofitmargin","type":"double"},
+                                      {"name":"opprofit_rate","type":"double"},
+                                      {"name":"profit_bef_tax_rate","type":"double"},
+                                      {"name":"roe","type":"double"},
+                                      {"name":"roa","type":"double"},
+                                      {"name":"roic","type":"double"},
+                                      {"name":"effe_income_tax_rate","type":"double"},
+                                      {"name":"ocftoor","type":"double"},
+                                      {"name":"debttoequity","type":"double"},
+                                      {"name":"assetstoequity","type":"double"},
+                                      {"name":"debttoassets","type":"double"},
+                                      {"name":"tot_liab_investcapital","type":"double"},
+                                      {"name":"parsh_int_investcapital","type":"double"},
+                                      {"name":"quick_ratio","type":"double"},
+                                      {"name":"current_ratio","type":"double"},
+                                      {"name":"cashtoliqdebt","type":"double"},
+                                      {"name":"non_cur_assets_to_equity","type":"double"},
+                                      {"name":"ffo_to_tot_liab","type":"double"},
+                                      {"name":"ffo_to_tot_cur_liab","type":"double"},
+                                      {"name":"invturn","type":"double"},
+                                      {"name":"caturn","type":"double"},
+                                      {"name":"faturn","type":"double"},
+                                      {"name":"assetsturn","type":"double"},
+                                      {"name":"input_costs","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

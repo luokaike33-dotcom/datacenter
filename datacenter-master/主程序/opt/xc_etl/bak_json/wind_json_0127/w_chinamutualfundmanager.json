@@ -1,0 +1,62 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,f_info_windcode,ann_date,f_info_fundmanager,f_info_manager_gender,f_info_manager_birthyear,f_info_manager_education,f_info_manager_nationality,f_info_manager_startdate,f_info_manager_leavedate,f_info_manager_resume,f_info_fundmanager_id,s_info_manager_post,f_info_escrow_fundmanager,f_info_escrow_startdate,f_info_escrow_leavedate,null as f_info_dis_serial_number,opdate,opmode from ${srcoradbname}.chinamutualfundmanager"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundmanager",
+                        "fileName": "w_chinamutualfundmanager",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"f_info_windcode","type":"STRING"},
+                        {"name":"ann_date","type":"STRING"},
+                        {"name":"f_info_fundmanager","type":"STRING"},
+                        {"name":"f_info_manager_gender","type":"STRING"},
+                        {"name":"f_info_manager_birthyear","type":"STRING"},
+                        {"name":"f_info_manager_education","type":"STRING"},
+                        {"name":"f_info_manager_nationality","type":"STRING"},
+                        {"name":"f_info_manager_startdate","type":"STRING"},
+                        {"name":"f_info_manager_leavedate","type":"STRING"},
+                        {"name":"f_info_manager_resume","type":"STRING"},
+                        {"name":"f_info_fundmanager_id","type":"STRING"},
+                        {"name":"s_info_manager_post","type":"STRING"},
+                        {"name":"f_info_escrow_fundmanager","type":"STRING"},
+                        {"name":"f_info_escrow_startdate","type":"STRING"},
+                        {"name":"f_info_escrow_leavedate","type":"STRING"},
+                        {"name":"f_info_dis_serial_number","type":"DOUBLE"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

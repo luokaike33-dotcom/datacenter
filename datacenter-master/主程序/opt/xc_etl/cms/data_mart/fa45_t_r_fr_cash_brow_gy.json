@@ -1,0 +1,68 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd":"beeline",
+						"hiveSql":["SELECT c_iden, c_port_code, d_date, c_cash_item_p, c_cash_item_code, c_cash_item_name, n_money, c_update_by, c_update_time, bath_dt, data_ins_time, task_rs_id, p_dt
+                        FROM ${srcdbname}.fa45_t_r_fr_cash_brow_gy where p_dt between ${beg_date} and ${end_date}
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"c_iden",
+									"c_port_code",
+									"d_date",
+									"c_cash_item_p",
+									"c_cash_item_code",
+									"c_cash_item_name",
+									"n_money",
+									"c_update_by",
+									"c_update_time",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id",
+                                    "p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fa45_t_r_fr_cash_brow_gy"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fa45_t_r_fr_cash_brow_gy where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "3"
+            },
+            "errorLimit": {"record":0}
+        }
+    }
+}
+
+

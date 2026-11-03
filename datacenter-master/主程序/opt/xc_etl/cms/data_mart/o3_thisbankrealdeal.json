@@ -1,0 +1,134 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+					"reader": {
+						"name": "hivereader",
+						"parameter": {
+							"hive_cmd":"beeline",
+							"hiveSql":["
+								SELECT l_date, l_time, vc_deal_no, l_daily_instruction_no, l_fund_id, l_basecombi_id, c_invest_type, c_entrust_direction, vc_inter_code, en_balance, en_rate, en_first_settle_interest, en_first_net_price, en_first_full_price, en_first_clear_balance, en_first_mature_yield, en_second_clear_balance, en_second_mature_yield, l_first_settle_date, l_second_settle_date, l_hg_days, l_settle_speed, l_use_days, c_first_settle_type, c_second_settle_type, c_cancel_flag, c_status, l_entrust_serial_no, l_trade_rival_no, en_fee, c_busin_class, vc_remark, l_serial_no, c_source, l_index_daily_modify, vc_original_deal_no, c_external_deal_flag, en_mature_net_price, en_mature_settle_interest, vc_broker_no, c_lock_flag, vc_match_info, c_fixsend_flag, l_stock_serial_no, l_instr_date, vc_instrid, vc_source_no, vc_quote_id, vc_rivaltrader_name, l_rivalaccount_no, c_clear_type, vc_bank_account, vc_operator_name, l_bank_id, vc_confirm_no, l_deal_amount, en_deal_balance, l_instance_id, l_operator_no, vc_alert_method, vc_rivaltrader_id, c_trade_type, l_org_id, l_dept_id, l_exec_confirm_no, c_account_mode, vc_selftrader_name, l_rivalbank_id, vc_unique_deal_serial_no, l_modify_no, l_lock_operator, l_matchtime, l_imp_deal_term, vc_original_entrust_direction, c_treatyhg_flag, l_hg_batch_no, c_settle_flag, p_dt
+								FROM ${srcdbname}.o3_thisbankrealdeal
+								"],
+							"defaultFS": "hdfs://${srchdfsurl}",
+							"tmpDatabasePath":"${srchivedbpath}",
+							"tmpDatabase":"${srcdbname}",
+							"hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+							"hive_ldap_user_name":"${srcusername}",
+							"hive_ldap_password":"${srcpassword}",
+							"haveKerberos": "${haveKerberos}",
+							"kerberosKeytabFilePath": "${kbsfilepath}",
+							"kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_date",
+									"l_time",
+									"vc_deal_no",
+									"l_daily_instruction_no",
+									"l_fund_id",
+									"l_basecombi_id",
+									"c_invest_type",
+									"c_entrust_direction",
+									"vc_inter_code",
+									"en_balance",
+									"en_rate",
+									"en_first_settle_interest",
+									"en_first_net_price",
+									"en_first_full_price",
+									"en_first_clear_balance",
+									"en_first_mature_yield",
+									"en_second_clear_balance",
+									"en_second_mature_yield",
+									"l_first_settle_date",
+									"l_second_settle_date",
+									"l_hg_days",
+									"l_settle_speed",
+									"l_use_days",
+									"c_first_settle_type",
+									"c_second_settle_type",
+									"c_cancel_flag",
+									"c_status",
+									"l_entrust_serial_no",
+									"l_trade_rival_no",
+									"en_fee",
+									"c_busin_class",
+									"vc_remark",
+									"l_serial_no",
+									"c_source",
+									"l_index_daily_modify",
+									"vc_original_deal_no",
+									"c_external_deal_flag",
+									"en_mature_net_price",
+									"en_mature_settle_interest",
+									"vc_broker_no",
+									"c_lock_flag",
+									"vc_match_info",
+									"c_fixsend_flag",
+									"l_stock_serial_no",
+									"l_instr_date",
+									"vc_instrid",
+									"vc_source_no",
+									"vc_quote_id",
+									"vc_rivaltrader_name",
+									"l_rivalaccount_no",
+									"c_clear_type",
+									"vc_bank_account",
+									"vc_operator_name",
+									"l_bank_id",
+									"vc_confirm_no",
+									"l_deal_amount",
+									"en_deal_balance",
+									"l_instance_id",
+									"l_operator_no",
+									"vc_alert_method",
+									"vc_rivaltrader_id",
+									"c_trade_type",
+									"l_org_id",
+									"l_dept_id",
+									"l_exec_confirm_no",
+									"c_account_mode",
+									"vc_selftrader_name",
+									"l_rivalbank_id",
+									"vc_unique_deal_serial_no",
+									"l_modify_no",
+									"l_lock_operator",
+									"l_matchtime",
+									"l_imp_deal_term",
+									"vc_original_entrust_direction",
+									"c_treatyhg_flag",
+									"l_hg_batch_no",
+									"c_settle_flag",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_thisbankrealdeal"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table o3_thisbankrealdeal "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

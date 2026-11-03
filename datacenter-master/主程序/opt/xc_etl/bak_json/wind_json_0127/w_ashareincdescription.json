@@ -1,0 +1,105 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_inc_sequence,
+                                      s_inc_subject,
+                                      s_inc_type,
+                                      s_inc_quantity,
+                                      s_inc_firstinc,
+                                      s_inc_endinc,
+                                      s_inc_initexecpri,
+                                      s_inc_expirydate,
+                                      ann_dt,
+                                      s_inc_programdescript,
+                                      s_inc_incentsharesaledescript,
+                                      s_inc_incentcondition,
+                                      s_inc_optexespecialcondition,
+                                      progress,
+                                      price_description,
+                                      inc_numbers_rate,
+                                      preplan_ann_date,
+                                      gm_date,
+                                      implement_date,
+                                      inc_fund_description,
+                                      interval_months,
+                                      eqinc_plan_event_id,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareincdescription.json' as task_rs_id
+                                from ${srcoradbname}.ashareincdescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareincdescription",
+                        "fileName": "w_ashareincdescription",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_inc_sequence","type":"string"},
+                                      {"name":"s_inc_subject","type":"bigint"},
+                                      {"name":"s_inc_type","type":"bigint"},
+                                      {"name":"s_inc_quantity","type":"double"},
+                                      {"name":"s_inc_firstinc","type":"string"},
+                                      {"name":"s_inc_endinc","type":"string"},
+                                      {"name":"s_inc_initexecpri","type":"double"},
+                                      {"name":"s_inc_expirydate","type":"double"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"s_inc_programdescript","type":"string"},
+                                      {"name":"s_inc_incentsharesaledescript","type":"string"},
+                                      {"name":"s_inc_incentcondition","type":"string"},
+                                      {"name":"s_inc_optexespecialcondition","type":"string"},
+                                      {"name":"progress","type":"string"},
+                                      {"name":"price_description","type":"string"},
+                                      {"name":"inc_numbers_rate","type":"double"},
+                                      {"name":"preplan_ann_date","type":"string"},
+                                      {"name":"gm_date","type":"string"},
+                                      {"name":"implement_date","type":"string"},
+                                      {"name":"inc_fund_description","type":"string"},
+                                      {"name":"interval_months","type":"double"},
+                                      {"name":"eqinc_plan_event_id","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

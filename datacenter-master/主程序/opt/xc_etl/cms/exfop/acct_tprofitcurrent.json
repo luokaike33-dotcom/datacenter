@@ -1,0 +1,68 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+                                c_agencyno,
+                                c_fundcode,
+                                f_factbalance,
+                                memo,
+                                batchno,
+                                inserttime,
+                                updatetime,
+                                srcsys,
+                                d_cdate
+							FROM ${srcdbname}.acct_tprofitcurrent "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"c_agencyno",
+									"c_fundcode",
+									"f_factbalance",
+									"memo",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"srcsys",
+									"d_cdate"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["cdh_acct_tprofitcurrent"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table cdh_acct_tprofitcurrent"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

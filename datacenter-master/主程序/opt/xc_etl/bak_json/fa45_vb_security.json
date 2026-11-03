@@ -1,0 +1,121 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,c_code_soure,c_port_code,c_asset_code,c_sec_code,c_sec_name,c_sec_name_cn,c_sedel_code,c_mkt_code,c_isin_code,c_secmkt_code,c_sec_var,c_sec_var_mx,c_cury_code,n_price_fcr,c_guarantee_logo,c_batch_release,n_fv_issue,c_dv_qut_mod,c_sec_code_trg,n_fv_ir,n_price_issue,n_sett_prices,n_exer_prices,c_dv_var_dur,c_oi_expr,c_pi_expr,c_dv_pi_freq,n_today_interest,d_sqai_begin,c_dv_ai_mod,d_tra_begin,d_tra_end,d_ai_begin,d_ai_end,d_ex_begin,d_ex_end,c_credit_rating,c_org_code,n_amount_hd,d_listed_date,d_om_date,c_org_name,c_open_acc_name,c_open_acc_no,c_sys_code,c_desc,c_dv_issue,c_dv_assure,n_ratio,c_dv_right,d_end,c_dv_rta,n_spread,c_expr_code,n_blxs,c_jcjg,n_upper_limit,n_lower_limit,c_interval_time,c_interval_day,c_lof_logo,c_hb_logo,c_fof_logo,c_df_logo,c_tx_logo,c_fd_logo,n_fx_num,n_wfx_num,c_main_prop,c_fxjg_code,c_update_time,n_check_state,c_check_time,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vb_security.json' as task_rs_id from ${srcoradbname}.vb_security"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vb_security",
+                        "fileName": "fa45_vb_security",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"c_code_soure","type":"string"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"c_asset_code","type":"string"},
+                            {"name":"c_sec_code","type":"string"},
+                            {"name":"c_sec_name","type":"string"},
+                            {"name":"c_sec_name_cn","type":"string"},
+                            {"name":"c_sedel_code","type":"string"},
+                            {"name":"c_mkt_code","type":"string"},
+                            {"name":"c_isin_code","type":"string"},
+                            {"name":"c_secmkt_code","type":"string"},
+                            {"name":"c_sec_var","type":"string"},
+                            {"name":"c_sec_var_mx","type":"string"},
+                            {"name":"c_cury_code","type":"string"},
+                            {"name":"n_price_fcr","type":"double"},
+                            {"name":"c_guarantee_logo","type":"string"},
+                            {"name":"c_batch_release","type":"string"},
+                            {"name":"n_fv_issue","type":"double"},
+                            {"name":"c_dv_qut_mod","type":"string"},
+                            {"name":"c_sec_code_trg","type":"string"},
+                            {"name":"n_fv_ir","type":"double"},
+                            {"name":"n_price_issue","type":"double"},
+                            {"name":"n_sett_prices","type":"double"},
+                            {"name":"n_exer_prices","type":"double"},
+                            {"name":"c_dv_var_dur","type":"string"},
+                            {"name":"c_oi_expr","type":"string"},
+                            {"name":"c_pi_expr","type":"string"},
+                            {"name":"c_dv_pi_freq","type":"string"},
+                            {"name":"n_today_interest","type":"double"},
+                            {"name":"d_sqai_begin","type":"date"},
+                            {"name":"c_dv_ai_mod","type":"string"},
+                            {"name":"d_tra_begin","type":"date"},
+                            {"name":"d_tra_end","type":"date"},
+                            {"name":"d_ai_begin","type":"date"},
+                            {"name":"d_ai_end","type":"date"},
+                            {"name":"d_ex_begin","type":"date"},
+                            {"name":"d_ex_end","type":"date"},
+                            {"name":"c_credit_rating","type":"string"},
+                            {"name":"c_org_code","type":"string"},
+                            {"name":"n_amount_hd","type":"double"},
+                            {"name":"d_listed_date","type":"date"},
+                            {"name":"d_om_date","type":"date"},
+                            {"name":"c_org_name","type":"string"},
+                            {"name":"c_open_acc_name","type":"string"},
+                            {"name":"c_open_acc_no","type":"string"},
+                            {"name":"c_sys_code","type":"string"},
+                            {"name":"c_desc","type":"string"},
+                            {"name":"c_dv_issue","type":"string"},
+                            {"name":"c_dv_assure","type":"string"},
+                            {"name":"n_ratio","type":"double"},
+                            {"name":"c_dv_right","type":"string"},
+                            {"name":"d_end","type":"date"},
+                            {"name":"c_dv_rta","type":"string"},
+                            {"name":"n_spread","type":"double"},
+                            {"name":"c_expr_code","type":"string"},
+                            {"name":"n_blxs","type":"double"},
+                            {"name":"c_jcjg","type":"string"},
+                            {"name":"n_upper_limit","type":"double"},
+                            {"name":"n_lower_limit","type":"double"},
+                            {"name":"c_interval_time","type":"string"},
+                            {"name":"c_interval_day","type":"string"},
+                            {"name":"c_lof_logo","type":"string"},
+                            {"name":"c_hb_logo","type":"string"},
+                            {"name":"c_fof_logo","type":"string"},
+                            {"name":"c_df_logo","type":"string"},
+                            {"name":"c_tx_logo","type":"string"},
+                            {"name":"c_fd_logo","type":"string"},
+                            {"name":"n_fx_num","type":"int"},
+                            {"name":"n_wfx_num","type":"int"},
+                            {"name":"c_main_prop","type":"string"},
+                            {"name":"c_fxjg_code","type":"string"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"n_check_state","type":"int"},
+                            {"name":"c_check_time","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

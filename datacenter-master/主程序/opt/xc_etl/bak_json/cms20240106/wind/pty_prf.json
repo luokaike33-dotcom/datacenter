@@ -1,0 +1,126 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/pty_prf",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"long"},
+                                    {"index":3,"type":"long"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"double"},
+                                    {"index":9,"type":"double"},
+                                    {"index":10,"type":"double"},
+                                    {"index":11,"type":"double"},
+                                    {"index":12,"type":"double"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"double"},
+                                    {"index":15,"type":"double"},
+                                    {"index":16,"type":"double"},
+                                    {"index":17,"type":"double"},
+                                    {"index":18,"type":"double"},
+                                    {"index":19,"type":"double"},
+                                    {"index":20,"type":"double"},
+                                    {"index":21,"type":"double"},
+                                    {"index":22,"type":"double"},
+                                    {"index":23,"type":"double"},
+                                    {"index":24,"type":"double"},
+                                    {"index":25,"type":"double"},
+                                    {"index":26,"type":"double"},
+                                    {"index":27,"type":"double"},
+                                    {"index":28,"type":"double"},
+                                    {"index":29,"type":"double"},
+                                    {"index":30,"type":"double"},
+                                    {"index":31,"type":"double"},
+                                    {"index":32,"type":"double"},
+                                    {"index":33,"type":"double"},
+                                    {"index":34,"type":"double"},
+                                    {"index":35,"type":"double"},
+                                    {"index":36,"type":"long"},
+                                    {"index":37,"type":"string"},
+                                    {"index":38,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "com_id",
+                                    "rel_dt",
+                                    "bgn_dt",
+                                    "end_dt",
+                                    "data_flag",
+                                    "stk_typ",
+                                    "rpt_typ",
+                                    "curr_code",
+                                    "ttl_oper_inc",
+                                    "fv_chg_inc",
+                                    "ttl_oper_cost",
+                                    "oper_cost",
+                                    "biz_tax_sur",
+                                    "sell_exp",
+                                    "adm_exp",
+                                    "gen_adm_exp",
+                                    "fin_exp",
+                                    "ast_impr_loss",
+                                    "inv_inc",
+                                    "fx_inc",
+                                    "oper_prof",
+                                    "noper_inc",
+                                    "noper_exp",
+                                    "ttl_prof",
+                                    "inc_tax_exp",
+                                    "net_prof",
+                                    "net_prof_pco",
+                                    "min_sh_inc",
+                                    "eps_bas",
+                                    "eps_dil",
+                                    "oth_comp_inc",
+                                    "ttl_comp_inc",
+                                    "pco_ttl_comp_inc",
+                                    "ms_ttl_comp_inc",
+                                    "main_op_inc",
+                                    "nppco",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["pty_prf"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from pty_prf where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

@@ -1,0 +1,66 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+                                    prd_code,
+                                    prd_name,
+                                    bkil_code,
+                                    iss_ins_cd,
+                                    wkdate_flag,
+                                    cast(date_format(current_date(), 'yyyyMMdd') as decimal(8, 0)) as batchno,
+                                    date_format(current_timestamp(), 'yyyy-MM-dd HH:mm:ss')        as inserttime,
+                                    date_format(current_timestamp(), 'yyyy-MM-dd HH:mm:ss')        as updatetime
+							FROM ${srcdbname}.frt_sba_prd_info  "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"prd_name",
+									"bkil_code",
+									"iss_ins_cd",
+									"wkdate_flag",
+                                    "batchno",
+									"inserttime",
+									"updatetime"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["frt_sba_prd_info"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table frt_sba_prd_info"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

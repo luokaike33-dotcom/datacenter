@@ -1,0 +1,88 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									object_id,
+									s_info_windcode,
+									s_con_windcode,
+									trade_dt,
+									i_weight,
+									s_in_index,
+									i_weight_11,
+									i_weight_12,
+									i_weight_14,
+									i_weight_15,
+									i_weight_16,
+									i_weight_17,
+									i_weight_18,
+									opdate,
+									opmode,
+									bath_dt,
+									data_ins_time,
+									task_rs_id,
+									busi_month
+							FROM ${srcdbname}.w_aindexhs300weight WHERE busi_month=${busi_month} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"s_con_windcode",
+									"trade_dt",
+									"i_weight",
+									"s_in_index",
+									"i_weight_11",
+									"i_weight_12",
+									"i_weight_14",
+									"i_weight_15",
+									"i_weight_16",
+									"i_weight_17",
+									"i_weight_18",
+									"opdate",
+									"opmode",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id",
+									"busi_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_aindexhs300weight"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["DELETE FROM wd_aindexhs300weight WHERE busi_month=${busi_month}"]
+                    }
+                }
+            }
+        ]
+    }
+}
+
+

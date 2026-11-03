@@ -1,0 +1,93 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      f_info_windcode,
+                                      f_unit_rpstartdate,
+                                      f_unit_rpenddate,
+                                      trade_dt,
+                                      f_anal_netincome,
+                                      f_fa_investincometoebt,
+                                      f_finafdassetnav,
+                                      f_finaunfdassnav,
+                                      f_nav_return,
+                                      f_cumulative_nav_return,
+                                      f_nav_stddevreturn,
+                                      f_nav_benchreturn,
+                                      f_nav_benchstddev,
+                                      f_nav_benchdevreturn,
+                                      f_nav_stddevnavbench,
+                                      f_anal_income,
+                                      f_anal_avgnetincomeperunit,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cmfquarterlyfinancialindicator.json' as task_rs_id
+                                from ${srcoradbname}.cmfquarterlyfinancialindicator"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cmfquarterlyfinancialindicator",
+                        "fileName": "w_cmfquarterlyfinancialindicator",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"f_info_windcode","type":"string"},
+                                      {"name":"f_unit_rpstartdate","type":"string"},
+                                      {"name":"f_unit_rpenddate","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"f_anal_netincome","type":"double"},
+                                      {"name":"f_fa_investincometoebt","type":"double"},
+                                      {"name":"f_finafdassetnav","type":"double"},
+                                      {"name":"f_finaunfdassnav","type":"double"},
+                                      {"name":"f_nav_return","type":"double"},
+                                      {"name":"f_cumulative_nav_return","type":"double"},
+                                      {"name":"f_nav_stddevreturn","type":"double"},
+                                      {"name":"f_nav_benchreturn","type":"double"},
+                                      {"name":"f_nav_benchstddev","type":"double"},
+                                      {"name":"f_nav_benchdevreturn","type":"double"},
+                                      {"name":"f_nav_stddevnavbench","type":"double"},
+                                      {"name":"f_anal_income","type":"double"},
+                                      {"name":"f_anal_avgnetincomeperunit","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

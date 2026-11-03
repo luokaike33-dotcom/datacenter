@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      ann_date,
+                                      change_date,
+                                      issued_shares,
+                                      mainland_outstd_shr,
+                                      hk_outstd_shr,
+                                      overseas_outstd_shr,
+                                      non_tradable_shr,
+                                      preferredshare,
+                                      outstandingshares,
+                                      changereason_code,
+                                      changereason,
+                                      overseas_shr_cntrycode,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ccstockequitystruc.json' as task_rs_id
+                                from ${srcoradbname}.ccstockequitystruc"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ccstockequitystruc",
+                        "fileName": "w_ccstockequitystruc",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"change_date","type":"string"},
+                                      {"name":"issued_shares","type":"double"},
+                                      {"name":"mainland_outstd_shr","type":"double"},
+                                      {"name":"hk_outstd_shr","type":"double"},
+                                      {"name":"overseas_outstd_shr","type":"double"},
+                                      {"name":"non_tradable_shr","type":"double"},
+                                      {"name":"preferredshare","type":"double"},
+                                      {"name":"outstandingshares","type":"double"},
+                                      {"name":"changereason_code","type":"bigint"},
+                                      {"name":"changereason","type":"string"},
+                                      {"name":"overseas_shr_cntrycode","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

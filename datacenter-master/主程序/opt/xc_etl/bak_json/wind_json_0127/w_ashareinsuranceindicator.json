@@ -1,0 +1,117 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      report_period,
+                                      ann_dt,
+                                      statement_type,
+                                      cap_adequacy_ratio_life,
+                                      cap_adequacy_ratio_property,
+                                      surrender_rate,
+                                      policy_persistency_rate_13m,
+                                      policy_persistency_rate_25m,
+                                      policy_persistency_rate_14m,
+                                      policy_persistency_rate_26m,
+                                      net_investment_yield,
+                                      total_investment_yield,
+                                      risk_discount_rate,
+                                      combined_cost_property,
+                                      loss_ratio_property,
+                                      fee_ratio_property,
+                                      intrinsic_value_life,
+                                      value_new_business_life,
+                                      value_effective_business_life,
+                                      actual_capital_life,
+                                      minimun_capital_life,
+                                      actual_capital_property,
+                                      minimun_capital_property,
+                                      actual_capital_group,
+                                      minimun_capital_group,
+                                      capital_adequacy_ratio_group,
+                                      crncy_code,
+                                      report_type,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareinsuranceindicator.json' as task_rs_id
+                                from ${srcoradbname}.ashareinsuranceindicator"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareinsuranceindicator",
+                        "fileName": "w_ashareinsuranceindicator",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"statement_type","type":"bigint"},
+                                      {"name":"cap_adequacy_ratio_life","type":"double"},
+                                      {"name":"cap_adequacy_ratio_property","type":"double"},
+                                      {"name":"surrender_rate","type":"double"},
+                                      {"name":"policy_persistency_rate_13m","type":"double"},
+                                      {"name":"policy_persistency_rate_25m","type":"double"},
+                                      {"name":"policy_persistency_rate_14m","type":"double"},
+                                      {"name":"policy_persistency_rate_26m","type":"double"},
+                                      {"name":"net_investment_yield","type":"double"},
+                                      {"name":"total_investment_yield","type":"double"},
+                                      {"name":"risk_discount_rate","type":"double"},
+                                      {"name":"combined_cost_property","type":"double"},
+                                      {"name":"loss_ratio_property","type":"double"},
+                                      {"name":"fee_ratio_property","type":"double"},
+                                      {"name":"intrinsic_value_life","type":"double"},
+                                      {"name":"value_new_business_life","type":"double"},
+                                      {"name":"value_effective_business_life","type":"double"},
+                                      {"name":"actual_capital_life","type":"double"},
+                                      {"name":"minimun_capital_life","type":"double"},
+                                      {"name":"actual_capital_property","type":"double"},
+                                      {"name":"minimun_capital_property","type":"double"},
+                                      {"name":"actual_capital_group","type":"double"},
+                                      {"name":"minimun_capital_group","type":"double"},
+                                      {"name":"capital_adequacy_ratio_group","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"report_type","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

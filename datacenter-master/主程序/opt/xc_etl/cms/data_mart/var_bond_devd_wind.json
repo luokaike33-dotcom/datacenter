@@ -1,0 +1,80 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+						"hiveSql":["SELECT secu_id, valu_dt, dur, mod_dur, basi_dur, sprd_dur, conv, accr_day, accr_intr, redp_yld, ctrl_yld, rema_matu, matu_yld, wght_rema_matu, cls_matu_yld, cls_matu_yld_cmpnd, cls_matu_yld_cmpnd_be, open_matu_yld, high_matu_yld, low_matu_yld, busi_date, dm_created_time, task_rs_id, p_dt, sys_rs_id
+                            FROM ${srcdbname}.var_bond_devd_wind where p_dt between ${beg_date} and ${end_date}
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"valu_dt",
+									"dur",
+									"mod_dur",
+									"basi_dur",
+									"sprd_dur",
+									"conv",
+									"accr_day",
+									"accr_intr",
+									"redp_yld",
+									"ctrl_yld",
+									"rema_matu",
+									"matu_yld",
+									"wght_rema_matu",
+									"cls_matu_yld",
+									"cls_matu_yld_cmpnd",
+									"cls_matu_yld_cmpnd_be",
+									"open_matu_yld",
+									"high_matu_yld",
+									"low_matu_yld",
+									"busi_date",
+									"dm_created_time",
+									"task_rs_id",
+                                    "p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["var_bond_devd_wind"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from var_bond_devd_wind where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

@@ -1,0 +1,142 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fnd_typ_clas",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"string"},
+									{"index":41,"type":"long"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"date"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"fnd_typ",
+									"ivsm_styl",
+									"is_pubr_fnd",
+									"is_etf",
+									"is_etf_link_fnd",
+									"is_fof",
+									"ivsm_mkt",
+									"prd_typ",
+									"is_hk_fnd",
+									"is_pte",
+									"is_actv_ivsm",
+									"is_lstg_ivsm",
+									"is_lof",
+									"is_term",
+									"is_trus_fnd",
+									"fnd_typ_pri_code",
+									"fnd_typ_pri_name",
+									"fnd_typ_scd_code",
+									"yh_code",
+									"prd_code",
+									"setp_date",
+									"matu_date",
+									"actv_ivsm_dir",
+									"bnk_name",
+									"tect_date",
+									"fnd_capt_dtl",
+									"fnd_capt_typ",
+									"esg_typ",
+									"disu_date",
+									"fnd_mngr_name",
+									"fnd_name",
+									"fnd_abbr",
+									"fnd_typ_scd_name",
+									"fnd_typ_thid_code",
+									"fnd_typ_thid_name",
+									"mngr_busi_typ",
+									"oper_mdl",
+									"clr_mdl",
+									"yh_bnk_code",
+									"yh_mngr_code",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["var_fnd_typ_clas"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table var_fnd_typ_clas"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

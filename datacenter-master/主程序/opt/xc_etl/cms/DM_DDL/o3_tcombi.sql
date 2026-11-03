@@ -1,0 +1,41 @@
+create table data_mart.o3_tcombi ( 
+  l_combi_id number(12,0),
+  l_fund_id number(8,0),
+  vc_combi_no varchar2(100),
+  vc_combi_name varchar2(100),
+  c_combi_class varchar2(100),
+  l_asset_id number(8,0),
+  l_setup_date number(8,0),
+  l_end_date number(8,0),
+  c_combi_status varchar2(100),
+  en_remark number(14,8),
+  vc_remark varchar2(100),
+  c_invest_type varchar2(100),
+  vc_stocktype_right varchar2(100),
+  vc_entrdire_right varchar2(100),
+  l_param_id number(10,0),
+  c_join_distribute varchar2(100),
+  en_fund_value_ratio number(9,8),
+  en_target_balance number(16,2),
+  vc_combi_identifier varchar2(100),
+  vc_permit_market varchar2(100),
+  vc_permit_busin_class varchar2(100),
+  l_exponent_id number(8,0),
+  c_invest_type_pa varchar2(100),
+  c_futures_invest_type varchar2(100),
+  c_append_entrust varchar2(100),
+  c_append_entrust_qh varchar2(100),
+  vc_ws_tradelevel varchar2(100),
+  vc_wx_tradelevel varchar2(100),
+  vc_apply_busin_class varchar2(100),
+  c_fair_trade varchar2(100),
+  l_bid_combi_id number(8,0),
+  l_bail_combi_id number(8,0),
+  vc_timestamp varchar2(100),
+  c_asset_type varchar2(100),
+  sys_rs_id varchar2(100)
+);
+
+
+
+

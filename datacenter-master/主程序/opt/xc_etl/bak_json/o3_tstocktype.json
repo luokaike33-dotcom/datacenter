@@ -1,0 +1,74 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select c_stock_type ,c_market_no ,c_asset_class ,vc_stocktype_name ,c_fund_frozen_class ,l_amount_per_hand ,l_buy_unit ,l_sale_unit ,en_face_values ,en_mindifference_price ,vc_entrust_right ,vc_entrust_class ,c_report_unit ,c_default_price ,vc_instruction_interface ,l_buy_max ,l_sale_max ,c_type_unit ,c_can_split ,c_unit_control_type ,vc_omgeo_stock_type ,vc_permit_invest_types ,vc_alert_stock_type ,vc_special_code ,en_market_limit_price ,vc_foreign_stock_type ,vc_fee_types ,en_min_quantity_unit ,vc_timestamp ,l_virtual_key from ${srcoradbname}.tstocktype "],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_tstocktype",
+            "fileName": "o3_tstocktype",
+            "column": [
+                      {"name":"c_stock_type","type":"string"},
+                      {"name":"c_market_no","type":"string"},
+                      {"name":"c_asset_class","type":"string"},
+                      {"name":"vc_stocktype_name","type":"string"},
+                      {"name":"c_fund_frozen_class","type":"string"},
+                      {"name":"l_amount_per_hand","type":"string"},
+                      {"name":"l_buy_unit","type":"double"},
+                      {"name":"l_sale_unit","type":"double"},
+                      {"name":"en_face_values","type":"double"},
+                      {"name":"en_mindifference_price","type":"double"},
+                      {"name":"vc_entrust_right","type":"string"},
+                      {"name":"vc_entrust_class","type":"string"},
+                      {"name":"c_report_unit","type":"string"},
+                      {"name":"c_default_price","type":"string"},
+                      {"name":"vc_instruction_interface","type":"string"},
+                      {"name":"l_buy_max","type":"double"},
+                      {"name":"l_sale_max","type":"double"},
+                      {"name":"c_type_unit","type":"string"},
+                      {"name":"c_can_split","type":"string"},
+                      {"name":"c_unit_control_type","type":"string"},
+                      {"name":"vc_omgeo_stock_type","type":"string"},
+                      {"name":"vc_permit_invest_types","type":"string"},
+                      {"name":"vc_alert_stock_type","type":"string"},
+                      {"name":"vc_special_code","type":"string"},
+                      {"name":"en_market_limit_price","type":"double"},
+                      {"name":"vc_foreign_stock_type","type":"string"},
+                      {"name":"vc_fee_types","type":"string"},
+                      {"name":"en_min_quantity_unit","type":"double"},
+                      {"name":"vc_timestamp","type":"string"},
+                      {"name":"l_virtual_key","type":"string"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t",
+            "encoding":"utf-8"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

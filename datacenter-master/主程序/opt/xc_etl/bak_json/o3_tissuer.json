@@ -1,0 +1,108 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select l_issuer_id,vc_issuer_name,l_mother_issuer_id,vc_linkman,vc_address,vc_phone,vc_fax,c_outer_appraise,vc_appraise_organ,c_inside_appraise,c_appraise,vc_summary,vc_full_name,vc_issuer_type,vc_transactor_name,vc_transactor_id_type,vc_transactor_id,vc_transactor_phone,vc_transactor_fax,vc_transactor_stamp,vc_pre_stamp,vc_issuer_code,en_issuer_asset,vc_asset_currency_no,vc_country_no,l_transactor_validity,en_credit_limit,c_guarantor_appraise,vc_external_code,vc_zx_ip,vc_zx_port,vc_zx_user,vc_zx_pass,l_outer_appraise_date,l_total_asset_amount,en_guarantor_limit,vc_pre_stamp2,vc_timestamp,c_level_expectation,en_last_year_net,c_issuer_other_appraise_one,c_issuer_other_appraise_two,c_outer_appraise1,l_lastquarter_asset,vc_provincecode,en_asset_liability_ratio,en_interest_earned_ratio,l_date,en_surplus_amount,c_org_type,vc_sec_credit_code,vc_financialorg_code,vc_agency_code,vc_inter_appraise_name,l_inter_appraise_date,vc_ca_stamp,en_lastyear_asset,c_finance_org,l_higher_issuer_id,c_guarantor_appraise2,c_other_appraise_three,c_other_appraise_four,en_belong_mother_asset,c_issuer_property,vc_city from ${srcoradbname}.tissuer"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_tissuer", 
+                        "fileName": "o3_tissuer",
+                        "column": [
+     {"name":"l_issuer_id","type":"bigint"},
+     {"name":"vc_issuer_name","type":"string"},
+     {"name":"l_mother_issuer_id","type":"bigint"},
+     {"name":"vc_linkman","type":"string"},
+     {"name":"vc_address","type":"string"},
+     {"name":"vc_phone","type":"string"},
+     {"name":"vc_fax","type":"string"},
+     {"name":"c_outer_appraise","type":"string"},
+     {"name":"vc_appraise_organ","type":"string"},
+     {"name":"c_inside_appraise","type":"string"},
+     {"name":"c_appraise","type":"string"},
+     {"name":"vc_summary","type":"string"},
+     {"name":"vc_full_name","type":"string"},
+     {"name":"vc_issuer_type","type":"string"},
+     {"name":"vc_transactor_name","type":"string"},
+     {"name":"vc_transactor_id_type","type":"string"},
+     {"name":"vc_transactor_id","type":"string"},
+     {"name":"vc_transactor_phone","type":"string"},
+     {"name":"vc_transactor_fax","type":"string"},
+     {"name":"vc_transactor_stamp","type":"string"},
+     {"name":"vc_pre_stamp","type":"string"},
+     {"name":"vc_issuer_code","type":"string"},
+     {"name":"en_issuer_asset","type":"double"},
+     {"name":"vc_asset_currency_no","type":"string"},
+     {"name":"vc_country_no","type":"string"},
+     {"name":"l_transactor_validity","type":"double"},
+     {"name":"en_credit_limit","type":"double"},
+     {"name":"c_guarantor_appraise","type":"string"},
+     {"name":"vc_external_code","type":"string"},
+     {"name":"vc_zx_ip","type":"string"},
+     {"name":"vc_zx_port","type":"string"},
+     {"name":"vc_zx_user","type":"string"},
+     {"name":"vc_zx_pass","type":"string"},
+     {"name":"l_outer_appraise_date","type":"double"},
+     {"name":"l_total_asset_amount","type":"double"},
+     {"name":"en_guarantor_limit","type":"double"},
+     {"name":"vc_pre_stamp2","type":"string"},
+     {"name":"vc_timestamp","type":"string"},
+     {"name":"c_level_expectation","type":"string"},
+     {"name":"en_last_year_net","type":"double"},
+     {"name":"c_issuer_other_appraise_one","type":"string"},
+     {"name":"c_issuer_other_appraise_two","type":"string"},
+     {"name":"c_outer_appraise1","type":"string"},
+     {"name":"l_lastquarter_asset","type":"double"},
+     {"name":"vc_provincecode","type":"string"},
+     {"name":"en_asset_liability_ratio","type":"double"},
+     {"name":"en_interest_earned_ratio","type":"double"},
+     {"name":"l_date","type":"double"},
+     {"name":"en_surplus_amount","type":"double"},
+     {"name":"c_org_type","type":"string"},
+     {"name":"vc_sec_credit_code","type":"string"},
+     {"name":"vc_financialorg_code","type":"string"},
+     {"name":"vc_agency_code","type":"string"},
+     {"name":"vc_inter_appraise_name","type":"string"},
+     {"name":"l_inter_appraise_date","type":"double"},
+     {"name":"vc_ca_stamp","type":"string"},
+     {"name":"en_lastyear_asset","type":"double"},
+     {"name":"c_finance_org","type":"string"},
+     {"name":"l_higher_issuer_id","type":"bigint"},
+     {"name":"c_guarantor_appraise2","type":"string"},
+     {"name":"c_other_appraise_three","type":"string"},
+     {"name":"c_other_appraise_four","type":"string"},
+     {"name":"en_belong_mother_asset","type":"double"},
+     {"name":"c_issuer_property","type":"string"},
+     {"name":"vc_city","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,96 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/pty_info_pte_pre",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"long"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"string"},
+                                    {"index":17,"type":"string"},
+                                    {"index":18,"type":"string"},
+                                    {"index":19,"type":"long"},
+                                    {"index":20,"type":"string"},
+                                    {"index":21,"type":"long"},
+                                    {"index":22,"type":"string"},
+                                    {"index":23,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "com_id",
+                                    "com_name",
+                                    "chi_sht",
+                                    "eng_name",
+                                    "natr_biz",
+                                    "natr_econ",
+                                    "found_dt",
+                                    "reg_cptl",
+                                    "lgl_repr",
+                                    "reg_addr",
+                                    "ctry_code",
+                                    "ctry_name",
+                                    "reg_prov",
+                                    "reg_city",
+                                    "ofs_addr",
+                                    "tel",
+                                    "web_site",
+                                    "reg_num_biz",
+                                    "bk_desc",
+                                    "emp_num",
+                                    "com_ast_shr_code",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["pty_info_pte_pre"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from pty_info_pte_pre where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

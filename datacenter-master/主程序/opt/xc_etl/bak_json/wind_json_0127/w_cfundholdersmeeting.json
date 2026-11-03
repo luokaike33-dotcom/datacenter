@@ -1,0 +1,99 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      meeting_name,
+                                      is_new,
+                                      ann_dt,
+                                      meeting_dt,
+                                      meeting_type,
+                                      meeting_content,
+                                      is_intnet,
+                                      smtgrecdate,
+                                      spotmtgstartdate,
+                                      spotmtgenddate,
+                                      votingcode,
+                                      meetevent_id,
+                                      type_code,
+                                      meeting_place,
+                                      is_notarization,
+                                      resolution_ann_dt,
+                                      resolution_content,
+                                      cost_tot,
+                                      attend_ratio,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cfundholdersmeeting.json' as task_rs_id
+                                from ${srcoradbname}.cfundholdersmeeting"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cfundholdersmeeting",
+                        "fileName": "w_cfundholdersmeeting",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"meeting_name","type":"string"},
+                                      {"name":"is_new","type":"bigint"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"meeting_dt","type":"string"},
+                                      {"name":"meeting_type","type":"string"},
+                                      {"name":"meeting_content","type":"string"},
+                                      {"name":"is_intnet","type":"bigint"},
+                                      {"name":"smtgrecdate","type":"string"},
+                                      {"name":"spotmtgstartdate","type":"string"},
+                                      {"name":"spotmtgenddate","type":"string"},
+                                      {"name":"votingcode","type":"bigint"},
+                                      {"name":"meetevent_id","type":"string"},
+                                      {"name":"type_code","type":"bigint"},
+                                      {"name":"meeting_place","type":"string"},
+                                      {"name":"is_notarization","type":"bigint"},
+                                      {"name":"resolution_ann_dt","type":"string"},
+                                      {"name":"resolution_content","type":"string"},
+                                      {"name":"cost_tot","type":"double"},
+                                      {"name":"attend_ratio","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

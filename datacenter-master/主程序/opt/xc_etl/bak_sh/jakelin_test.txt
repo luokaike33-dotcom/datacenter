@@ -1,0 +1,23 @@
+python /opt/datax/bin/datax.py -p"-Dsrchivedbpath=/user/hive/warehouse/ty_dwd.db -Dsrchdfsurl=10.160.96.22:8020 -DhaveKerberos=false -DkerberosKeytabFilePath= -DkerberosPrincipal=  -DkerberosConfFilePath=  -Dtgrurl=10.160.97.21:5088/tydb -Dtgrusername=data_mart -Dtgrpassword=data_mart#1234 -Dsrcdbname=ty_dwd -Dbeg_date=20231103 -Dend_date=20231103 -DloadUrl=/user/hive/warehouse/ty_dwd.db/pty_prd_base_info_0109 -DselectedDatabase=ty_dwd -DhadoopConfig=''" /opt/xc_etl/cms/yss45/pty_prd_base_info_0109.json
+
+
+srchivedbpath           : [ /user/hive/warehouse/ty_dwd.db ]
+srchdfsurl              : [ 10.160.96.22:8020 ]
+haveKerberos            : [ false ]
+kerberosKeytabFilePath  : [  ]
+kerberosPrincipal       : [  ]
+kerberosConfFilePath    : [  ]
+hadoopConfig            : [  ]
+srcdbtype               : [ cdh ]
+tgrdbtype               : [ oracle ]
+dataxPath               : [ /opt/datax/bin ]
+pubfilepath             : [ /opt/xc_etl/cms/yss45/ ]
+sysrsid                 : [ yss45 ]
+beg_date                : [ 20221225 ]
+end_date                : [ 20231103 ]
+partition_mode          : [ 0 ]
+tablename               : [ pty_prd_base_info_0109 ]
+jsonfilename            : [ pty_prd_base_info_0109.json ]
+
+2024-01-09 17:09:52 [com.xqfunds.job.core.thread.JobThread#run]-[137]-[xq-job, JobThread-2024010900000332_202401090000000000135D_202401090000000000002E05_null_EXECUTOR-1704791392222] <br>----------- xq-job job execute start -----------<br>----------- Param:{"end_date":"20231103","bizDate":"20240109","tgrpassword":"data_mart#1234","srcpassword":"etl_ty#1234","srcdbtype":"cdh","processId":"2024010900000332","pubfilepath":"/opt/xc_etl/cms/yss45/","sysrsid":"yss45","srchivedbpath":"/user/hive/warehouse/ty_dwd.db","processDefId":"006D9","kerberosPrincipal":"","kerberosConfFilePath":"","nodeDefId":"006D9006","tgrurl":"10.160.97.21:5088/tydb","kerberosKeytabFilePath":"","srcdbname":"ty_dwd","tgrusername":"data_mart","srcjdbcurl":"10.160.96.22:10000","srchdfsurl":"10.160.96.22:8020","srcusername":"etl_ty","haveKerberos":"false","dataxPath":"/opt/datax/bin","cmdArray":["sh","/opt/xc_etl/cms_all.sh","${srchivedbpath}","${srchdfsurl}","${haveKerberos}","${kerberosKeytabFilePath}","${kerberosPrincipal}","${kerberosConfFilePath}","${hadoopConfig}","${srcdbtype}","${tgrdbtype}","${tgrurl}","${tgrusername}","${tgrpassword}","${srcjdbcurl}","${srcusername}","${srcpassword}","${srcdbname}","${dataxPath}","${pubfilepath}","${sysrsid}","${beg_date}","${end_date}","0","pty_prd_base_info_0109"],"tgrdbtype":"oracle","hadoopConfig":"","beg_date":"20221225","nodeId":"202401090000000000135D","taskDefId":"006D9006001","taskId":"202401090000000000002E05"}
+

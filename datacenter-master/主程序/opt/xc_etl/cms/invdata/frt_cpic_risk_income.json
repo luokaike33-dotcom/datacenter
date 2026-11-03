@@ -1,0 +1,134 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									rept_date,
+									prd_code,
+									end_date,
+									ths_mth_yield,
+									ths_mth_yield_stdev,
+									ths_mth_maxdrawdown,
+									ths_mth_shrp_ratio,
+									ths_mth_tnrt,
+									qtr_yield,
+									qtr_yield_stdev,
+									qtr_maxdrawdown,
+									qtr_shrp_ratio,
+									qtr_tnrt,
+									rect_6m_yield,
+									rect_6m_yield_stdev,
+									rect_6m_maxdrawdown,
+									rect_6m_shrp_ratio,
+									rect_6m_tnrt,
+									yr_yield,
+									yr_yield_stdev,
+									yr_maxdrawdown,
+									yr_shrp_ratio,
+									yr_tnrt,
+									yr2_yield,
+									yr2_yield_stdev,
+									yr2_maxdrawdown,
+									yr2_shrp_ratio,
+									yr2_tnrt,
+									yr3_yield,
+									yr3_yield_stdev,
+									yr3_maxdrawdown,
+									yr3_shrp_ratio,
+									yr3_tnrt,
+									setup_yield,
+									setup_yield_stdev,
+									setup_maxdrawdown,
+									setup_shrp_ratio,
+									setup_tnrt,
+									batchno,
+									inserttime,
+									updatetime,
+									p_dt
+							FROM ${srcdbname}.frt_cpic_risk_income"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"rept_date",
+									"prd_code",
+									"end_date",
+									"ths_mth_yield",
+									"ths_mth_yield_stdev",
+									"ths_mth_maxdrawdown",
+									"ths_mth_shrp_ratio",
+									"ths_mth_tnrt",
+									"qtr_yield",
+									"qtr_yield_stdev",
+									"qtr_maxdrawdown",
+									"qtr_shrp_ratio",
+									"qtr_tnrt",
+									"rect_6m_yield",
+									"rect_6m_yield_stdev",
+									"rect_6m_maxdrawdown",
+									"rect_6m_shrp_ratio",
+									"rect_6m_tnrt",
+									"yr_yield",
+									"yr_yield_stdev",
+									"yr_maxdrawdown",
+									"yr_shrp_ratio",
+									"yr_tnrt",
+									"yr2_yield",
+									"yr2_yield_stdev",
+									"yr2_maxdrawdown",
+									"yr2_shrp_ratio",
+									"yr2_tnrt",
+									"yr3_yield",
+									"yr3_yield_stdev",
+									"yr3_maxdrawdown",
+									"yr3_shrp_ratio",
+									"yr3_tnrt",
+									"setup_yield",
+									"setup_yield_stdev",
+									"setup_maxdrawdown",
+									"setup_shrp_ratio",
+									"setup_tnrt",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["frt_cpic_risk_income"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table frt_cpic_risk_income"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

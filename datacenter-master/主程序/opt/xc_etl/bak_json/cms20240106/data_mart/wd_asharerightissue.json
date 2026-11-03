@@ -1,0 +1,160 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/w_asharerightissue",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"double"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"double"},
+									{"index":31,"type":"double"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"double"},
+									{"index":35,"type":"double"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"double"},
+									{"index":38,"type":"double"},
+									{"index":39,"type":"double"},
+									{"index":40,"type":"double"},
+									{"index":41,"type":"double"},
+									{"index":42,"type":"double"},
+									{"index":43,"type":"double"},
+									{"index":44,"type":"double"},
+									{"index":45,"type":"double"},
+									{"index":46,"type":"double"},
+									{"index":47,"type":"double"},
+									{"index":48,"type":"double"},
+									{"index":49,"type":"double"},
+									{"index":50,"type":"double"},
+									{"index":51,"type":"string"},
+									{"index":52,"type":"date"},
+									{"index":53,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"s_rightsissue_progress",
+									"s_rightsissue_price",
+									"s_rightsissue_ratio",
+									"s_rightsissue_amount",
+									"s_rightsissue_amountact",
+									"s_rightsissue_netcollection",
+									"s_rightsissue_regdateshareb",
+									"s_rightsissue_exdividenddate",
+									"s_rightsissue_listeddate",
+									"s_rightsissue_paystartdate",
+									"s_rightsissue_payenddate",
+									"s_rightsissue_preplandate",
+									"s_rightsissue_smtganncedate",
+									"s_rightsissue_passdate",
+									"s_rightsissue_approveddate",
+									"s_rightsissue_anncedate",
+									"s_rightsissue_resultdate",
+									"s_rightsissue_listanndate",
+									"s_rightsissue_guarantor",
+									"s_rightsissue_guartype",
+									"s_rightsissue_code",
+									"ann_dt",
+									"s_rightsissue_year",
+									"s_rightsissue_content",
+									"s_rightsissue_name",
+									"s_ratio_denominator",
+									"s_ratio_molecular",
+									"s_subscription_method",
+									"s_expected_fund_raising",
+									"s_rightsissue_cost",
+									"s_rightsissue_regdate_bshare",
+									"s_allotment_object",
+									"s_price_cap",
+									"s_lower_price_limit",
+									"s_underwriting_method",
+									"s_underwriter_subscription",
+									"s_state_owned_share_num",
+									"s_legal_person_share_num",
+									"s_employee_stock_share_num",
+									"s_transfer_share_num",
+									"s_circulated_share_num",
+									"s_state_owned_share_num1",
+									"s_legal_person_share_num1",
+									"s_employee_stock_share_num1",
+									"s_transfer_share_num1",
+									"s_circulated_share_num1",
+									"s_holder_held_number",
+									"s_holder_subscription_number1",
+									"s_holder_subscription_number",
+									"s_holder_subscription_method",
+									"opdate",
+									"opmode"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_asharerightissue"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from wd_asharerightissue"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

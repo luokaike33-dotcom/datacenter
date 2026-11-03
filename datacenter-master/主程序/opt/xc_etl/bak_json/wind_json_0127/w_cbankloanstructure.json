@@ -1,0 +1,89 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      report_period,
+                                      statement_type,
+                                      crncy_code,
+                                      crncy_type_code,
+                                      loan_type_code,
+                                      ann_item,
+                                      loan_item_code,
+                                      total_loans,
+                                      ave_loans,
+                                      interest_income,
+                                      average_yield,
+                                      non_performing_loans,
+                                      non_performing_loans_ratio,
+                                      memo,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbankloanstructure.json' as task_rs_id
+                                from ${srcoradbname}.cbankloanstructure"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbankloanstructure",
+                        "fileName": "w_cbankloanstructure",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"statement_type","type":"bigint"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"crncy_type_code","type":"bigint"},
+                                      {"name":"loan_type_code","type":"bigint"},
+                                      {"name":"ann_item","type":"string"},
+                                      {"name":"loan_item_code","type":"bigint"},
+                                      {"name":"total_loans","type":"double"},
+                                      {"name":"ave_loans","type":"double"},
+                                      {"name":"interest_income","type":"double"},
+                                      {"name":"average_yield","type":"double"},
+                                      {"name":"non_performing_loans","type":"double"},
+                                      {"name":"non_performing_loans_ratio","type":"double"},
+                                      {"name":"memo","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

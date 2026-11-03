@@ -1,0 +1,140 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/ec_t_lqt_03_timelimit/p_dt=${end_date}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"double"},
+									{"index":31,"type":"double"},
+									{"index":32,"type":"double"},
+									{"index":33,"type":"double"},
+									{"index":34,"type":"double"},
+									{"index":35,"type":"double"},
+									{"index":36,"type":"double"},
+									{"index":37,"type":"double"},
+									{"index":38,"type":"double"},
+									{"index":39,"type":"double"},
+									{"index":40,"type":"double"},
+									{"index":41,"type":"double"},
+									{"index":42,"type":"double"},
+									{"index":43,"type":"double"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"report_date",
+									"org_code",
+									"prd_code",
+									"time_limit",
+									"no",
+									"total_ast",
+									"dmnd_dpsi",
+									"fix_dpsi",
+									"nati_comc_bank_fix_dpsi",
+									"plcy_bank_fix_dpsi",
+									"join_stk_bank_fix_dpsi",
+									"city_comc_bank_fix_dpsi",
+									"fori_bank_fix_dpsi",
+									"priv_bank_fix_dpsi",
+									"rural_comc_bank_fix_dpsi",
+									"oth_bank_fix_dpsi",
+									"ncd",
+									"nati_comc_bank_ncd",
+									"plcy_bank_ncd",
+									"join_stk_bank_ncd",
+									"city_comc_bank_ncd",
+									"fori_bank_ncd",
+									"priv_bank_ncd",
+									"rural_comc_bank_ncd",
+									"oth_bank_ncd",
+									"rev_repo",
+									"bond",
+									"cent_bank_bill",
+									"trea_bond",
+									"inbk_trea_bond",
+									"plcy_fin_bond",
+									"locl_trea_bond",
+									"corp_bond",
+									"comp_bond",
+									"mtn",
+									"cp",
+									"abs",
+									"oth_bond",
+									"bond_total",
+									"float_intr_bond",
+									"total_liab",
+									"pos_repo",
+									"inbk_pos_repo",
+									"exch_pos_repo"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["t_lqt_03_timelimit"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from ${tgrusername}.t_lqt_03_timelimit where report_date=${end_date}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

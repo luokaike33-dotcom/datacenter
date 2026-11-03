@@ -1,0 +1,77 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_info_compcode,
+                                      price_date,
+                                      f_nav_unit,
+                                      f_nav_accumulated,
+                                      f_nav_divaccumulated,
+                                      f_nav_adjfactor,
+                                      crncy_code,
+                                      f_nav_adjusted,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_aequfropleinforepperend.json' as task_rs_id
+                                from ${srcoradbname}.aequfropleinforepperend"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_aequfropleinforepperend",
+                        "fileName": "w_aequfropleinforepperend",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"price_date","type":"string"},
+                                      {"name":"f_nav_unit","type":"string"},
+                                      {"name":"f_nav_accumulated","type":"string"},
+                                      {"name":"f_nav_divaccumulated","type":"double"},
+                                      {"name":"f_nav_adjfactor","type":"double"},
+                                      {"name":"crncy_code","type":"double"},
+                                      {"name":"f_nav_adjusted","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

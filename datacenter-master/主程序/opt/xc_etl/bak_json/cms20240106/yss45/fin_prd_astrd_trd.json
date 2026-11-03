@@ -1,0 +1,142 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fin_prd_astrd_trd/p_dt=${p_dt}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"long"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"string"},
+                                    {"index":17,"type":"string"},
+                                    {"index":18,"type":"string"},
+                                    {"index":19,"type":"string"},
+                                    {"index":20,"type":"double"},
+                                    {"index":21,"type":"double"},
+                                    {"index":22,"type":"double"},
+                                    {"index":23,"type":"double"},
+                                    {"index":24,"type":"double"},
+                                    {"index":25,"type":"double"},
+                                    {"index":26,"type":"double"},
+                                    {"index":27,"type":"double"},
+                                    {"index":28,"type":"double"},
+                                    {"index":29,"type":"double"},
+                                    {"index":30,"type":"double"},
+                                    {"index":31,"type":"double"},
+                                    {"index":32,"type":"double"},
+                                    {"index":33,"type":"double"},
+                                    {"index":34,"type":"double"},
+                                    {"index":35,"type":"string"},
+                                    {"index":36,"type":"string"},
+                                    {"index":37,"type":"string"},
+                                    {"index":38,"type":"double"},
+                                    {"index":39,"type":"string"},
+                                    {"index":40,"type":"string"},
+                                    {"index":41,"type":"long"},
+                                    {"index":42,"type":"string"},
+                                    {"index":43,"type":"date"},
+                                    {"index":44,"type":"string"},
+                                    {"index":45,"type":"string"},
+                                    {"name":"p_dt""type":"long","value":"${p_dt}"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "prd_code",
+                                    "prd_typ",
+                                    "trd_dt",
+                                    "secu_id",
+                                    "typ_code",
+                                    "typ_codei",
+                                    "typ_codeii",
+                                    "exch_code",
+                                    "chi_name",
+                                    "crse_code",
+                                    "crse_type",
+                                    "crse_dim",
+                                    "inv_type",
+                                    "cir_id",
+                                    "var_stat",
+                                    "pos_id",
+                                    "lf_curr_id",
+                                    "curr_code",
+                                    "tnv_no",
+                                    "trd_dir",
+                                    "tnv_vol",
+                                    "trd_prc",
+                                    "trd_net_prc",
+                                    "accr_int",
+                                    "tnv_val",
+                                    "sett_val",
+                                    "ytm",
+                                    "trd_fee",
+                                    "trd_fee_cms",
+                                    "trd_fee_hand",
+                                    "trd_fee_stmp",
+                                    "trd_fee_sfee",
+                                    "trd_fee_tfee",
+                                    "trd_fee_chag",
+                                    "excr",
+                                    "trd_cntp",
+                                    "trd_seat",
+                                    "trd_typ",
+                                    "inrt_tax",
+                                    "trad_no",
+                                    "trad_name",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "vou_typ",
+                                    "dm_src_info"
+                                    "p_dt"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["fin_prd_astrd_trd"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from fin_prd_astrd_trd where p_dt ='${p_dt}' and 1 =1 "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

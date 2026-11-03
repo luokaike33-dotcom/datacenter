@@ -1,0 +1,75 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      industriescode,
+                                      industriesname,
+                                      levelnum,
+                                      used,
+                                      industriesalias,
+                                      sequence1,
+                                      memo,
+                                      chinesedefinition,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_neeqsindustriescode.json' as task_rs_id
+                                from ${srcoradbname}.neeqsindustriescode"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_neeqsindustriescode",
+                        "fileName": "w_neeqsindustriescode",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"industriescode","type":"string"},
+                                      {"name":"industriesname","type":"string"},
+                                      {"name":"levelnum","type":"bigint"},
+                                      {"name":"used","type":"bigint"},
+                                      {"name":"industriesalias","type":"string"},
+                                      {"name":"sequence1","type":"bigint"},
+                                      {"name":"memo","type":"string"},
+                                      {"name":"chinesedefinition","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

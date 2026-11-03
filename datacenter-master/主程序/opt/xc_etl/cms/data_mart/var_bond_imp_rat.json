@@ -1,0 +1,64 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+						"hiveSql":["SELECT secu_id, rat_dt, rat_name, pub_com_code, busi_date, task_rs_id, dm_created_time, p_dt, sys_rs_id
+                        FROM ty_dwd.var_bond_imp_rat where p_dt between ${beg_date} and ${end_date}
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"rat_dt",
+									"rat_name",
+									"pub_com_code",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+                                    "p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["var_bond_imp_rat"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from var_bond_imp_rat where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

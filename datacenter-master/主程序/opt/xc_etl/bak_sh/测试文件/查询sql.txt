@@ -1,0 +1,8 @@
+select t.l_date, t.l_fund_id, t.l_basecombi_id, t.vc_stockholder_id, t.vc_inter_code，
+       sum(case when t.l_busin_flag in ('73427','41808') then t.l_busin_amount else - t.l_busin_amount end) as l_busin_amount,
+       sum(case when t.l_busin_flag in ('73427') then t.l_busin_amount else 0 end) as l_busin_amount_73427,
+       sum(case when t.l_busin_flag in ('73428') then t.l_busin_amount else 0 end) as l_busin_amount_73428,
+       sum(case when t.l_busin_flag in ('41808') then t.l_busin_amount else 0 end) as l_busin_amount_41808 
+from trade.thiscurrents t where t.l_busin_flag in ('73427','73428','41808') and t.l_date >= 20230101 and t.l_busin_amount <> 0
+group by t.l_date, t.l_fund_id, t.l_basecombi_id, t.vc_stockholder_id, t.vc_inter_code
+order by t.l_date, t.l_fund_id, t.l_basecombi_id, t.vc_stockholder_id, t.vc_inter_code

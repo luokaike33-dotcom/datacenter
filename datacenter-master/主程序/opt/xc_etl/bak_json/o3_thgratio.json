@@ -1,0 +1,52 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select vc_inter_code, c_parameter_type, l_ratio, l_modify_date, en_sys_ratio, vc_timestamp, l_virtual_key, l_date from ${srcoradbname}.thgratio "],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_thgratio",
+            "fileName": "o3_thgratio",
+            "column": [
+              {"name":"vc_inter_code","type":"string"},
+              {"name":"c_parameter_type","type":"string"},
+              {"name":"l_ratio","type":"double"},
+              {"name":"l_modify_date","type":"bigint"},
+              {"name":"en_sys_ratio","type":"double"},
+              {"name":"vc_timestamp","type":"string"},
+              {"name":"l_virtual_key","type":"bigint"},
+              {"name":"l_date","type":"bigint"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t",
+            "encoding":"utf-8"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

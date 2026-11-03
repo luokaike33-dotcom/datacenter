@@ -1,0 +1,83 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      f_info_windcode,
+                                      enddate,
+                                      f_info_restrictedcode,
+                                      placing_method,
+                                      placing_date,
+                                      circulation_date,
+                                      investment_amount,
+                                      year_end_valuation,
+                                      placing_quantity,
+                                      cost_to_net_worth,
+                                      book_value_net_worth,
+                                      restricted_type,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cfundholdrestrictedcirculation.json' as task_rs_id
+                                from ${srcoradbname}.cfundholdrestrictedcirculation"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cfundholdrestrictedcirculation",
+                        "fileName": "w_cfundholdrestrictedcirculation",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"f_info_windcode","type":"string"},
+                                      {"name":"enddate","type":"string"},
+                                      {"name":"f_info_restrictedcode","type":"string"},
+                                      {"name":"placing_method","type":"string"},
+                                      {"name":"placing_date","type":"string"},
+                                      {"name":"circulation_date","type":"string"},
+                                      {"name":"investment_amount","type":"double"},
+                                      {"name":"year_end_valuation","type":"double"},
+                                      {"name":"placing_quantity","type":"double"},
+                                      {"name":"cost_to_net_worth","type":"double"},
+                                      {"name":"book_value_net_worth","type":"double"},
+                                      {"name":"restricted_type","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

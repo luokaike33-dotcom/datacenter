@@ -1,0 +1,24 @@
+# ******************************************************************
+#    修改者                版本号            修改日期        修改内容
+#    lucas                1.2.10C        2023-5-31       新增
+# ******************************************************************
+table: fin_prd_astrd_trd_inpt 产品交易信息补录
+cols:
+PRD_CODE	VARCHAR2(32)	产品代码
+PRD_TYP	VARCHAR2(10)	组合类型
+TRD_DT	BIGINT	交易日期
+SECU_ID	VARCHAR2(50)	证券编码
+INV_TYPE	VARCHAR2(10)	投资类型
+CIR_ID	VARCHAR2(10)	流通标识
+VAR_STAT	VARCHAR2(10)	资产状态
+POS_ID	VARCHAR2(10)	多空标识
+TNV_NO	VARCHAR2(30)	成交编号
+TRD_DIR	VARCHAR2(10)	交易方向
+TNV_VOL	NUMBER(32,16)	成交数量
+TRD_PRC	NUMBER(32,16)	交易价格（单价）
+ACCR_INT	NUMBER(32,16)	应计利息(单位)
+TRD_FEE	NUMBER(32,16)	交易费
+DM_CREATED_TIME	TIMESTAMP	数据中台创建时间
+partition:
+cluster:
+index:

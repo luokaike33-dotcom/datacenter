@@ -1,0 +1,73 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      event_id,
+                                      targetcomp_code,
+                                      targetcompname,
+                                      s_info_windcode,
+                                      s_info_commitann_dt,
+                                      report_period,
+                                      commitnetprofit,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_commitprofit.json' as task_rs_id
+                                from ${srcoradbname}.commitprofit"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_commitprofit",
+                        "fileName": "w_commitprofit",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"event_id","type":"string"},
+                                      {"name":"targetcomp_code","type":"string"},
+                                      {"name":"targetcompname","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_info_commitann_dt","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"commitnetprofit","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,77 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+						"hiveSql":["SELECT object_id, s_info_windcode, trade_dt, price_type_code, price_type, b_anal_nxoptiondate, b_anal_termifexercise, b_anal_ytm_ifexe, b_anal_durationifexercise, b_anal_modiduration_ifexe, b_anal_convexity_ifexe, b_anal_basevalue_ifexe, b_anal_bduration_ifexe, b_anal_bconvexity_ifexe, b_anal_sduration_ifexe, b_anal_sconvexity_ifexe, opdate, opmode, bath_dt, data_ins_time, task_rs_id, busi_month
+                        FROM ${srcdbname}.w_coptionembeddedbondvaluation  where busi_month between substr(cast(${beg_date} as string),1,6) and substr(cast(${end_date} as string),1,6)
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"trade_dt",
+									"price_type_code",
+									"price_type",
+									"b_anal_nxoptiondate",
+									"b_anal_termifexercise",
+									"b_anal_ytm_ifexe",
+									"b_anal_durationifexercise",
+									"b_anal_modiduration_ifexe",
+									"b_anal_convexity_ifexe",
+									"b_anal_basevalue_ifexe",
+									"b_anal_bduration_ifexe",
+									"b_anal_bconvexity_ifexe",
+									"b_anal_sduration_ifexe",
+									"b_anal_sconvexity_ifexe",
+									"opdate",
+									"opmode",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id",
+                                    "busi_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_coptionembeddedbondval"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from wd_coptionembeddedbondval where busi_month between substr(to_char(${beg_date}),1,6) and substr(to_char(${end_date}),1,6)"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

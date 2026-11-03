@@ -1,0 +1,94 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                      "parameter": {
+						"hive_cmd":"beeline",
+						"hiveSql":["select  d_value_date,
+									c_stock_code,
+									n_close_price,
+									n_open_price,
+									n_downlimited_price,
+									n_uplimited_price,
+									n_highest_price,
+									n_lowst_price,
+									n_avg_price,
+									n_busin_amount,
+									n_busin_balance,
+									n_cb_full_price,
+									n_cb_net_vpprice,
+									n_csi_full_price,
+									n_csi_net_price,
+									n_csi_net_vpprice,
+									n_cb_yield,
+									n_csi_yield,
+									n_cb_vpyield,
+									n_csi_vpyield
+						FROM ty_dwm.rc_tm_xq_tn_quotations where d_value_date=${end_date}
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"d_value_date",
+									"c_stock_code",
+									"n_close_price",
+									"n_open_price",
+									"n_downlimited_price",
+									"n_uplimited_price",
+									"n_highest_price",
+									"n_lowst_price",
+									"n_avg_price",
+									"n_busin_amount",
+									"n_busin_balance",
+									"n_cb_full_price",
+									"n_cb_net_vpprice",
+									"n_csi_full_price",
+									"n_csi_net_price",
+									"n_csi_net_vpprice",
+									"n_cb_yield",
+									"n_csi_yield",
+									"n_cb_vpyield",
+									"n_csi_vpyield"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["YHFINRISK.tm_xq_tn_quotations"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from YHFINRISK.tm_xq_tn_quotations"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

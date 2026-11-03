@@ -1,0 +1,123 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      f_info_corp_fundmanagementcomp,
+                                      f_info_fundmanagementcomp_e,
+                                      f_info_sequence,
+                                      f_info_org_code,
+                                      f_info_registration_time,
+                                      f_info_establish_time,
+                                      f_info_address,
+                                      f_info_office,
+                                      f_info_regcapital,
+                                      f_info_paidcapital,
+                                      f_info_comp_property,
+                                      f_info_ratio,
+                                      f_info_managed_fund_type,
+                                      f_info_apply_other_business,
+                                      f_info_totalemployees,
+                                      f_info_website,
+                                      f_info_disclosurewebsite,
+                                      f_info_management_scale,
+                                      f_info_sincerity,
+                                      f_info_reporting_time,
+                                      f_special_hint_information,
+                                      ann_date,
+                                      f_info_legal_opinion,
+                                      f_info_law_firm,
+                                      f_info_sol_sig,
+                                      f_info_companyid,
+                                      f_management_scale_interval,
+                                      is_new,
+                                      is_member,
+                                      f_info_member_type,
+                                      f_info_time_admission,
+                                      f_info_crncy_code,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_chfmanagerinformation.json' as task_rs_id
+                                from ${srcoradbname}.chfmanagerinformation"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_chfmanagerinformation",
+                        "fileName": "w_chfmanagerinformation",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"f_info_corp_fundmanagementcomp","type":"string"},
+                                      {"name":"f_info_fundmanagementcomp_e","type":"string"},
+                                      {"name":"f_info_sequence","type":"string"},
+                                      {"name":"f_info_org_code","type":"string"},
+                                      {"name":"f_info_registration_time","type":"string"},
+                                      {"name":"f_info_establish_time","type":"string"},
+                                      {"name":"f_info_address","type":"string"},
+                                      {"name":"f_info_office","type":"string"},
+                                      {"name":"f_info_regcapital","type":"double"},
+                                      {"name":"f_info_paidcapital","type":"double"},
+                                      {"name":"f_info_comp_property","type":"string"},
+                                      {"name":"f_info_ratio","type":"double"},
+                                      {"name":"f_info_managed_fund_type","type":"string"},
+                                      {"name":"f_info_apply_other_business","type":"string"},
+                                      {"name":"f_info_totalemployees","type":"bigint"},
+                                      {"name":"f_info_website","type":"string"},
+                                      {"name":"f_info_disclosurewebsite","type":"string"},
+                                      {"name":"f_info_management_scale","type":"double"},
+                                      {"name":"f_info_sincerity","type":"string"},
+                                      {"name":"f_info_reporting_time","type":"string"},
+                                      {"name":"f_special_hint_information","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"f_info_legal_opinion","type":"string"},
+                                      {"name":"f_info_law_firm","type":"string"},
+                                      {"name":"f_info_sol_sig","type":"string"},
+                                      {"name":"f_info_companyid","type":"string"},
+                                      {"name":"f_management_scale_interval","type":"string"},
+                                      {"name":"is_new","type":"bigint"},
+                                      {"name":"is_member","type":"bigint"},
+                                      {"name":"f_info_member_type","type":"string"},
+                                      {"name":"f_info_time_admission","type":"string"},
+                                      {"name":"f_info_crncy_code","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

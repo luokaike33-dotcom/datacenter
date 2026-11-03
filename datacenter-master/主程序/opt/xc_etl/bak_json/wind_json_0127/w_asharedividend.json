@@ -1,0 +1,74 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,wind_code,s_info_windcode,s_div_progress,stk_dvd_per_sh,cash_dvd_per_sh_pre_tax,cash_dvd_per_sh_after_tax,eqy_record_dt,ex_dt,dvd_payout_dt,listing_dt_of_dvd_shr,s_div_prelandate,s_div_smtgdate,dvd_ann_dt,s_div_basedate,s_div_baseshare,crncy_code,ann_dt,is_changed,report_period,s_div_change,s_div_bonusrate,s_div_conversedrate,memo,s_div_preanndt,s_div_object,null as is_transfer,opdate,opmode,null as distri_profit_parent_comp,null as tot_cash_dvd from ${srcoradbname}.asharedividend"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_asharedividend",
+                        "fileName": "w_asharedividend",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"wind_code","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_div_progress","type":"STRING"},
+                        {"name":"stk_dvd_per_sh","type":"DOUBLE"},
+                        {"name":"cash_dvd_per_sh_pre_tax","type":"DOUBLE"},
+                        {"name":"cash_dvd_per_sh_after_tax","type":"DOUBLE"},
+                        {"name":"eqy_record_dt","type":"STRING"},
+                        {"name":"ex_dt","type":"STRING"},
+                        {"name":"dvd_payout_dt","type":"STRING"},
+                        {"name":"listing_dt_of_dvd_shr","type":"STRING"},
+                        {"name":"s_div_prelandate","type":"STRING"},
+                        {"name":"s_div_smtgdate","type":"STRING"},
+                        {"name":"dvd_ann_dt","type":"STRING"},
+                        {"name":"s_div_basedate","type":"STRING"},
+                        {"name":"s_div_baseshare","type":"DOUBLE"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"ann_dt","type":"STRING"},
+                        {"name":"is_changed","type":"DOUBLE"},
+                        {"name":"report_period","type":"STRING"},
+                        {"name":"s_div_change","type":"STRING"},
+                        {"name":"s_div_bonusrate","type":"DOUBLE"},
+                        {"name":"s_div_conversedrate","type":"DOUBLE"},
+                        {"name":"memo","type":"STRING"},
+                        {"name":"s_div_preanndt","type":"STRING"},
+                        {"name":"s_div_object","type":"STRING"},
+                        {"name":"is_transfer","type":"DOUBLE"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"},
+                        {"name":"distri_profit_parent_comp","type":"DOUBLE"},
+                        {"name":"tot_cash_dvd","type":"DOUBLE"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

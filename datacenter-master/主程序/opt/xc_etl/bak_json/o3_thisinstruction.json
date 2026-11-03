@@ -1,0 +1,185 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["SELECT L_DATE, L_DAILY_INSTRUCTION_NO, L_INDEX_DAILY_MODIFY, L_INDEX_LAST_MODIFY, L_INDEX_MODIFY_INSTRUCTION, L_FUND_ID, C_ENTRUST_RESTRICT, C_INSTRUCTION_TYPE, C_TARGET_TYPE, EN_TARGET_VALUE, L_BEGIN_DATE, L_BEGIN_TIME, L_END_DATE, L_END_TIME, C_INSTRUCTION_LEVEL, L_DIRECT_INSTEAD_OPERATOR, L_DIRECT_OPERATOR, L_MODIFY_TIME, L_OPERATOR_NO, C_INSTRUCTION_STATUS, C_APPROVE_STATUS, C_DISPENSE_STATUS, VC_SUMMARY, C_STOCK_TARGET_TYPE, L_TRADE_RIVAL_NO, L_SETTLE_SPEED, L_HG_DAYS, C_FIRST_SETTLE_TYPE, C_SECOND_SETTLE_TYPE, L_FIRST_SETTLE_DATE, L_SECOND_SETTLE_DATE, L_DIRECT_DATE, L_DIRECT_TIME, L_MODIFY_OPERATOR, VC_MODIFY_REASON, L_APPROVE_TIME, L_APPROVE_OPERATOR, VC_APPROVE_REFUSE_REASON, L_DISPENSE_TIME, L_DISPENSE_OPERATOR, VC_DISPENSE_REFUSE_REASON, L_CANCEL_TIME, L_CANCEL_OPERATOR, VC_CANCEL_REASON, C_ENTRUST_EXECUTE_STATUS, C_DEAL_EXECUTE_STATUS, C_REQUIRE_ORIGIN, C_PURPOSE_TYPE, L_INSTRUCTION_NO, L_BASECOMBI_ID, C_POWER_TYPE, VC_ETF_CODE, C_TRADE_REASON, D_DATETIME, C_BUSIN_CLASS, C_LOCK_FLAG, C_FAIR_TRADE, C_OPERATOR_ASSESS, VC_NO_ASSESS_REASON, VC_ASSESS_RESULT, C_PAPERY_APPROVE, L_BATCH_SERIAL_NO, L_GROUP_ID, C_RISK_APPROVE_STATUS, C_FLOW_APPROVE_STATUS, VC_EXECUTE_EXPLAIN, C_CANCEL_DISPENSE_STATUS, L_DISPENSE_DATE, L_MODIFY_DATE, C_CONFIRM_STATUS, C_OWNER_BAILTYPE, C_RIVAL_BAILTYPE, C_ETF_AUTO, VC_NO_FAIRTRADE_REASON, VC_BROKER_NO, L_SETTLE_LOCK_OPERATOR, L_LIMIT_OPERATOR, L_APPROVE_DATE, C_PRICE_CONTROL_TYPE, C_ARBI_TYPE, C_EXEC_PHASE, L_COMBITEMPLATE_ID, VC_SHORT_CODE, VC_LONG_CODE, L_ARBI_SETS, L_TOENTR_SETS, C_ETF_MANUAL, EN_TARGET_BASE, C_BRANCH_DEAL_STATUS, C_BRANCH_STATUS, VC_BRANCH_FAIL_REASON, C_CANCEL_BRANCH_STATUS, C_CANCEL_BRANCH_DEAL_STATUS, VC_TRADE_FLAG, L_SCHEMA_ID, D_HEART_BEAT, C_SOURCE, VC_SOURCE_NO, C_CANCEL_APPROVE_STATUS, C_DIRECT_APPROVE_STATUS, L_INVEST_ADVISER, C_TARGET_BASE, C_QUOTE_SIDE, C_SPECIAL_FLAG, L_INSIDER_TRADING_NO, C_CANCEL_STATUS, C_DEAL_EXECUTE_FLAG, L_BUSIN_END_DATE, L_BUSIN_BEGIN_DATE, C_PAYSTOCK_MODE, L_ORG_ID, L_DEPT_ID, L_INVEST_DATE, L_INVEST_TIME, VC_ADVISER_STATION, VC_IP_ADDRESS, VC_MAC, VC_VOLSERIAL_NO, C_ADVISE_TYPE, C_SEARCH_SOURCE, C_TRADE_AGENT_FLAG, L_APPROVE_BUSIN_DATE, C_OPER_FLAG, L_DEFAULT_OPERATOR, VC_BASKET_NO, VC_UNIQUE_INSTRUCTION_NO, L_ADVISE_ID, C_DEAL_SOURCE, VC_SUMMARY2, C_TREATYHG_FLAG, L_HG_BATCH_NO, L_APPLY_NO, VC_INTERBANK_QUOTE_ID, C_EFT_STATUS, L_CRMW_BATCH_SERIAL_NO, L_CANCEL_DATE, VC_TRADE_FEEDBACK, L_FEEDBACK_DATE, L_FEEDBACK_TIME, C_DISPUTE_RESOLUTIO, C_PLEDGED_REPLACE_TYPE  from ${srcoradbname}.THISINSTRUCTION where l_date = ${p_dt}"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_thisinstruction/p_dt=${p_dt}",
+                        "fileName": "o3_thisinstruction",
+                        "column": [
+     {"name":"l_date  ","type":"double"}
+                     {"name":"l_daily_instruction_no","type":"double"}
+                     {"name":"l_index_daily_modify","type":"double"}
+                     {"name":"l_index_last_modify","type":"double"}
+                     {"name":"l_index_modify_instruction","type":"double"}
+                     {"name":"l_fund_id","type":"double"}
+                     {"name":"c_entrust_restrict","type":"string"}
+                     {"name":"c_instruction_type","type":"string"}
+                     {"name":"c_target_type","type":"string"}
+                     {"name":"en_target_value","type":"double"}
+                     {"name":"l_begin_date","type":"double"}
+                     {"name":"l_begin_time","type":"double"}
+                     {"name":"l_end_date","type":"double"}
+                     {"name":"l_end_time","type":"double"}
+                     {"name":"c_instruction_level","type":"string"}
+                     {"name":"l_direct_instead_operator","type":"double"}
+                     {"name":"l_direct_operator","type":"double"}
+                     {"name":"l_modify_time","type":"double"}
+                     {"name":"l_operator_no","type":"double"}
+                     {"name":"c_instruction_status","type":"string"}
+                     {"name":"c_approve_status","type":"string"}
+                     {"name":"c_dispense_status","type":"string"}
+                     {"name":"vc_summary","type":"string"}
+                     {"name":"c_stock_target_type","type":"string"}
+                     {"name":"l_trade_rival_no","type":"double"}
+                     {"name":"l_settle_speed","type":"double"}
+                     {"name":"l_hg_days","type":"double"}
+                     {"name":"c_first_settle_type","type":"string"}
+                     {"name":"c_second_settle_type","type":"string"}
+                     {"name":"l_first_settle_date","type":"double"}
+                     {"name":"l_second_settle_date","type":"double"}
+                     {"name":"l_direct_date","type":"double"}
+                     {"name":"l_direct_time","type":"double"}
+                     {"name":"l_modify_operator","type":"double"}
+                     {"name":"vc_modify_reason","type":"string"}
+                     {"name":"l_approve_time","type":"double"}
+                     {"name":"l_approve_operator","type":"double"}
+                     {"name":"vc_approve_refuse_reason","type":"string"}
+                     {"name":"l_dispense_time","type":"double"}
+                     {"name":"l_dispense_operator","type":"double"}
+                     {"name":"vc_dispense_refuse_reason","type":"string"}
+                     {"name":"l_cancel_time","type":"double"}
+                     {"name":"l_cancel_operator","type":"double"}
+                     {"name":"vc_cancel_reason","type":"string"}
+                     {"name":"c_entrust_execute_status","type":"string"}
+                     {"name":"c_deal_execute_status","type":"string"}
+                     {"name":"c_require_origin","type":"string"}
+                     {"name":"c_purpose_type","type":"string"}
+                     {"name":"l_instruction_no","type":"double"}
+                     {"name":"l_basecombi_id","type":"double"}
+                     {"name":"c_power_type","type":"string"}
+                     {"name":"vc_etf_code","type":"string"}
+                     {"name":"c_trade_reason","type":"string"}
+                     {"name":"d_datetime","type":"date"}
+                     {"name":"c_busin_class","type":"string"}
+                     {"name":"c_lock_flag","type":"string"}
+                     {"name":"c_fair_trade","type":"string"}
+                     {"name":"c_operator_assess","type":"string"}
+                     {"name":"vc_no_assess_reason","type":"string"}
+                     {"name":"vc_assess_result","type":"string"}
+                     {"name":"c_papery_approve","type":"string"}
+                     {"name":"l_batch_serial_no","type":"double"}
+                     {"name":"l_group_id","type":"double"}
+                     {"name":"c_risk_approve_status","type":"string"}
+                     {"name":"c_flow_approve_status","type":"string"}
+                     {"name":"vc_execute_explain","type":"string"}
+                     {"name":"c_cancel_dispense_status","type":"string"}
+                     {"name":"l_dispense_date","type":"double"}
+                     {"name":"l_modify_date","type":"double"}
+                     {"name":"c_confirm_status","type":"string"}
+                     {"name":"c_owner_bailtype","type":"string"}
+                     {"name":"c_rival_bailtype","type":"string"}
+                     {"name":"c_etf_auto","type":"string"}
+                     {"name":"vc_no_fairtrade_reason","type":"string"}
+                     {"name":"vc_broker_no","type":"string"}
+                     {"name":"l_settle_lock_operator","type":"double"}
+                     {"name":"l_limit_operator","type":"double"}
+                     {"name":"l_approve_date","type":"double"}
+                     {"name":"c_price_control_type","type":"string"}
+                     {"name":"c_arbi_type","type":"string"}
+                     {"name":"c_exec_phase","type":"string"}
+                     {"name":"l_combitemplate_id","type":"double"}
+                     {"name":"vc_short_code","type":"string"}
+                     {"name":"vc_long_code","type":"string"}
+                     {"name":"l_arbi_sets","type":"double"}
+                     {"name":"l_toentr_sets","type":"double"}
+                     {"name":"c_etf_manual","type":"string"}
+                     {"name":"en_target_base","type":"double"}
+                     {"name":"c_branch_deal_status","type":"string"}
+                     {"name":"c_branch_status","type":"string"}
+                     {"name":"vc_branch_fail_reason","type":"string"}
+                     {"name":"c_cancel_branch_status","type":"string"}
+                     {"name":"c_cancel_branch_deal_status","type":"string"}
+                     {"name":"vc_trade_flag","type":"string"}
+                     {"name":"l_schema_id","type":"double"}
+                     {"name":"d_heart_beat","type":"timestamp"}
+                     {"name":"c_source","type":"string"}
+                     {"name":"vc_source_no","type":"string"}
+                     {"name":"c_cancel_approve_status","type":"string"}
+                     {"name":"c_direct_approve_status","type":"string"}
+                     {"name":"l_invest_adviser","type":"double"}
+                     {"name":"c_target_base","type":"string"}
+                     {"name":"c_quote_side","type":"string"}
+                     {"name":"c_special_flag","type":"string"}
+                     {"name":"l_insider_trading_no","type":"double"}
+                     {"name":"c_cancel_status","type":"string"}
+                     {"name":"c_deal_execute_flag","type":"string"}
+                     {"name":"l_busin_end_date","type":"double"}
+                     {"name":"l_busin_begin_date","type":"double"}
+                     {"name":"c_paystock_mode","type":"string"}
+                     {"name":"l_org_id","type":"double"}
+                     {"name":"l_dept_id","type":"double"}
+                     {"name":"l_invest_date","type":"double"}
+                     {"name":"l_invest_time","type":"double"}
+                     {"name":"vc_adviser_station","type":"string"}
+                     {"name":"vc_ip_address","type":"string"}
+                     {"name":"vc_mac","type":"string"}
+                     {"name":"vc_volserial_no","type":"string"}
+                     {"name":"c_advise_type","type":"string"}
+                     {"name":"c_search_source","type":"string"}
+                     {"name":"c_trade_agent_flag","type":"string"}
+                     {"name":"l_approve_busin_date","type":"double"}
+                     {"name":"c_oper_flag","type":"string"}
+                     {"name":"l_default_operator","type":"double"}
+                     {"name":"vc_basket_no","type":"string"}
+                     {"name":"vc_unique_instruction_no","type":"string"}
+                     {"name":"l_advise_id","type":"double"}
+                     {"name":"c_deal_source","type":"string"}
+                     {"name":"vc_summary2","type":"string"}
+                     {"name":"c_treatyhg_flag","type":"string"}
+                     {"name":"l_hg_batch_no","type":"double"}
+                     {"name":"l_apply_no","type":"double"}
+                     {"name":"vc_interbank_quote_id","type":"string"}
+                     {"name":"c_eft_status","type":"string"}
+                     {"name":"l_crmw_batch_serial_no","type":"double"}
+                     {"name":"l_cancel_date","type":"double"}
+                     {"name":"vc_trade_feedback","type":"double"}
+                     {"name":"l_feedback_date","type":"double"}
+                     {"name":"l_feedback_time","type":"double"}
+                     {"name":"c_dispute_resolutio","type":"string"}
+                     {"name":"c_pledged_replace_type","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}
+

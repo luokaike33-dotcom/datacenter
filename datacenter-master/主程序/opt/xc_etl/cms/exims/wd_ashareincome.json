@@ -1,0 +1,167 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+                        "hiveSql":["SELECT object_id, s_info_windcode, wind_code, ann_dt, report_period, statement_type, crncy_code, tot_oper_rev, oper_rev, int_inc, net_int_inc, insur_prem_unearned, handling_chrg_comm_inc, net_handling_chrg_comm_inc, net_inc_other_ops, plus_net_inc_other_bus, prem_inc, less_ceded_out_prem, chg_unearned_prem_res, incl_reinsurance_prem_inc, net_inc_sec_trading_brok_bus, net_inc_sec_uw_bus, net_inc_ec_asset_mgmt_bus, other_bus_inc, plus_net_gain_chg_fv, plus_net_invest_inc, incl_inc_invest_assoc_jv_entp, plus_net_gain_fx_trans, tot_oper_cost, less_oper_cost, less_int_exp, less_handling_chrg_comm_exp, less_taxes_surcharges_ops, less_selling_dist_exp, less_gerl_admin_exp, less_fin_exp, less_impair_loss_assets, prepay_surr, tot_claim_exp, chg_insur_cont_rsrv, dvd_exp_insured, reinsurance_exp, oper_exp, less_claim_recb_reinsurer, less_ins_rsrv_recb_reinsurer, less_exp_recb_reinsurer, other_bus_cost, oper_profit, plus_non_oper_rev, less_non_oper_exp, il_net_loss_disp_noncur_asset, tot_profit, inc_tax, unconfirmed_invest_loss, net_profit_incl_min_int_inc, net_profit_excl_min_int_inc, minority_int_inc, other_compreh_inc, tot_compreh_inc, tot_compreh_inc_parent_comp, tot_compreh_inc_min_shrhldr, ebit, ebitda, net_profit_after_ded_nr_lp, net_profit_under_intl_acc_sta, comp_type_code, s_fa_eps_basic, s_fa_eps_diluted, actual_ann_dt, insurance_expense, spe_bal_oper_profit, tot_bal_oper_profit, spe_bal_tot_profit, tot_bal_tot_profit, spe_bal_net_profit, tot_bal_net_profit, undistributed_profit, adjlossgain_prevyear, transfer_from_surplusreserve, transfer_from_housingimprest, transfer_from_others, distributable_profit, withdr_legalsurplus, withdr_legalpubwelfunds, workers_welfare, withdr_buzexpwelfare, withdr_reservefund, distributable_profit_shrhder, prfshare_dvd_payable, withdr_othersurpreserve, comshare_dvd_payable, capitalized_comstock_div, s_info_compcode, net_after_ded_nr_lp_correct, other_income, memo, asset_disposal_income, continued_net_profit, end_net_profit, credit_impairment_loss, net_exposure_hedging_benefits, rd_expense, stmnote_finexp, fin_exp_int_inc, is_calculation, opdate, opmode, bath_dt, data_ins_time, task_rs_id, busi_month
+									FROM ${srcdbname}.w_ashareincome where busi_month=${busi_month} ; "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+						"tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"wind_code",
+									"ann_dt",
+									"report_period",
+									"statement_type",
+									"crncy_code",
+									"tot_oper_rev",
+									"oper_rev",
+									"int_inc",
+									"net_int_inc",
+									"insur_prem_unearned",
+									"handling_chrg_comm_inc",
+									"net_handling_chrg_comm_inc",
+									"net_inc_other_ops",
+									"plus_net_inc_other_bus",
+									"prem_inc",
+									"less_ceded_out_prem",
+									"chg_unearned_prem_res",
+									"incl_reinsurance_prem_inc",
+									"net_inc_sec_trading_brok_bus",
+									"net_inc_sec_uw_bus",
+									"net_inc_ec_asset_mgmt_bus",
+									"other_bus_inc",
+									"plus_net_gain_chg_fv",
+									"plus_net_invest_inc",
+									"incl_inc_invest_assoc_jv_entp",
+									"plus_net_gain_fx_trans",
+									"tot_oper_cost",
+									"less_oper_cost",
+									"less_int_exp",
+									"less_handling_chrg_comm_exp",
+									"less_taxes_surcharges_ops",
+									"less_selling_dist_exp",
+									"less_gerl_admin_exp",
+									"less_fin_exp",
+									"less_impair_loss_assets",
+									"prepay_surr",
+									"tot_claim_exp",
+									"chg_insur_cont_rsrv",
+									"dvd_exp_insured",
+									"reinsurance_exp",
+									"oper_exp",
+									"less_claim_recb_reinsurer",
+									"less_ins_rsrv_recb_reinsurer",
+									"less_exp_recb_reinsurer",
+									"other_bus_cost",
+									"oper_profit",
+									"plus_non_oper_rev",
+									"less_non_oper_exp",
+									"il_net_loss_disp_noncur_asset",
+									"tot_profit",
+									"inc_tax",
+									"unconfirmed_invest_loss",
+									"net_profit_incl_min_int_inc",
+									"net_profit_excl_min_int_inc",
+									"minority_int_inc",
+									"other_compreh_inc",
+									"tot_compreh_inc",
+									"tot_compreh_inc_parent_comp",
+									"tot_compreh_inc_min_shrhldr",
+									"ebit",
+									"ebitda",
+									"net_profit_after_ded_nr_lp",
+									"net_profit_under_intl_acc_sta",
+									"comp_type_code",
+									"s_fa_eps_basic",
+									"s_fa_eps_diluted",
+									"actual_ann_dt",
+									"insurance_expense",
+									"spe_bal_oper_profit",
+									"tot_bal_oper_profit",
+									"spe_bal_tot_profit",
+									"tot_bal_tot_profit",
+									"spe_bal_net_profit",
+									"tot_bal_net_profit",
+									"undistributed_profit",
+									"adjlossgain_prevyear",
+									"transfer_from_surplusreserve",
+									"transfer_from_housingimprest",
+									"transfer_from_others",
+									"distributable_profit",
+									"withdr_legalsurplus",
+									"withdr_legalpubwelfunds",
+									"workers_welfare",
+									"withdr_buzexpwelfare",
+									"withdr_reservefund",
+									"distributable_profit_shrhder",
+									"prfshare_dvd_payable",
+									"withdr_othersurpreserve",
+									"comshare_dvd_payable",
+									"capitalized_comstock_div",
+									"s_info_compcode",
+									"net_after_ded_nr_lp_correct",
+									"other_income",
+									"memo",
+									"asset_disposal_income",
+									"continued_net_profit",
+									"end_net_profit",
+									"credit_impairment_loss",
+									"net_exposure_hedging_benefits",
+									"rd_expense",
+									"stmnote_finexp",
+									"fin_exp_int_inc",
+									"is_calculation",
+									"opdate",
+									"opmode",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id",
+									"busi_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_ashareincome"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from wd_ashareincome where busi_month=${busi_month}"]
+						
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

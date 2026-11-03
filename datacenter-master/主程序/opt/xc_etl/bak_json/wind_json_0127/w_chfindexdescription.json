@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_info_code,
+                                      s_info_name,
+                                      s_info_compname,
+                                      s_info_exchmarket,
+                                      s_info_publisher,
+                                      s_info_index_baseper,
+                                      s_info_index_basept,
+                                      s_info_listdate,
+                                      s_info_index_weightsrule,
+                                      s_info_indexstyle,
+                                      index_intro,
+                                      expire_date,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_chfindexdescription.json' as task_rs_id
+                                from ${srcoradbname}.chfindexdescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_chfindexdescription",
+                        "fileName": "w_chfindexdescription",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_info_code","type":"string"},
+                                      {"name":"s_info_name","type":"string"},
+                                      {"name":"s_info_compname","type":"string"},
+                                      {"name":"s_info_exchmarket","type":"string"},
+                                      {"name":"s_info_publisher","type":"string"},
+                                      {"name":"s_info_index_baseper","type":"string"},
+                                      {"name":"s_info_index_basept","type":"double"},
+                                      {"name":"s_info_listdate","type":"string"},
+                                      {"name":"s_info_index_weightsrule","type":"string"},
+                                      {"name":"s_info_indexstyle","type":"string"},
+                                      {"name":"index_intro","type":"string"},
+                                      {"name":"expire_date","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

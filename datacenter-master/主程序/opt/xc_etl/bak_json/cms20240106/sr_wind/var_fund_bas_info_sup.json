@@ -1,0 +1,102 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fund_bas_info_sup",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"long"},
+									{"index":21,"type":"string"},
+									{"name":"dm_created_time","type":"string","value":"${kerberosPrincipal}"},
+									{"index":23,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"secu_sht",
+									"dur_bgn",
+									"dur_end",
+									"mngr_id",
+									"mngr_name",
+									"cstd_org_id",
+									"cstd_org_name",
+									"iss_vol",
+									"oper_code",
+									"oper_code_desc",
+									"inv_typ_comi",
+									"inv_typ_comi_desc",
+									"inv_typ_comii",
+									"inv_typ_comii_desc",
+									"aep_rat",
+									"cstd_fee_rat",
+									"is_grt",
+									"inv_fetu",
+									"carry_fwd_typ",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:mysql://${tgrurl}/",
+                                "selectedDatabase": "${selectedDatabase}", 
+                                "table": ["var_fund_bas_info_sup"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "loadUrl":[${loadUrl}],
+                        "preSql":["truncate table data_mart.var_fund_bas_info_sup"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

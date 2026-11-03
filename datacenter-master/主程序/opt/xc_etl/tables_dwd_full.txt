@@ -1,0 +1,2 @@
+var_astk_pspt_infm
+var_astk_purc_fmpt

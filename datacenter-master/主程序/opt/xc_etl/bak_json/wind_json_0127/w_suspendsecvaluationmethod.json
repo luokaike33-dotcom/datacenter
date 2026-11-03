@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      s_info_compname,
+                                      s_info_windcode,
+                                      ann_dt,
+                                      s_dq_suspenddate,
+                                      price,
+                                      type_code,
+                                      ind_windcode,
+                                      s_dq_resumpdate,
+                                      val_price,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_suspendsecvaluationmethod.json' as task_rs_id
+                                from ${srcoradbname}.suspendsecvaluationmethod"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_suspendsecvaluationmethod",
+                        "fileName": "w_suspendsecvaluationmethod",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"s_info_compname","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"s_dq_suspenddate","type":"string"},
+                                      {"name":"price","type":"double"},
+                                      {"name":"type_code","type":"bigint"},
+                                      {"name":"ind_windcode","type":"string"},
+                                      {"name":"s_dq_resumpdate","type":"string"},
+                                      {"name":"val_price","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

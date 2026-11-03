@@ -1,0 +1,150 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+						"hiveSql":["SELECT occu_dt, occu_time, busi_sys_id, trd_src_id, tnv_onum, odr_onum, excf_onum, odr_rela_onum, tnv_no, prd_code, ast_unit_code, pfl_code, sh_code, seat_code, secu_id, exch_code, src_secu_id, src_secu_trd_id, secu_code, pos_id, curr_code, busi_typ, inv_typ, busi_clas, entr_dir, clr_typ, clr_sped, par_gamt, tnv_vol, aft_par_vol, tnv_val, occu_val, aft_occu_val, rat, tnv_prc, net_prc, full_prc, end_yld, trd_chag, clea_serv_chag, oth_fee, cont_days, inta_days, cont_tnv_dt, cont_end_dt, fir_deli_dt, end_deli_dt, fir_deli_mode, end_deli_mode, fir_net_prc, end_net_prc, fir_hd_intr, end_hd_intr, buyb_val, intr, deli_dt, trd_cntp_id, entr_dir_o3, entr_dir_name_o3, busi_clas_o3, oper_no, tnv_time, cntp_delr_id, cntp_delr_name, sett_fail_flag, stat, memo, buyt_repo_tnv_vol, bond_debc_tnv_vol, repo_use_clas, in_prd_code, in_ast_unit_code, in_pfl_code, in_sh_code, in_seat_code, in_inv_typ, in_secu_id, in_par_gamt, in_tnv_prc, in_tnv_val, in_occu_val, in_fee, busi_date, task_rs_id, dm_created_time, exer_yld, cntp_bnk_id, cntp_bnk_name, cntp_bnk_acc, cntp_bnk_acc_name, cntp_bond_cstd_acc, cntp_bond_cstd_acc_name, selfp_id, p_dt, sys_rs_id
+						FROM ${srcdbname}.evt_inbk_tnv_his where p_dt between ${beg_date} and ${end_date}
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+						"tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"occu_dt",
+									"occu_time",
+									"busi_sys_id",
+									"trd_src_id",
+									"tnv_onum",
+									"odr_onum",
+									"excf_onum",
+									"odr_rela_onum",
+									"tnv_no",
+									"prd_code",
+									"ast_unit_code",
+									"pfl_code",
+									"sh_code",
+									"seat_code",
+									"secu_id",
+									"exch_code",
+									"src_secu_id",
+									"src_secu_trd_id",
+									"secu_code",
+									"pos_id",
+									"curr_code",
+									"busi_typ",
+									"inv_typ",
+									"busi_clas",
+									"entr_dir",
+									"clr_typ",
+									"clr_sped",
+									"par_gamt",
+									"tnv_vol",
+									"aft_par_vol",
+									"tnv_val",
+									"occu_val",
+									"aft_occu_val",
+									"rat",
+									"tnv_prc",
+									"net_prc",
+									"full_prc",
+									"end_yld",
+									"trd_chag",
+									"clea_serv_chag",
+									"oth_fee",
+									"cont_days",
+									"inta_days",
+									"cont_tnv_dt",
+									"cont_end_dt",
+									"fir_deli_dt",
+									"end_deli_dt",
+									"fir_deli_mode",
+									"end_deli_mode",
+									"fir_net_prc",
+									"end_net_prc",
+									"fir_hd_intr",
+									"end_hd_intr",
+									"buyb_val",
+									"intr",
+									"deli_dt",
+									"trd_cntp_id",
+									"entr_dir_o3",
+									"entr_dir_name_o3",
+									"busi_clas_o3",
+									"oper_no",
+									"tnv_time",
+									"cntp_delr_id",
+									"cntp_delr_name",
+									"sett_fail_flag",
+									"stat",
+									"memo",
+									"buyt_repo_tnv_vol",
+									"bond_debc_tnv_vol",
+									"repo_use_clas",
+									"in_prd_code",
+									"in_ast_unit_code",
+									"in_pfl_code",
+									"in_sh_code",
+									"in_seat_code",
+									"in_inv_typ",
+									"in_secu_id",
+									"in_par_gamt",
+									"in_tnv_prc",
+									"in_tnv_val",
+									"in_occu_val",
+									"in_fee",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"exer_yld",
+									"cntp_bnk_id",
+									"cntp_bnk_name",
+									"cntp_bnk_acc",
+									"cntp_bnk_acc_name",
+									"cntp_bond_cstd_acc",
+									"cntp_bond_cstd_acc_name",
+									"selfp_id",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["evt_inbk_tnv_his"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from evt_inbk_tnv_his where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "3"
+            },
+            "errorLimit": {"record":0}
+        }
+    }
+}
+
+

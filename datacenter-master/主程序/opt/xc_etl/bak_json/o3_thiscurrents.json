@@ -1,0 +1,113 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select l_date,l_serial_no,l_operator_no,l_fund_id,l_asset_id,l_basecombi_id,l_time,l_busin_flag,vc_connection_id,vc_computer_name,vc_mac,vc_volserial_no,en_occur_balance,en_post_balance,vc_stockholder_id,vc_seat_id,vc_inter_code,c_entrust_direction,en_entrust_price,l_entrust_amount,l_busin_amount,c_stock_type,en_fare1,en_fare2,en_fare3,en_fare4,en_fare5,en_fare6,en_fare7,l_busin_time1,l_busin_time2,c_deliver_status,vc_summary,vc_busin_opflag,l_busin_no,c_invest_type,c_repeat_settle,en_fee_js2,en_fee_jg,c_position_flag,en_risk_fund,c_close_type,en_deal_balance,vc_currency_no,vc_deal_no,c_busin_class,l_settle_speed,l_subject_no,en_subject_balance,c_status,en_subject_post_balance,c_deal_type,vc_export_flag,vc_external_no,l_check_operator,l_settle_date,vc_broker_no,l_trade_date,l_post_amount,t_timestamp,l_busin_no2,en_fee_jy_true,en_fee_yj_true,en_fee_gh_total,c_produce_mark,en_tail_balance,c_additional_flag,en_tmp_balance1,l_bondlending_amount,l_buyout_amount from ${srcoradbname}.thiscurrents where l_date = ${p_dt}"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_thiscurrents/p_dt=${p_dt}",
+                        "fileName": "o3_thiscurrents",
+                        "column": [
+     {"name":"l_date","type":"int"},
+     {"name":"l_serial_no","type":"bigint"},
+     {"name":"l_operator_no","type":"int"},
+     {"name":"l_fund_id","type":"int"},
+     {"name":"l_asset_id","type":"int"},
+     {"name":"l_basecombi_id","type":"bigint"},
+     {"name":"l_time","type":"int"},
+     {"name":"l_busin_flag","type":"int"},
+     {"name":"vc_connection_id","type":"string"},
+     {"name":"vc_computer_name","type":"string"},
+     {"name":"vc_mac","type":"string"},
+     {"name":"vc_volserial_no","type":"string"},
+     {"name":"en_occur_balance","type":"double"},
+     {"name":"en_post_balance","type":"double"},
+     {"name":"vc_stockholder_id","type":"string"},
+     {"name":"vc_seat_id","type":"string"},
+     {"name":"vc_inter_code","type":"string"},
+     {"name":"c_entrust_direction","type":"string"},
+     {"name":"en_entrust_price","type":"double"},
+     {"name":"l_entrust_amount","type":"double"},
+     {"name":"l_busin_amount","type":"double"},
+     {"name":"c_stock_type","type":"string"},
+     {"name":"en_fare1","type":"double"},
+     {"name":"en_fare2","type":"double"},
+     {"name":"en_fare3","type":"double"},
+     {"name":"en_fare4","type":"double"},
+     {"name":"en_fare5","type":"double"},
+     {"name":"en_fare6","type":"double"},
+     {"name":"en_fare7","type":"double"},
+     {"name":"l_busin_time1","type":"int"},
+     {"name":"l_busin_time2","type":"int"},
+     {"name":"c_deliver_status","type":"string"},
+     {"name":"vc_summary","type":"string"},
+     {"name":"vc_busin_opflag","type":"string"},
+     {"name":"l_busin_no","type":"bigint"},
+     {"name":"c_invest_type","type":"string"},
+     {"name":"c_repeat_settle","type":"string"},
+     {"name":"en_fee_js2","type":"double"},
+     {"name":"en_fee_jg","type":"double"},
+     {"name":"c_position_flag","type":"string"},
+     {"name":"en_risk_fund","type":"double"},
+     {"name":"c_close_type","type":"string"},
+     {"name":"en_deal_balance","type":"double"},
+     {"name":"vc_currency_no","type":"string"},
+     {"name":"vc_deal_no","type":"string"},
+     {"name":"c_busin_class","type":"string"},
+     {"name":"l_settle_speed","type":"bigint"},
+     {"name":"l_subject_no","type":"bigint"},
+     {"name":"en_subject_balance","type":"double"},
+     {"name":"c_status","type":"string"},
+     {"name":"en_subject_post_balance","type":"double"},
+     {"name":"c_deal_type","type":"string"},
+     {"name":"vc_export_flag","type":"string"},
+     {"name":"vc_external_no","type":"string"},
+     {"name":"l_check_operator","type":"int"},
+     {"name":"l_settle_date","type":"int"},
+     {"name":"vc_broker_no","type":"string"},
+     {"name":"l_trade_date","type":"int"},
+     {"name":"l_post_amount","type":"double"},
+     {"name":"t_timestamp","type":"timestamp"},
+     {"name":"l_busin_no2","type":"bigint"},
+     {"name":"en_fee_jy_true","type":"double"},
+     {"name":"en_fee_yj_true","type":"double"},
+     {"name":"en_fee_gh_total","type":"double"},
+     {"name":"c_produce_mark","type":"string"},
+     {"name":"en_tail_balance","type":"double"},
+     {"name":"en_fee_yj_true","type":"string"},
+     {"name":"en_fee_gh_total","type":"double"},
+     {"name":"c_produce_mark","type":"double"},
+     {"name":"en_tail_balance","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,114 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fa45_t_r_rm_zdjsbfjb_rela",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"double"},
+									{"index":3,"type":"double"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"date"},
+									{"index":30,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"c_iden",
+									"c_iden_rela",
+									"n_jsbfj",
+									"n_jzce",
+									"n_mrzq_gp",
+									"n_mrzq_jj",
+									"n_mrzq_qz",
+									"n_mrzq_zq",
+									"n_mrzq_hg",
+									"n_adjust_money",
+									"n_jsbfj_sjs",
+									"n_jzce_sjs",
+									"n_mrzq_gpsjs",
+									"n_mrzq_jjsjs",
+									"n_mrzq_qzsjs",
+									"n_mrzq_zqsjs",
+									"n_mrzq_hgsjs",
+									"n_adjust_moneysjs",
+									"c_mkt_code",
+									"n_mrhz",
+									"n_mrhz_sjs",
+									"c_wtr_code",
+									"n_adjust_moneyxsb",
+									"n_jsbfj_xsb",
+									"n_jzce_xsb",
+									"n_mrzq_gpxsb",
+									"n_mrhz_bjs",
+									"n_mrzq_zqxsb",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fa45_t_r_rm_zdjsbfjb_rela"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table fa45_t_r_rm_zdjsbfjb_rela"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":0}
+        }
+    }
+}
+
+

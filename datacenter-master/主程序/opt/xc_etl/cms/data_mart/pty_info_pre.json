@@ -1,0 +1,136 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/pty_info_pre/sys_rs_id=${sys_rs_id}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"date"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"long"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"date"},
+									{"value":"${sys_rs_id}","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"com_id",
+									"com_name",
+									"chi_sht",
+									"eng_name",
+									"eng_sht",
+									"natr_biz",
+									"natr_econ",
+									"found_dt",
+									"reg_cptl",
+									"lgl_repr",
+									"reg_addr",
+									"ctry_code",
+									"ctry_name",
+									"reg_prov",
+									"reg_city",
+									"reg_cnty",
+									"ofs_addr",
+									"posc",
+									"tel",
+									"fax",
+									"email",
+									"web_site",
+									"reg_num_biz",
+									"is_exist",
+									"canl_dt",
+									"org_code",
+									"is_inno_com",
+									"biz_sco",
+									"is_list",
+									"bk_desc",
+									"gen_mngr",
+									"is_bach_ins",
+									"legp_idty_id",
+									"com_corp_scal",
+									"is_high_tegy",
+									"bnk_ins_clas",
+									"is_vie",
+									"is_prof",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["pty_info_pre"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from data_mart.pty_info_pre where sys_rs_id='${sys_rs_id}' "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

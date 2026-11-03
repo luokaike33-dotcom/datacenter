@@ -1,0 +1,72 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,ann_dt,b_tender_tenderdate,b_tender_method,b_tender_object,b_tender_amountplan,b_tender_cmptamnt,b_tender_underwriting,b_tender_additiverights,b_tender_addratio,b_tender_threshold,b_tender_ceiling,b_tender_tenderunit,b_tender_lowestamnt,b_tender_highestamnt,b_tender_paymentdate,b_tender_confirmdate,b_tender_transferdate,b_tender_distribbegin,b_tender_distribend,b_tender_underwritingcost,b_tender_spread,b_tender_concatenationornot,b_tender_time,b_tender_payment_enddate,null as b_tender_ol_amount,opdate,opmode from ${srcoradbname}.cbondtender"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondtender",
+                        "fileName": "w_cbondtender",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"ann_dt","type":"STRING"},
+                        {"name":"b_tender_tenderdate","type":"STRING"},
+                        {"name":"b_tender_method","type":"DOUBLE"},
+                        {"name":"b_tender_object","type":"DOUBLE"},
+                        {"name":"b_tender_amountplan","type":"DOUBLE"},
+                        {"name":"b_tender_cmptamnt","type":"DOUBLE"},
+                        {"name":"b_tender_underwriting","type":"DOUBLE"},
+                        {"name":"b_tender_additiverights","type":"STRING"},
+                        {"name":"b_tender_addratio","type":"DOUBLE"},
+                        {"name":"b_tender_threshold","type":"DOUBLE"},
+                        {"name":"b_tender_ceiling","type":"DOUBLE"},
+                        {"name":"b_tender_tenderunit","type":"DOUBLE"},
+                        {"name":"b_tender_lowestamnt","type":"DOUBLE"},
+                        {"name":"b_tender_highestamnt","type":"DOUBLE"},
+                        {"name":"b_tender_paymentdate","type":"STRING"},
+                        {"name":"b_tender_confirmdate","type":"STRING"},
+                        {"name":"b_tender_transferdate","type":"STRING"},
+                        {"name":"b_tender_distribbegin","type":"STRING"},
+                        {"name":"b_tender_distribend","type":"STRING"},
+                        {"name":"b_tender_underwritingcost","type":"DOUBLE"},
+                        {"name":"b_tender_spread","type":"STRING"},
+                        {"name":"b_tender_concatenationornot","type":"DOUBLE"},
+                        {"name":"b_tender_time","type":"STRING"},
+                        {"name":"b_tender_payment_enddate","type":"STRING"},
+                        {"name":"b_tender_ol_amount","type":"DOUBLE"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

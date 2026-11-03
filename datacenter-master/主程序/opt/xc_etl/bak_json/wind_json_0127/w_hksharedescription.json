@@ -1,0 +1,73 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_info_code,s_info_isincode,s_info_name,s_info_name_eng,s_info_fullname,s_info_fullname_eng,securityclass,securitysubclass,securitytype,s_info_countrycode,s_info_exchange_eng,s_info_exchange,s_info_listboard,s_info_compcode,s_info_status,crncy_code,s_info_par,min_prc_chg_unit,s_info_unitperlot,s_info_listdate,s_info_delistdate,s_info_listprice,is_hksc,istemporarysymbol,is_h,null as s_info_pinyin,opdate,opmode from ${srcoradbname}.hksharedescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_hksharedescription",
+                        "fileName": "w_hksharedescription",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_info_code","type":"STRING"},
+                        {"name":"s_info_isincode","type":"STRING"},
+                        {"name":"s_info_name","type":"STRING"},
+                        {"name":"s_info_name_eng","type":"STRING"},
+                        {"name":"s_info_fullname","type":"STRING"},
+                        {"name":"s_info_fullname_eng","type":"STRING"},
+                        {"name":"securityclass","type":"DOUBLE"},
+                        {"name":"securitysubclass","type":"DOUBLE"},
+                        {"name":"securitytype","type":"STRING"},
+                        {"name":"s_info_countrycode","type":"STRING"},
+                        {"name":"s_info_exchange_eng","type":"STRING"},
+                        {"name":"s_info_exchange","type":"STRING"},
+                        {"name":"s_info_listboard","type":"STRING"},
+                        {"name":"s_info_compcode","type":"STRING"},
+                        {"name":"s_info_status","type":"DOUBLE"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"s_info_par","type":"DOUBLE"},
+                        {"name":"min_prc_chg_unit","type":"DOUBLE"},
+                        {"name":"s_info_unitperlot","type":"DOUBLE"},
+                        {"name":"s_info_listdate","type":"STRING"},
+                        {"name":"s_info_delistdate","type":"STRING"},
+                        {"name":"s_info_listprice","type":"DOUBLE"},
+                        {"name":"is_hksc","type":"DOUBLE"},
+                        {"name":"istemporarysymbol","type":"DOUBLE"},
+                        {"name":"is_h","type":"DOUBLE"},
+                        {"name":"s_info_pinyin","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,105 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      report_period,
+                                      ann_date,
+                                      rp_sale_product,
+                                      contro_party_capital_amount,
+                                      contro_party_capital_balance,
+                                      rp_amount,
+                                      rp_balance,
+                                      amount_funds_available,
+                                      funding_balance,
+                                      fp_amount_tot,
+                                      fp_balance,
+                                      fp_overdue_amount,
+                                      fp_addup_profit,
+                                      rp_sale_product_ratio,
+                                      rp_purchase_amount,
+                                      rp_purchase_ratio,
+                                      rp_sale_product_est,
+                                      rp_labour_services_est,
+                                      rp_purchase_amount_est,
+                                      rp_accept_service_est,
+                                      rp_other_transactions,
+                                      pricing_principle,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharetrustinvestmenttot.json' as task_rs_id
+                                from ${srcoradbname}.asharetrustinvestmenttot"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharetrustinvestmenttot",
+                        "fileName": "w_asharetrustinvestmenttot",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"rp_sale_product","type":"double"},
+                                      {"name":"contro_party_capital_amount","type":"double"},
+                                      {"name":"contro_party_capital_balance","type":"double"},
+                                      {"name":"rp_amount","type":"double"},
+                                      {"name":"rp_balance","type":"double"},
+                                      {"name":"amount_funds_available","type":"double"},
+                                      {"name":"funding_balance","type":"double"},
+                                      {"name":"fp_amount_tot","type":"double"},
+                                      {"name":"fp_balance","type":"double"},
+                                      {"name":"fp_overdue_amount","type":"double"},
+                                      {"name":"fp_addup_profit","type":"double"},
+                                      {"name":"rp_sale_product_ratio","type":"double"},
+                                      {"name":"rp_purchase_amount","type":"double"},
+                                      {"name":"rp_purchase_ratio","type":"double"},
+                                      {"name":"rp_sale_product_est","type":"double"},
+                                      {"name":"rp_labour_services_est","type":"double"},
+                                      {"name":"rp_purchase_amount_est","type":"double"},
+                                      {"name":"rp_accept_service_est","type":"double"},
+                                      {"name":"rp_other_transactions","type":"double"},
+                                      {"name":"pricing_principle","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

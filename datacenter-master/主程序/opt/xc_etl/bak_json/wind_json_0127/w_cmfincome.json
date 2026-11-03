@@ -1,0 +1,131 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      sec_id,
+                                      report_period,
+                                      ann_dt,
+                                      is_list,
+                                      tot_inc,
+                                      int_inc,
+                                      cash_int_inc,
+                                      bond_int_inc,
+                                      abs_int_inc,
+                                      repo_int_inc,
+                                      other_int_inc,
+                                      inv_inc,
+                                      stock_inv_inc,
+                                      bond_inv_inc,
+                                      fund_inv_inc,
+                                      abs_inv_inc,
+                                      derivative_inv_inc,
+                                      dvd_inc,
+                                      change_fair_value,
+                                      exch_inc,
+                                      other_inc,
+                                      tot_exp,
+                                      mgmt_exp,
+                                      cust_maint_exp,
+                                      custodian_exp,
+                                      selling_dist_exp,
+                                      trade_exp,
+                                      int_exp,
+                                      repo_exp,
+                                      other_exp,
+                                      acct_exp,
+                                      audit_exp,
+                                      tot_profit,
+                                      inc_tax,
+                                      net_profit,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cmfincome.json' as task_rs_id
+                                from ${srcoradbname}.cmfincome"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cmfincome",
+                        "fileName": "w_cmfincome",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"sec_id","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"is_list","type":"bigint"},
+                                      {"name":"tot_inc","type":"double"},
+                                      {"name":"int_inc","type":"double"},
+                                      {"name":"cash_int_inc","type":"double"},
+                                      {"name":"bond_int_inc","type":"double"},
+                                      {"name":"abs_int_inc","type":"double"},
+                                      {"name":"repo_int_inc","type":"double"},
+                                      {"name":"other_int_inc","type":"double"},
+                                      {"name":"inv_inc","type":"double"},
+                                      {"name":"stock_inv_inc","type":"double"},
+                                      {"name":"bond_inv_inc","type":"double"},
+                                      {"name":"fund_inv_inc","type":"double"},
+                                      {"name":"abs_inv_inc","type":"double"},
+                                      {"name":"derivative_inv_inc","type":"double"},
+                                      {"name":"dvd_inc","type":"double"},
+                                      {"name":"change_fair_value","type":"double"},
+                                      {"name":"exch_inc","type":"double"},
+                                      {"name":"other_inc","type":"double"},
+                                      {"name":"tot_exp","type":"double"},
+                                      {"name":"mgmt_exp","type":"double"},
+                                      {"name":"cust_maint_exp","type":"double"},
+                                      {"name":"custodian_exp","type":"double"},
+                                      {"name":"selling_dist_exp","type":"double"},
+                                      {"name":"trade_exp","type":"double"},
+                                      {"name":"int_exp","type":"double"},
+                                      {"name":"repo_exp","type":"double"},
+                                      {"name":"other_exp","type":"double"},
+                                      {"name":"acct_exp","type":"double"},
+                                      {"name":"audit_exp","type":"double"},
+                                      {"name":"tot_profit","type":"double"},
+                                      {"name":"inc_tax","type":"double"},
+                                      {"name":"net_profit","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

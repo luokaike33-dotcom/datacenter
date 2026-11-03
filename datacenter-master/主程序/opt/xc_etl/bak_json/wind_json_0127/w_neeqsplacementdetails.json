@@ -1,0 +1,58 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_holder_name,typeofinvestor,placement,trade_dt,ann_dt,lockmonth,tradable_dt,is_seooripo,latest_own_qty,placement_financing,meetevent_id,s_share_lsttypename,s_info_compcode from ${srcoradbname}.neeqsplacementdetails"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_neeqsplacementdetails",
+                        "fileName": "w_neeqsplacementdetails",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"s_holder_name","type":"string"},
+                            {"name":"typeofinvestor","type":"string"},
+                            {"name":"placement","type":"double"},
+                            {"name":"trade_dt","type":"string"},
+                            {"name":"ann_dt","type":"string"},
+                            {"name":"lockmonth","type":"double"},
+                            {"name":"tradable_dt","type":"string"},
+                            {"name":"is_seooripo","type":"double"},
+                            {"name":"latest_own_qty","type":"double"},
+                            {"name":"placement_financing","type":"double"},
+                            {"name":"meetevent_id","type":"string"},
+                            {"name":"s_share_lsttypename","type":"string"},
+                            {"name":"s_info_compcode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,c_tdchan_code,c_tdchan_name,c_tdchan_type,c_org_code,c_mkt_code,c_update_time,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vb_tradechan.json' as task_rs_id from ${srcoradbname}.vb_tradechan"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vb_tradechan",
+                        "fileName": "fa45_vb_tradechan",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"c_tdchan_code","type":"string"},
+                            {"name":"c_tdchan_name","type":"string"},
+                            {"name":"c_tdchan_type","type":"string"},
+                            {"name":"c_org_code","type":"string"},
+                            {"name":"c_mkt_code","type":"string"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

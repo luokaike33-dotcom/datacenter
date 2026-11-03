@@ -1,0 +1,61 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,start_dt,end_dt,max_period,period,triggerratio,min_price,is_avg,timeslimit,is_times,times,times_item,exitreset_pct,is_exitreset,null as correctiontype_code,opdate,opmode from ${srcoradbname}.ccbondconversionreset"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_ccbondconversionreset",
+                        "fileName": "w_ccbondconversionreset",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"start_dt","type":"string"},
+                            {"name":"end_dt","type":"string"},
+                            {"name":"max_period","type":"double"},
+                            {"name":"period","type":"double"},
+                            {"name":"triggerratio","type":"double"},
+                            {"name":"min_price","type":"string"},
+                            {"name":"is_avg","type":"double"},
+                            {"name":"timeslimit","type":"string"},
+                            {"name":"is_times","type":"double"},
+                            {"name":"times","type":"double"},
+                            {"name":"times_item","type":"string"},
+                            {"name":"exitreset_pct","type":"double"},
+                            {"name":"is_exitreset","type":"double"},
+                            {"name":"correctiontype_code","type":"double"},
+                            {"name":"opdate","type":"date"},
+                            {"name":"opmode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

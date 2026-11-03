@@ -1,0 +1,207 @@
+#!/bin/bash
+# set -x
+#----------------------------------------------------------------------------------------
+# 说明                        : ODS层通用执行脚本(应用于ODS_datax工作流建设子节点时)
+# 执行方式1  跑日期区间sql    ：sh ${pubfilepath}/shell/common_ods.sh ${srcorausername} ${srcorapassword} ${srcoradbname} ${srcoraurl} ${tgrhdfsurl} ${haveKerberos} ${kerberosKeytabFilePath} ${kerberosPrincipal} ${tgrhivedbpath} ${tgrhivedbname} ${dataxPath} ${pubfilepath} ${beg_date} ${end_date} '1' 'fa45_vf_voucherdetail'
+# 执行方式2  跑无日期传入sql  ：sh ${pubfilepath}/shell/common_ods.sh ${srcorausername} ${srcorapassword} ${srcoradbname} ${srcoraurl} ${tgrhdfsurl} ${haveKerberos} ${kerberosKeytabFilePath} ${kerberosPrincipal} ${tgrhivedbpath} ${tgrhivedbname} ${dataxPath} ${pubfilepath} ${beg_date} ${end_date} '0' 'fa45_vb_port_baseinfo'
+#----------------------------------------------------------------------------------------
+# json中使用的参数
+# 参数1：  srcorausername          : oracle登录用户名                     如:yss45
+# 参数2：  srcorapassword          : oracle登录密码                       如:yss45
+# 参数3：  srcoradbname            : oracle查询用户名                     如:yss45
+# 参数4：  srcoraurl               : oracle库地址 (ip:端口/实例名)        如:192.168.0.243/orcl
+# 参数5：  tgrhdfsurl              : hive库地址(ip:端口)                  如:192.168.0.105:8020
+# 参数6：  haveKerberos            : 是否开启kbs认证                      如:yss45
+#                                  ：'true'                               启用kbs认证
+#                                  : 'false'                              不启用kbs认证
+# 参数7：  kerberosKeytabFilePath  : kbs文件路径                          如:/data/dolphinscheduler/home/dolphinscheduler/resources/fa/conf/krb5/xunce.keytab
+# 参数8：  kerberosPrincipal       : kbs用户                              如:hive@XUNCE.COM
+# 参数9：  tgrhivedbpath           : hive库udfs路径                       如:/user/hive/warehouse/appraise_ods.db
+# 参数10： tgrhivedbname           : hive库用户名                         如:appraise_ods
+#-----------------------------------------------------------------------------------------
+# shell中使用的参数
+# 参数11： dataxPath               : data服务器路径                       如:/data/datax/bin
+# 参数12： pubfilepath             : 文件路径(资源中心)                   如:fa/yssgz45/ods_datax/cdh
+# 参数13： beg_date                : beg_date                             如:20220101
+# 参数14： end_date                : end_date                             如:20220331
+# 参数15： partition_mode          : 分区模式                             如:0
+#                                  ：'0'                                  不分区
+#                                  : '1'                                  按日期分区
+# 参数16： tablename               : 目标表名                             如:fa45_vb_port_baseinfo
+#----------------------------------------------------------------------------------------
+get_config() {
+    # 获取当前脚本的绝对路径
+    SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+    
+    # 定义 get_config.sh 的绝对路径
+    GET_CONFIG_SCRIPT="${SCRIPT_DIR}/get_config.sh"
+
+    local key_name=$1
+
+    # 调用 get_config.sh 并处理结果
+    local value
+    value=$(sh $GET_CONFIG_SCRIPT "$key_name" 2>&1) || {
+        echo "配置错误：获取 '$key_name' 失败" >&2
+        echo "错误详情：$value" >&2
+        return 1
+    }
+    
+    echo "$value"
+}
+
+srcorausername=$1
+srcorapassword=$(get_config "${2}") || exit 1
+srcoradbname=$3
+srcoraurl=$4
+tgrhdfsurl=$5
+haveKerberos=$6
+kerberosKeytabFilePath=$7
+kerberosPrincipal=$8
+tgrhivedbpath=$9
+tgrhivedbname=${10}
+dataxPath=${11}
+pubfilepath=${12}
+beg_date=${13}
+end_date=${14}
+partition_mode=${15}
+tablename=${16}
+jsonfilename=${tablename}.json
+
+gen_date()
+{
+#如果参数2为空，取前一天；
+if [ "${beg_date}" = "" ]; then
+  datebeg=`date -d -1day +%Y%m%d`
+else
+  datebeg=${beg_date}
+fi
+#如果参数3为空，取当天；
+if [ "${end_date}" = "" ]; then
+  dateend=`date +"%Y%m%d"`
+else
+  dateend=${end_date}
+fi
+beg_s=`date -d "$datebeg" +%s`
+if [ "$?" != "0" ]; then exit 1 ; fi
+end_s=`date -d "$dateend" +%s`
+if [ "$?" != "0" ]; then exit 1 ; fi
+while [ "$beg_s" -le "$end_s" ] ;do
+    date -d "@$beg_s" +"%Y%m%d"
+    beg_s=$((beg_s+86400))
+done
+}
+
+echo "srcorausername         : [ ${srcorausername} ]"
+# echo "srcorapassword         : [ ${srcorapassword} ]"
+echo "srcoradbname           : [ ${srcoradbname} ]"
+echo "srcoraurl              : [ ${srcoraurl} ]"
+echo "tgrhdfsurl             : [ ${tgrhdfsurl} ]"
+echo "haveKerberos           : [ ${haveKerberos} ]"
+echo "kerberosKeytabFilePath : [ ${kerberosKeytabFilePath} ]"
+echo "kerberosPrincipal      : [ ${kerberosPrincipal} ]"
+echo "tgrhivedbpath          : [ ${tgrhivedbpath} ]"
+echo "tgrhivedbname          : [ ${tgrhivedbname} ]"
+echo "dataxPath              : [ ${dataxPath} ]"
+echo "pubfilepath            : [ ${pubfilepath} ]"
+echo "beg_date               : [ ${beg_date} ]"
+echo "end_date               : [ ${end_date} ]"
+echo "partition_mode         : [ ${partition_mode} ]"
+echo "tablename              : [ ${tablename} ]"
+echo "jsonfilename           : [ ${jsonfilename} ]"
+
+#kbs认证,有时连接超时，重试5次后报错退出
+st_int=0
+if [ "${haveKerberos}" == "true" ];then
+  while [ ${st_int} -lt 5 ]
+  do
+     kinit -kt ${kerberosKeytabFilePath} ${kerberosPrincipal}
+     if [ $? -ne 0 ];then
+       echo "Kinit Error,After sleep 5 seconds, re-execute. ${st_int}"
+       sleep 5
+       let st_int++
+       continue
+     fi
+     st_int=5
+     echo -e "\n\n"
+     echo '#-------------------------------------------------------'
+     echo "${kerberosPrincipal} user KBS authentication successful  "
+     echo '#-------------------------------------------------------'
+     echo -e "\n\n"
+  done
+fi
+
+export HADOOP_USER_NAME=etl_ty
+
+echo "partition_mode"=${partition_mode}
+
+# 不分区
+if [ "${partition_mode}" == "0" ];then
+  echo "tgrhivedbname.tablename:${tgrhivedbname}.${tablename}"
+  hive -e "truncate table ${tgrhivedbname}.${tablename};"
+  python ${dataxPath}/datax.py -p"-Dsrcorausername=${srcorausername} -Dsrcorapassword=${srcorapassword} -Dsrcoradbname=${srcoradbname} -Dsrcoraurl=${srcoraurl} -Dtgrhdfsurl=${tgrhdfsurl}  -DhaveKerberos=${haveKerberos} -DkerberosKeytabFilePath=${kerberosKeytabFilePath} -DkerberosPrincipal=${kerberosPrincipal} -Dtgrhivedbpath=${tgrhivedbpath} -Dtgrhivedbname=${tgrhivedbname} -Dbeg_date=${beg_date} -Dend_date=${end_date}" ${pubfilepath}/${jsonfilename}
+  if [ $? -ne 0 ] ; then
+    echo "exec ${jsonfilename} error,exit"
+    exit 1
+  fi
+#tcombi特殊  
+elif [ "${partition_mode}" == "5" ];then
+  echo "tgrhivedbname.tablename:${tgrhivedbname}.${tablename}"
+  hive -e "alter table ${tgrhivedbname}.${tablename} drop partition (sys_rs_id = 'O3');"
+  hive -e "alter table ${tgrhivedbname}.${tablename} add if not exists partition(sys_rs_id = 'O3');"  
+  echo "alter table ${tgrhivedbname}.${tablename} add if not exists partition(sys_rs_id = 'O3');"
+  python ${dataxPath}/datax.py -p"-Dsrcorausername=${srcorausername} -Dsrcorapassword=${srcorapassword} -Dsrcoradbname=${srcoradbname} -Dsrcoraurl=${srcoraurl} -Dtgrhdfsurl=${tgrhdfsurl}  -DhaveKerberos=${haveKerberos} -DkerberosKeytabFilePath=${kerberosKeytabFilePath} -DkerberosPrincipal=${kerberosPrincipal} -Dtgrhivedbpath=${tgrhivedbpath} -Dtgrhivedbname=${tgrhivedbname} -Dbeg_date=${beg_date} -Dend_date=${end_date}" ${pubfilepath}/${jsonfilename}
+  if [ $? -ne 0 ] ; then
+    echo "exec ${jsonfilename} error,exit"
+    exit 1
+  fi  
+elif  [ "${partition_mode}" == "1" ];then
+# 按日分区
+#  for n in `gen_date ${beg_date} ${end_date}`
+#  do
+      echo "tgrhivedbname.tablename:${tgrhivedbname}.${tablename}"
+      hive -e "alter table ${tgrhivedbname}.${tablename} drop if exists partition(p_dt='${end_date}');"
+      hive -e "alter table ${tgrhivedbname}.${tablename} add if not exists partition(p_dt='${end_date}');"
+      python ${dataxPath}/datax.py -p"-Dsrcorausername=${srcorausername} -Dsrcorapassword=${srcorapassword} -Dsrcoradbname=${srcoradbname} -Dsrcoraurl=${srcoraurl} -Dtgrhdfsurl=${tgrhdfsurl}  -DhaveKerberos=${haveKerberos} -DkerberosKeytabFilePath=${kerberosKeytabFilePath} -DkerberosPrincipal=${kerberosPrincipal} -Dtgrhivedbpath=${tgrhivedbpath} -Dtgrhivedbname=${tgrhivedbname} -Dend_date=${end_date} " ${pubfilepath}/${jsonfilename}
+      if [ $? -ne 0 ] ; then
+        echo "exec $n ${jsonfilename} error,exit"
+        exit 1
+      fi
+ # done
+# 按月分区 传参为4
+elif  [ "${partition_mode}" == "4" ];then
+#日期处理 20220101 20220301 20220102 跨年修改
+year_beg=`date -d ${beg_date} +%Y`
+year_end=`date -d ${end_date} +%Y`
+year_diff=`expr $year_end - $year_beg`
+year=`expr $year_diff \* 12`
+month_beg=`date -d ${beg_date} +%m`
+month_end=`date -d ${end_date} +%m`
+month_diff=`expr $year + $month_end - $month_beg`
+echo "count:"`expr $month_diff + 1`
+  for i in `seq 0 $month_diff` #0 1 2
+  do
+     #循环中日期处理
+     biz_date=`date -d"${beg_date} $i month" +%Y%m%d` #当前批次日期 0
+     beg_date_first=`date -d ${biz_date} +%Y%m01` #当前批次日期第一天 作为月分区日期 20220101
+     next_month_first=`date -d"${biz_date} 1 month" +%Y%m01`  #当前计算日期的下个月的第一天 20220201
+     beg_date_last=`date -d"${next_month_first} last day" +%Y%m%d`  #当前计算日期最后一天 20220131
+     busi_month=`date -d ${biz_date} +%Y%m`
+     echo "tradingday:"$month_date
+     echo "alter table ${tgrhivedbname}.${tablename} add if not exists partition(busi_month='$busi_month') location 'busi_month=$busi_month';"
+     hive -e "alter table ${tgrhivedbname}.${tablename} drop if exists partition(busi_month='$busi_month');"
+     hive -e "alter table ${tgrhivedbname}.${tablename} add if not exists partition(busi_month='$busi_month') location 'busi_month=$busi_month';"
+     python ${dataxPath}/datax.py -p"-Dsrcorausername=${srcorausername} -Dsrcorapassword=${srcorapassword} -Dsrcoradbname=${srcoradbname} -Dsrcoraurl=${srcoraurl} -Dtgrhdfsurl=${tgrhdfsurl}  -DhaveKerberos=${haveKerberos} -DkerberosKeytabFilePath=${kerberosKeytabFilePath} -DkerberosPrincipal=${kerberosPrincipal} -Dtgrhivedbpath=${tgrhivedbpath} -Dtgrhivedbname=${tgrhivedbname} -Dbusi_month=$busi_month -Dstart_date=$beg_date_first -Dend_date=$beg_date_last " ${pubfilepath}/${jsonfilename}
+#      echo "biz_date range :"$month_date $month_date
+     if [ $? -ne 0 ] ; then
+       echo "exec $n ${jsonfilename} error,exit"
+       exit 1
+     fi
+  done
+else
+  echo "The partition_mode: ${partition_mode} is Unsupported."
+  exit 1
+fi
+
+#sh /opt/xc_etl/run_shell_impala/run_impala_sql.sh ty_ods.${tablename}
+
+

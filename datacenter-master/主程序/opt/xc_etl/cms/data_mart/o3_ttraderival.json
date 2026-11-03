@@ -1,0 +1,136 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/o3_ttraderival",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"long"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"long"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"double"},
+									{"index":32,"type":"long"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"long"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"long"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"string"},
+									{"index":41,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_rival_id",
+									"vc_rival_code",
+									"vc_name",
+									"vc_all_name",
+									"c_rival_type",
+									"c_outer_appraise",
+									"c_inside_appraise",
+									"c_appraise",
+									"vc_address",
+									"vc_linkman",
+									"vc_phone",
+									"vc_fax",
+									"vc_summary",
+									"l_bank_id",
+									"vc_market_types",
+									"c_status",
+									"en_capital",
+									"en_total_asset",
+									"en_net_asset",
+									"l_bankhead_id",
+									"vc_bank_account",
+									"c_trade_class",
+									"vc_shclearing_account",
+									"c_chinabond_dvp",
+									"c_shclearing_dvp",
+									"vc_party_code",
+									"l_issuer_id",
+									"vc_bank_name",
+									"vc_shclearing_name",
+									"vc_timestamp",
+									"vc_fixed_id",
+									"en_asset_scale",
+									"l_org_id",
+									"c_orgmasterorslave",
+									"l_masterorg_rival_id",
+									"vc_his_name",
+									"c_market_maker",
+									"l_upper_bank_id",
+									"vc_upper_bank_name",
+									"c_rival_property",
+									"vc_spv_code",
+									"vc_direct_rival_type"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_ttraderival"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table o3_ttraderival"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

@@ -1,0 +1,60 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select object_id,
+                  s_info_windcode,
+                  s_dq_suspenddate,
+                  s_dq_suspendtype,
+                  s_dq_resumpdate,
+                  s_dq_changereason,
+                  s_dq_time,
+                  null as s_dq_changereasontype
+                  from ${srcoradbname}.asharetradingsuspension"],
+                  "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                  }
+                ]
+              }
+            },
+              "writer": {
+                "name": "hdfswriter",
+                "parameter": {
+                  "defaultFS": "hdfs://${tgrhdfsurl}",
+                  "fileType": "orc",
+                  "path": "${tgrhivedbpath}/w_asharetradingsuspension",
+                  "fileName": "w_asharetradingsuspension",
+                  "column": [
+                    {"name":"object_id","type":"string"},
+                    {"name":"s_info_windcode","type":"string"},
+                    {"name":"s_dq_suspenddate","type":"string"},
+                    {"name":"s_dq_suspendtype","type":"double"},
+                    {"name":"s_dq_resumpdate","type":"string"},
+                    {"name":"s_dq_changereason","type":"string"},
+                    {"name":"s_dq_time","type":"string"},
+                    {"name":"s_dq_changereasontype","type":"double"}
+                  ],
+                  "writeMode": "append",
+                  "fieldDelimiter": "\t",
+                  "encoding":"utf-8",
+                  "haveKerberos": "${haveKerberos}",
+                  "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                  "kerberosPrincipal": "${kerberosPrincipal}"
+                }
+              }
+              }
+            ],
+            "setting": {
+              "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+              }
+            }
+          }
+        }

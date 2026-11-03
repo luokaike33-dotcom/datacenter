@@ -1,0 +1,161 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/t_mp_type",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"long"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"string"},
+									{"index":41,"type":"string"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"string"},
+									{"index":44,"type":"string"},
+									{"index":45,"type":"long"},
+									{"index":46,"type":"long"},
+									{"index":47,"type":"string"},
+									{"index":48,"type":"string"},
+									{"index":49,"type":"long"},
+									{"index":50,"type":"long"},
+									{"index":51,"type":"string"},
+									{"index":52,"type":"long"},
+									{"index":53,"type":"long"},
+									{"index":54,"type":"string"},
+									{"index":55,"type":"string"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"bk_product_of_m",
+									"pubr_category",
+									"sba_category_1",
+									"sba_category_2",
+									"coll_mode",
+									"oper_mode",
+									"open_freq",
+									"trus_duty",
+									"sba_type_1",
+									"sba_type_2",
+									"sba_type_3",
+									"cisp_prod_clas_1",
+									"cisp_prod_clas_2",
+									"cisp_oper_mode",
+									"cisp_open_freq",
+									"cisp_trus_duty",
+									"cisp_aep_mthd",
+									"cisp_aeets_method",
+									"cisp_indx_fund_type",
+									"cisp_tgt_fund_code",
+									"cisp_tgt_fund_name",
+									"cisp_lstg_fund_type",
+									"cisp_lstg_exch",
+									"cisp_prod_duration",
+									"cisp_sba_type",
+									"cisp_sba_credit_promotion",
+									"cisp_sba_share_type",
+									"cisp_sale_prod_clas",
+									"cisp_sale_prod_type",
+									"cisp_sale_prod_incm_fetu",
+									"pboc_prod_var",
+									"pboc_oper_mode",
+									"pboc_coll_mode",
+									"pboc_mag_mode",
+									"pboc_trus_duty",
+									"pboc_prod_type",
+									"pboc_grade_prod_flag",
+									"pboc_incm_righ_tran_prod_flag",
+									"pboc_ncurr_prod_flag",
+									"amac_sba_prod_org_form",
+									"amac_sba_prod_type_1",
+									"amac_sba_prod_type_2",
+									"amac_sba_prod_type_3",
+									"amac_sba_prod_type_4",
+									"amac_sba_prod_type_5",
+									"amac_sba_grade_prod_flag",
+									"amac_sba_mag_type",
+									"amac_sba_fof_mom",
+									"amac_sba_openday_lmt",
+									"amac_sba_stdtn_ast_flag",
+									"amac_sba_use_amcm_flag",
+									"amac_sba_stru_prod_type",
+									"pd_open_flag",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["t_mp_type"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table t_mp_type"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

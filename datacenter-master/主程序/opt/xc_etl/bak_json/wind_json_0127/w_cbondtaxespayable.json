@@ -1,0 +1,113 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      report_period,
+                                      ann_dt,
+                                      vat,
+                                      business_tax,
+                                      corporate_income_tax,
+                                      urban_maintenance_tax,
+                                      property_tax,
+                                      personal_income_tax,
+                                      sale_tax,
+                                      land_holding_tax,
+                                      stamp_duty,
+                                      vehicle_usage_tax,
+                                      land_value_added_tax,
+                                      resource_tax,
+                                      other,
+                                      total,
+                                      memo,
+                                      statement_type,
+                                      education_surcharge,
+                                      flood_control_fund,
+                                      compensation_mineral_resources,
+                                      vehicle_purchase_surcharge,
+                                      agriculture_forestry_tax,
+                                      local_education_fee,
+                                      price_control_fund,
+                                      statement_type_code,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondtaxespayable.json' as task_rs_id
+                                from ${srcoradbname}.cbondtaxespayable WHERE report_period BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondtaxespayable/busi_month=${busi_month}",
+                        "fileName": "w_cbondtaxespayable",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"vat","type":"double"},
+                                      {"name":"business_tax","type":"double"},
+                                      {"name":"corporate_income_tax","type":"double"},
+                                      {"name":"urban_maintenance_tax","type":"double"},
+                                      {"name":"property_tax","type":"double"},
+                                      {"name":"personal_income_tax","type":"double"},
+                                      {"name":"sale_tax","type":"double"},
+                                      {"name":"land_holding_tax","type":"double"},
+                                      {"name":"stamp_duty","type":"double"},
+                                      {"name":"vehicle_usage_tax","type":"double"},
+                                      {"name":"land_value_added_tax","type":"double"},
+                                      {"name":"resource_tax","type":"double"},
+                                      {"name":"other","type":"double"},
+                                      {"name":"total","type":"double"},
+                                      {"name":"memo","type":"string"},
+                                      {"name":"statement_type","type":"string"},
+                                      {"name":"education_surcharge","type":"double"},
+                                      {"name":"flood_control_fund","type":"double"},
+                                      {"name":"compensation_mineral_resources","type":"double"},
+                                      {"name":"vehicle_purchase_surcharge","type":"double"},
+                                      {"name":"agriculture_forestry_tax","type":"double"},
+                                      {"name":"local_education_fee","type":"double"},
+                                      {"name":"price_control_fund","type":"double"},
+                                      {"name":"statement_type_code","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

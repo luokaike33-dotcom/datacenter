@@ -1,0 +1,146 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/oa_workflow_requestbase",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"long"},
+									{"index":17,"type":"long"},
+									{"index":18,"type":"long"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"long"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"long"},
+									{"index":29,"type":"long"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"long"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"long"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"long"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"string"},
+									{"index":41,"type":"string"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"string"},
+									{"index":44,"type":"string"},
+									{"index":45,"type":"date"},
+									{"index":46,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"requestid",
+									"workflowid",
+									"lastnodeid",
+									"lastnodetype",
+									"currentnodeid",
+									"currentnodetype",
+									"status",
+									"passedgroups",
+									"totalgroups",
+									"requestname",
+									"creater",
+									"createdate",
+									"createtime",
+									"lastoperator",
+									"lastoperatedate",
+									"lastoperatetime",
+									"deleted",
+									"creatertype",
+									"lastoperatortype",
+									"nodepasstime",
+									"nodelefttime",
+									"docids",
+									"crmids",
+									"hrmids_temp",
+									"prjids",
+									"cptids",
+									"requestlevel",
+									"requestmark",
+									"messagetype",
+									"mainrequestid",
+									"isexport",
+									"exportdate",
+									"currentstatus",
+									"laststatus",
+									"ismultiprint",
+									"iskingexport",
+									"kingexportdate",
+									"chatstype",
+									"ecology_pinyin_search",
+									"hrmids",
+									"requestnamenew",
+									"formsignaturemd5",
+									"dataaggregated",
+									"mailremark",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["oa_workflow_requestbase"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from oa_workflow_requestbase"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

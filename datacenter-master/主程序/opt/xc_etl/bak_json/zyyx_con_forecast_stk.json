@@ -1,0 +1,115 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      id,
+                                      stock_code,
+                                      stock_name,
+                                      con_date,
+                                      con_year,
+                                      con_or,
+                                      con_or_type,
+                                      con_or_hisdate,
+                                      con_np,
+                                      con_np_type,
+                                      con_np_hisdate,
+                                      con_eps,
+                                      con_eps_type,
+                                      con_eps_hisdate,
+                                      con_na,
+                                      con_pb,
+                                      con_ps,
+                                      con_pe,
+                                      con_peg,
+                                      con_roe,
+                                      con_or_yoy,
+                                      con_np_yoy,
+                                      con_npcgrate_2y,
+                                      con_npgrate_1w,
+                                      con_npgrate_4w,
+                                      con_npgrate_13w,
+                                      con_npgrate_26w,
+                                      con_npgrate_52w,
+                                      entrytime,
+                                      updatetime,
+                                      tmstamp,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'zyyx_con_forecast_stk.json' as task_rs_id
+                                from ${srcoradbname}.con_forecast_stk WHERE con_date BETWEEN '${beg_date}'||'01' AND to_char(add_months(to_date('${beg_date}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${is_kbs}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/zyyx_con_forecast_stk/busi_month=${busi_month}",
+                        "fileName": "zyyx_con_forecast_stk",
+                        "column": [
+                                      {"name":"id","type":"bigint"},
+                                      {"name":"stock_code","type":"string"},
+                                      {"name":"stock_name","type":"string"},
+                                      {"name":"con_date","type":"timestamp"},
+                                      {"name":"con_year","type":"bigint"},
+                                      {"name":"con_or","type":"double"},
+                                      {"name":"con_or_type","type":"bigint"},
+                                      {"name":"con_or_hisdate","type":"timestamp"},
+                                      {"name":"con_np","type":"double"},
+                                      {"name":"con_np_type","type":"bigint"},
+                                      {"name":"con_np_hisdate","type":"timestamp"},
+                                      {"name":"con_eps","type":"double"},
+                                      {"name":"con_eps_type","type":"bigint"},
+                                      {"name":"con_eps_hisdate","type":"timestamp"},
+                                      {"name":"con_na","type":"double"},
+                                      {"name":"con_pb","type":"double"},
+                                      {"name":"con_ps","type":"double"},
+                                      {"name":"con_pe","type":"double"},
+                                      {"name":"con_peg","type":"double"},
+                                      {"name":"con_roe","type":"double"},
+                                      {"name":"con_or_yoy","type":"double"},
+                                      {"name":"con_np_yoy","type":"double"},
+                                      {"name":"con_npcgrate_2y","type":"double"},
+                                      {"name":"con_npgrate_1w","type":"double"},
+                                      {"name":"con_npgrate_4w","type":"double"},
+                                      {"name":"con_npgrate_13w","type":"double"},
+                                      {"name":"con_npgrate_26w","type":"double"},
+                                      {"name":"con_npgrate_52w","type":"double"},
+                                      {"name":"entrytime","type":"timestamp"},
+                                      {"name":"updatetime","type":"timestamp"},
+                                      {"name":"tmstamp","type":"bigint"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

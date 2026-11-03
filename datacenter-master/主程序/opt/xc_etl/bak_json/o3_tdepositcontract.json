@@ -1,0 +1,92 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select l_date,vc_inter_code,vc_inter_no,vc_contract_no,vc_contract_name,vc_contract_owner,vc_account_name,l_bank,vc_affix_operator,vc_adversary_operator,l_affix_date,l_limit_time,en_balance,en_interest_rate,c_rate_type,en_float_rate,c_float_type,en_basic_rate,en_least_rate,l_pay_inteval,c_day_type,c_cal_type,c_interest_cal_type,c_date_type,l_base_date,l_base_days,c_begin_pay_type,c_end_pay_type,c_cancel_type,vc_remark,l_operator_no,l_add_date,c_status,vc_fund_ids,l_end_date,en_highest_rate,en_advance_rate,c_limit_unit,l_advance_count,l_advance_deal_count,l_advance_date,c_deposit_type,c_pay_inteval_unit,l_advance_days,l_org_id,l_dept_id,c_interest_pay_type,c_interest_deposit, null as c_need_repo from ${srcoradbname}.tdepositcontract"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_tdepositcontract", 
+                        "fileName": "o3_tdepositcontract",
+                        "column": [
+     {"name":"l_date","type":"int"},
+     {"name":"vc_inter_code","type":"string"},
+     {"name":"vc_inter_no","type":"string"},
+     {"name":"vc_contract_no","type":"string"},
+     {"name":"vc_contract_name","type":"string"},
+     {"name":"vc_contract_owner","type":"string"},
+     {"name":"vc_account_name","type":"string"},
+     {"name":"l_bank","type":"int"},
+     {"name":"vc_affix_operator","type":"string"},
+     {"name":"vc_adversary_operator","type":"string"},
+     {"name":"l_affix_date","type":"int"},
+     {"name":"l_limit_time","type":"int"},
+     {"name":"en_balance","type":"bigint"},
+     {"name":"en_interest_rate","type":"bigint"},
+     {"name":"c_rate_type","type":"string"},
+     {"name":"en_float_rate","type":"bigint"},
+     {"name":"c_float_type","type":"string"},
+     {"name":"en_basic_rate","type":"bigint"},
+     {"name":"en_least_rate","type":"bigint"},
+     {"name":"l_pay_inteval","type":"int"},
+     {"name":"c_day_type","type":"string"},
+     {"name":"c_cal_type","type":"string"},
+     {"name":"c_interest_cal_type","type":"string"},
+     {"name":"c_date_type","type":"string"},
+     {"name":"l_base_date","type":"int"},
+     {"name":"l_base_days","type":"int"},
+     {"name":"c_begin_pay_type","type":"string"},
+     {"name":"c_end_pay_type","type":"string"},
+     {"name":"c_cancel_type","type":"string"},
+     {"name":"vc_remark","type":"string"},
+     {"name":"l_operator_no","type":"int"},
+     {"name":"l_add_date","type":"int"},
+     {"name":"c_status","type":"string"},
+     {"name":"vc_fund_ids","type":"string"},
+     {"name":"l_end_date","type":"int"},
+     {"name":"en_highest_rate","type":"bigint"},
+     {"name":"en_advance_rate","type":"bigint"},
+     {"name":"c_limit_unit","type":"string"},
+     {"name":"l_advance_count","type":"int"},
+     {"name":"l_advance_deal_count","type":"int"},
+     {"name":"l_advance_date","type":"int"},
+     {"name":"c_deposit_type","type":"string"},
+     {"name":"c_pay_inteval_unit","type":"string"},
+     {"name":"l_advance_days","type":"int"},
+     {"name":"l_org_id","type":"int"},
+     {"name":"l_dept_id","type":"int"},
+     {"name":"c_interest_pay_type","type":"string"},
+     {"name":"c_interest_deposit","type":"string"},
+     {"name":"c_need_repo","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,62 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select object_id,
+                  s_info_windcode,
+                  suspenddate,
+                  suspendtype,
+                  suspendreason,
+                  suspendtypecode,
+                  suspendreasoncode,
+                  resumpdate,
+                  resumptime
+                  from ${srcoradbname}.hktransactionstatus"],
+                  "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                  }
+                ]
+              }
+            },
+              "writer": {
+                "name": "hdfswriter",
+                "parameter": {
+                  "defaultFS": "hdfs://${tgrhdfsurl}",
+                  "fileType": "orc",
+                  "path": "${tgrhivedbpath}/w_hktransactionstatus",
+                  "fileName": "w_hktransactionstatus",
+                  "column": [
+                    {"name":"object_id","type":"string"},
+                    {"name":"s_info_windcode","type":"string"},
+                    {"name":"suspenddate","type":"string"},
+                    {"name":"suspendtype","type":"string"},
+                    {"name":"suspendreason","type":"string"},
+                    {"name":"suspendtypecode","type":"double"},
+                    {"name":"suspendreasoncode","type":"double"},
+                    {"name":"resumpdate","type":"string"},
+                    {"name":"resumptime","type":"string"}
+                  ],
+                  "writeMode": "append",
+                  "fieldDelimiter": "\t",
+                  "encoding":"utf-8",
+                  "haveKerberos": "${haveKerberos}",
+                  "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                  "kerberosPrincipal": "${kerberosPrincipal}"
+                }
+              }
+              }
+            ],
+            "setting": {
+              "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+              }
+            }
+          }
+        }

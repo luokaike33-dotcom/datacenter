@@ -1,0 +1,93 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_date,
+                                      f_info_bgndate,
+                                      f_info_enddate,
+                                      floating_bond_amount,
+                                      floating_bond_amount_ratio,
+                                      bondrepo_balance,
+                                      bondrepo_balance_ratio,
+                                      end_bondrepo_balance,
+                                      end_bondrepo_balance_ratio,
+                                      avg_remainder_period_max,
+                                      avg_remainder_period_min,
+                                      deviation_degree_frequency,
+                                      deviation_degree_max,
+                                      deviation_degree_min,
+                                      deviation_degree_avg_value,
+                                      fixed_deposit,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cmmquarterlydata.json' as task_rs_id
+                                from ${srcoradbname}.cmmquarterlydata WHERE f_info_enddate BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cmmquarterlydata/busi_month=${busi_month}",
+                        "fileName": "w_cmmquarterlydata",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"f_info_bgndate","type":"string"},
+                                      {"name":"f_info_enddate","type":"string"},
+                                      {"name":"floating_bond_amount","type":"double"},
+                                      {"name":"floating_bond_amount_ratio","type":"double"},
+                                      {"name":"bondrepo_balance","type":"double"},
+                                      {"name":"bondrepo_balance_ratio","type":"double"},
+                                      {"name":"end_bondrepo_balance","type":"double"},
+                                      {"name":"end_bondrepo_balance_ratio","type":"double"},
+                                      {"name":"avg_remainder_period_max","type":"double"},
+                                      {"name":"avg_remainder_period_min","type":"double"},
+                                      {"name":"deviation_degree_frequency","type":"double"},
+                                      {"name":"deviation_degree_max","type":"double"},
+                                      {"name":"deviation_degree_min","type":"double"},
+                                      {"name":"deviation_degree_avg_value","type":"double"},
+                                      {"name":"fixed_deposit","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

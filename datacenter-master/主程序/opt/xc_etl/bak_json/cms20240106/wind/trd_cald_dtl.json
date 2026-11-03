@@ -1,0 +1,82 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/trd_cald_dtl",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"long"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"long"},
+                                    {"index":6,"type":"long"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"long"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"date"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"date"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"date"},
+                                    {"index":16,"type":"string"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "cald_id",
+                                    "cald_year",
+                                    "cald_date",
+                                    "cald_week",
+                                    "is_trd_dt",
+                                    "lst_cald_date",
+                                    "next_cald_date",
+                                    "is_set_dt",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    "dm_updated_by",
+                                    "dm_updated_time",
+                                    "dm_created_by",
+                                    "dm_src_info",
+                                    "upd_time",
+                                    "id",
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["trd_cald_dtl"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from trd_cald_dtl where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

@@ -1,0 +1,68 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,trade_dt,b_anal_duration,b_anal_modifiedduration,b_anal_bduration,b_anal_sduration,b_anal_convexity,b_anal_accrueddays,b_anal_accruedinterest,b_anal_ytc,b_anal_ytp,b_anal_ptmyear,b_anal_ytm,b_info_weightedrt,null as b_anal_ytm_interest,null as b_anal_ytm_compound,null as b_anal_ytm_compound_be,null as b_anal_ytm_open,null as b_anal_ytm_high,null as b_anal_ytm_low from ${srcoradbname}.cbondvaluation where trade_dt between '${busi_month}'||'01' and to_char(add_months(to_date('${busi_month}'||01,'yyyyMMdd'),1)-1,'yyyyMMdd')"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondvaluation/busi_month=${busi_month}",
+                        "fileName": "w_cbondvaluation",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"trade_dt","type":"string"},
+                            {"name":"b_anal_duration","type":"double"},
+                            {"name":"b_anal_modifiedduration","type":"double"},
+                            {"name":"b_anal_bduration","type":"double"},
+                            {"name":"b_anal_sduration","type":"double"},
+                            {"name":"b_anal_convexity","type":"double"},
+                            {"name":"b_anal_accrueddays","type":"double"},
+                            {"name":"b_anal_accruedinterest","type":"double"},
+                            {"name":"b_anal_ytc","type":"double"},
+                            {"name":"b_anal_ytp","type":"double"},
+                            {"name":"b_anal_ptmyear","type":"double"},
+                            {"name":"b_anal_ytm","type":"double"},
+                            {"name":"b_info_weightedrt","type":"double"},
+                            {"name":"b_anal_ytm_interest","type":"double"},
+                            {"name":"b_anal_ytm_compound","type":"double"},
+                            {"name":"b_anal_ytm_compound_be","type":"double"},
+                            {"name":"b_anal_ytm_open","type":"double"},
+                            {"name":"b_anal_ytm_high","type":"double"},
+                            {"name":"b_anal_ytm_low","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {
+              "record": "0",
+              "percentage": "0"
+            }
+        }
+    }
+}

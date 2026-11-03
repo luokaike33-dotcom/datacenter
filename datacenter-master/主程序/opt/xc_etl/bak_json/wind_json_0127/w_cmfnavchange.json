@@ -1,0 +1,119 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_dt,
+                                      rpstartdate,
+                                      rpenddate,
+                                      beg_nav,
+                                      fund_netincome,
+                                      unrealcapgains,
+                                      navchange_oper_act,
+                                      adjlossgain_prevyear,
+                                      navchange_res_toholders,
+                                      edn_nav,
+                                      beg_nav_adj,
+                                      cur_fund_unit_trade,
+                                      fund_pur,
+                                      fund_rede,
+                                      navchange_fund_unit_trade,
+                                      beg_funds_rec,
+                                      funds_rec_change_oper_act,
+                                      funds_rec_change_funit_trade,
+                                      funds_rec_pur,
+                                      funds_rec_rede,
+                                      funds_rec_change_res_tohold,
+                                      end_funds_rec,
+                                      beg_undistributed_profit,
+                                      undtprtchange_oper_act,
+                                      undtprtchange_funit_trade,
+                                      fund_pur_undtprt,
+                                      fund_rede_undtprt,
+                                      undtprt_change_res_tohold,
+                                      end_undistributed_profit,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cmfnavchange.json' as task_rs_id
+                                from ${srcoradbname}.cmfnavchange"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cmfnavchange",
+                        "fileName": "w_cmfnavchange",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"rpstartdate","type":"string"},
+                                      {"name":"rpenddate","type":"string"},
+                                      {"name":"beg_nav","type":"double"},
+                                      {"name":"fund_netincome","type":"double"},
+                                      {"name":"unrealcapgains","type":"double"},
+                                      {"name":"navchange_oper_act","type":"double"},
+                                      {"name":"adjlossgain_prevyear","type":"double"},
+                                      {"name":"navchange_res_toholders","type":"double"},
+                                      {"name":"edn_nav","type":"double"},
+                                      {"name":"beg_nav_adj","type":"double"},
+                                      {"name":"cur_fund_unit_trade","type":"double"},
+                                      {"name":"fund_pur","type":"double"},
+                                      {"name":"fund_rede","type":"double"},
+                                      {"name":"navchange_fund_unit_trade","type":"double"},
+                                      {"name":"beg_funds_rec","type":"double"},
+                                      {"name":"funds_rec_change_oper_act","type":"double"},
+                                      {"name":"funds_rec_change_funit_trade","type":"double"},
+                                      {"name":"funds_rec_pur","type":"double"},
+                                      {"name":"funds_rec_rede","type":"double"},
+                                      {"name":"funds_rec_change_res_tohold","type":"double"},
+                                      {"name":"end_funds_rec","type":"double"},
+                                      {"name":"beg_undistributed_profit","type":"double"},
+                                      {"name":"undtprtchange_oper_act","type":"double"},
+                                      {"name":"undtprtchange_funit_trade","type":"double"},
+                                      {"name":"fund_pur_undtprt","type":"double"},
+                                      {"name":"fund_rede_undtprt","type":"double"},
+                                      {"name":"undtprt_change_res_tohold","type":"double"},
+                                      {"name":"end_undistributed_profit","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

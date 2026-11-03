@@ -1,0 +1,117 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/rx_tuser",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"long"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"long"},
+									{"index":19,"type":"long"},
+									{"index":20,"type":"long"},
+									{"index":21,"type":"long"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"long"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"long"},
+									{"index":27,"type":"long"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"long"},
+									{"index":30,"type":"long"},
+									{"index":31,"type":"long"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"inst_id",
+									"user_id",
+									"user_code",
+									"user_type",
+									"user_name",
+									"user_pwd",
+									"card_type",
+									"card_code",
+									"phone_code",
+									"mobile_code",
+									"email",
+									"address",
+									"user_status",
+									"create_date",
+									"logoff_date",
+									"force_chg_pwd_flag",
+									"retry_count",
+									"remark",
+									"allow_export_data",
+									"using_ip_control",
+									"pwd_expiry_date",
+									"user_from",
+									"bank_traderid",
+									"bank_intf_right",
+									"user_alias",
+									"trade_no",
+									"new_prod_right_flag",
+									"new_cap_right_flag",
+									"sz_self_trader_code",
+									"is_in",
+									"exemption_allow_update_flag",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["rx_tuser"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table rx_tuser"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

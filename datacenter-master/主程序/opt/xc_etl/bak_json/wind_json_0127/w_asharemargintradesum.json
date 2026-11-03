@@ -1,0 +1,89 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      trade_dt,
+                                      s_marsum_exchmarket,
+                                      s_marsum_tradingbalance,
+                                      s_marsum_purchwithborrowmoney,
+                                      s_marsum_repaymenttobroker,
+                                      s_marsum_seclendingbalance,
+                                      s_marsum_salesofborrowedsec,
+                                      s_marsum_margintradebalance,
+                                      s_marsum_margin_margin,
+                                      s_marsum_financing_margin,
+                                      s_marsum_securities_sales,
+                                      s_marsum_securities_repay,
+                                      s_marsum_flow_equity,
+                                      s_marsum_circulation_value,
+                                      s_marsum_turnover_amount,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharemargintradesum.json' as task_rs_id
+                                from ${srcoradbname}.asharemargintradesum"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharemargintradesum",
+                        "fileName": "w_asharemargintradesum",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"s_marsum_exchmarket","type":"string"},
+                                      {"name":"s_marsum_tradingbalance","type":"double"},
+                                      {"name":"s_marsum_purchwithborrowmoney","type":"double"},
+                                      {"name":"s_marsum_repaymenttobroker","type":"double"},
+                                      {"name":"s_marsum_seclendingbalance","type":"double"},
+                                      {"name":"s_marsum_salesofborrowedsec","type":"double"},
+                                      {"name":"s_marsum_margintradebalance","type":"double"},
+                                      {"name":"s_marsum_margin_margin","type":"double"},
+                                      {"name":"s_marsum_financing_margin","type":"double"},
+                                      {"name":"s_marsum_securities_sales","type":"double"},
+                                      {"name":"s_marsum_securities_repay","type":"double"},
+                                      {"name":"s_marsum_flow_equity","type":"double"},
+                                      {"name":"s_marsum_circulation_value","type":"double"},
+                                      {"name":"s_marsum_turnover_amount","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

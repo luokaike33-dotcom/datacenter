@@ -1,0 +1,91 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      crncy_code,
+                                      trade_dt,
+                                      anal_curveterm,
+                                      maturitydate,
+                                      maturity_day,
+                                      spot_price_type_code,
+                                      spot_price,
+                                      rmb_rate_type_code,
+                                      interest_rate,
+                                      volatility_type_code,
+                                      foreign_currency_rate,
+                                      implied_volatility,
+                                      foreign_swap_point,
+                                      executive_price,
+                                      call_option_delta,
+                                      put_option_delta,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_forexoptiondelta.json' as task_rs_id
+                                from ${srcoradbname}.forexoptiondelta"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_forexoptiondelta",
+                        "fileName": "w_forexoptiondelta",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"anal_curveterm","type":"string"},
+                                      {"name":"maturitydate","type":"string"},
+                                      {"name":"maturity_day","type":"bigint"},
+                                      {"name":"spot_price_type_code","type":"bigint"},
+                                      {"name":"spot_price","type":"double"},
+                                      {"name":"rmb_rate_type_code","type":"bigint"},
+                                      {"name":"interest_rate","type":"double"},
+                                      {"name":"volatility_type_code","type":"bigint"},
+                                      {"name":"foreign_currency_rate","type":"double"},
+                                      {"name":"implied_volatility","type":"double"},
+                                      {"name":"foreign_swap_point","type":"double"},
+                                      {"name":"executive_price","type":"double"},
+                                      {"name":"call_option_delta","type":"double"},
+                                      {"name":"put_option_delta","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

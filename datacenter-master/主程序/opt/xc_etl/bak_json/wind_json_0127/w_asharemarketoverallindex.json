@@ -1,0 +1,105 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      month1,
+                                      exchange,
+                                      listed_company_num,
+                                      listed_securities_num,
+                                      listed_stock_num,
+                                      listed_ashare_num,
+                                      listed_bshare_num,
+                                      stock_total_capital,
+                                      stock_total_market_value,
+                                      stock_flow_equity,
+                                      stock_flow_market_value,
+                                      open_accounts_num,
+                                      average_pe,
+                                      ashare_average_pe,
+                                      bshare_average_pe,
+                                      stock_fund_transaction_amount,
+                                      ashare_transaction_amount,
+                                      bshare_transaction_amount,
+                                      fund_transaction_amount,
+                                      bond_transaction_amount,
+                                      ashare_stamp_duty,
+                                      bshare_stamp_duty,
+                                      stock_repurchase_amount,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharemarketoverallindex.json' as task_rs_id
+                                from ${srcoradbname}.asharemarketoverallindex"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharemarketoverallindex",
+                        "fileName": "w_asharemarketoverallindex",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"month1","type":"string"},
+                                      {"name":"exchange","type":"string"},
+                                      {"name":"listed_company_num","type":"double"},
+                                      {"name":"listed_securities_num","type":"double"},
+                                      {"name":"listed_stock_num","type":"double"},
+                                      {"name":"listed_ashare_num","type":"double"},
+                                      {"name":"listed_bshare_num","type":"double"},
+                                      {"name":"stock_total_capital","type":"double"},
+                                      {"name":"stock_total_market_value","type":"double"},
+                                      {"name":"stock_flow_equity","type":"double"},
+                                      {"name":"stock_flow_market_value","type":"double"},
+                                      {"name":"open_accounts_num","type":"double"},
+                                      {"name":"average_pe","type":"double"},
+                                      {"name":"ashare_average_pe","type":"double"},
+                                      {"name":"bshare_average_pe","type":"double"},
+                                      {"name":"stock_fund_transaction_amount","type":"double"},
+                                      {"name":"ashare_transaction_amount","type":"double"},
+                                      {"name":"bshare_transaction_amount","type":"double"},
+                                      {"name":"fund_transaction_amount","type":"double"},
+                                      {"name":"bond_transaction_amount","type":"double"},
+                                      {"name":"ashare_stamp_duty","type":"double"},
+                                      {"name":"bshare_stamp_duty","type":"double"},
+                                      {"name":"stock_repurchase_amount","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

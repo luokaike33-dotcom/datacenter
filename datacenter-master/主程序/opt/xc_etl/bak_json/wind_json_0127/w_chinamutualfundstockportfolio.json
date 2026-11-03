@@ -1,0 +1,62 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,f_prt_enddate,crncy_code,s_info_stockwindcode,f_prt_stkvalue,f_prt_stkquantity,f_prt_stkvaluetonav,f_prt_posstkvalue,f_prt_posstkquantity,f_prt_posstktonav,f_prt_passtkevalue,f_prt_passtkquantity,f_prt_passtktonav,ann_date,stock_per,float_shr_per,opdate,opmode from ${srcoradbname}.chinamutualfundstockportfolio"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundstockportfolio",
+                        "fileName": "w_chinamutualfundstockportfolio",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"f_prt_enddate","type":"STRING"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"s_info_stockwindcode","type":"STRING"},
+                        {"name":"f_prt_stkvalue","type":"DOUBLE"},
+                        {"name":"f_prt_stkquantity","type":"DOUBLE"},
+                        {"name":"f_prt_stkvaluetonav","type":"DOUBLE"},
+                        {"name":"f_prt_posstkvalue","type":"DOUBLE"},
+                        {"name":"f_prt_posstkquantity","type":"DOUBLE"},
+                        {"name":"f_prt_posstktonav","type":"DOUBLE"},
+                        {"name":"f_prt_passtkevalue","type":"DOUBLE"},
+                        {"name":"f_prt_passtkquantity","type":"DOUBLE"},
+                        {"name":"f_prt_passtktonav","type":"DOUBLE"},
+                        {"name":"ann_date","type":"STRING"},
+                        {"name":"stock_per","type":"DOUBLE"},
+                        {"name":"float_shr_per","type":"DOUBLE"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

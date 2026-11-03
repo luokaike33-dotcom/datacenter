@@ -1,0 +1,83 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/tm_gz_t_a_repurchase_hold",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"double"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"n_id",
+									"d_biz",
+									"c_port_code",
+									"c_sec_code",
+									"c_mkt_code",
+									"c_td_relaparty",
+									"c_invest_type",
+									"c_real_direction",
+									"n_td_money",
+									"c_cury_code",
+									"n_days",
+									"n_hg_rate",
+									"n_settle_speed",
+									"d_biz_first",
+									"d_fwddue",
+									"n_td_income",
+									"c_td_number",
+									"n_td_fee"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["yhfinrisk.tm_gz_t_a_repurchase_hold"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from yhfinrisk.tm_gz_t_a_repurchase_hold where d_biz between ${beg_date}  and ${end_date} "]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

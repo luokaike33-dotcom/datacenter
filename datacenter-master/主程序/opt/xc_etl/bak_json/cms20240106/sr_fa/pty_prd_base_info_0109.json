@@ -1,0 +1,109 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd":"beeline",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "hiveSql":["select
+								prd_code,
+								sub_code,
+								fofs_code,
+								prd_name,
+								prd_typ,
+								prd_cald,
+								impt_crt_dt,
+								found_dt,
+								prod_sht_py,
+								prd_full_name,
+								prod_name_py,
+								prod_intr,
+								crrc,
+								parv_unit,
+								iss_lmt,
+								dqr_end,
+								end_dt,
+								clr_dt,
+								is_citd_amor,
+								is_fcode,
+								valu_cnfm_dt,
+								is_intr_tax_free,
+								valu_sped,
+								busi_date,
+								task_rs_id,
+								dm_created_time,
+								bgng_unit_nav,
+								is_cross,
+								dm_src_info,
+								sys_rs_id
+								from ty_dwd.pty_prd_base_info where prd_typ=1" ],
+						"tmpDatabasePath":"/user/hive/warehouse/ty_dwd.db"
+						"tmpDatabase":"ty_dwd"
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}",
+						"hive_jdbc_url":"jdbc:hive2://10.160.96.22:10000/ty_dwd;principal=${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+                                    "prd_code",
+                                    "sub_code",
+                                    "fofs_code",
+                                    "prd_name",
+                                    "prd_typ",
+                                    "prd_cald",
+                                    "impt_crt_dt",
+                                    "found_dt",
+                                    "prod_sht_py",
+                                    "prd_full_name",
+                                    "prod_name_py",
+                                    "prod_intr",
+                                    "crrc",
+                                    "parv_unit",
+                                    "iss_lmt",
+                                    "dqr_end",
+                                    "end_dt",
+                                    "clr_dt",
+                                    "is_citd_amor",
+                                    "is_fcode",
+                                    "valu_cnfm_dt",
+                                    "is_intr_tax_free",
+                                    "valu_sped",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "bgng_unit_nav",
+                                    "is_cross",
+                                    "dm_src_info"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:mysql://${tgrurl}",
+                              "selectedDatabase": "${selectedDatabase}",
+                              "table": ["pty_prd_base_info_0109"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "loadUrl": "${loadUrl}",
+                        "loadProps": {"column_separator": "\\x01","row_delimiter":"\\x02"},
+                        "preSql":["truncate table data_mart.pty_prd_base_info_0109"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "3"
+            }
+        }
+    }
+}

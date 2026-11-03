@@ -1,0 +1,60 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,c_sec_code,d_adj,n_coup_rate,n_rem_cor,c_dv_bool_type,d_begin,d_end,n_ref_ir,c_ref_cdoe,n_spread,c_mkt_code,c_update_time,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_is_fipay.json' as task_rs_id from ${srcoradbname}.is_fipay"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_is_fipay",
+                        "fileName": "fa45_is_fipay",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"c_sec_code","type":"string"},
+                            {"name":"d_adj","type":"date"},
+                            {"name":"n_coup_rate","type":"double"},
+                            {"name":"n_rem_cor","type":"double"},
+                            {"name":"c_dv_bool_type","type":"string"},
+                            {"name":"d_begin","type":"date"},
+                            {"name":"d_end","type":"date"},
+                            {"name":"n_ref_ir","type":"double"},
+                            {"name":"c_ref_cdoe","type":"string"},
+                            {"name":"n_spread","type":"double"},
+                            {"name":"c_mkt_code","type":"string"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

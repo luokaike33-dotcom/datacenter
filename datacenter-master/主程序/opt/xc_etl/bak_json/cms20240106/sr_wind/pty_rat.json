@@ -1,0 +1,93 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/pty_rat",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"long"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"long"},
+                                    {"index":16,"type":"string"},
+                                    {"index":17,"type":"string"},
+                                    {"index":18,"type":"DOUBLE"},
+                                    {"index":19,"type":"string"},
+									{"name":"dm_created_time","type":"string","value":"${kerberosPrincipal}"}
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+                                    "com_id",
+                                    "com_id_code",
+                                    "rat_com_name",
+                                    "com_name",
+                                    "rat_dt",
+                                    "rat_typ",
+                                    "rat_typ_desc",
+                                    "rat_name",
+                                    "rat_expt_typ",
+                                    "rat_expt_typ_desc",
+                                    "rat_desc",
+                                    "rat_desc_lst",
+                                    "rat_chg_fowerd",
+                                    "rat_obj_code",
+                                    "rat_obj_code_desc",
+                                    "pub_dt",
+                                    "rat_sign",
+                                    "rat_com_dict_code",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:mysql://${tgrurl}",
+                              "selectedDatabase": "${selectedDatabase}",
+                              "table": ["pty_rat"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "loadUrl": [${loadUrl}],
+                        "loadProps": {"column_separator": "\\x01","row_separator":"\\x02"},
+                        "preSql":["truncate table data_mart.pty_rat "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

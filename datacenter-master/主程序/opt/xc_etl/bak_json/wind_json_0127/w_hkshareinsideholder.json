@@ -1,0 +1,87 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      ann_dt,
+                                      end_dt,
+                                      report_type,
+                                      holder_type,
+                                      holdername,
+                                      holderid,
+                                      holderid_type,
+                                      dirholdnum,
+                                      indirholdnum,
+                                      sharetype,
+                                      pct_tot,
+                                      pct_stype,
+                                      s_ctnt,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_hkshareinsideholder.json' as task_rs_id
+                                from ${srcoradbname}.hkshareinsideholder"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_hkshareinsideholder",
+                        "fileName": "w_hkshareinsideholder",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"end_dt","type":"string"},
+                                      {"name":"report_type","type":"bigint"},
+                                      {"name":"holder_type","type":"bigint"},
+                                      {"name":"holdername","type":"string"},
+                                      {"name":"holderid","type":"string"},
+                                      {"name":"holderid_type","type":"bigint"},
+                                      {"name":"dirholdnum","type":"double"},
+                                      {"name":"indirholdnum","type":"double"},
+                                      {"name":"sharetype","type":"string"},
+                                      {"name":"pct_tot","type":"double"},
+                                      {"name":"pct_stype","type":"double"},
+                                      {"name":"s_ctnt","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

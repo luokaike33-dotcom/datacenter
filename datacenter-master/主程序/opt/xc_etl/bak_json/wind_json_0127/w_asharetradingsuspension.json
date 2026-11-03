@@ -1,0 +1,51 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_dq_suspenddate,s_dq_suspendtype,s_dq_resumpdate,s_dq_changereason,s_dq_time,null as s_dq_changereasontype from ${srcoradbname}.asharetradingsuspension"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_asharetradingsuspension",
+                        "fileName": "w_asharetradingsuspension",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_dq_suspenddate","type":"STRING"},
+                        {"name":"s_dq_suspendtype","type":"DOUBLE"},
+                        {"name":"s_dq_resumpdate","type":"STRING"},
+                        {"name":"s_dq_changereason","type":"STRING"},
+                        {"name":"s_dq_time","type":"STRING"},
+                        {"name":"s_dq_changereasontype","type":"DOUBLE"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

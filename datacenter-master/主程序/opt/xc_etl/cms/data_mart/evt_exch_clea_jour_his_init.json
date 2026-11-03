@@ -1,0 +1,134 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+						"hiveSql":["SELECT busi_sys_id, occu_dt, tnv_onum, tnv_time, odr_rela_onum, trd_src_id, entr_onum, rep_no, tnv_no, prd_code, ast_unit_code, pfl_code, sh_code, seat_code, secu_id, exch_code, secu_code, src_secu_id, src_secu_trd_id, pos_id, curr_code, busi_typ, inv_typ, busi_clas, clr_typ, entr_dir, clr_sped, tnv_vol, aft_par_vol, tnv_prc, rat, tnv_val, occu_val, aft_occu_val, stmp, tfee, hand_fee, sfee, clea_chag, clea_rptl, oth_fee, cms, full_tfee, deli_dt, trd_cntp_id, appt_num, trd_plfm, trd_mode, guar_sett_flag, rf_val, marg, entr_dir_o3, entr_dir_name_o3, busi_clas_o3, trad_id, oper_no, tnv_stat, cont_mult, covr_dir, arbi_flag, res_flag, lock_lmt_clas, lmt_clas_onum, agmt_num, pay_dt, excr_dt, etf_onum, esti_cash_diff, etf_fnd_clas, shts_vol_chg, fin_val_chg, fin_shts_intr_chg, ahed_pay_coef, is_inr_trd, busi_date, task_rs_id, dm_created_time, p_dt, sys_rs_id
+						FROM ${srcdbname}.evt_exch_clea_jour_his where p_dt between ${beg_date} and ${end_date}
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+						"tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"busi_sys_id",
+									"occu_dt",
+									"tnv_onum",
+									"tnv_time",
+									"odr_rela_onum",
+									"trd_src_id",
+									"entr_onum",
+									"rep_no",
+									"tnv_no",
+									"prd_code",
+									"ast_unit_code",
+									"pfl_code",
+									"sh_code",
+									"seat_code",
+									"secu_id",
+									"exch_code",
+									"secu_code",
+									"src_secu_id",
+									"src_secu_trd_id",
+									"pos_id",
+									"curr_code",
+									"busi_typ",
+									"inv_typ",
+									"busi_clas",
+									"clr_typ",
+									"entr_dir",
+									"clr_sped",
+									"tnv_vol",
+									"aft_par_vol",
+									"tnv_prc",
+									"rat",
+									"tnv_val",
+									"occu_val",
+									"aft_occu_val",
+									"stmp",
+									"tfee",
+									"hand_fee",
+									"sfee",
+									"clea_chag",
+									"clea_rptl",
+									"oth_fee",
+									"cms",
+									"full_tfee",
+									"deli_dt",
+									"trd_cntp_id",
+									"appt_num",
+									"trd_plfm",
+									"trd_mode",
+									"guar_sett_flag",
+									"rf_val",
+									"marg",
+									"entr_dir_o3",
+									"entr_dir_name_o3",
+									"busi_clas_o3",
+									"trad_id",
+									"oper_no",
+									"tnv_stat",
+									"cont_mult",
+									"covr_dir",
+									"arbi_flag",
+									"res_flag",
+									"lock_lmt_clas",
+									"lmt_clas_onum",
+									"agmt_num",
+									"pay_dt",
+									"excr_dt",
+									"etf_onum",
+									"esti_cash_diff",
+									"etf_fnd_clas",
+									"shts_vol_chg",
+									"fin_val_chg",
+									"fin_shts_intr_chg",
+									"ahed_pay_coef",
+									"is_inr_trd",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["evt_exch_clea_jour_his"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["tuncate table evt_exch_clea_jour_his"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "3"
+            },
+            "errorLimit": {"record":0}
+        }
+    }
+}
+
+

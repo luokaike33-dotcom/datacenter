@@ -1,0 +1,84 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/pub_indt_info",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"long"},
+									{"name":"dm_created_time","type":"string","value":"${kerberosPrincipal}"},
+									{"index":12,"type":"string"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+									"indu_code",
+									"indu_name",
+									"lvl_1_code",
+									"lvl_1_name",
+									"lvl_2_code",
+									"lvl_2_name",
+									"lvl_3_code",
+									"lvl_3_name",
+									"lvl_4_code",
+									"lvl_4_name",
+									"busi_date",
+									"dm_created_time",
+									"task_rs_id",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:mysql://${tgrurl}",
+                                "selectedDatabase": "${selectedDatabase}",
+                                "table": ["pub_indt_info"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "loadUrl": [${loadUrl}],
+						"loadProps": {"column_separator": "\\x01","row_separator":"\\x02"},
+                        "preSql":["truncate table data_mart.pub_indt_info"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

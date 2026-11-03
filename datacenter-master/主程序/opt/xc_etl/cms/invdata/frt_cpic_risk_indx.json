@@ -1,0 +1,96 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									rept_date,
+									prd_code,
+									end_date,
+									whole_risk_val,
+									stk_risk_val,
+									bond_risk_val,
+									oth_risk_val,
+									whole_risk_val_wght,
+									stk_risk_val_wght,
+									bond_risk_val_wght,
+									oth_risk_val_wght,
+									whole_beta_coef,
+									stk_beta_coef,
+									bond_beta_coef,
+									oth_beta_coef,
+									whole_mdur,
+									stk_mdur,
+									bond_mdur,
+									oth_mdur,
+									batchno,
+									inserttime,
+									updatetime,
+									p_dt
+							FROM ${srcdbname}.frt_cpic_risk_indx"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"rept_date",
+									"prd_code",
+									"end_date",
+									"whole_risk_val",
+									"stk_risk_val",
+									"bond_risk_val",
+									"oth_risk_val",
+									"whole_risk_val_wght",
+									"stk_risk_val_wght",
+									"bond_risk_val_wght",
+									"oth_risk_val_wght",
+									"whole_beta_coef",
+									"stk_beta_coef",
+									"bond_beta_coef",
+									"oth_beta_coef",
+									"whole_mdur",
+									"stk_mdur",
+									"bond_mdur",
+									"oth_mdur",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["frt_cpic_risk_indx"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table frt_cpic_risk_indx"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

@@ -1,0 +1,127 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_dt,
+                                      ann_dt_new,
+                                      is_adjustment,
+                                      programme_progress,
+                                      holder_name,
+                                      holder_id,
+                                      holder_status,
+                                      holder_type,
+                                      hold_number,
+                                      hold_proportion,
+                                      hold_restricted_stock,
+                                      hold_unlimited_sale_shares,
+                                      transact_type,
+                                      transact_objective,
+                                      transact_stock_source,
+                                      transact_source_funds,
+                                      transact_period_description,
+                                      transaction_mode,
+                                      plan_transact_max_num,
+                                      plan_transact_max_ratio,
+                                      plan_transact_min_num,
+                                      plan_transact_min_ratio,
+                                      plan_max_hold_ratio,
+                                      tot_actual_transact_num,
+                                      total_capital_stock,
+                                      plan_transact_min,
+                                      plan_transact_max,
+                                      variable_price_memo,
+                                      change_start_date,
+                                      change_end_date,
+                                      is_change_control,
+                                      special_changes_memo,
+                                      program_adjustment_memo,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asareplantrade.json' as task_rs_id
+                                from ${srcoradbname}.asareplantrade"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asareplantrade",
+                        "fileName": "w_asareplantrade",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"ann_dt_new","type":"string"},
+                                      {"name":"is_adjustment","type":"bigint"},
+                                      {"name":"programme_progress","type":"bigint"},
+                                      {"name":"holder_name","type":"string"},
+                                      {"name":"holder_id","type":"string"},
+                                      {"name":"holder_status","type":"string"},
+                                      {"name":"holder_type","type":"string"},
+                                      {"name":"hold_number","type":"double"},
+                                      {"name":"hold_proportion","type":"double"},
+                                      {"name":"hold_restricted_stock","type":"double"},
+                                      {"name":"hold_unlimited_sale_shares","type":"double"},
+                                      {"name":"transact_type","type":"string"},
+                                      {"name":"transact_objective","type":"string"},
+                                      {"name":"transact_stock_source","type":"string"},
+                                      {"name":"transact_source_funds","type":"string"},
+                                      {"name":"transact_period_description","type":"string"},
+                                      {"name":"transaction_mode","type":"string"},
+                                      {"name":"plan_transact_max_num","type":"double"},
+                                      {"name":"plan_transact_max_ratio","type":"double"},
+                                      {"name":"plan_transact_min_num","type":"double"},
+                                      {"name":"plan_transact_min_ratio","type":"double"},
+                                      {"name":"plan_max_hold_ratio","type":"double"},
+                                      {"name":"tot_actual_transact_num","type":"double"},
+                                      {"name":"total_capital_stock","type":"double"},
+                                      {"name":"plan_transact_min","type":"double"},
+                                      {"name":"plan_transact_max","type":"double"},
+                                      {"name":"variable_price_memo","type":"string"},
+                                      {"name":"change_start_date","type":"string"},
+                                      {"name":"change_end_date","type":"string"},
+                                      {"name":"is_change_control","type":"bigint"},
+                                      {"name":"special_changes_memo","type":"string"},
+                                      {"name":"program_adjustment_memo","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

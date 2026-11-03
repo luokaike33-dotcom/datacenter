@@ -1,0 +1,101 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/w_cfundpchredm",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"long"},
+									{"index":19,"type":"long"},
+									{"index":20,"type":"long"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"date"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"date"},
+									{"index":26,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"f_info_windcode",
+									"f_info_issuedate",
+									"f_info_setupdate",
+									"f_info_invshare",
+									"f_info_invtotrto",
+									"f_info_issuetype",
+									"f_info_issue_object",
+									"f_info_sub_mode",
+									"f_info_approved_date",
+									"f_info_trade",
+									"f_info_fundmanagementcomp",
+									"f_info_susredmday1",
+									"f_info_suspchday",
+									"f_info_susredmday2",
+									"f_info_susredmday3",
+									"f_info_suspchday1",
+									"f_info_susredmday4",
+									"f_info_typecode",
+									"f_info_tdsetmtypecode",
+									"f_info_valmetcode",
+									"f_minm_holding_prd",
+									"opdate",
+									"opmode",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_cfundpchredm"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table wd_cfundpchredm"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

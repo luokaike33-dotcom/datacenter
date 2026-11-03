@@ -1,0 +1,58 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_compname,ann_dt,b_rate_style,b_info_creditrating,b_rate_ratingoutlook,b_info_creditratingagency,s_info_compcode,b_info_creditratingexplain,b_info_precreditrating,b_creditrating_change,b_info_issuerratetype,ann_dt2,opdate,opmode from ${srcoradbname}.cbondissuerrating"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondissuerrating",
+                        "fileName": "w_cbondissuerrating",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_compname","type":"STRING"},
+                        {"name":"ann_dt","type":"STRING"},
+                        {"name":"b_rate_style","type":"STRING"},
+                        {"name":"b_info_creditrating","type":"STRING"},
+                        {"name":"b_rate_ratingoutlook","type":"DOUBLE"},
+                        {"name":"b_info_creditratingagency","type":"STRING"},
+                        {"name":"s_info_compcode","type":"STRING"},
+                        {"name":"b_info_creditratingexplain","type":"STRING"},
+                        {"name":"b_info_precreditrating","type":"STRING"},
+                        {"name":"b_creditrating_change","type":"STRING"},
+                        {"name":"b_info_issuerratetype","type":"DOUBLE"},
+                        {"name":"ann_dt2","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

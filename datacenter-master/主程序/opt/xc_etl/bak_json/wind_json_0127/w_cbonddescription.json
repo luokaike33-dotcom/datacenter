@@ -1,0 +1,123 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,b_info_fullname,b_info_issuer,b_issue_announcement,b_issue_firstissue,b_issue_lastissue,b_issue_amountplan,b_issue_amountact,b_info_issueprice,b_info_par,b_info_couponrate,b_info_spread,b_info_carrydate,b_info_enddate,b_info_maturitydate,b_info_term_year_,b_info_term_day_,b_info_paymentdate,b_info_paymenttype,b_info_interestfrequency,b_info_form,b_info_coupon,b_info_interesttype,b_info_act,b_issue_fee,b_redemption_feeration,b_info_taxrate,crncy_code,s_info_name,s_info_exchmarket,b_info_guarantor,b_info_guartype,b_info_listdate,b_info_yearsnumber,s_div_recorddate,b_info_codebyplacing,b_info_delistdate,b_info_issuetype,b_info_guarintroduction,b_info_bgndbyplacing,b_info_enddbyplacing,b_info_amountbyplacing,b_info_underwritingcode,b_info_issuercode,b_info_formercode,b_info_coupontxt,is_failure,is_crossmarket,b_info_coupondatetxt,b_info_subordinateornot,b_tendrst_referyield,b_info_curpar,s_info_formerwindcode,is_corporate_bond,b_info_issuertype,b_info_specialbondtype,is_payadvanced,is_callable,is_chooseright,is_netprice,is_act_days,is_incbonds,issue_object,b_info_actualbenchmark,register_file_type_code,register_file_number,list_ann_date,reimbursement,bond_rating,ann_date,b_issue_amount_max,b_info_guarantee_id,b_info_pinyin,trade_type_code,is_taxfree,opdate,opmode,is_inright,accounttreatment_type from ${srcoradbname}.cbonddescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbonddescription",
+                        "fileName": "w_cbonddescription",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"b_info_fullname","type":"STRING"},
+                        {"name":"b_info_issuer","type":"STRING"},
+                        {"name":"b_issue_announcement","type":"STRING"},
+                        {"name":"b_issue_firstissue","type":"STRING"},
+                        {"name":"b_issue_lastissue","type":"STRING"},
+                        {"name":"b_issue_amountplan","type":"DOUBLE"},
+                        {"name":"b_issue_amountact","type":"DOUBLE"},
+                        {"name":"b_info_issueprice","type":"DOUBLE"},
+                        {"name":"b_info_par","type":"DOUBLE"},
+                        {"name":"b_info_couponrate","type":"DOUBLE"},
+                        {"name":"b_info_spread","type":"DOUBLE"},
+                        {"name":"b_info_carrydate","type":"STRING"},
+                        {"name":"b_info_enddate","type":"STRING"},
+                        {"name":"b_info_maturitydate","type":"STRING"},
+                        {"name":"b_info_term_year_","type":"DOUBLE"},
+                        {"name":"b_info_term_day_","type":"DOUBLE"},
+                        {"name":"b_info_paymentdate","type":"STRING"},
+                        {"name":"b_info_paymenttype","type":"DOUBLE"},
+                        {"name":"b_info_interestfrequency","type":"STRING"},
+                        {"name":"b_info_form","type":"STRING"},
+                        {"name":"b_info_coupon","type":"DOUBLE"},
+                        {"name":"b_info_interesttype","type":"DOUBLE"},
+                        {"name":"b_info_act","type":"DOUBLE"},
+                        {"name":"b_issue_fee","type":"DOUBLE"},
+                        {"name":"b_redemption_feeration","type":"DOUBLE"},
+                        {"name":"b_info_taxrate","type":"DOUBLE"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"s_info_name","type":"STRING"},
+                        {"name":"s_info_exchmarket","type":"STRING"},
+                        {"name":"b_info_guarantor","type":"STRING"},
+                        {"name":"b_info_guartype","type":"DOUBLE"},
+                        {"name":"b_info_listdate","type":"STRING"},
+                        {"name":"b_info_yearsnumber","type":"DOUBLE"},
+                        {"name":"s_div_recorddate","type":"STRING"},
+                        {"name":"b_info_codebyplacing","type":"STRING"},
+                        {"name":"b_info_delistdate","type":"STRING"},
+                        {"name":"b_info_issuetype","type":"DOUBLE"},
+                        {"name":"b_info_guarintroduction","type":"STRING"},
+                        {"name":"b_info_bgndbyplacing","type":"STRING"},
+                        {"name":"b_info_enddbyplacing","type":"STRING"},
+                        {"name":"b_info_amountbyplacing","type":"DOUBLE"},
+                        {"name":"b_info_underwritingcode","type":"DOUBLE"},
+                        {"name":"b_info_issuercode","type":"STRING"},
+                        {"name":"b_info_formercode","type":"STRING"},
+                        {"name":"b_info_coupontxt","type":"STRING"},
+                        {"name":"is_failure","type":"DOUBLE"},
+                        {"name":"is_crossmarket","type":"DOUBLE"},
+                        {"name":"b_info_coupondatetxt","type":"STRING"},
+                        {"name":"b_info_subordinateornot","type":"DOUBLE"},
+                        {"name":"b_tendrst_referyield","type":"DOUBLE"},
+                        {"name":"b_info_curpar","type":"DOUBLE"},
+                        {"name":"s_info_formerwindcode","type":"STRING"},
+                        {"name":"is_corporate_bond","type":"DOUBLE"},
+                        {"name":"b_info_issuertype","type":"STRING"},
+                        {"name":"b_info_specialbondtype","type":"STRING"},
+                        {"name":"is_payadvanced","type":"STRING"},
+                        {"name":"is_callable","type":"STRING"},
+                        {"name":"is_chooseright","type":"STRING"},
+                        {"name":"is_netprice","type":"DOUBLE"},
+                        {"name":"is_act_days","type":"DOUBLE"},
+                        {"name":"is_incbonds","type":"DOUBLE"},
+                        {"name":"issue_object","type":"STRING"},
+                        {"name":"b_info_actualbenchmark","type":"STRING"},
+                        {"name":"register_file_type_code","type":"DOUBLE"},
+                        {"name":"register_file_number","type":"STRING"},
+                        {"name":"list_ann_date","type":"STRING"},
+                        {"name":"reimbursement","type":"STRING"},
+                        {"name":"bond_rating","type":"STRING"},
+                        {"name":"ann_date","type":"STRING"},
+                        {"name":"b_issue_amount_max","type":"DOUBLE"},
+                        {"name":"b_info_guarantee_id","type":"STRING"},
+                        {"name":"b_info_pinyin","type":"STRING"},
+                        {"name":"trade_type_code","type":"DOUBLE"},
+                        {"name":"is_taxfree","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"},
+                        {"name":"is_inright","type":"STRING"},
+                        {"name":"accounttreatment_type","type":"DOUBLE"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

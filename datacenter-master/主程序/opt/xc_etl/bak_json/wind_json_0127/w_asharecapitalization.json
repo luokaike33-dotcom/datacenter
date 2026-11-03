@@ -1,0 +1,100 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,wind_code,s_info_windcode,change_dt,tot_shr,float_shr,float_a_shr,float_b_shr,float_h_shr,float_overseas_shr,restricted_a_shr,s_share_rtd_state,s_share_rtd_statejur,s_share_rtd_subotherdomes,s_share_rtd_domesjur,s_share_rtd_inst,s_share_rtd_domesnp,s_share_rtd_senmanager,s_share_rtd_subfrgn,s_share_rtd_frgnjur,s_share_rtd_frgnnp,restricted_b_shr,other_restricted_shr,non_tradable_shr,s_share_ntrd_state_pct,s_share_ntrd_state,s_share_ntrd_statjur,s_share_ntrd_subdomesjur,s_share_ntrd_domesinitor,s_share_ntrd_ipojuris,s_share_ntrd_genjuris,s_share_ntrd_strtinvestor,s_share_ntrd_fundbal,s_share_ntrd_ipoinip,s_share_ntrd_trfnshare,s_share_ntrd_snormnger,s_share_ntrd_insderemp,s_share_ntrd_prfshare,s_share_ntrd_nonlstfrgn,s_share_ntrd_staq,s_share_ntrd_net,s_share_changereason,ann_dt,change_dt1,cur_sign,s_share_totala,s_share_totalb,s_share_otca,s_share_otcb,s_share_totalotc,s_share_h,s_share_totaltradable,s_share_totalrestricted,s_share_nontradable,is_valid,opdate,opmode from ${srcoradbname}.asharecapitalization"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_asharecapitalization",
+                        "fileName": "w_asharecapitalization",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"wind_code","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"change_dt","type":"STRING"},
+                        {"name":"tot_shr","type":"DOUBLE"},
+                        {"name":"float_shr","type":"DOUBLE"},
+                        {"name":"float_a_shr","type":"DOUBLE"},
+                        {"name":"float_b_shr","type":"DOUBLE"},
+                        {"name":"float_h_shr","type":"DOUBLE"},
+                        {"name":"float_overseas_shr","type":"DOUBLE"},
+                        {"name":"restricted_a_shr","type":"DOUBLE"},
+                        {"name":"s_share_rtd_state","type":"DOUBLE"},
+                        {"name":"s_share_rtd_statejur","type":"DOUBLE"},
+                        {"name":"s_share_rtd_subotherdomes","type":"DOUBLE"},
+                        {"name":"s_share_rtd_domesjur","type":"DOUBLE"},
+                        {"name":"s_share_rtd_inst","type":"DOUBLE"},
+                        {"name":"s_share_rtd_domesnp","type":"DOUBLE"},
+                        {"name":"s_share_rtd_senmanager","type":"DOUBLE"},
+                        {"name":"s_share_rtd_subfrgn","type":"DOUBLE"},
+                        {"name":"s_share_rtd_frgnjur","type":"DOUBLE"},
+                        {"name":"s_share_rtd_frgnnp","type":"DOUBLE"},
+                        {"name":"restricted_b_shr","type":"DOUBLE"},
+                        {"name":"other_restricted_shr","type":"DOUBLE"},
+                        {"name":"non_tradable_shr","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_state_pct","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_state","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_statjur","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_subdomesjur","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_domesinitor","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_ipojuris","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_genjuris","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_strtinvestor","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_fundbal","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_ipoinip","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_trfnshare","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_snormnger","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_insderemp","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_prfshare","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_nonlstfrgn","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_staq","type":"DOUBLE"},
+                        {"name":"s_share_ntrd_net","type":"DOUBLE"},
+                        {"name":"s_share_changereason","type":"STRING"},
+                        {"name":"ann_dt","type":"STRING"},
+                        {"name":"change_dt1","type":"STRING"},
+                        {"name":"cur_sign","type":"DOUBLE"},
+                        {"name":"s_share_totala","type":"DOUBLE"},
+                        {"name":"s_share_totalb","type":"DOUBLE"},
+                        {"name":"s_share_otca","type":"DOUBLE"},
+                        {"name":"s_share_otcb","type":"DOUBLE"},
+                        {"name":"s_share_totalotc","type":"DOUBLE"},
+                        {"name":"s_share_h","type":"DOUBLE"},
+                        {"name":"s_share_totaltradable","type":"DOUBLE"},
+                        {"name":"s_share_totalrestricted","type":"DOUBLE"},
+                        {"name":"s_share_nontradable","type":"DOUBLE"},
+                        {"name":"is_valid","type":"DOUBLE"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

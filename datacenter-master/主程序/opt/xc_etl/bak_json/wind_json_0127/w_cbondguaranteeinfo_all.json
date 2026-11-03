@@ -1,0 +1,70 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select object_id,
+                  s_info_windcode,
+                  guarantor,
+                  guarantor_id,
+                  b_agency_guarantornature,
+                  b_agency_grnttype,
+                  b_agency_grnttypecode,
+                  b_info_guarterm,
+                  b_info_guarrange,
+                  b_agency_reguarantor,
+                  b_agency_reguarantorid,
+                  b_info_effective_dt,
+                  b_info_invalid_dt
+                  from ${srcoradbname}.cbondguaranteeinfo"],
+                  "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                  }
+                ]
+              }
+            },
+              "writer": {
+                "name": "hdfswriter",
+                "parameter": {
+                  "defaultFS": "hdfs://${tgrhdfsurl}",
+                  "fileType": "orc",
+                  "path": "${tgrhivedbpath}/w_cbondguaranteeinfo",
+                  "fileName": "w_cbondguaranteeinfo",
+                  "column": [
+                    {"name":"object_id","type":"string"},
+                    {"name":"s_info_windcode","type":"string"},
+                    {"name":"guarantor","type":"string"},
+                    {"name":"guarantor_id","type":"string"},
+                    {"name":"b_agency_guarantornature","type":"string"},
+                    {"name":"b_agency_grnttype","type":"string"},
+                    {"name":"b_agency_grnttypecode","type":"double"},
+                    {"name":"b_info_guarterm","type":"string"},
+                    {"name":"b_info_guarrange","type":"string"},
+                    {"name":"b_agency_reguarantor","type":"string"},
+                    {"name":"b_agency_reguarantorid","type":"string"},
+                    {"name":"b_info_effective_dt","type":"string"},
+                    {"name":"b_info_invalid_dt","type":"string"}
+                  ],
+                  "writeMode": "append",
+                  "fieldDelimiter": "\t",
+                  "encoding":"utf-8",
+                  "haveKerberos": "${haveKerberos}",
+                  "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                  "kerberosPrincipal": "${kerberosPrincipal}"
+                }
+              }
+              }
+            ],
+            "setting": {
+              "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+              }
+            }
+          }
+        }

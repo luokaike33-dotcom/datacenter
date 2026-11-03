@@ -1,0 +1,56 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,b_info_provisiontype,b_info_callbkorputbkprice,b_info_callbkorputbkdate,b_info_redemporrepurcdate,b_info_maturityembedded,b_info_execmaturityembedded,b_info_couponadj_max,b_info_couponadj_min,b_info_content,opdate,opmode from ${srcoradbname}.cbondspecialconditions"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondspecialconditions",
+                        "fileName": "w_cbondspecialconditions",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"b_info_provisiontype","type":"STRING"},
+                        {"name":"b_info_callbkorputbkprice","type":"DOUBLE"},
+                        {"name":"b_info_callbkorputbkdate","type":"STRING"},
+                        {"name":"b_info_redemporrepurcdate","type":"STRING"},
+                        {"name":"b_info_maturityembedded","type":"STRING"},
+                        {"name":"b_info_execmaturityembedded","type":"DOUBLE"},
+                        {"name":"b_info_couponadj_max","type":"DOUBLE"},
+                        {"name":"b_info_couponadj_min","type":"DOUBLE"},
+                        {"name":"b_info_content","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

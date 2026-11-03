@@ -1,0 +1,93 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_companyid,
+                                      regaddr,
+                                      sectors,
+                                      sponsor,
+                                      spon_rep,
+                                      acc_firm,
+                                      cpa,
+                                      law_firm,
+                                      sol_sig,
+                                      app_code,
+                                      sch_code,
+                                      tblisted,
+                                      st_date,
+                                      end_date,
+                                      est_issueno,
+                                      est_issueshares,
+                                      pro_tolalinv,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cdrcomprfa.json' as task_rs_id
+                                from ${srcoradbname}.cdrcomprfa"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cdrcomprfa",
+                        "fileName": "w_cdrcomprfa",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_companyid","type":"string"},
+                                      {"name":"regaddr","type":"string"},
+                                      {"name":"sectors","type":"string"},
+                                      {"name":"sponsor","type":"string"},
+                                      {"name":"spon_rep","type":"string"},
+                                      {"name":"acc_firm","type":"string"},
+                                      {"name":"cpa","type":"string"},
+                                      {"name":"law_firm","type":"string"},
+                                      {"name":"sol_sig","type":"string"},
+                                      {"name":"app_code","type":"bigint"},
+                                      {"name":"sch_code","type":"bigint"},
+                                      {"name":"tblisted","type":"bigint"},
+                                      {"name":"st_date","type":"string"},
+                                      {"name":"end_date","type":"string"},
+                                      {"name":"est_issueno","type":"double"},
+                                      {"name":"est_issueshares","type":"double"},
+                                      {"name":"pro_tolalinv","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

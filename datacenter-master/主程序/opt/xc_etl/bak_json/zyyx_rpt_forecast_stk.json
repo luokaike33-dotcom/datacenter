@@ -1,0 +1,131 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      id,
+                                      report_id,
+                                      stock_code,
+                                      stock_name,
+                                      title,
+                                      report_type,
+                                      reliability,
+                                      organ_id,
+                                      organ_name,
+                                      author_name,
+                                      create_date,
+                                      report_year,
+                                      report_quarter,
+                                      forecast_or,
+                                      forecast_op,
+                                      forecast_tp,
+                                      forecast_np,
+                                      forecast_eps,
+                                      forecast_dps,
+                                      forecast_rd,
+                                      forecast_pe,
+                                      forecast_roe,
+                                      forecast_ev_ebitda,
+                                      organ_rating_code,
+                                      organ_rating_content,
+                                      gg_rating_code,
+                                      gg_rating_content,
+                                      target_price_ceiling,
+                                      target_price_floor,
+                                      current_price,
+                                      refered_capital,
+                                      is_capital_change,
+                                      currency,
+                                      settlement_date,
+                                      language,
+                                      attention,
+                                      entrytime,
+                                      updatetime,
+                                      tmstamp,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'zyyx_rpt_forecast_stk.json' as task_rs_id
+                                from ${srcoradbname}.rpt_forecast_stk"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${is_kbs}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/zyyx_rpt_forecast_stk",
+                        "fileName": "zyyx_rpt_forecast_stk",
+                        "column": [
+                                      {"name":"id","type":"bigint"},
+                                      {"name":"report_id","type":"bigint"},
+                                      {"name":"stock_code","type":"string"},
+                                      {"name":"stock_name","type":"string"},
+                                      {"name":"title","type":"string"},
+                                      {"name":"report_type","type":"bigint"},
+                                      {"name":"reliability","type":"bigint"},
+                                      {"name":"organ_id","type":"bigint"},
+                                      {"name":"organ_name","type":"string"},
+                                      {"name":"author_name","type":"string"},
+                                      {"name":"create_date","type":"timestamp"},
+                                      {"name":"report_year","type":"bigint"},
+                                      {"name":"report_quarter","type":"bigint"},
+                                      {"name":"forecast_or","type":"double"},
+                                      {"name":"forecast_op","type":"double"},
+                                      {"name":"forecast_tp","type":"double"},
+                                      {"name":"forecast_np","type":"double"},
+                                      {"name":"forecast_eps","type":"double"},
+                                      {"name":"forecast_dps","type":"double"},
+                                      {"name":"forecast_rd","type":"double"},
+                                      {"name":"forecast_pe","type":"double"},
+                                      {"name":"forecast_roe","type":"double"},
+                                      {"name":"forecast_ev_ebitda","type":"double"},
+                                      {"name":"organ_rating_code","type":"string"},
+                                      {"name":"organ_rating_content","type":"string"},
+                                      {"name":"gg_rating_code","type":"string"},
+                                      {"name":"gg_rating_content","type":"string"},
+                                      {"name":"target_price_ceiling","type":"double"},
+                                      {"name":"target_price_floor","type":"double"},
+                                      {"name":"current_price","type":"double"},
+                                      {"name":"refered_capital","type":"double"},
+                                      {"name":"is_capital_change","type":"bigint"},
+                                      {"name":"currency","type":"string"},
+                                      {"name":"settlement_date","type":"string"},
+                                      {"name":"language","type":"bigint"},
+                                      {"name":"attention","type":"string"},
+                                      {"name":"entrytime","type":"timestamp"},
+                                      {"name":"updatetime","type":"timestamp"},
+                                      {"name":"tmstamp","type":"bigint"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

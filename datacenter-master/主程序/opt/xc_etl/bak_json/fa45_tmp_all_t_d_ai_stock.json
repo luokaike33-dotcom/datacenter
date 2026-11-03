@@ -1,0 +1,73 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select c_year_month,c_port_code,d_stock,c_dta_code,c_dv_issue_mode,c_dv_var_dur,c_dv_invest_cls,c_port_cls_code,c_dai_code,c_ca_code,c_sec_code,c_fee_code,c_net_code,c_mkt_code,c_sec_var_code,c_dv_acc_type,c_dv_fee_type,c_ds_code,c_dc_code,c_km_code,n_amount,n_orig_money,n_port_money,c_km_name,c_dv_km_cls,c_td_chan_code,c_km_code_t,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_t_d_ai_stock.json' as task_rs_id from ${srcoradbname}.t_d_ai_stock"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/tmp_all_fa45_t_d_ai_stock",
+                        "fileName": "tmp_all_fa45_t_d_ai_stock",
+                        "column": [
+                            {"name":"c_year_month","type":"string"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"d_stock","type":"date"},
+                            {"name":"c_dta_code","type":"string"},
+                            {"name":"c_dv_issue_mode","type":"string"},
+                            {"name":"c_dv_var_dur","type":"string"},
+                            {"name":"c_dv_invest_cls","type":"string"},
+                            {"name":"c_port_cls_code","type":"string"},
+                            {"name":"c_dai_code","type":"string"},
+                            {"name":"c_ca_code","type":"string"},
+                            {"name":"c_sec_code","type":"string"},
+                            {"name":"c_fee_code","type":"string"},
+                            {"name":"c_net_code","type":"string"},
+                            {"name":"c_mkt_code","type":"string"},
+                            {"name":"c_sec_var_code","type":"string"},
+                            {"name":"c_dv_acc_type","type":"string"},
+                            {"name":"c_dv_fee_type","type":"string"},
+                            {"name":"c_ds_code","type":"string"},
+                            {"name":"c_dc_code","type":"string"},
+                            {"name":"c_km_code","type":"string"},
+                            {"name":"n_amount","type":"double"},
+                            {"name":"n_orig_money","type":"double"},
+                            {"name":"n_port_money","type":"double"},
+                            {"name":"c_km_name","type":"string"},
+                            {"name":"c_dv_km_cls","type":"string"},
+                            {"name":"c_td_chan_code","type":"string"},
+                            {"name":"c_km_code_t","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

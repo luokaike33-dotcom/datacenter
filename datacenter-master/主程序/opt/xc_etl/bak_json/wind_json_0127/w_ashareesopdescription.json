@@ -1,0 +1,119 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      bm_prepro_ann_dt,
+                                      sholder_meeting_ann_dt,
+                                      initial_capital,
+                                      capital_resource_code,
+                                      estimated_volumn,
+                                      ratio_to_totalshares,
+                                      sholders_no,
+                                      sholders_proportion,
+                                      duration,
+                                      lockup_period_m,
+                                      empl_subs_amt,
+                                      empl_subs_proportion,
+                                      senmngr_subs_no,
+                                      senmngr_subs_amt,
+                                      senmngr_subs_proportion,
+                                      estimated_price,
+                                      shares_resource_code,
+                                      is_self_manage,
+                                      corr_proname,
+                                      ratio_ownfunds,
+                                      initial_leverage,
+                                      sholders_loan,
+                                      sholders_loanratio,
+                                      act_fundsize,
+                                      act_sharesno,
+                                      act_sharesprice,
+                                      act_cap_ratio,
+                                      sharehold_findt,
+                                      event_id,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareesopdescription.json' as task_rs_id
+                                from ${srcoradbname}.ashareesopdescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareesopdescription",
+                        "fileName": "w_ashareesopdescription",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"bm_prepro_ann_dt","type":"string"},
+                                      {"name":"sholder_meeting_ann_dt","type":"string"},
+                                      {"name":"initial_capital","type":"double"},
+                                      {"name":"capital_resource_code","type":"bigint"},
+                                      {"name":"estimated_volumn","type":"double"},
+                                      {"name":"ratio_to_totalshares","type":"double"},
+                                      {"name":"sholders_no","type":"bigint"},
+                                      {"name":"sholders_proportion","type":"double"},
+                                      {"name":"duration","type":"bigint"},
+                                      {"name":"lockup_period_m","type":"bigint"},
+                                      {"name":"empl_subs_amt","type":"double"},
+                                      {"name":"empl_subs_proportion","type":"double"},
+                                      {"name":"senmngr_subs_no","type":"bigint"},
+                                      {"name":"senmngr_subs_amt","type":"double"},
+                                      {"name":"senmngr_subs_proportion","type":"double"},
+                                      {"name":"estimated_price","type":"double"},
+                                      {"name":"shares_resource_code","type":"bigint"},
+                                      {"name":"is_self_manage","type":"bigint"},
+                                      {"name":"corr_proname","type":"string"},
+                                      {"name":"ratio_ownfunds","type":"double"},
+                                      {"name":"initial_leverage","type":"double"},
+                                      {"name":"sholders_loan","type":"double"},
+                                      {"name":"sholders_loanratio","type":"double"},
+                                      {"name":"act_fundsize","type":"double"},
+                                      {"name":"act_sharesno","type":"double"},
+                                      {"name":"act_sharesprice","type":"double"},
+                                      {"name":"act_cap_ratio","type":"double"},
+                                      {"name":"sharehold_findt","type":"string"},
+                                      {"name":"event_id","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

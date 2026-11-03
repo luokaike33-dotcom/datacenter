@@ -1,0 +1,95 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compname,
+                                      s_info_compcode,
+                                      ann_dt,
+                                      meeting_dt,
+                                      int_amount,
+                                      change_amount,
+                                      crncy_code,
+                                      filelocation,
+                                      filenum,
+                                      end_dt_effective,
+                                      end_dt_firstissue,
+                                      is_install,
+                                      leadunderwriter,
+                                      type_code,
+                                      abs_managerid,
+                                      abs_manager,
+                                      abs_name,
+                                      num,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_bondissueregistration.json' as task_rs_id
+                                from ${srcoradbname}.bondissueregistration"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_bondissueregistration",
+                        "fileName": "w_bondissueregistration",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compname","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"meeting_dt","type":"string"},
+                                      {"name":"int_amount","type":"double"},
+                                      {"name":"change_amount","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"filelocation","type":"string"},
+                                      {"name":"filenum","type":"string"},
+                                      {"name":"end_dt_effective","type":"string"},
+                                      {"name":"end_dt_firstissue","type":"string"},
+                                      {"name":"is_install","type":"bigint"},
+                                      {"name":"leadunderwriter","type":"string"},
+                                      {"name":"type_code","type":"bigint"},
+                                      {"name":"abs_managerid","type":"string"},
+                                      {"name":"abs_manager","type":"string"},
+                                      {"name":"abs_name","type":"string"},
+                                      {"name":"num","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

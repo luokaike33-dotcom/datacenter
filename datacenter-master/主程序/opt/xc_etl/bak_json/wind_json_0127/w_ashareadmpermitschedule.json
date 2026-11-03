@@ -1,0 +1,107 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      comp_id,
+                                      anndate,
+                                      enddate,
+                                      type_name,
+                                      type_code,
+                                      apply_pickup_date,
+                                      notice_correction_date,
+                                      receive_correction_material,
+                                      admissibility_date,
+                                      no_admissibility_date,
+                                      feedback_date1,
+                                      receive_feedback_date1,
+                                      feedback_date2,
+                                      receive_feedback_date2,
+                                      review_date,
+                                      memo,
+                                      comp_name,
+                                      progress_code,
+                                      ann_date_ndrc,
+                                      audit_event_id,
+                                      audit_channel_code,
+                                      feedback_date,
+                                      other_comp_id,
+                                      other_comp_type_code,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareadmpermitschedule.json' as task_rs_id
+                                from ${srcoradbname}.ashareadmpermitschedule"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareadmpermitschedule",
+                        "fileName": "w_ashareadmpermitschedule",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"comp_id","type":"string"},
+                                      {"name":"anndate","type":"string"},
+                                      {"name":"enddate","type":"string"},
+                                      {"name":"type_name","type":"string"},
+                                      {"name":"type_code","type":"bigint"},
+                                      {"name":"apply_pickup_date","type":"string"},
+                                      {"name":"notice_correction_date","type":"string"},
+                                      {"name":"receive_correction_material","type":"string"},
+                                      {"name":"admissibility_date","type":"string"},
+                                      {"name":"no_admissibility_date","type":"string"},
+                                      {"name":"feedback_date1","type":"string"},
+                                      {"name":"receive_feedback_date1","type":"string"},
+                                      {"name":"feedback_date2","type":"string"},
+                                      {"name":"receive_feedback_date2","type":"string"},
+                                      {"name":"review_date","type":"string"},
+                                      {"name":"memo","type":"string"},
+                                      {"name":"comp_name","type":"string"},
+                                      {"name":"progress_code","type":"bigint"},
+                                      {"name":"ann_date_ndrc","type":"string"},
+                                      {"name":"audit_event_id","type":"string"},
+                                      {"name":"audit_channel_code","type":"bigint"},
+                                      {"name":"feedback_date","type":"string"},
+                                      {"name":"other_comp_id","type":"string"},
+                                      {"name":"other_comp_type_code","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

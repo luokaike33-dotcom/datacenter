@@ -1,0 +1,124 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_stk_bons_hk",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"long"},
+                                    {"index":5,"type":"double"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"long"},
+                                    {"index":10,"type":"double"},
+                                    {"index":11,"type":"long"},
+                                    {"index":12,"type":"double"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"double"},
+                                    {"index":15,"type":"long"},
+                                    {"index":16,"type":"long"},
+                                    {"index":17,"type":"long"},
+                                    {"index":18,"type":"long"},
+                                    {"index":19,"type":"long"},
+                                    {"index":20,"type":"double"},
+                                    {"index":21,"type":"long"},
+                                    {"index":22,"type":"long"},
+                                    {"index":23,"type":"double"},
+                                    {"index":24,"type":"double"},
+                                    {"index":25,"type":"double"},
+                                    {"index":26,"type":"double"},
+                                    {"index":27,"type":"string"},
+                                    {"index":28,"type":"string"},
+                                    {"index":29,"type":"string"},
+                                    {"index":30,"type":"string"},
+                                    {"index":31,"type":"string"},
+                                    {"index":32,"type":"string"},
+                                    {"index":33,"type":"string"},
+                                    {"index":34,"type":"string"},
+                                    {"index":35,"type":"long"},
+                                    {"index":36,"type":"string"},
+                                    {"index":37,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "com_id",
+                                    "dvd_typ",
+                                    "dvd_typ_desc",
+                                    "plan_ntc_dt",
+                                    "act_bonus_shr",
+                                    "mb_trd_code",
+                                    "mb_secu_id",
+                                    "mb_com_id",
+                                    "mb_x",
+                                    "mb_y",
+                                    "datebnsshpy",
+                                    "bonus_shr",
+                                    "wnt_sub_prc",
+                                    "wnt_shr",
+                                    "bonus_x",
+                                    "bonus_y",
+                                    "wnt_x",
+                                    "wnt_y",
+                                    "ex_rd_dt",
+                                    "shr_bas",
+                                    "rt_reg_dt",
+                                    "dvd_pay_dt",
+                                    "dvd_ps",
+                                    "spcl_dvd_ps",
+                                    "act_ttl_amt",
+                                    "ttl_amt",
+                                    "rd_obj",
+                                    "rd_obj_desc",
+                                    "pub_dt_typ",
+                                    "pub_dt_typ_desc",
+                                    "event_proc",
+                                    "event_proc_desc",
+                                    "fin_year",
+                                    "curr_code",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_stk_bons_hk"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_stk_bons_hk where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

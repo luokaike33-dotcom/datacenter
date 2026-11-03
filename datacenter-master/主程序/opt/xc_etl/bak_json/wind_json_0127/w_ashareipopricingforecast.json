@@ -1,0 +1,87 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      research_inst_name,
+                                      research_inst_id,
+                                      research_inst_id2,
+                                      analyst_name,
+                                      analyst_id,
+                                      est_dt,
+                                      collect_time,
+                                      first_optime,
+                                      price_floor,
+                                      price_ceiling,
+                                      inquiry_price_floor,
+                                      inquiry_price_ceiling,
+                                      est_memo,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareipopricingforecast.json' as task_rs_id
+                                from ${srcoradbname}.ashareipopricingforecast"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareipopricingforecast",
+                        "fileName": "w_ashareipopricingforecast",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"research_inst_name","type":"string"},
+                                      {"name":"research_inst_id","type":"string"},
+                                      {"name":"research_inst_id2","type":"string"},
+                                      {"name":"analyst_name","type":"string"},
+                                      {"name":"analyst_id","type":"string"},
+                                      {"name":"est_dt","type":"string"},
+                                      {"name":"collect_time","type":"string"},
+                                      {"name":"first_optime","type":"timestamp"},
+                                      {"name":"price_floor","type":"double"},
+                                      {"name":"price_ceiling","type":"double"},
+                                      {"name":"inquiry_price_floor","type":"double"},
+                                      {"name":"inquiry_price_ceiling","type":"double"},
+                                      {"name":"est_memo","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

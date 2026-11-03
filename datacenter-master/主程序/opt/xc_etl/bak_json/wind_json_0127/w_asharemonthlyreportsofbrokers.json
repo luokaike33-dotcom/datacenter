@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_dt,
+                                      report_period,
+                                      statement_typecode,
+                                      acc_sta_code,
+                                      iflisted_data,
+                                      oper_rev,
+                                      net_profit_incl_min_int_inc,
+                                      net_profit_excl_min_int_inc,
+                                      tot_shrhldr_eqy_excl_min_int,
+                                      tot_shrhldr_eqy_incl_min_int,
+                                      s_info_compname,
+                                      s_info_compcode,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharemonthlyreportsofbrokers.json' as task_rs_id
+                                from ${srcoradbname}.asharemonthlyreportsofbrokers"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharemonthlyreportsofbrokers",
+                        "fileName": "w_asharemonthlyreportsofbrokers",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"statement_typecode","type":"bigint"},
+                                      {"name":"acc_sta_code","type":"bigint"},
+                                      {"name":"iflisted_data","type":"bigint"},
+                                      {"name":"oper_rev","type":"double"},
+                                      {"name":"net_profit_incl_min_int_inc","type":"double"},
+                                      {"name":"net_profit_excl_min_int_inc","type":"double"},
+                                      {"name":"tot_shrhldr_eqy_excl_min_int","type":"double"},
+                                      {"name":"tot_shrhldr_eqy_incl_min_int","type":"double"},
+                                      {"name":"s_info_compname","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

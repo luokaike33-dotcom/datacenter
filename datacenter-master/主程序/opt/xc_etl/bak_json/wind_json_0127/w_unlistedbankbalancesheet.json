@@ -1,0 +1,114 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_compcode,ann_dt,report_period,statement_type,crncy_code,actual_ann_dt,cash_deposits_central_bank,asset_dep_oth_banks_fin_inst,precious_metals,loans_to_oth_banks,tradable_fin_assets,derivative_fin_assets,red_monetary_cap_for_sale,int_rcv,loans_and_adv_granted,agency_bus_assets,fin_assets_avail_for_sale,held_to_mty_invest,long_term_eqy_invest,rcv_invest,fix_assets,intang_assets,goodwill,deferred_tax_assets,invest_real_estate,oth_assets,spe_bal_assets,tot_bal_assets,tot_assets,liab_dep_oth_banks_fin_inst,borrow_central_bank,loans_oth_banks,tradable_fin_liab,derivative_fin_liab,fund_sales_fin_assets_rp,cust_bank_dep,empl_ben_payable,taxes_surcharges_payable,int_payable,agency_bus_liab,bonds_payable,deferred_tax_liab,provisions,oth_liab,spe_bal_liab,tot_bal_liab,tot_liab,cap_stk,cap_rsrv,less_tsy_stk,surplus_rsrv,undistributed_profit,prov_nom_risks,cnvd_diff_foreign_curr_stat,unconfirmed_invest_loss,spe_bal_shrhldr_eqy,tot_bal_shrhldr_eqy,minority_int,tot_shrhldr_eqy_excl_min_int,tot_shrhldr_eqy_incl_min_int,spe_bal_liab_eqy,tot_bal_liab_eqy,tot_liab_shrhldr_eqy,other_comp_income,other_equity_tools,other_equity_tools_p_shr,settle_rsrv,receivables_financing,right_use_assets,lease_liab from ${srcoradbname}.unlistedbankbalancesheet"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_unlistedbankbalancesheet",
+                        "fileName": "w_unlistedbankbalancesheet",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_compcode","type":"STRING"},
+                        {"name":"ann_dt","type":"STRING"},
+                        {"name":"report_period","type":"STRING"},
+                        {"name":"statement_type","type":"DOUBLE"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"actual_ann_dt","type":"STRING"},
+                        {"name":"cash_deposits_central_bank","type":"DOUBLE"},
+                        {"name":"asset_dep_oth_banks_fin_inst","type":"DOUBLE"},
+                        {"name":"precious_metals","type":"DOUBLE"},
+                        {"name":"loans_to_oth_banks","type":"DOUBLE"},
+                        {"name":"tradable_fin_assets","type":"DOUBLE"},
+                        {"name":"derivative_fin_assets","type":"DOUBLE"},
+                        {"name":"red_monetary_cap_for_sale","type":"DOUBLE"},
+                        {"name":"int_rcv","type":"DOUBLE"},
+                        {"name":"loans_and_adv_granted","type":"DOUBLE"},
+                        {"name":"agency_bus_assets","type":"DOUBLE"},
+                        {"name":"fin_assets_avail_for_sale","type":"DOUBLE"},
+                        {"name":"held_to_mty_invest","type":"DOUBLE"},
+                        {"name":"long_term_eqy_invest","type":"DOUBLE"},
+                        {"name":"rcv_invest","type":"DOUBLE"},
+                        {"name":"fix_assets","type":"DOUBLE"},
+                        {"name":"intang_assets","type":"DOUBLE"},
+                        {"name":"goodwill","type":"DOUBLE"},
+                        {"name":"deferred_tax_assets","type":"DOUBLE"},
+                        {"name":"invest_real_estate","type":"DOUBLE"},
+                        {"name":"oth_assets","type":"DOUBLE"},
+                        {"name":"spe_bal_assets","type":"DOUBLE"},
+                        {"name":"tot_bal_assets","type":"DOUBLE"},
+                        {"name":"tot_assets","type":"DOUBLE"},
+                        {"name":"liab_dep_oth_banks_fin_inst","type":"DOUBLE"},
+                        {"name":"borrow_central_bank","type":"DOUBLE"},
+                        {"name":"loans_oth_banks","type":"DOUBLE"},
+                        {"name":"tradable_fin_liab","type":"DOUBLE"},
+                        {"name":"derivative_fin_liab","type":"DOUBLE"},
+                        {"name":"fund_sales_fin_assets_rp","type":"DOUBLE"},
+                        {"name":"cust_bank_dep","type":"DOUBLE"},
+                        {"name":"empl_ben_payable","type":"DOUBLE"},
+                        {"name":"taxes_surcharges_payable","type":"DOUBLE"},
+                        {"name":"int_payable","type":"DOUBLE"},
+                        {"name":"agency_bus_liab","type":"DOUBLE"},
+                        {"name":"bonds_payable","type":"DOUBLE"},
+                        {"name":"deferred_tax_liab","type":"DOUBLE"},
+                        {"name":"provisions","type":"DOUBLE"},
+                        {"name":"oth_liab","type":"DOUBLE"},
+                        {"name":"spe_bal_liab","type":"DOUBLE"},
+                        {"name":"tot_bal_liab","type":"DOUBLE"},
+                        {"name":"tot_liab","type":"DOUBLE"},
+                        {"name":"cap_stk","type":"DOUBLE"},
+                        {"name":"cap_rsrv","type":"DOUBLE"},
+                        {"name":"less_tsy_stk","type":"DOUBLE"},
+                        {"name":"surplus_rsrv","type":"DOUBLE"},
+                        {"name":"undistributed_profit","type":"DOUBLE"},
+                        {"name":"prov_nom_risks","type":"DOUBLE"},
+                        {"name":"cnvd_diff_foreign_curr_stat","type":"DOUBLE"},
+                        {"name":"unconfirmed_invest_loss","type":"DOUBLE"},
+                        {"name":"spe_bal_shrhldr_eqy","type":"DOUBLE"},
+                        {"name":"tot_bal_shrhldr_eqy","type":"DOUBLE"},
+                        {"name":"minority_int","type":"DOUBLE"},
+                        {"name":"tot_shrhldr_eqy_excl_min_int","type":"DOUBLE"},
+                        {"name":"tot_shrhldr_eqy_incl_min_int","type":"DOUBLE"},
+                        {"name":"spe_bal_liab_eqy","type":"DOUBLE"},
+                        {"name":"tot_bal_liab_eqy","type":"DOUBLE"},
+                        {"name":"tot_liab_shrhldr_eqy","type":"DOUBLE"},
+                        {"name":"other_comp_income","type":"DOUBLE"},
+                        {"name":"other_equity_tools","type":"DOUBLE"},
+                        {"name":"other_equity_tools_p_shr","type":"DOUBLE"},
+                        {"name":"settle_rsrv","type":"DOUBLE"},
+                        {"name":"receivables_financing","type":"DOUBLE"},
+                        {"name":"right_use_assets","type":"DOUBLE"},
+                        {"name":"lease_liab","type":"DOUBLE"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

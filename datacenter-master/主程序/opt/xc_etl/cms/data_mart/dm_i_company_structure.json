@@ -1,0 +1,168 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/dm_i_company_structure",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"date"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"long"},
+									{"index":17,"type":"long"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"string"},
+									{"index":41,"type":"string"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"string"},
+									{"index":44,"type":"string"},
+									{"index":45,"type":"string"},
+									{"index":46,"type":"string"},
+									{"index":47,"type":"string"},
+									{"index":48,"type":"double"},
+									{"index":49,"type":"string"},
+									{"index":50,"type":"double"},
+									{"index":51,"type":"long"},
+									{"index":52,"type":"long"},
+									{"index":53,"type":"string"},
+									{"index":54,"type":"string"},
+									{"index":55,"type":"string"},
+									{"index":56,"type":"date"},
+									{"index":57,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"id",
+									"bond_issue_stage",
+									"com_uni_code",
+									"fake_issuer",
+									"fake_issuer_short_name",
+									"bond_issue_status",
+									"event_date",
+									"event_time",
+									"issue_structure",
+									"guarantor",
+									"keepwell_provider",
+									"sblc_provider",
+									"issuer_rating",
+									"bond_rating",
+									"new_bond_issue_scale",
+									"tenor",
+									"currency",
+									"coupon_type",
+									"new_bond_type",
+									"initial_pricing_guidance",
+									"final_pricing_guidance",
+									"new_bond_issue_rule",
+									"new_bond_issue_price",
+									"new_bond_issue_yield",
+									"new_bond_issue_coupon",
+									"payment_date",
+									"settlement_date",
+									"other_schedule",
+									"new_bond_maturity_date",
+									"new_bond_issue_details",
+									"billing_delivery_bank",
+									"joint_global_coordinators",
+									"joint_lead_managers",
+									"joint_book_runners",
+									"jbrs_jlms",
+									"sgc_jbrs_jlms",
+									"clearing_system",
+									"new_bond_issue_term",
+									"governing_law",
+									"trading_market",
+									"new_bond_issue_remark",
+									"use_of_proceeds",
+									"bond_issue_amount",
+									"final_orderbook_scale",
+									"account_num",
+									"isin",
+									"figi",
+									"region_distribution",
+									"asia_region_ratio",
+									"investor_type_description",
+									"fund_investor_ratio",
+									"deleted",
+									"update_time_id",
+									"create_time",
+									"update_time",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["dm_i_company_structure"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table dm_i_company_structure"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      wind_ind_code,
+                                      rating_institute,
+                                      rating_institute_id,
+                                      rating_analyst,
+                                      rating_analyst_id,
+                                      report_type_code,
+                                      rating_dt,
+                                      end_dt,
+                                      rating_memo,
+                                      score,
+                                      rating,
+                                      report_ind,
+                                      collect_dt,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareindusrating.json' as task_rs_id
+                                from ${srcoradbname}.ashareindusrating"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareindusrating",
+                        "fileName": "w_ashareindusrating",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"wind_ind_code","type":"string"},
+                                      {"name":"rating_institute","type":"string"},
+                                      {"name":"rating_institute_id","type":"string"},
+                                      {"name":"rating_analyst","type":"string"},
+                                      {"name":"rating_analyst_id","type":"string"},
+                                      {"name":"report_type_code","type":"bigint"},
+                                      {"name":"rating_dt","type":"string"},
+                                      {"name":"end_dt","type":"string"},
+                                      {"name":"rating_memo","type":"string"},
+                                      {"name":"score","type":"bigint"},
+                                      {"name":"rating","type":"string"},
+                                      {"name":"report_ind","type":"string"},
+                                      {"name":"collect_dt","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

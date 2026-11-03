@@ -1,0 +1,56 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,ex_date,ex_type,ex_description,cash_dividend_ratio,bonus_share_ratio,rightsissue_ratio,rightsissue_price,conversed_ratio,seo_price,seo_ratio,consolidate_split_ratio from ${srcoradbname}.ashareexrightdividendrecord"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareexrightdividendrecord",
+                        "fileName": "w_ashareexrightdividendrecord",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"ex_date","type":"string"},
+                            {"name":"ex_type","type":"string"},
+                            {"name":"ex_description","type":"string"},
+                            {"name":"cash_dividend_ratio","type":"double"},
+                            {"name":"bonus_share_ratio","type":"double"},
+                            {"name":"rightsissue_ratio","type":"double"},
+                            {"name":"rightsissue_price","type":"double"},
+                            {"name":"conversed_ratio","type":"double"},
+                            {"name":"seo_price","type":"double"},
+                            {"name":"seo_ratio","type":"double"},
+                            {"name":"consolidate_split_ratio","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

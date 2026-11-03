@@ -1,0 +1,82 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,event_type,ex_date,start_date,end_date,gm_date,payment_date,bonus_share_d_date,cash_div_ratio,bonus_share_ratio,in_specie_ratio,bonus_warrant_ratio,right_issue_ratio,right_issue_price,consolidation_ratio,split_ratio,exchange_ratio,cancellation_ratio,crncy_code,fann_date,nann_date,rstart_date,rend_date,re_type,bonus_warrant_date,in_specie_date,right_issue_d_date,bonus_share_l_date,right_issue_l_date,transfer_ratio,present_ratio,memo,s_info_windcode1,null as dividend_currency,null as cash_div_ratio1,opdate,opmode,null as share_recorddate from ${srcoradbname}.hkshareevent"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_hkshareevent",
+                        "fileName": "w_hkshareevent",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"event_type","type":"STRING"},
+                        {"name":"ex_date","type":"STRING"},
+                        {"name":"start_date","type":"STRING"},
+                        {"name":"end_date","type":"STRING"},
+                        {"name":"gm_date","type":"STRING"},
+                        {"name":"payment_date","type":"STRING"},
+                        {"name":"bonus_share_d_date","type":"STRING"},
+                        {"name":"cash_div_ratio","type":"DOUBLE"},
+                        {"name":"bonus_share_ratio","type":"DOUBLE"},
+                        {"name":"in_specie_ratio","type":"DOUBLE"},
+                        {"name":"bonus_warrant_ratio","type":"DOUBLE"},
+                        {"name":"right_issue_ratio","type":"DOUBLE"},
+                        {"name":"right_issue_price","type":"DOUBLE"},
+                        {"name":"consolidation_ratio","type":"DOUBLE"},
+                        {"name":"split_ratio","type":"DOUBLE"},
+                        {"name":"exchange_ratio","type":"DOUBLE"},
+                        {"name":"cancellation_ratio","type":"DOUBLE"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"fann_date","type":"STRING"},
+                        {"name":"nann_date","type":"STRING"},
+                        {"name":"rstart_date","type":"STRING"},
+                        {"name":"rend_date","type":"STRING"},
+                        {"name":"re_type","type":"DOUBLE"},
+                        {"name":"bonus_warrant_date","type":"STRING"},
+                        {"name":"in_specie_date","type":"STRING"},
+                        {"name":"right_issue_d_date","type":"STRING"},
+                        {"name":"bonus_share_l_date","type":"STRING"},
+                        {"name":"right_issue_l_date","type":"STRING"},
+                        {"name":"transfer_ratio","type":"DOUBLE"},
+                        {"name":"present_ratio","type":"DOUBLE"},
+                        {"name":"memo","type":"STRING"},
+                        {"name":"s_info_windcode1","type":"STRING"},
+                        {"name":"dividend_currency","type":"STRING"},
+                        {"name":"cash_div_ratio1","type":"DOUBLE"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"},
+                        {"name":"share_recorddate","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

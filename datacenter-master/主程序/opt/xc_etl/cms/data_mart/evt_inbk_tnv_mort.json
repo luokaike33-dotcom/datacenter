@@ -1,0 +1,89 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+					    "hive_cmd":"beeline",
+                        "hiveSql":["
+                        with tmp_date as (select t.sk_date,
+                         ${beg_date}   as beg_date,
+                         t.next_wkdate as end_date
+                  from dw.dim_date t
+                  where sk_date = ${end_date})
+                        SELECT occu_dt, agmt_tnv_no, tnv_onum, prd_code, ast_unit_code, pfl_code, secu_id, pldg_secu_id, pldg_src_secu_id, prov_side, pldg_rati, pldg_vol, pldg_par_gamt, pldg_typ, inv_typ, busi_date, task_rs_id, dm_created_time, p_dt, sys_rs_id
+                          FROM ${srcdbname}.evt_inbk_tnv_mort t
+                          inner join tmp_date t1 on 1=1 
+                          where t.p_dt between t1.beg_date and t1.end_date
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"occu_dt",
+									"agmt_tnv_no",
+									"tnv_onum",
+									"prd_code",
+									"ast_unit_code",
+									"pfl_code",
+									"secu_id",
+									"pldg_secu_id",
+									"pldg_src_secu_id",
+									"prov_side",
+									"pldg_rati",
+									"pldg_vol",
+									"pldg_par_gamt",
+									"pldg_typ",
+									"inv_typ",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["evt_inbk_tnv_mort"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from evt_inbk_tnv_mort where p_dt in  (select b.sk_date
+       from dim_date b,
+            (select ${beg_date}   as beg_date,
+                    a.next_wkdate as end_date
+             from dim_date a
+             where a.sk_date = ${end_date}) c
+       where b.sk_date between c.beg_date and c.end_date) "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "3"
+            },
+            "errorLimit": {"record":0}
+        }
+    }
+}
+
+

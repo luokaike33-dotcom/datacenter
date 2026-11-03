@@ -1,0 +1,88 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+						SELECT 
+                                object_id,
+                                s_info_windcode,
+                                trade_dt,
+                                b_info_outstandingbalance,
+                                b_info_day,
+                                b_info_termnote1,
+                                b_info_weightedrt,
+                                b_info_weightedrt2,
+                                b_anal_precupn,
+                                b_anal_nxcupn,
+                                b_anal_dailycf,
+                                b_dailycf_int,
+                                b_dailycf_prin,
+                                b_calc_accrint,
+                                opdate,
+                                opmode,
+                                'WIND' as srcsys,
+                                cast(current_timestamp as string) as updatetime,
+                                cast(current_timestamp as string) as inserttime,
+                                cast(replace(substr(cast(current_timestamp as string),1,8),'-','') as decimal(8,0))  as batchno
+							FROM ${srcdbname}.w_cbondriskreturnindicator WHERE p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"trade_dt",
+									"b_info_outstandingbalance",
+									"b_info_day",
+									"b_info_termnote1",
+									"b_info_weightedrt",
+									"b_info_weightedrt2",
+									"b_anal_precupn",
+									"b_anal_nxcupn",
+									"b_anal_dailycf",
+									"b_dailycf_int",
+									"b_dailycf_prin",
+									"b_calc_accrint",
+									"opdate",
+									"opmode",
+									"srcsys",
+									"updatetime",
+									"inserttime",
+                                    "batchno"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_cbondriskreturnindicator"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table wd_cbondriskreturnindicator"]
+                    }
+                }
+            }
+        ] 
+    }
+}

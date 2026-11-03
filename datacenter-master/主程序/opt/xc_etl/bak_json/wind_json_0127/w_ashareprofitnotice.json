@@ -1,0 +1,99 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_profitnotice_date,
+                                      s_profitnotice_period,
+                                      s_profitnotice_style,
+                                      s_profitnotice_signchange,
+                                      s_profitnotice_changemin,
+                                      s_profitnotice_changemax,
+                                      s_profitnotice_netprofitmin,
+                                      s_profitnotice_netprofitmax,
+                                      s_profitnotice_number,
+                                      s_profitnotice_firstanndate,
+                                      s_profitnotice_abstract,
+                                      s_profitnotice_reason,
+                                      s_profitnotice_net_parent_firm,
+                                      s_info_compcode,
+                                      s_profitnotice_changemin_ded,
+                                      s_profitnotice_changemax_ded,
+                                      s_profitnotice_ni_min_ded,
+                                      s_profitnotice_ni_max_ded,
+                                      s_profitnotice_netprofit_ded,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareprofitnotice.json' as task_rs_id
+                                from ${srcoradbname}.ashareprofitnotice WHERE s_profitnotice_period BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareprofitnotice/busi_month=${busi_month}",
+                        "fileName": "w_ashareprofitnotice",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_profitnotice_date","type":"string"},
+                                      {"name":"s_profitnotice_period","type":"string"},
+                                      {"name":"s_profitnotice_style","type":"bigint"},
+                                      {"name":"s_profitnotice_signchange","type":"string"},
+                                      {"name":"s_profitnotice_changemin","type":"double"},
+                                      {"name":"s_profitnotice_changemax","type":"double"},
+                                      {"name":"s_profitnotice_netprofitmin","type":"double"},
+                                      {"name":"s_profitnotice_netprofitmax","type":"double"},
+                                      {"name":"s_profitnotice_number","type":"double"},
+                                      {"name":"s_profitnotice_firstanndate","type":"string"},
+                                      {"name":"s_profitnotice_abstract","type":"string"},
+                                      {"name":"s_profitnotice_reason","type":"string"},
+                                      {"name":"s_profitnotice_net_parent_firm","type":"double"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"s_profitnotice_changemin_ded","type":"double"},
+                                      {"name":"s_profitnotice_changemax_ded","type":"double"},
+                                      {"name":"s_profitnotice_ni_min_ded","type":"double"},
+                                      {"name":"s_profitnotice_ni_max_ded","type":"double"},
+                                      {"name":"s_profitnotice_netprofit_ded","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

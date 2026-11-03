@@ -1,0 +1,107 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      f_info_windcode,
+                                      trade_dt,
+                                      f_type_code,
+                                      f_type_name,
+                                      f_fixed_investment_cycle,
+                                      f_fixed_amount,
+                                      f_purchase_rate,
+                                      f_dividend_method,
+                                      f_avgreturn_thisyear,
+                                      f_sfrank_recentyeart,
+                                      f_annualyeild_thisyear,
+                                      f_recentyeart_thisyear,
+                                      f_avgreturn_twoyear,
+                                      f_sfrank_recentyeart_twosyear,
+                                      f_annualyeild_twosyear,
+                                      f_annualyeild_twoyear,
+                                      f_avgreturn_threeyear,
+                                      f_sfrank_threesyear,
+                                      f_annualyeild_threesyear,
+                                      f_annualyeild_threeyear,
+                                      f_avgreturn_fiveyear,
+                                      f_sfrank_recentyeart_fivesyear,
+                                      f_annualyeild_fivesyear,
+                                      f_annualyeild_fiveyear,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cmffixedinvestmentrate.json' as task_rs_id
+                                from ${srcoradbname}.cmffixedinvestmentrate WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cmffixedinvestmentrate/busi_month=${busi_month}",
+                        "fileName": "w_cmffixedinvestmentrate",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"f_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"f_type_code","type":"string"},
+                                      {"name":"f_type_name","type":"string"},
+                                      {"name":"f_fixed_investment_cycle","type":"string"},
+                                      {"name":"f_fixed_amount","type":"bigint"},
+                                      {"name":"f_purchase_rate","type":"double"},
+                                      {"name":"f_dividend_method","type":"string"},
+                                      {"name":"f_avgreturn_thisyear","type":"double"},
+                                      {"name":"f_sfrank_recentyeart","type":"string"},
+                                      {"name":"f_annualyeild_thisyear","type":"double"},
+                                      {"name":"f_recentyeart_thisyear","type":"string"},
+                                      {"name":"f_avgreturn_twoyear","type":"double"},
+                                      {"name":"f_sfrank_recentyeart_twosyear","type":"string"},
+                                      {"name":"f_annualyeild_twosyear","type":"double"},
+                                      {"name":"f_annualyeild_twoyear","type":"string"},
+                                      {"name":"f_avgreturn_threeyear","type":"double"},
+                                      {"name":"f_sfrank_threesyear","type":"string"},
+                                      {"name":"f_annualyeild_threesyear","type":"double"},
+                                      {"name":"f_annualyeild_threeyear","type":"string"},
+                                      {"name":"f_avgreturn_fiveyear","type":"double"},
+                                      {"name":"f_sfrank_recentyeart_fivesyear","type":"string"},
+                                      {"name":"f_annualyeild_fivesyear","type":"double"},
+                                      {"name":"f_annualyeild_fiveyear","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

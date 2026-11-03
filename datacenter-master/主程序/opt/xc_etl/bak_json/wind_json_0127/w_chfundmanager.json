@@ -1,0 +1,83 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      f_info_compcode,
+                                      f_info_fullname,
+                                      f_info_fundmanager,
+                                      f_info_fundmanager_id,
+                                      f_info_manager_gender,
+                                      f_info_manager_birthyear,
+                                      f_info_manager_education,
+                                      f_info_manager_nationality,
+                                      f_info_manager_startdate,
+                                      f_info_manager_leavedate,
+                                      f_info_manager_resume,
+                                      f_info_position,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_chfundmanager.json' as task_rs_id
+                                from ${srcoradbname}.chfundmanager"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_chfundmanager",
+                        "fileName": "w_chfundmanager",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"f_info_compcode","type":"string"},
+                                      {"name":"f_info_fullname","type":"string"},
+                                      {"name":"f_info_fundmanager","type":"string"},
+                                      {"name":"f_info_fundmanager_id","type":"string"},
+                                      {"name":"f_info_manager_gender","type":"string"},
+                                      {"name":"f_info_manager_birthyear","type":"string"},
+                                      {"name":"f_info_manager_education","type":"string"},
+                                      {"name":"f_info_manager_nationality","type":"string"},
+                                      {"name":"f_info_manager_startdate","type":"string"},
+                                      {"name":"f_info_manager_leavedate","type":"string"},
+                                      {"name":"f_info_manager_resume","type":"string"},
+                                      {"name":"f_info_position","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

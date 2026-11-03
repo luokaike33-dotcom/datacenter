@@ -1,0 +1,19 @@
+# ******************************************************************
+#    修改者                版本号            修改日期        修改内容
+#    lucas                1.2.10C        2023-5-31       新增
+# ******************************************************************
+table: fin_prd_capi_chgd_inpt 产品资金流明细信息补录表
+cols:
+PRD_CODE	VARCHAR2(32)	产品代码
+CHG_DT	BIGINT	变动日期
+CAPI_CHG_TYP	VARCHAR2(10)	资金变动类型
+SHR_ADD	NUMBER(32,16)	份额增加
+CAPI_ADD	NUMBER(32,16)	资金增加
+CAPI_ADD_FEE	NUMBER(32,16)	资金增加_费用支出
+SHR_REDUCE	NUMBER(32,16)	份额减少
+CAPI_REDUCE	NUMBER(32,16)	资金减少
+CAPI_REDUCE_FEE	NUMBER(32,16)	资金减少_费用支出
+DM_CREATED_TIME	TIMESTAMP	数据中台创建时间
+partition:
+cluster:
+index:

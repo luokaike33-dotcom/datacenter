@@ -1,0 +1,141 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_dt,
+                                      prel_inq_ann_dt,
+                                      prel_inq_result_ann_dt,
+                                      s_ipo_roadshowstartdate,
+                                      s_ipo_roadshowenddate,
+                                      preliminary_inquiry_lower,
+                                      preliminary_inquiry_upper,
+                                      s_ipo_placingdate,
+                                      s_ipo_applystartdate,
+                                      s_ipo_applyenddate,
+                                      s_ipo_apply_quoted,
+                                      amountdownlimit,
+                                      min_applyunit,
+                                      amountuplimit,
+                                      s_ipo_priceannouncedate,
+                                      offline_allotment_participants,
+                                      offline_volum_subscription,
+                                      volum_uprice_subscription,
+                                      prn_offline_subscription,
+                                      under_subscription,
+                                      s_ipo_placingresultdate,
+                                      s_ipo_fundenddate,
+                                      is_addup_showprice,
+                                      s_ipo_inquirer,
+                                      number_allotment_subjects,
+                                      is_valid_allotment_subjects,
+                                      prel_inq_effect_qt_num,
+                                      effective_quote_ovrsubratio,
+                                      is_self_allotted_principle,
+                                      s_ipo_pricedate,
+                                      total_subscribed_shares,
+                                      exclude_highest_bid_limit,
+                                      exclude_highest_bid_offer,
+                                      s_placing_result_ann_day,
+                                      mv_calculation_date,
+                                      s_ipo_mv_threshold,
+                                      applicationdeadline,
+                                      applicationdeadline_time,
+                                      s_ipo_mv_threshold_a,
+                                      s_ipo_asset_scale_ddl,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cdrinquirydetailsinfo.json' as task_rs_id
+                                from ${srcoradbname}.cdrinquirydetailsinfo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cdrinquirydetailsinfo",
+                        "fileName": "w_cdrinquirydetailsinfo",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"prel_inq_ann_dt","type":"string"},
+                                      {"name":"prel_inq_result_ann_dt","type":"string"},
+                                      {"name":"s_ipo_roadshowstartdate","type":"string"},
+                                      {"name":"s_ipo_roadshowenddate","type":"string"},
+                                      {"name":"preliminary_inquiry_lower","type":"double"},
+                                      {"name":"preliminary_inquiry_upper","type":"double"},
+                                      {"name":"s_ipo_placingdate","type":"string"},
+                                      {"name":"s_ipo_applystartdate","type":"string"},
+                                      {"name":"s_ipo_applyenddate","type":"string"},
+                                      {"name":"s_ipo_apply_quoted","type":"bigint"},
+                                      {"name":"amountdownlimit","type":"double"},
+                                      {"name":"min_applyunit","type":"double"},
+                                      {"name":"amountuplimit","type":"double"},
+                                      {"name":"s_ipo_priceannouncedate","type":"string"},
+                                      {"name":"offline_allotment_participants","type":"bigint"},
+                                      {"name":"offline_volum_subscription","type":"double"},
+                                      {"name":"volum_uprice_subscription","type":"double"},
+                                      {"name":"prn_offline_subscription","type":"double"},
+                                      {"name":"under_subscription","type":"double"},
+                                      {"name":"s_ipo_placingresultdate","type":"string"},
+                                      {"name":"s_ipo_fundenddate","type":"string"},
+                                      {"name":"is_addup_showprice","type":"bigint"},
+                                      {"name":"s_ipo_inquirer","type":"bigint"},
+                                      {"name":"number_allotment_subjects","type":"bigint"},
+                                      {"name":"is_valid_allotment_subjects","type":"bigint"},
+                                      {"name":"prel_inq_effect_qt_num","type":"double"},
+                                      {"name":"effective_quote_ovrsubratio","type":"double"},
+                                      {"name":"is_self_allotted_principle","type":"string"},
+                                      {"name":"s_ipo_pricedate","type":"string"},
+                                      {"name":"total_subscribed_shares","type":"double"},
+                                      {"name":"exclude_highest_bid_limit","type":"double"},
+                                      {"name":"exclude_highest_bid_offer","type":"double"},
+                                      {"name":"s_placing_result_ann_day","type":"string"},
+                                      {"name":"mv_calculation_date","type":"string"},
+                                      {"name":"s_ipo_mv_threshold","type":"double"},
+                                      {"name":"applicationdeadline","type":"string"},
+                                      {"name":"applicationdeadline_time","type":"string"},
+                                      {"name":"s_ipo_mv_threshold_a","type":"double"},
+                                      {"name":"s_ipo_asset_scale_ddl","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

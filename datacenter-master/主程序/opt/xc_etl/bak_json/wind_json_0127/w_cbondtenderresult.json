@@ -1,0 +1,121 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      b_tender_object,
+                                      b_tendrst_documtnumber,
+                                      b_tendrst_payamount,
+                                      b_tendrst_amountad,
+                                      b_tendrst_underwriting,
+                                      b_tendrst_amountact,
+                                      b_tendrst_amnt,
+                                      b_tendrst_oughttender,
+                                      b_tendrst_investortendered,
+                                      b_tendrst_tenders,
+                                      b_tendrst_effecttender,
+                                      b_tendrst_ineffecttender,
+                                      b_tendrst_effectamnt,
+                                      b_tendrst_hightest,
+                                      b_tendrst_lowest,
+                                      b_tendrst_winningamnt,
+                                      b_tendrst_winnerbidder,
+                                      b_tendrst_winningbidder,
+                                      b_tendrst_privatetrade,
+                                      b_tendrst_hightprice,
+                                      b_tendrst_lowprice,
+                                      b_tendrst_margamnt,
+                                      b_tendrst_margwinbidder,
+                                      b_tendrst_finalprice,
+                                      b_tendrst_referyield,
+                                      b_tendrst_financoupon,
+                                      b_tendrst_bidrate,
+                                      b_tendrst_bidprice,
+                                      b_tendrst_bidspread,
+                                      s_ipo_ovrsubratio,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondtenderresult.json' as task_rs_id
+                                from ${srcoradbname}.cbondtenderresult"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondtenderresult",
+                        "fileName": "w_cbondtenderresult",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"b_tender_object","type":"bigint"},
+                                      {"name":"b_tendrst_documtnumber","type":"string"},
+                                      {"name":"b_tendrst_payamount","type":"double"},
+                                      {"name":"b_tendrst_amountad","type":"double"},
+                                      {"name":"b_tendrst_underwriting","type":"double"},
+                                      {"name":"b_tendrst_amountact","type":"double"},
+                                      {"name":"b_tendrst_amnt","type":"double"},
+                                      {"name":"b_tendrst_oughttender","type":"double"},
+                                      {"name":"b_tendrst_investortendered","type":"double"},
+                                      {"name":"b_tendrst_tenders","type":"double"},
+                                      {"name":"b_tendrst_effecttender","type":"double"},
+                                      {"name":"b_tendrst_ineffecttender","type":"double"},
+                                      {"name":"b_tendrst_effectamnt","type":"double"},
+                                      {"name":"b_tendrst_hightest","type":"double"},
+                                      {"name":"b_tendrst_lowest","type":"double"},
+                                      {"name":"b_tendrst_winningamnt","type":"double"},
+                                      {"name":"b_tendrst_winnerbidder","type":"double"},
+                                      {"name":"b_tendrst_winningbidder","type":"double"},
+                                      {"name":"b_tendrst_privatetrade","type":"double"},
+                                      {"name":"b_tendrst_hightprice","type":"double"},
+                                      {"name":"b_tendrst_lowprice","type":"double"},
+                                      {"name":"b_tendrst_margamnt","type":"double"},
+                                      {"name":"b_tendrst_margwinbidder","type":"double"},
+                                      {"name":"b_tendrst_finalprice","type":"double"},
+                                      {"name":"b_tendrst_referyield","type":"double"},
+                                      {"name":"b_tendrst_financoupon","type":"double"},
+                                      {"name":"b_tendrst_bidrate","type":"double"},
+                                      {"name":"b_tendrst_bidprice","type":"double"},
+                                      {"name":"b_tendrst_bidspread","type":"double"},
+                                      {"name":"s_ipo_ovrsubratio","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

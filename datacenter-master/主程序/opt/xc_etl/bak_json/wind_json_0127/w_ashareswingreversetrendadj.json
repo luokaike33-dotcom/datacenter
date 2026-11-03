@@ -1,0 +1,133 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      rc_50d,
+                                      mi_a12d,
+                                      mi_mi12d,
+                                      micd_dif,
+                                      micd_micd,
+                                      rccd_dif,
+                                      rccd_rccd,
+                                      srmi_9d,
+                                      atr_tr14d,
+                                      atr_atr14d,
+                                      mass,
+                                      vhf,
+                                      cvlt,
+                                      adtm_adtm,
+                                      adtm_adtmma,
+                                      bias,
+                                      kdj_k,
+                                      kdj_d,
+                                      kdj_j,
+                                      rsi,
+                                      cci,
+                                      dbcd_dbcd,
+                                      dbcd_mm,
+                                      dpo,
+                                      dpo_madpo,
+                                      lwr1,
+                                      lwr2,
+                                      roc,
+                                      roc_rocma,
+                                      si,
+                                      slowkd_k,
+                                      slowkd_d,
+                                      wr,
+                                      bias36,
+                                      bias612,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareswingreversetrendadj.json' as task_rs_id
+                                from ${srcoradbname}.ashareswingreversetrendadj WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareswingreversetrendadj/busi_month=${busi_month}",
+                        "fileName": "w_ashareswingreversetrendadj",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"rc_50d","type":"bigint"},
+                                      {"name":"mi_a12d","type":"bigint"},
+                                      {"name":"mi_mi12d","type":"bigint"},
+                                      {"name":"micd_dif","type":"bigint"},
+                                      {"name":"micd_micd","type":"bigint"},
+                                      {"name":"rccd_dif","type":"bigint"},
+                                      {"name":"rccd_rccd","type":"bigint"},
+                                      {"name":"srmi_9d","type":"bigint"},
+                                      {"name":"atr_tr14d","type":"bigint"},
+                                      {"name":"atr_atr14d","type":"bigint"},
+                                      {"name":"mass","type":"bigint"},
+                                      {"name":"vhf","type":"bigint"},
+                                      {"name":"cvlt","type":"bigint"},
+                                      {"name":"adtm_adtm","type":"bigint"},
+                                      {"name":"adtm_adtmma","type":"bigint"},
+                                      {"name":"bias","type":"bigint"},
+                                      {"name":"kdj_k","type":"bigint"},
+                                      {"name":"kdj_d","type":"bigint"},
+                                      {"name":"kdj_j","type":"bigint"},
+                                      {"name":"rsi","type":"bigint"},
+                                      {"name":"cci","type":"bigint"},
+                                      {"name":"dbcd_dbcd","type":"bigint"},
+                                      {"name":"dbcd_mm","type":"bigint"},
+                                      {"name":"dpo","type":"bigint"},
+                                      {"name":"dpo_madpo","type":"bigint"},
+                                      {"name":"lwr1","type":"bigint"},
+                                      {"name":"lwr2","type":"bigint"},
+                                      {"name":"roc","type":"bigint"},
+                                      {"name":"roc_rocma","type":"bigint"},
+                                      {"name":"si","type":"bigint"},
+                                      {"name":"slowkd_k","type":"bigint"},
+                                      {"name":"slowkd_d","type":"bigint"},
+                                      {"name":"wr","type":"bigint"},
+                                      {"name":"bias36","type":"bigint"},
+                                      {"name":"bias612","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

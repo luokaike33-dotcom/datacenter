@@ -1,0 +1,56 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,trade_dt,ctd_windcode,ctd_irr,ib_ctd_windcode,ib_ctd_irr,sh_ctd_windcode,sh_ctd_irr,sz_ctd_windcode,sz_ctd_irr,opdate,opmode from ${srcoradbname}.cbondfctd"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondfctd",
+                        "fileName": "w_cbondfctd",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"trade_dt","type":"STRING"},
+                        {"name":"ctd_windcode","type":"STRING"},
+                        {"name":"ctd_irr","type":"DOUBLE"},
+                        {"name":"ib_ctd_windcode","type":"STRING"},
+                        {"name":"ib_ctd_irr","type":"DOUBLE"},
+                        {"name":"sh_ctd_windcode","type":"STRING"},
+                        {"name":"sh_ctd_irr","type":"DOUBLE"},
+                        {"name":"sz_ctd_windcode","type":"STRING"},
+                        {"name":"sz_ctd_irr","type":"DOUBLE"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

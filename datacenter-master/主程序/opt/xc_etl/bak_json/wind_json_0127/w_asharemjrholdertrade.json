@@ -1,0 +1,93 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_dt,
+                                      transact_startdate,
+                                      transact_enddate,
+                                      holder_name,
+                                      holder_type,
+                                      transact_type,
+                                      transact_quantity,
+                                      transact_quantity_ratio,
+                                      holder_quantity_new,
+                                      holder_quantity_new_ratio,
+                                      avg_price,
+                                      whether_agreed_repur_trans,
+                                      blocktrade_quantity,
+                                      is_restricted,
+                                      is_reannounced,
+                                      trade_detail,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharemjrholdertrade.json' as task_rs_id
+                                from ${srcoradbname}.asharemjrholdertrade"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharemjrholdertrade",
+                        "fileName": "w_asharemjrholdertrade",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"transact_startdate","type":"string"},
+                                      {"name":"transact_enddate","type":"string"},
+                                      {"name":"holder_name","type":"string"},
+                                      {"name":"holder_type","type":"string"},
+                                      {"name":"transact_type","type":"string"},
+                                      {"name":"transact_quantity","type":"double"},
+                                      {"name":"transact_quantity_ratio","type":"double"},
+                                      {"name":"holder_quantity_new","type":"double"},
+                                      {"name":"holder_quantity_new_ratio","type":"double"},
+                                      {"name":"avg_price","type":"double"},
+                                      {"name":"whether_agreed_repur_trans","type":"bigint"},
+                                      {"name":"blocktrade_quantity","type":"double"},
+                                      {"name":"is_restricted","type":"bigint"},
+                                      {"name":"is_reannounced","type":"bigint"},
+                                      {"name":"trade_detail","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

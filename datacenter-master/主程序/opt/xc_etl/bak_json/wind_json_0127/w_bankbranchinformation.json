@@ -1,0 +1,67 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,branch_id,branch_name,branch_code,belong_company_id,belong_company_name,organization_typecode,province,city,region,address,postcode,telephone,fax,branch_level_code,branch_survival_status,date_issue,date_establishment,date_exit,business_time,branch_type_code,service_function,parent_organization_id,is_disclosed from ${srcoradbname}.bankbranchinformation"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_bankbranchinformation",
+                        "fileName": "w_bankbranchinformation",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"branch_id","type":"string"},
+                            {"name":"branch_name","type":"string"},
+                            {"name":"branch_code","type":"string"},
+                            {"name":"belong_company_id","type":"string"},
+                            {"name":"belong_company_name","type":"string"},
+                            {"name":"organization_typecode","type":"double"},
+                            {"name":"province","type":"string"},
+                            {"name":"city","type":"string"},
+                            {"name":"region","type":"string"},
+                            {"name":"address","type":"string"},
+                            {"name":"postcode","type":"string"},
+                            {"name":"telephone","type":"string"},
+                            {"name":"fax","type":"string"},
+                            {"name":"branch_level_code","type":"double"},
+                            {"name":"branch_survival_status","type":"double"},
+                            {"name":"date_issue","type":"string"},
+                            {"name":"date_establishment","type":"string"},
+                            {"name":"date_exit","type":"string"},
+                            {"name":"business_time","type":"string"},
+                            {"name":"branch_type_code","type":"double"},
+                            {"name":"service_function","type":"string"},
+                            {"name":"parent_organization_id","type":"string"},
+                            {"name":"is_disclosed","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select vc_tradeday_type,l_date,c_trade_flag,l_week,l_virtual_key,vc_timestamp,null as bath_dt,sysdate as data_ins_time,null as task_rs_id from ${srcoradbname}.tmarkettradeday"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_tmarkettradeday", 
+                        "fileName": "o3_tmarkettradeday",
+                        "column": [
+     {"name":"vc_tradeday_type","type":"string"},
+     {"name":"l_date","type":"int"},
+     {"name":"c_trade_flag","type":"string"},
+     {"name":"l_week","type":"int"},
+     {"name":"l_virtual_key","type":"bigint"},
+     {"name":"vc_timestamp","type":"string"},
+     {"name":"bath_dt","type":"string"},
+     {"name":"data_ins_time","type":"timestamp"},
+     {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

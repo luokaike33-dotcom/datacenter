@@ -1,0 +1,147 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+						SELECT prd_code,
+								crse_code,
+								acc_year,
+								acc_mth,
+								hldp_dt,
+								lcrrc_bal,
+								olcy_bal,
+								vol_bal,
+								lcrrc_deb_val,
+								lcrrc_cs_val,
+								olcy_deb_val,
+								olcy_cs_val,
+								deb_vol,
+								cs_vol,
+								locy_tm_debval,
+								locy_tm_csval,
+								locy_ty_debval,
+								locy_ty_csval,
+								locy_ytd_debval,
+								locy_ytd_csval,
+								locy_mtd_debval,
+								locy_mtd_csval,
+								olcy_tm_debval,
+								olcy_tm_csval,
+								olcy_ty_debval,
+								olcy_ty_csval,
+								olcy_ytd_debval,
+								olcy_ytd_csval,
+								olcy_mtd_debval,
+								olcy_mtd_csval,
+								sett_crrc,
+								inv_typ_i9,
+								secu_id,
+								secu_name,
+								typ_code,
+								typ_codei,
+								typ_codeii,
+								crse_name,
+								crse_typ,
+								inv_typ,
+								cir_id,
+								ast_stat,
+								pos_id,
+								busi_date,
+								task_rs_id,
+								dm_src_info,
+								dm_created_time,
+								p_dt,
+								sys_rs_id
+							FROM ${srcdbname}.fin_prd_balance WHERE p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"crse_code",
+									"acc_year",
+									"acc_mth",
+									"hldp_dt",
+									"lcrrc_bal",
+									"olcy_bal",
+									"vol_bal",
+									"lcrrc_deb_val",
+									"lcrrc_cs_val",
+									"olcy_deb_val",
+									"olcy_cs_val",
+									"deb_vol",
+									"cs_vol",
+									"locy_tm_debval",
+									"locy_tm_csval",
+									"locy_ty_debval",
+									"locy_ty_csval",
+									"locy_ytd_debval",
+									"locy_ytd_csval",
+									"locy_mtd_debval",
+									"locy_mtd_csval",
+									"olcy_tm_debval",
+									"olcy_tm_csval",
+									"olcy_ty_debval",
+									"olcy_ty_csval",
+									"olcy_ytd_debval",
+									"olcy_ytd_csval",
+									"olcy_mtd_debval",
+									"olcy_mtd_csval",
+									"sett_crrc",
+									"inv_typ_i9",
+									"secu_id",
+									"secu_name",
+									"typ_code",
+									"typ_codei",
+									"typ_codeii",
+									"crse_name",
+									"crse_typ",
+									"inv_typ",
+									"cir_id",
+									"ast_stat",
+									"pos_id",
+									"busi_date",
+									"task_rs_id",
+									"dm_src_info",
+									"dm_created_time",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fin_prd_balance"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fin_prd_balance where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ]
+    }
+}
+
+

@@ -1,0 +1,97 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      report_period,
+                                      crncy_code,
+                                      s_segment_itemcode,
+                                      s_segment_item,
+                                      s_segment_sales,
+                                      s_segment_profit,
+                                      s_segment_cost,
+                                      is_published_value,
+                                      pct_segment_sales,
+                                      pct_segment_profit,
+                                      pct_segment_cost,
+                                      inc_segment_sales,
+                                      inc_segment_profit,
+                                      inc_segment_cost,
+                                      gross_profit_margin,
+                                      inc_profit_margin,
+                                      s_info_compcode,
+                                      subject_code,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharesalessegment.json' as task_rs_id
+                                from ${srcoradbname}.asharesalessegment WHERE report_period BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharesalessegment/busi_month=${busi_month}",
+                        "fileName": "w_asharesalessegment",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"s_segment_itemcode","type":"bigint"},
+                                      {"name":"s_segment_item","type":"string"},
+                                      {"name":"s_segment_sales","type":"double"},
+                                      {"name":"s_segment_profit","type":"double"},
+                                      {"name":"s_segment_cost","type":"double"},
+                                      {"name":"is_published_value","type":"bigint"},
+                                      {"name":"pct_segment_sales","type":"double"},
+                                      {"name":"pct_segment_profit","type":"double"},
+                                      {"name":"pct_segment_cost","type":"double"},
+                                      {"name":"inc_segment_sales","type":"double"},
+                                      {"name":"inc_segment_profit","type":"double"},
+                                      {"name":"inc_segment_cost","type":"double"},
+                                      {"name":"gross_profit_margin","type":"double"},
+                                      {"name":"inc_profit_margin","type":"double"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"subject_code","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

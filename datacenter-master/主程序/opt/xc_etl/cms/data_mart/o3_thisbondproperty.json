@@ -1,0 +1,163 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+						"hiveSql":["SELECT l_date, vc_inter_code, l_publish_date, l_end_date, l_begincal_date, l_market_date, en_exist_limite, en_publish_price, en_face_price, en_year_rate, l_rate_days, en_pay_inteval, c_market_no, en_bond_interest, en_real_interest, en_next_bond_interest, c_subject_type, l_modify_date, l_next_modify_date, c_inside_appraise, c_outer_appraise, en_basic_rate, c_basic_rate_type, en_least_rate, c_investor_operation_type, l_investor_operation_date, c_publisher_operation_type, l_publisher_operation_date, c_trustee, vc_appraise_organ, c_interest_type, c_pay_interest_type, l_left_term, en_maturity, en_maturity_adjust, en_change_price, c_net_price, l_change_begin_date, l_change_end_date, en_investor_operation_price, en_publisher_operation_price, l_trade_deadline, en_fair_yield_ratio, en_valuate_duration, en_valuate_convexity, en_valuate_point_value, en_valuate_spread_duration, en_valuate_rate_duration, en_yesterday_change_price, en_point_value, en_convexity, l_startcal_date, c_interest_calc_type, c_paymentofinterest_type, l_guarantor_id, en_bp_ceiling, en_bp_floor, l_year, l_times, c_moody_appraise, c_sp_appraise, c_fitch_appraise, c_other_appraise_one, c_other_appraise_two, c_yield_ratio_type, en_today_interest, c_interest_type_ex, c_pay_capital_type, l_outer_appraise_date, en_curr_face_price, c_ratedays_calc_type, l_nextpayment_date, l_zqhs_begindate, l_zqhs_enddate, l_supervention_market_date, l_virtual_key, vc_timestamp, l_bond_count, l_next_ratechange_date, en_zz_fair_yield_ratio, c_drawbenchmrk, c_level_expectation, en_accrued_interest, l_issuebalance, c_hedge_appraise, c_other_appraise_three, c_other_appraise_four, c_pass_sppi_test, vc_sppi_fail_reason, en_sppi_downlimit_price, c_isspecial, c_isenddefault, c_isftabond, vc_dcq, vc_party_no, vc_bondtype_name, vc_bondtype_id, en_hqz_xqgz_price, en_hqz_xqgz_yield_ratio, en_hqz_xqgz_duration, en_hqz_xqgz_convexity, en_hzq_xqgz_vp_value, vc_specialplan_code, en_delta, en_zzd_nonrecommend_ratio, vc_timestamp2, vc_final_debtors, p_dt
+						FROM ty_ods.o3_thisbondproperty where p_dt between ${beg_date} and ${end_date}
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_date",
+									"vc_inter_code",
+									"l_publish_date",
+									"l_end_date",
+									"l_begincal_date",
+									"l_market_date",
+									"en_exist_limite",
+									"en_publish_price",
+									"en_face_price",
+									"en_year_rate",
+									"l_rate_days",
+									"en_pay_inteval",
+									"c_market_no",
+									"en_bond_interest",
+									"en_real_interest",
+									"en_next_bond_interest",
+									"c_subject_type",
+									"l_modify_date",
+									"l_next_modify_date",
+									"c_inside_appraise",
+									"c_outer_appraise",
+									"en_basic_rate",
+									"c_basic_rate_type",
+									"en_least_rate",
+									"c_investor_operation_type",
+									"l_investor_operation_date",
+									"c_publisher_operation_type",
+									"l_publisher_operation_date",
+									"c_trustee",
+									"vc_appraise_organ",
+									"c_interest_type",
+									"c_pay_interest_type",
+									"l_left_term",
+									"en_maturity",
+									"en_maturity_adjust",
+									"en_change_price",
+									"c_net_price",
+									"l_change_begin_date",
+									"l_change_end_date",
+									"en_investor_operation_price",
+									"en_publisher_operation_price",
+									"l_trade_deadline",
+									"en_fair_yield_ratio",
+									"en_valuate_duration",
+									"en_valuate_convexity",
+									"en_valuate_point_value",
+									"en_valuate_spread_duration",
+									"en_valuate_rate_duration",
+									"en_yesterday_change_price",
+									"en_point_value",
+									"en_convexity",
+									"l_startcal_date",
+									"c_interest_calc_type",
+									"c_paymentofinterest_type",
+									"l_guarantor_id",
+									"en_bp_ceiling",
+									"en_bp_floor",
+									"l_year",
+									"l_times",
+									"c_moody_appraise",
+									"c_sp_appraise",
+									"c_fitch_appraise",
+									"c_other_appraise_one",
+									"c_other_appraise_two",
+									"c_yield_ratio_type",
+									"en_today_interest",
+									"c_interest_type_ex",
+									"c_pay_capital_type",
+									"l_outer_appraise_date",
+									"en_curr_face_price",
+									"c_ratedays_calc_type",
+									"l_nextpayment_date",
+									"l_zqhs_begindate",
+									"l_zqhs_enddate",
+									"l_supervention_market_date",
+									"l_virtual_key",
+									"vc_timestamp",
+									"l_bond_count",
+									"l_next_ratechange_date",
+									"en_zz_fair_yield_ratio",
+									"c_drawbenchmrk",
+									"c_level_expectation",
+									"en_accrued_interest",
+									"l_issuebalance",
+									"c_hedge_appraise",
+									"c_other_appraise_three",
+									"c_other_appraise_four",
+									"c_pass_sppi_test",
+									"vc_sppi_fail_reason",
+									"en_sppi_downlimit_price",
+									"c_isspecial",
+									"c_isenddefault",
+									"c_isftabond",
+									"vc_dcq",
+									"vc_party_no",
+									"vc_bondtype_name",
+									"vc_bondtype_id",
+									"en_hqz_xqgz_price",
+									"en_hqz_xqgz_yield_ratio",
+									"en_hqz_xqgz_duration",
+									"en_hqz_xqgz_convexity",
+									"en_hzq_xqgz_vp_value",
+									"vc_specialplan_code",
+									"en_delta",
+									"en_zzd_nonrecommend_ratio",
+									"vc_timestamp2",
+									"vc_final_debtors",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_thisbondproperty"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from o3_thisbondproperty where ((p_dt between ${beg_date} and ${end_date})or (p_dt< to_number(to_char(to_date(to_char(${end_date}),'yyyyMMdd') -180 ,'yyyyMMdd')))) "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "3"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

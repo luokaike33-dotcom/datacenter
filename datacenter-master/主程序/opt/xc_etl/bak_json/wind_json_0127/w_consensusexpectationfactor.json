@@ -1,0 +1,151 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_info_compcode,
+                                      trade_dt,
+                                      s_west_netprofit_ftm_chg_1m,
+                                      s_west_netprofit_ftm_chg_3m,
+                                      s_west_netprofit_ftm_chg_6m,
+                                      s_west_eps_ftm_chg_1m,
+                                      s_west_eps_ftm_chg_3m,
+                                      s_west_eps_ftm_chg_6m,
+                                      s_west_sales_ftm_chg_1m,
+                                      s_west_sales_ftm_chg_3m,
+                                      s_west_sales_ftm_chg_6m,
+                                      s_west_netprofit_fy1_chg_1m,
+                                      s_west_netprofit_fy1_chg_3m,
+                                      s_west_netprofit_fy1_chg_6m,
+                                      s_west_eps_fy1_chg_1m,
+                                      s_west_eps_fy1_chg_3m,
+                                      s_west_eps_fy1_chg_6m,
+                                      s_west_sales_fy1_chg_1m,
+                                      s_west_sales_fy1_chg_3m,
+                                      s_west_sales_fy1_chg_6m,
+                                      s_west_netprofit_ftm_1m,
+                                      s_west_netprofit_ftm_3m,
+                                      s_west_netprofit_ftm_6m,
+                                      s_west_eps_ftm_1m,
+                                      s_west_eps_ftm_3m,
+                                      s_west_eps_ftm_6m,
+                                      s_west_sales_ftm_1m,
+                                      s_west_sales_ftm_3m,
+                                      s_west_sales_ftm_6m,
+                                      s_west_netprofit_fy1_1m,
+                                      s_west_netprofit_fy1_3m,
+                                      s_west_netprofit_fy1_6m,
+                                      s_west_eps_fy1_1m,
+                                      s_west_eps_fy1_3m,
+                                      s_west_eps_fy1_6m,
+                                      s_west_sales_fy1_1m,
+                                      s_west_sales_fy1_3m,
+                                      s_west_sales_fy1_6m,
+                                      s_west_eps_fygrowth,
+                                      s_west_netprofitmaxmin_fy1,
+                                      s_west_epsmaxmin_fy1,
+                                      s_west_salesmaxmin_fy1,
+                                      s_west_stdnetprofit_fy1,
+                                      s_west_stdeps_fy1,
+                                      s_west_stdsales_fy1,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_consensusexpectationfactor.json' as task_rs_id
+                                from ${srcoradbname}.consensusexpectationfactor WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_consensusexpectationfactor/busi_month=${busi_month}",
+                        "fileName": "w_consensusexpectationfactor",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"s_west_netprofit_ftm_chg_1m","type":"double"},
+                                      {"name":"s_west_netprofit_ftm_chg_3m","type":"double"},
+                                      {"name":"s_west_netprofit_ftm_chg_6m","type":"double"},
+                                      {"name":"s_west_eps_ftm_chg_1m","type":"double"},
+                                      {"name":"s_west_eps_ftm_chg_3m","type":"double"},
+                                      {"name":"s_west_eps_ftm_chg_6m","type":"double"},
+                                      {"name":"s_west_sales_ftm_chg_1m","type":"double"},
+                                      {"name":"s_west_sales_ftm_chg_3m","type":"double"},
+                                      {"name":"s_west_sales_ftm_chg_6m","type":"double"},
+                                      {"name":"s_west_netprofit_fy1_chg_1m","type":"double"},
+                                      {"name":"s_west_netprofit_fy1_chg_3m","type":"double"},
+                                      {"name":"s_west_netprofit_fy1_chg_6m","type":"double"},
+                                      {"name":"s_west_eps_fy1_chg_1m","type":"double"},
+                                      {"name":"s_west_eps_fy1_chg_3m","type":"double"},
+                                      {"name":"s_west_eps_fy1_chg_6m","type":"double"},
+                                      {"name":"s_west_sales_fy1_chg_1m","type":"double"},
+                                      {"name":"s_west_sales_fy1_chg_3m","type":"double"},
+                                      {"name":"s_west_sales_fy1_chg_6m","type":"double"},
+                                      {"name":"s_west_netprofit_ftm_1m","type":"double"},
+                                      {"name":"s_west_netprofit_ftm_3m","type":"double"},
+                                      {"name":"s_west_netprofit_ftm_6m","type":"double"},
+                                      {"name":"s_west_eps_ftm_1m","type":"double"},
+                                      {"name":"s_west_eps_ftm_3m","type":"double"},
+                                      {"name":"s_west_eps_ftm_6m","type":"double"},
+                                      {"name":"s_west_sales_ftm_1m","type":"double"},
+                                      {"name":"s_west_sales_ftm_3m","type":"double"},
+                                      {"name":"s_west_sales_ftm_6m","type":"double"},
+                                      {"name":"s_west_netprofit_fy1_1m","type":"double"},
+                                      {"name":"s_west_netprofit_fy1_3m","type":"double"},
+                                      {"name":"s_west_netprofit_fy1_6m","type":"double"},
+                                      {"name":"s_west_eps_fy1_1m","type":"double"},
+                                      {"name":"s_west_eps_fy1_3m","type":"double"},
+                                      {"name":"s_west_eps_fy1_6m","type":"double"},
+                                      {"name":"s_west_sales_fy1_1m","type":"double"},
+                                      {"name":"s_west_sales_fy1_3m","type":"double"},
+                                      {"name":"s_west_sales_fy1_6m","type":"double"},
+                                      {"name":"s_west_eps_fygrowth","type":"double"},
+                                      {"name":"s_west_netprofitmaxmin_fy1","type":"double"},
+                                      {"name":"s_west_epsmaxmin_fy1","type":"double"},
+                                      {"name":"s_west_salesmaxmin_fy1","type":"double"},
+                                      {"name":"s_west_stdnetprofit_fy1","type":"double"},
+                                      {"name":"s_west_stdeps_fy1","type":"double"},
+                                      {"name":"s_west_stdsales_fy1","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

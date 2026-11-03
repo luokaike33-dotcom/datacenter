@@ -1,0 +1,111 @@
+#!/bin/bash
+# by mini
+
+# wind库配置信息
+windusername=xy
+windpassword=xy#123456
+winddbname=wind
+windurl=10.160.102.25:5088/infodb
+# 估值库配置信息
+yss45username=xy
+yss45password=7ujm%8ik,
+yss45dbname=fa45
+yss45url=10.64.97.22:5005/fapdb
+# 交易库配置信息
+o32username=xy
+o32password=7ujm%8ik,
+o32dbname=trade
+o32url=10.64.97.23:5001/fmpdb
+# 交易库配置信息2
+exiusername=xy
+exipassword=7ujm%8ik,
+exidbname=exims
+exiurl=10.64.97.23:5001/fmpdb
+# 大数据配置信息
+hiveusername=etl_ty
+hivepassword=etl_ty#1234
+hiveurl=10.160.96.22:8020
+hivejdbc=10.160.96.22:10000
+# data_mart配置信息
+xcusername=data_mart
+xcpassword=data_mart#1234
+xcdbname=data_mart
+xcurl=10.160.97.21:5088/tydb
+# yss25-stg配置信息
+stgusername=xy
+stgpassword=xy#123456
+stgddbname=stg
+stgurl=10.64.3.34:5088/irdb
+# zyyx配置信息
+zyyxusername=xy
+zyyxpassword=xy#123456
+zyyxdbname=gogoal
+zyyxurl=10.96.1.61:5088/infodb
+# sr_data_mart配置信息
+xcsrusername=root
+xcsrpassword=xunce@2021
+xcsrurl='10.64.96.131:9030,,data_mart,,"10.64.96.132:8030","10.64.96.133:8030"'
+# yss25配置信息
+zhfxusername=xy
+zhfxpassword=xy#123456
+zhfxdbname=ZHFUNDBAK
+zhfxurl=10.160.97.46:5088/archdb2
+# fidata配置信息
+fiusername=fidata
+fipassword=fidata#1234
+fiurl=10.160.97.21:5088/tydb
+# jgdata配置信息-监管
+jgusername=jgdata
+jgpassword=jgdata#1234
+jgurl=10.160.97.21:5088/tydb
+# fc库配置信息 10.160.102.25 10.96.1.61
+fcusername=xy
+fcpassword=xy#123456
+fcdbname=finchina
+fcurl=10.160.102.25:5088/infodb
+# xnnp库配置信息
+xnnpusername=xy
+xnnppassword=xy#123456
+xnnpdbname=xyqqsirm
+xnnpurl=10.64.3.33:5088/asdb
+# pd库配置信息
+pdusername=xy
+pdpassword=xy#123456
+pddbname=srvplat
+pdurl=10.96.1.25:5088/bpdb
+# esg库配置信息
+esgusername=xy
+esgpassword=xy#123456
+esgdbname=esg
+esgurl=10.160.102.25:5088/infodb
+# zd_esg库配置信息
+zdesgusername=xy
+zdesgpassword=xy#123456
+zdesgdbname=zd_esg
+zdesgurl=10.160.102.25:5088/infodb
+# oa库配置信息
+oausername=xy
+oapassword=xy#123456
+oadbname=oa
+oaurl=10.96.1.35:5088/oadb
+# rx库配置信息
+rxusername=xy
+rxpassword=7ujm%8ik,
+rxdbname=trde
+rxurl=10.64.97.23:5001/fmpdb
+# yhresearch库配置信息
+yhreseausername=xy
+yhreseapassword=xy#123456
+yhreseadbname=yhresearch
+yhreseaurl=10.160.102.25:5088/infodb
+# trucost库配置信息
+trucostusername=xy
+trucostpassword=xy#123456
+trucostdbname=trucost
+trucosturl=10.160.102.25:5088/infodb
+
+
+
+
+
+

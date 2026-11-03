@@ -1,0 +1,97 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      est_dt,
+                                      rolling_type,
+                                      net_profit,
+                                      est_eps,
+                                      est_pe,
+                                      est_peg,
+                                      est_,
+                                      est_roe,
+                                      est_oper_revenue,
+                                      est_cfps,
+                                      est_dps,
+                                      est_bps,
+                                      est_ebit,
+                                      est_ebitda,
+                                      est_total_profit,
+                                      est_oper_profit,
+                                      est_oper_cost,
+                                      benchmark_yr,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_aindexconsensusrollingdata.json' as task_rs_id
+                                from ${srcoradbname}.aindexconsensusrollingdata WHERE est_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_aindexconsensusrollingdata/busi_month=${busi_month}",
+                        "fileName": "w_aindexconsensusrollingdata",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"est_dt","type":"string"},
+                                      {"name":"rolling_type","type":"string"},
+                                      {"name":"net_profit","type":"double"},
+                                      {"name":"est_eps","type":"double"},
+                                      {"name":"est_pe","type":"double"},
+                                      {"name":"est_peg","type":"double"},
+                                      {"name":"est_","type":"double"},
+                                      {"name":"est_roe","type":"double"},
+                                      {"name":"est_oper_revenue","type":"double"},
+                                      {"name":"est_cfps","type":"double"},
+                                      {"name":"est_dps","type":"double"},
+                                      {"name":"est_bps","type":"double"},
+                                      {"name":"est_ebit","type":"double"},
+                                      {"name":"est_ebitda","type":"double"},
+                                      {"name":"est_total_profit","type":"double"},
+                                      {"name":"est_oper_profit","type":"double"},
+                                      {"name":"est_oper_cost","type":"double"},
+                                      {"name":"benchmark_yr","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

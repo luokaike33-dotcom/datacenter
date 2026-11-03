@@ -1,0 +1,21 @@
+# ******************************************************************
+#    修改者      版本号            修改日期        修改内容
+#    John       1.2.9C           2022-12-21     初始化xcsql及改为系统来源分区表
+# ******************************************************************
+table:w_cbondcurvememberscnbd
+cols:
+    object_id varchar2(100)
+   	trade_dt varchar2(40)
+   	b_anal_curvenumber bigint
+   	b_anal_curvename varchar2(200)
+   	s_info_windcode varchar2(40)
+   	cnbd_creditrating varchar2(300)
+   	opdate date
+   	opmode varchar2(1)
+	[cdh] busi_month       bigint(10)       月份
+
+partition:
+  [cdh] busi_month
+cluster:
+
+index:

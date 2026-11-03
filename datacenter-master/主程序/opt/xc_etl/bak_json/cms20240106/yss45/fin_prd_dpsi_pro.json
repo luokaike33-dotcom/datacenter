@@ -1,0 +1,108 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fin_prd_dpsi_pro",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"long"},
+                                    {"index":7,"type":"long"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"double"},
+                                    {"index":10,"type":"double"},
+                                    {"index":11,"type":"double"},
+                                    {"index":12,"type":"double"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"double"},
+                                    {"index":17,"type":"string"},
+                                    {"index":18,"type":"string"},
+                                    {"index":19,"type":"string"},
+                                    {"index":20,"type":"string"},
+                                    {"index":21,"type":"long"},
+                                    {"index":22,"type":"string"},
+                                    {"index":23,"type":"string"},
+                                    {"index":24,"type":"long"},
+                                    {"index":25,"type":"string"},
+                                    {"index":26,"type":"date"},
+                                    {"index":27,"type":"long"},
+                                    {"index":28,"type":"string"},
+                                    {"index":29,"type":"string"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "prd_code",
+                                    "secu_id",
+                                    "typ_code",
+                                    "typ_codei",
+                                    "typ_codeii",
+                                    "var_secu_id",
+                                    "fir_tnv_dt",
+                                    "end_tnv_dt",
+                                    "curr_code",
+                                    "dpsi_val",
+                                    "dpsi_rat",
+                                    "ref_rat",
+                                    "adj_rat",
+                                    "inta_days",
+                                    "pay_freq",
+                                    "int_meth",
+                                    "inta_rule",
+                                    "intp_mode",
+                                    "dpsi_bnk_code",
+                                    "dpsi_bnk_name",
+                                    "widrl_flag",
+                                    "avl_ely_widrl_dt",
+                                    "turn_cal",
+                                    "dpsi_no",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "var_matu",
+                                    "dm_src_info"
+                                    "dpsi_code",
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["fin_prd_dpsi_pro"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from fin_prd_dpsi_pro where 1 =1 "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

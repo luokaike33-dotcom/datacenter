@@ -1,0 +1,95 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_est_institute,
+                                      s_est_ratinganalyst,
+                                      s_est_estnewtime_inst,
+                                      s_est_scorerating_inst,
+                                      s_est_prescorerating_inst,
+                                      s_est_lowprice_inst,
+                                      s_est_highprice_inst,
+                                      s_est_prelowprice_inst,
+                                      s_est_prehighprice_inst,
+                                      ann_dt,
+                                      s_est_rating_inst,
+                                      s_est_prerating_inst,
+                                      s_est_report_title,
+                                      s_est_report_type,
+                                      s_est_ratinganalystid,
+                                      s_rating_change,
+                                      s_rating_validenddt,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharestockrating.json' as task_rs_id
+                                from ${srcoradbname}.asharestockrating WHERE s_est_estnewtime_inst BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharestockrating/busi_month=${busi_month}",
+                        "fileName": "w_asharestockrating",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_est_institute","type":"string"},
+                                      {"name":"s_est_ratinganalyst","type":"string"},
+                                      {"name":"s_est_estnewtime_inst","type":"string"},
+                                      {"name":"s_est_scorerating_inst","type":"double"},
+                                      {"name":"s_est_prescorerating_inst","type":"double"},
+                                      {"name":"s_est_lowprice_inst","type":"double"},
+                                      {"name":"s_est_highprice_inst","type":"double"},
+                                      {"name":"s_est_prelowprice_inst","type":"double"},
+                                      {"name":"s_est_prehighprice_inst","type":"double"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"s_est_rating_inst","type":"string"},
+                                      {"name":"s_est_prerating_inst","type":"string"},
+                                      {"name":"s_est_report_title","type":"string"},
+                                      {"name":"s_est_report_type","type":"bigint"},
+                                      {"name":"s_est_ratinganalystid","type":"string"},
+                                      {"name":"s_rating_change","type":"bigint"},
+                                      {"name":"s_rating_validenddt","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

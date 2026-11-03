@@ -1,0 +1,63 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fund_intr_chg",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"double"},
+                                    {"index":3,"type":"DOUBLE"},
+                                    {"index":4,"type":"string"},
+									{"name":"dm_created_time","type":"string","value":"${kerberosPrincipal}"}
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "bgn_dt",
+                                    "adj_rat",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:mysql://${tgrurl}",
+                              "selectedDatabase": "${selectedDatabase}",
+                              "table": ["var_fund_intr_chg"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "loadUrl": [${loadUrl}],
+                        "loadProps": {"column_separator": "\\x01","row_separator":"\\x02"},
+                        "preSql":["truncate table data_mart.var_fund_intr_chg "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

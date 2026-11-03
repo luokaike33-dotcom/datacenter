@@ -1,0 +1,77 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      trade_date,
+                                      foreign_exchange_code,
+                                      term,
+                                      implied_rates,
+                                      monetary_interest_rate,
+                                      type_code,
+                                      distant_drop_point,
+                                      rate_type_code,
+                                      spot_exchange_rate,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_impliedratescurve.json' as task_rs_id
+                                from ${srcoradbname}.impliedratescurve"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_impliedratescurve",
+                        "fileName": "w_impliedratescurve",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"trade_date","type":"string"},
+                                      {"name":"foreign_exchange_code","type":"string"},
+                                      {"name":"term","type":"string"},
+                                      {"name":"implied_rates","type":"double"},
+                                      {"name":"monetary_interest_rate","type":"double"},
+                                      {"name":"type_code","type":"bigint"},
+                                      {"name":"distant_drop_point","type":"double"},
+                                      {"name":"rate_type_code","type":"bigint"},
+                                      {"name":"spot_exchange_rate","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

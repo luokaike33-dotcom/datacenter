@@ -1,0 +1,98 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fund_co_hldr_stru",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"double"},
+									{"index":2,"type":"double"},
+									{"index":3,"type":"double"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"long"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"date"},
+									{"index":22,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"oper_typ",
+									"pd_sell_stk_incm_gamt",
+									"pd_buy_stk_cost_gamt",
+									"link_fnd_hold_shr_rato",
+									"link_fnd_hold_shr",
+									"mag_prsn_emp_hold_shr_rato",
+									"mag_prsn_emp_hold_shr",
+									"indv_ivst_hold_shr_rato",
+									"indv_ivst_hold_shr",
+									"ins_ivst_hold_shr_rato",
+									"ins_ivst_hold_shr",
+									"avg_ehac_hold_fnd_shr",
+									"fnd_shr_hldr_hous_acct",
+									"scop",
+									"end_date",
+									"affi_date",
+									"secu_code",
+									"secu_id",
+									"obj_id",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["var_fund_co_hldr_stru"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from var_fund_co_hldr_stru"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

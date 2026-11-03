@@ -1,0 +1,134 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/rpt_rm_holding_rq/p_dt=${p_dt}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"long"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"long"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"date"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sk_date",
+									"sk_portfolio",
+									"portfolio_name",
+									"mkt_issue_code",
+									"issue_short_name",
+									"sk_market",
+									"dk_iss_type",
+									"status",
+									"quantity",
+									"assetval",
+									"port_nav_assets",
+									"val_pct",
+									"is_ltsx",
+									"weight",
+									"cost",
+									"mktval",
+									"l_issuer_id",
+									"vc_full_name",
+									"added_value",
+									"l_turnover_amount",
+									"l_total_amount",
+									"s_info_listboard",
+									"total_assets",
+									"en_issuer_asset",
+									"is_bank_flag",
+									"bank_type",
+									"industry_sw_lv1",
+									"vc_mixed_type",
+									"vc_custom_class",
+									"s_type_st",
+									"c_issuer_other_appraise_one",
+									"vc_province",
+									"c_issuer_other_appraise_two",
+									"c_dimension",
+									"c_stock_type",
+									"s_info_listdate",
+									"vc_dimension",
+									"open_type_bk",
+									"t_open_type_bk",
+									"fc_orgtype",
+									"etl_date"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["rpt_rm_holding_rq"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from rpt_rm_holding_rq where sk_date ='${p_dt}'"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

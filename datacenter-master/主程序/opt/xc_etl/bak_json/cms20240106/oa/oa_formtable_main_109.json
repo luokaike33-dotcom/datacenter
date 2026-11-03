@@ -1,0 +1,166 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/oa_formtable_main_109",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"long"},
+									{"index":18,"type":"long"},
+									{"index":19,"type":"long"},
+									{"index":20,"type":"long"},
+									{"index":21,"type":"long"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"long"},
+									{"index":24,"type":"long"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"long"},
+									{"index":27,"type":"long"},
+									{"index":28,"type":"long"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"long"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"long"},
+									{"index":36,"type":"long"},
+									{"index":37,"type":"long"},
+									{"index":38,"type":"long"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"long"},
+									{"index":41,"type":"long"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"string"},
+									{"index":44,"type":"string"},
+									{"index":45,"type":"string"},
+									{"index":46,"type":"string"},
+									{"index":47,"type":"string"},
+									{"index":48,"type":"string"},
+									{"index":49,"type":"string"},
+									{"index":50,"type":"string"},
+									{"index":51,"type":"string"},
+									{"index":52,"type":"string"},
+									{"index":53,"type":"string"},
+									{"index":54,"type":"string"},
+									{"index":55,"type":"date"},
+									{"index":56,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"id",
+									"requestid",
+									"flowno",
+									"vc_fatherfundname",
+									"c_fatherfundseriano",
+									"remark",
+									"attachment",
+									"reqman",
+									"reqdept",
+									"reqdate",
+									"pdy",
+									"jjjl",
+									"qsfh",
+									"cpzt",
+									"isnestproduct",
+									"nestdescribe",
+									"procontact",
+									"kj_remrk",
+									"c_iscloseo32",
+									"c_perpartment",
+									"c_jrgcer",
+									"isinta",
+									"d_failupdate",
+									"is_first_liquid",
+									"has_otc",
+									"reserve_pay_amt",
+									"spec_dept",
+									"has_undisclosed",
+									"is_liquid",
+									"wf_event",
+									"flag",
+									"auto_task_id",
+									"liquid_type",
+									"wf_event_failupdate",
+									"wf_event3",
+									"is_main",
+									"is_hk_equity",
+									"is_hk_equity_transit",
+									"is_final_liquid",
+									"vc_fatherfundcode",
+									"is_hk_equity_occur",
+									"is_final_liquid_prev",
+									"exist_final_liquid",
+									"pk_field_names",
+									"merge_type",
+									"lst_liquidation_date",
+									"lst_liqu_data_prvd_date",
+									"lst_liqu_clr_mony_tdw_date",
+									"fst_liquidation_date",
+									"pk_field_names2",
+									"wf_event4",
+									"merge_type2",
+									"source_field_names",
+									"target_field_names",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["oa_formtable_main_109"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from oa_formtable_main_109"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

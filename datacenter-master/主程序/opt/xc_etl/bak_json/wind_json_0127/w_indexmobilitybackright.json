@@ -1,0 +1,107 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      ema_5d,
+                                      ema2_5d,
+                                      ema3_5d,
+                                      ema_10d,
+                                      ema2_10d,
+                                      ema3_10d,
+                                      ema_20d,
+                                      ema_60d,
+                                      ema_120d,
+                                      ema_12d,
+                                      ema_26d,
+                                      ema_13d,
+                                      s_pvi,
+                                      s_nvi,
+                                      s_tr,
+                                      s_atr6,
+                                      s_atr14,
+                                      s_dbcd,
+                                      s_ema3d,
+                                      s_ema10d,
+                                      s_ahl,
+                                      s_bhl,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_indexmobilitybackright.json' as task_rs_id
+                                from ${srcoradbname}.indexmobilitybackright WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_indexmobilitybackright/busi_month=${busi_month}",
+                        "fileName": "w_indexmobilitybackright",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"ema_5d","type":"double"},
+                                      {"name":"ema2_5d","type":"double"},
+                                      {"name":"ema3_5d","type":"double"},
+                                      {"name":"ema_10d","type":"double"},
+                                      {"name":"ema2_10d","type":"double"},
+                                      {"name":"ema3_10d","type":"double"},
+                                      {"name":"ema_20d","type":"double"},
+                                      {"name":"ema_60d","type":"double"},
+                                      {"name":"ema_120d","type":"double"},
+                                      {"name":"ema_12d","type":"double"},
+                                      {"name":"ema_26d","type":"double"},
+                                      {"name":"ema_13d","type":"double"},
+                                      {"name":"s_pvi","type":"double"},
+                                      {"name":"s_nvi","type":"double"},
+                                      {"name":"s_tr","type":"double"},
+                                      {"name":"s_atr6","type":"double"},
+                                      {"name":"s_atr14","type":"double"},
+                                      {"name":"s_dbcd","type":"double"},
+                                      {"name":"s_ema3d","type":"double"},
+                                      {"name":"s_ema10d","type":"double"},
+                                      {"name":"s_ahl","type":"double"},
+                                      {"name":"s_bhl","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

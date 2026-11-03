@@ -1,0 +1,19 @@
+# ******************************************************************
+#    修改者      版本号            修改日期        修改内容
+#    Bert        1.2.8A           2022-05-07       初始化xcsql及改为系统来源分区表
+# ******************************************************************
+table:pty_ins_oneid_rela_info  机构oneid表
+cols:
+    ins_id              varchar2(100)    机构内码
+    com_code            varchar2(100)     公司编号
+    src_com_id           varchar2(50)    来源机构编号
+    reg_num_biz         varchar2(100)   统一社会信用代码
+    busi_date            bigint         业务日期
+    task_rs_id           varchar2(100)  任务来源标识
+    dm_created_time      timestamp      数据中台创建时间
+    sys_rs_id            varchar2(20)   系统来源标识
+partition:
+    [cdh,tdh]sys_rs_id
+cluster:
+
+index：

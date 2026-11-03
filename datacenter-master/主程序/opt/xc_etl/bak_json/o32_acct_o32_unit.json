@@ -1,0 +1,56 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select bus_date,bk_portfolio,bk_assets_unit,bk_comb_unit,dk_iss_type,issue_code_of_mkt,sk_market,curr_qnty,frozen_qnty,mkt_value,dk_position_state from ${srcoradbname}.v_irdb2xc_acct_o32_unit_hld"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o32_acct_o32_unit",
+                        "fileName": "o32_acct_o32_unit",
+                        "column": [
+			    {"name":"sk_date","type":"string"},
+                            {"name":"bus_date","type":"string"},
+                            {"name":"bk_portfolio","type":"string"},
+                            {"name":"bk_assets_unit","type":"string"},
+                            {"name":"bk_comb_unit","type":"string"},
+                            {"name":"dk_iss_type","type":"string"},
+                            {"name":"issue_code_of_mkt","type":"string"},
+                            {"name":"sk_market","type":"string"},
+                            {"name":"curr_qnty","type":"string"},
+                            {"name":"frozen_qnty","type":"string"},
+                            {"name":"mkt_value","type":"string"},
+                            {"name":"dk_position_state","type":"string"},
+			    {"name":"query_date","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

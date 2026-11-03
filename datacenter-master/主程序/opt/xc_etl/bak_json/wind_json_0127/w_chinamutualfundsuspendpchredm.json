@@ -1,0 +1,54 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,f_info_suspchstartdt,f_info_suspchanndt,f_info_repchdt,f_info_repchanndt,f_info_purchaseuplimit,f_info_suspchreason,f_info_suspchtype,opdate,opmode from ${srcoradbname}.chinamutualfundsuspendpchredm"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundsuspendpchredm",
+                        "fileName": "w_chinamutualfundsuspendpchredm",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"f_info_suspchstartdt","type":"string"},
+                            {"name":"f_info_suspchanndt","type":"string"},
+                            {"name":"f_info_repchdt","type":"string"},
+                            {"name":"f_info_repchanndt","type":"string"},
+                            {"name":"f_info_purchaseuplimit","type":"double"},
+                            {"name":"f_info_suspchreason","type":"string"},
+                            {"name":"f_info_suspchtype","type":"int"},
+                            {"name":"opdate","type":"date"},
+                            {"name":"opmode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

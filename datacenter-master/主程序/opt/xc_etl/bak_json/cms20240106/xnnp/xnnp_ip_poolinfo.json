@@ -1,0 +1,158 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/xnnp_ip_poolinfo",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"long"},
+									{"index":17,"type":"long"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"long"},
+									{"index":20,"type":"long"},
+									{"index":21,"type":"long"},
+									{"index":22,"type":"long"},
+									{"index":23,"type":"long"},
+									{"index":24,"type":"long"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"long"},
+									{"index":28,"type":"long"},
+									{"index":29,"type":"long"},
+									{"index":30,"type":"long"},
+									{"index":31,"type":"long"},
+									{"index":32,"type":"long"},
+									{"index":33,"type":"long"},
+									{"index":34,"type":"long"},
+									{"index":35,"type":"long"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"date"},
+									{"index":38,"type":"date"},
+									{"index":39,"type":"long"},
+									{"index":40,"type":"string"},
+									{"index":41,"type":"long"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"string"},
+									{"index":44,"type":"string"},
+									{"index":45,"type":"long"},
+									{"index":46,"type":"string"},
+									{"index":47,"type":"long"},
+									{"index":48,"type":"string"},
+									{"index":49,"type":"long"},
+									{"index":50,"type":"string"},
+									{"index":51,"type":"date"},
+									{"index":52,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"objid",
+									"name",
+									"type",
+									"description",
+									"parentid",
+									"seqkey",
+									"wfmodein",
+									"wfmodeout",
+									"createuser",
+									"maxcount",
+									"rschdocmode",
+									"rschdocoutmode",
+									"limitedassign",
+									"doctypeid",
+									"exportpath",
+									"relatedtrade",
+									"stockrate",
+									"stockamount",
+									"printurl",
+									"limitedassignout",
+									"tempassignmode",
+									"stockrateglobal",
+									"calculateprofit",
+									"poolgroupid",
+									"frozenperiodin",
+									"industrycode",
+									"securityscore",
+									"expiredate",
+									"listexpiredate",
+									"forecastlimit",
+									"lockflag",
+									"industryexponent",
+									"opendayadjust",
+									"batchwfmodein",
+									"batchwfmodeout",
+									"ismanage",
+									"gradeastrict",
+									"createtimestamp",
+									"updatetimestamp",
+									"version",
+									"entityname",
+									"poolorder",
+									"sqlseq",
+									"sqlkey",
+									"reportcolumnids",
+									"pffundforecastlimit",
+									"removetag",
+									"productpooltype",
+									"hspoolname",
+									"hsexcelorder",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["xnnp_ip_poolinfo"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from xnnp_ip_poolinfo"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

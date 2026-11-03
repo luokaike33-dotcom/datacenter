@@ -1,0 +1,77 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      id,
+                                      company_code,
+                                      stock_code,
+                                      stock_name,
+                                      stock_cdr_ratio,
+                                      begin_date,
+                                      end_date,
+                                      is_new,
+                                      is_valid,
+                                      entrytime,
+                                      updatetime,
+                                      tmstamp,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'zyyx_bas_stk_cdr_convert.json' as task_rs_id
+                                from ${srcoradbname}.bas_stk_cdr_convert"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${is_kbs}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/zyyx_bas_stk_cdr_convert",
+                        "fileName": "zyyx_bas_stk_cdr_convert",
+                        "column": [
+                                      {"name":"id","type":"bigint"},
+                                      {"name":"company_code","type":"string"},
+                                      {"name":"stock_code","type":"string"},
+                                      {"name":"stock_name","type":"string"},
+                                      {"name":"stock_cdr_ratio","type":"double"},
+                                      {"name":"begin_date","type":"timestamp"},
+                                      {"name":"end_date","type":"timestamp"},
+                                      {"name":"is_new","type":"bigint"},
+                                      {"name":"is_valid","type":"bigint"},
+                                      {"name":"entrytime","type":"timestamp"},
+                                      {"name":"updatetime","type":"timestamp"},
+                                      {"name":"tmstamp","type":"bigint"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

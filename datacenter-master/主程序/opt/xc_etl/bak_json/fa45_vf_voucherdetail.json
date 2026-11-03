@@ -1,0 +1,91 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,d_biz,c_port_code,c_asset_code,c_subj_code,c_subj_name,c_port_class,c_cury_code,c_vch_num,c_vch_num_sun,c_pa_code,c_tdchan_code,c_dv_km_cls,n_way,c_ivt_clss,c_hld_attr,c_td_attr,c_ml_attr,c_sec_code,c_ca_code,c_pi_code,n_td_amount,n_money,n_money_l,c_vch_desc,c_td_rela,c_dva_item_code,c_dt_code,c_subj_code_t,n_rate,c_data_idf,d_trade,c_create_by,c_create_time,c_check_time,c_check_by,c_update_by,c_update_time,c_sec_var_mx,c_mkt_code,c_ds_code,c_dv_fee_type,c_ca_type,c_cash_flow_code,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vf_voucherdetail.json' as task_rs_id from ${srcoradbname}.vf_voucherdetail  where to_char(d_biz,'yyyyMMdd')='${p_dt}'"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vf_voucherdetail/p_dt=${p_dt}",
+                        "fileName": "fa45_vf_voucherdetail",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"d_biz","type":"date"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"c_asset_code","type":"string"},
+                            {"name":"c_subj_code","type":"string"},
+                            {"name":"c_subj_name","type":"string"},
+                            {"name":"c_port_class","type":"string"},
+                            {"name":"c_cury_code","type":"string"},
+                            {"name":"c_vch_num","type":"int"},
+                            {"name":"c_vch_num_sun","type":"int"},
+                            {"name":"c_pa_code","type":"string"},
+                            {"name":"c_tdchan_code","type":"string"},
+                            {"name":"c_dv_km_cls","type":"string"},
+                            {"name":"n_way","type":"int"},
+                            {"name":"c_ivt_clss","type":"string"},
+                            {"name":"c_hld_attr","type":"string"},
+                            {"name":"c_td_attr","type":"string"},
+                            {"name":"c_ml_attr","type":"string"},
+                            {"name":"c_sec_code","type":"string"},
+                            {"name":"c_ca_code","type":"string"},
+                            {"name":"c_pi_code","type":"string"},
+                            {"name":"n_td_amount","type":"double"},
+                            {"name":"n_money","type":"double"},
+                            {"name":"n_money_l","type":"double"},
+                            {"name":"c_vch_desc","type":"string"},
+                            {"name":"c_td_rela","type":"string"},
+                            {"name":"c_dva_item_code","type":"string"},
+                            {"name":"c_dt_code","type":"string"},
+                            {"name":"c_subj_code_t","type":"string"},
+                            {"name":"n_rate","type":"double"},
+                            {"name":"c_data_idf","type":"string"},
+                            {"name":"d_trade","type":"date"},
+                            {"name":"c_create_by","type":"string"},
+                            {"name":"c_create_time","type":"string"},
+                            {"name":"c_check_time","type":"string"},
+                            {"name":"c_check_by","type":"string"},
+                            {"name":"c_update_by","type":"string"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_sec_var_mx","type":"string"},
+                            {"name":"c_mkt_code","type":"string"},
+                            {"name":"c_ds_code","type":"string"},
+                            {"name":"c_dv_fee_type","type":"string"},
+                            {"name":"c_ca_type","type":"string"},
+                            {"name":"c_cash_flow_code","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

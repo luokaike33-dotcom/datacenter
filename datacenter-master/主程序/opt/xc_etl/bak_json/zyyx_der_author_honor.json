@@ -1,0 +1,81 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      id,
+                                      author_id,
+                                      author,
+                                      organ_id,
+                                      organ_name,
+                                      stock_code,
+                                      stock_name,
+                                      stock_type,
+                                      honor_type,
+                                      begin_date,
+                                      end_date,
+                                      entrytime,
+                                      updatetime,
+                                      tmstamp,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'zyyx_der_author_honor.json' as task_rs_id
+                                from ${srcoradbname}.der_author_honor"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${is_kbs}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/zyyx_der_author_honor",
+                        "fileName": "zyyx_der_author_honor",
+                        "column": [
+                                      {"name":"id","type":"bigint"},
+                                      {"name":"author_id","type":"bigint"},
+                                      {"name":"author","type":"string"},
+                                      {"name":"organ_id","type":"bigint"},
+                                      {"name":"organ_name","type":"string"},
+                                      {"name":"stock_code","type":"string"},
+                                      {"name":"stock_name","type":"string"},
+                                      {"name":"stock_type","type":"bigint"},
+                                      {"name":"honor_type","type":"bigint"},
+                                      {"name":"begin_date","type":"timestamp"},
+                                      {"name":"end_date","type":"timestamp"},
+                                      {"name":"entrytime","type":"timestamp"},
+                                      {"name":"updatetime","type":"timestamp"},
+                                      {"name":"tmstamp","type":"bigint"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

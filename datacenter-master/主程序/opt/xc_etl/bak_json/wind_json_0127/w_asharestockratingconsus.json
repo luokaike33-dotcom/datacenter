@@ -1,0 +1,89 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      rating_dt,
+                                      s_wrating_avg,
+                                      s_wrating_instnum,
+                                      s_wrating_upgrade,
+                                      s_wrating_downgrade,
+                                      s_wrating_maintain,
+                                      s_wrating_numofbuy,
+                                      s_wrating_numofoutperform,
+                                      s_wrating_numofhold,
+                                      s_wrating_numofunderperform,
+                                      s_wrating_numofsell,
+                                      s_wrating_cycle,
+                                      s_est_price,
+                                      s_est_priceinstnum,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharestockratingconsus.json' as task_rs_id
+                                from ${srcoradbname}.asharestockratingconsus WHERE rating_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharestockratingconsus/busi_month=${busi_month}",
+                        "fileName": "w_asharestockratingconsus",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"rating_dt","type":"string"},
+                                      {"name":"s_wrating_avg","type":"double"},
+                                      {"name":"s_wrating_instnum","type":"double"},
+                                      {"name":"s_wrating_upgrade","type":"double"},
+                                      {"name":"s_wrating_downgrade","type":"double"},
+                                      {"name":"s_wrating_maintain","type":"double"},
+                                      {"name":"s_wrating_numofbuy","type":"double"},
+                                      {"name":"s_wrating_numofoutperform","type":"double"},
+                                      {"name":"s_wrating_numofhold","type":"double"},
+                                      {"name":"s_wrating_numofunderperform","type":"double"},
+                                      {"name":"s_wrating_numofsell","type":"double"},
+                                      {"name":"s_wrating_cycle","type":"string"},
+                                      {"name":"s_est_price","type":"double"},
+                                      {"name":"s_est_priceinstnum","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

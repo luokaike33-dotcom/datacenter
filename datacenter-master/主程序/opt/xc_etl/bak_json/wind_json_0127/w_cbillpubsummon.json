@@ -1,0 +1,81 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      ann_dt,
+                                      b_info_billno,
+                                      b_info_billtype,
+                                      b_info_facevalue,
+                                      issue_dt,
+                                      maturity_dt,
+                                      b_info_drawer,
+                                      b_info_acceptbank,
+                                      b_info_summontype,
+                                      b_info_applicant,
+                                      b_info_noticereleaser,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbillpubsummon.json' as task_rs_id
+                                from ${srcoradbname}.cbillpubsummon WHERE ann_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbillpubsummon/busi_month=${busi_month}",
+                        "fileName": "w_cbillpubsummon",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"b_info_billno","type":"string"},
+                                      {"name":"b_info_billtype","type":"bigint"},
+                                      {"name":"b_info_facevalue","type":"double"},
+                                      {"name":"issue_dt","type":"string"},
+                                      {"name":"maturity_dt","type":"string"},
+                                      {"name":"b_info_drawer","type":"string"},
+                                      {"name":"b_info_acceptbank","type":"string"},
+                                      {"name":"b_info_summontype","type":"string"},
+                                      {"name":"b_info_applicant","type":"string"},
+                                      {"name":"b_info_noticereleaser","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

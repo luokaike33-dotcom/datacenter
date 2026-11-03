@@ -1,0 +1,51 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["SELECT l_date,vc_inter_code,c_offeringflag,vc_tenderer_id,vc_tenderer_name,en_offeringprice,l_begin_date,l_end_date from ${srcoradbname}.tpreacceptedoffers "],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_tpreacceptedoffers",
+            "fileName": "o3_thispreacceptedoffers",
+            "column": [
+              {"name":"l_date","type":"bigint"},
+              {"name":"vc_inter_code","type":"string"},
+              {"name":"c_offeringflag","type":"string"},
+              {"name":"vc_tenderer_id","type":"string"},
+              {"name":"vc_tenderer_name","type":"string"},
+              {"name":"en_offeringprice","type":"double"},
+              {"name":"l_begin_date","type":"bigint"},
+              {"name":"l_end_date","type":"bigint"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

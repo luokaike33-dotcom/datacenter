@@ -1,0 +1,89 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_date,
+                                      enddate,
+                                      type,
+                                      investcode,
+                                      name,
+                                      comp_name,
+                                      listscope,
+                                      s_info_investwindcode,
+                                      quantity,
+                                      value,
+                                      posstktonav,
+                                      investfundcode,
+                                      investfundtype,
+                                      fundmanagementcomp,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_qdiisecuritiesportfolio.json' as task_rs_id
+                                from ${srcoradbname}.qdiisecuritiesportfolio WHERE enddate BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_qdiisecuritiesportfolio/busi_month=${busi_month}",
+                        "fileName": "w_qdiisecuritiesportfolio",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"enddate","type":"string"},
+                                      {"name":"type","type":"string"},
+                                      {"name":"investcode","type":"string"},
+                                      {"name":"name","type":"string"},
+                                      {"name":"comp_name","type":"string"},
+                                      {"name":"listscope","type":"string"},
+                                      {"name":"s_info_investwindcode","type":"string"},
+                                      {"name":"quantity","type":"double"},
+                                      {"name":"value","type":"double"},
+                                      {"name":"posstktonav","type":"double"},
+                                      {"name":"investfundcode","type":"string"},
+                                      {"name":"investfundtype","type":"string"},
+                                      {"name":"fundmanagementcomp","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

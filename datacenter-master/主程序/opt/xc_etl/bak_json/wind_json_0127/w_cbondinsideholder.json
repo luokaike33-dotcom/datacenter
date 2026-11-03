@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      s_info_compname,
+                                      ann_dt,
+                                      b_holder_enddate,
+                                      b_holder_holdercategory,
+                                      b_holder_name,
+                                      b_holder_quantity,
+                                      b_holder_pct,
+                                      b_holder_sharecategory,
+                                      b_holder_aname,
+                                      holderid,
+                                      s_holder_sequence,
+                                      b_holder_restrictedquantity,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondinsideholder.json' as task_rs_id
+                                from ${srcoradbname}.cbondinsideholder"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondinsideholder",
+                        "fileName": "w_cbondinsideholder",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"s_info_compname","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"b_holder_enddate","type":"string"},
+                                      {"name":"b_holder_holdercategory","type":"string"},
+                                      {"name":"b_holder_name","type":"string"},
+                                      {"name":"b_holder_quantity","type":"double"},
+                                      {"name":"b_holder_pct","type":"double"},
+                                      {"name":"b_holder_sharecategory","type":"string"},
+                                      {"name":"b_holder_aname","type":"string"},
+                                      {"name":"holderid","type":"string"},
+                                      {"name":"s_holder_sequence","type":"string"},
+                                      {"name":"b_holder_restrictedquantity","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

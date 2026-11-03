@@ -1,0 +1,86 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+                        SELECT object_id,
+                                s_info_code,
+                                deadline,
+                                b_info_creditrating,
+                                rating_value_type,
+                                market_value,
+                                net_assets_ratio,
+                                currency_code,
+                                position_type_code,
+                                ann_date,
+                                announce_rating_code,
+                                comp_id,
+                                rating_type_code,
+                                opdate,
+                                opmode,
+                                bath_dt,
+                                data_ins_time,
+                                task_rs_id
+							FROM ${srcdbname}.w_fundbondportfolio t where deadline 
+                            between date_format(cast(from_unixtime(unix_timestamp(cast(${end_date} as string),'yyyyMMdd')) as date)-interval 6 month ,'yyyyMMdd') and cast(${end_date} as string)"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_code",
+									"deadline",
+									"b_info_creditrating",
+									"rating_value_type",
+									"market_value",
+									"net_assets_ratio",
+									"currency_code",
+									"position_type_code",
+									"ann_date",
+									"announce_rating_code",
+									"comp_id",
+									"rating_type_code",
+									"opdate",
+									"opmode",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_fundbondportfolio"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from wd_fundbondportfolio where deadline between to_char(ADD_MONTHS(to_date(cast(${end_date} as varchar2(10)),'yyyyMMdd'),-6),'yyyyMMdd') and cast(${end_date} as varchar2(10)) "]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

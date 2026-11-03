@@ -1,0 +1,114 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+								prd_code,
+								ast_unit_code,
+								pfl_code,
+								sh_code,
+								seat_code,
+								hld_dt,
+								secu_id,
+								ivsm_type,
+								hld_flag,
+								pos_id,
+								bgng_vol,
+								curr_vol,
+								curr_cost,
+								frz_vol,
+								unfz_vol,
+								lmt_stk_vol,
+								curr_divd,
+								curr_plac,
+								curr_buy_vol,
+								curr_sell_vol,
+								curr_buy_val,
+								curr_sell_val,
+								curr_buy_fee,
+								curr_sell_fee,
+								curr_val,
+								quot_prc,
+								accr_intr,
+								busi_date,
+								task_rs_id,
+								dm_created_time,
+								p_dt,
+								sys_rs_id
+							FROM ${srcdbname}.ast_unit_secu_bal_his where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"ast_unit_code",
+									"pfl_code",
+									"sh_code",
+									"seat_code",
+									"hld_dt",
+									"secu_id",
+									"ivsm_type",
+									"hld_flag",
+									"pos_id",
+									"bgng_vol",
+									"curr_vol",
+									"curr_cost",
+									"frz_vol",
+									"unfz_vol",
+									"lmt_stk_vol",
+									"curr_divd",
+									"curr_plac",
+									"curr_buy_vol",
+									"curr_sell_vol",
+									"curr_buy_val",
+									"curr_sell_val",
+									"curr_buy_fee",
+									"curr_sell_fee",
+									"curr_val",
+									"quot_prc",
+									"accr_intr",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["ast_unit_secu_bal_his"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from ast_unit_secu_bal_his where p_dt between ${beg_date} and ${end_date} "]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

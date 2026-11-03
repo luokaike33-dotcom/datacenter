@@ -1,0 +1,89 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      s_event_id,
+                                      s_event_categorycode,
+                                      ann_date,
+                                      s_financing_amount,
+                                      s_valuation_amount,
+                                      s_pe,
+                                      s_pb,
+                                      s_ps,
+                                      s_financing_rate,
+                                      s_financing_rt,
+                                      s_financing_amount_us,
+                                      s_valuation_amount_us,
+                                      s_event_description,
+                                      s_financing_process,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharecocapitaloperation.json' as task_rs_id
+                                from ${srcoradbname}.asharecocapitaloperation"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharecocapitaloperation",
+                        "fileName": "w_asharecocapitaloperation",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"s_event_id","type":"string"},
+                                      {"name":"s_event_categorycode","type":"bigint"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"s_financing_amount","type":"double"},
+                                      {"name":"s_valuation_amount","type":"double"},
+                                      {"name":"s_pe","type":"double"},
+                                      {"name":"s_pb","type":"double"},
+                                      {"name":"s_ps","type":"double"},
+                                      {"name":"s_financing_rate","type":"double"},
+                                      {"name":"s_financing_rt","type":"double"},
+                                      {"name":"s_financing_amount_us","type":"double"},
+                                      {"name":"s_valuation_amount_us","type":"double"},
+                                      {"name":"s_event_description","type":"string"},
+                                      {"name":"s_financing_process","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

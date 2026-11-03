@@ -1,0 +1,110 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,f_prt_enddate,crncy_code,f_prt_totalasset,f_prt_netasset,f_prt_stockvalue,f_prt_stocktonav,f_prt_pasvstkvalue,f_prt_pasvstktonav,f_prt_posvstkvalue,f_prt_posvstktonav,f_prt_govbond,f_prt_govbondtonav,f_prt_cash,f_prt_cashtonav,f_prt_govcashvalue,f_prt_govcashtonav,f_prt_bdvalue_nogov,f_prt_bdtonav_nogov,f_prt_finanbond,f_prt_finanbondtonav,f_prt_covertbond,f_prt_covertbondtonav,f_prt_corpbond,f_prt_corpbondtonav,f_prt_bondvalue,f_prt_bondtonav,f_prt_ctrbankbill,f_prt_ctrbankbilltonav,f_prt_warrantvalue,f_prt_warrantonav,f_prt_absvalue,f_prt_absvaluetonav,f_prt_polifinanbdvalue,f_prt_polifinanbdtonav,f_prt_fundvalue,f_prt_fundtonav,f_prt_mmvalue,f_prt_mmtonav,f_prt_other,f_prt_othertonav,f_prt_debcrebalance,f_mmf_avgptm,f_mmf_reverserepo,f_mmf_repo,f_prt_stocktotot,f_prt_bondtotot,f_prt_cashtotot,f_prt_othertotot,f_prt_warrantotot,f_prt_fundtotot,f_prt_mmtotot,f_prt_stocktonavchange,f_prt_bondtonavchange,f_prt_cashtonavchange,f_prt_othertototchange,f_prt_cpvalue,f_prt_mtnvalue,f_prt_cds,f_prt_hkstockvalue,f_prt_hkstocktonav,f_ann_date,f_prt_reverserepototot,f_prt_reverserepotonav,opdate,opmode from ${srcoradbname}.chinamutualfundassetportfolio where f_prt_enddate between '${busi_month}'||'01' and to_char(add_months(to_date('${busi_month}'||01,'yyyyMMdd'),1)-1,'yyyyMMdd')"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundassetportfolio/busi_month=${busi_month}",
+                        "fileName": "w_chinamutualfundassetportfolio",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"f_prt_enddate","type":"string"},
+                            {"name":"crncy_code","type":"string"},
+                            {"name":"f_prt_totalasset","type":"double"},
+                            {"name":"f_prt_netasset","type":"double"},
+                            {"name":"f_prt_stockvalue","type":"double"},
+                            {"name":"f_prt_stocktonav","type":"double"},
+                            {"name":"f_prt_pasvstkvalue","type":"double"},
+                            {"name":"f_prt_pasvstktonav","type":"double"},
+                            {"name":"f_prt_posvstkvalue","type":"double"},
+                            {"name":"f_prt_posvstktonav","type":"double"},
+                            {"name":"f_prt_govbond","type":"double"},
+                            {"name":"f_prt_govbondtonav","type":"double"},
+                            {"name":"f_prt_cash","type":"double"},
+                            {"name":"f_prt_cashtonav","type":"double"},
+                            {"name":"f_prt_govcashvalue","type":"double"},
+                            {"name":"f_prt_govcashtonav","type":"double"},
+                            {"name":"f_prt_bdvalue_nogov","type":"double"},
+                            {"name":"f_prt_bdtonav_nogov","type":"double"},
+                            {"name":"f_prt_finanbond","type":"double"},
+                            {"name":"f_prt_finanbondtonav","type":"double"},
+                            {"name":"f_prt_covertbond","type":"double"},
+                            {"name":"f_prt_covertbondtonav","type":"double"},
+                            {"name":"f_prt_corpbond","type":"double"},
+                            {"name":"f_prt_corpbondtonav","type":"double"},
+                            {"name":"f_prt_bondvalue","type":"double"},
+                            {"name":"f_prt_bondtonav","type":"double"},
+                            {"name":"f_prt_ctrbankbill","type":"double"},
+                            {"name":"f_prt_ctrbankbilltonav","type":"double"},
+                            {"name":"f_prt_warrantvalue","type":"double"},
+                            {"name":"f_prt_warrantonav","type":"double"},
+                            {"name":"f_prt_absvalue","type":"double"},
+                            {"name":"f_prt_absvaluetonav","type":"double"},
+                            {"name":"f_prt_polifinanbdvalue","type":"double"},
+                            {"name":"f_prt_polifinanbdtonav","type":"double"},
+                            {"name":"f_prt_fundvalue","type":"double"},
+                            {"name":"f_prt_fundtonav","type":"double"},
+                            {"name":"f_prt_mmvalue","type":"double"},
+                            {"name":"f_prt_mmtonav","type":"double"},
+                            {"name":"f_prt_other","type":"double"},
+                            {"name":"f_prt_othertonav","type":"double"},
+                            {"name":"f_prt_debcrebalance","type":"double"},
+                            {"name":"f_mmf_avgptm","type":"double"},
+                            {"name":"f_mmf_reverserepo","type":"double"},
+                            {"name":"f_mmf_repo","type":"double"},
+                            {"name":"f_prt_stocktotot","type":"double"},
+                            {"name":"f_prt_bondtotot","type":"double"},
+                            {"name":"f_prt_cashtotot","type":"double"},
+                            {"name":"f_prt_othertotot","type":"double"},
+                            {"name":"f_prt_warrantotot","type":"double"},
+                            {"name":"f_prt_fundtotot","type":"double"},
+                            {"name":"f_prt_mmtotot","type":"double"},
+                            {"name":"f_prt_stocktonavchange","type":"double"},
+                            {"name":"f_prt_bondtonavchange","type":"double"},
+                            {"name":"f_prt_cashtonavchange","type":"double"},
+                            {"name":"f_prt_othertototchange","type":"double"},
+                            {"name":"f_prt_cpvalue","type":"double"},
+                            {"name":"f_prt_mtnvalue","type":"double"},
+                            {"name":"f_prt_cds","type":"double"},
+                            {"name":"f_prt_hkstockvalue","type":"double"},
+                            {"name":"f_prt_hkstocktonav","type":"double"},
+                            {"name":"f_ann_date","type":"string"},
+                            {"name":"f_prt_reverserepototot","type":"double"},
+                            {"name":"f_prt_reverserepotonav","type":"double"},
+                            {"name":"opdate","type":"date"},
+                            {"name":"opmode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

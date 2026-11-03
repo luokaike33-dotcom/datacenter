@@ -1,0 +1,42 @@
+create table data_mart.o3_thistradetypes ( 
+  l_date number(10),
+  l_serial_id number(10),
+  c_trade_type varchar2(100),
+  vc_trade_level varchar2(100),
+  l_parent_id number(10),
+  l_fund_id number(10),
+  vc_trade_no varchar2(100),
+  vc_trade_name varchar2(100),
+  c_calculate_type varchar2(100),
+  c_calculate_model varchar2(100),
+  l_calculate_circle number(10),
+  l_last_date number(10),
+  c_trade_status varchar2(100),
+  l_operator_no number(10),
+  c_share_flag varchar2(100),
+  vc_remarks varchar2(100),
+  en_trade_power number(16,8),
+  l_root_id number(10),
+  c_stockpool_type varchar2(100),
+  vc_dynamic_sql varchar2(100),
+  l_max_amount number(10),
+  l_company_id number(10),
+  vc_param1_value varchar2(100),
+  vc_param2_value varchar2(100),
+  vc_param3_value varchar2(100),
+  vc_param1_name varchar2(100),
+  vc_param2_name varchar2(100),
+  vc_param3_name varchar2(100),
+  vc_file_path varchar2(100),
+  c_company_ralation varchar2(100),
+  vc_underlying_index varchar2(100),
+  l_dimlayer_id number(10),
+  vc_company_mutex_ids varchar2(100),
+  vc_relation_trade_ids varchar2(100),
+  vc_timestamp varchar2(100),
+  vc_dynamic_condition varchar2(100)
+);
+
+
+
+

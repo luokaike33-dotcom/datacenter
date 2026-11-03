@@ -1,0 +1,105 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      ann_dt,
+                                      begindate,
+                                      enddate,
+                                      statement_typecode,
+                                      report_typecode,
+                                      crncy_code,
+                                      segment_itemcode,
+                                      resourcecode,
+                                      segment_item,
+                                      segment_sales,
+                                      segment_cost,
+                                      grossprofit,
+                                      segment_sales_ratio,
+                                      segment_cost_ratio,
+                                      grossprofitmargin,
+                                      prime_oper_rev_yoy,
+                                      prime_oper_cost_yoy,
+                                      gross_profit_margin_yoy,
+                                      gross_profit_yoy,
+                                      prime_oper_profit_ratio,
+                                      accounts_id,
+                                      ispublishvalue,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_hsharesalessegment.json' as task_rs_id
+                                from ${srcoradbname}.hsharesalessegment"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_hsharesalessegment",
+                        "fileName": "w_hsharesalessegment",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"begindate","type":"string"},
+                                      {"name":"enddate","type":"string"},
+                                      {"name":"statement_typecode","type":"bigint"},
+                                      {"name":"report_typecode","type":"bigint"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"segment_itemcode","type":"bigint"},
+                                      {"name":"resourcecode","type":"bigint"},
+                                      {"name":"segment_item","type":"string"},
+                                      {"name":"segment_sales","type":"double"},
+                                      {"name":"segment_cost","type":"double"},
+                                      {"name":"grossprofit","type":"double"},
+                                      {"name":"segment_sales_ratio","type":"double"},
+                                      {"name":"segment_cost_ratio","type":"double"},
+                                      {"name":"grossprofitmargin","type":"double"},
+                                      {"name":"prime_oper_rev_yoy","type":"double"},
+                                      {"name":"prime_oper_cost_yoy","type":"double"},
+                                      {"name":"gross_profit_margin_yoy","type":"double"},
+                                      {"name":"gross_profit_yoy","type":"double"},
+                                      {"name":"prime_oper_profit_ratio","type":"double"},
+                                      {"name":"accounts_id","type":"string"},
+                                      {"name":"ispublishvalue","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

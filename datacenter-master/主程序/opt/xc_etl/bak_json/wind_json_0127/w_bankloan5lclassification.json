@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      report_period,
+                                      loan_type,
+                                      total_amount,
+                                      loans_excl_discount,
+                                      discount,
+                                      pastdueitems,
+                                      othercreditasset,
+                                      proportion_of_ta,
+                                      llimit_of_llr_accrualratio,
+                                      ulimit_of_llr_accrualratio,
+                                      proportion_of_sll,
+                                      migration_rate,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_bankloan5lclassification.json' as task_rs_id
+                                from ${srcoradbname}.bankloan5lclassification"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_bankloan5lclassification",
+                        "fileName": "w_bankloan5lclassification",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"loan_type","type":"string"},
+                                      {"name":"total_amount","type":"double"},
+                                      {"name":"loans_excl_discount","type":"double"},
+                                      {"name":"discount","type":"double"},
+                                      {"name":"pastdueitems","type":"double"},
+                                      {"name":"othercreditasset","type":"double"},
+                                      {"name":"proportion_of_ta","type":"double"},
+                                      {"name":"llimit_of_llr_accrualratio","type":"double"},
+                                      {"name":"ulimit_of_llr_accrualratio","type":"double"},
+                                      {"name":"proportion_of_sll","type":"double"},
+                                      {"name":"migration_rate","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

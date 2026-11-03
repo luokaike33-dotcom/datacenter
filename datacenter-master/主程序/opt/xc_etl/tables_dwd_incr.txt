@@ -1,0 +1,2 @@
+var_astk_ivsm_rat_dtl
+var_astk_ivsm_rat_sum

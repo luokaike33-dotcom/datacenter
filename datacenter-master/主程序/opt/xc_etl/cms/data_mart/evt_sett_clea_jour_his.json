@@ -1,0 +1,92 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+                        "hiveSql":["SELECT occu_dt, occu_time, busi_sys_id, trd_src_id, tnv_onum, prd_code, ast_unit_code, pfl_code, sh_code, seat_code, secu_id, exch_code, secu_code, src_secu_id, src_secu_trd_id, pos_id, curr_code, busi_typ, inv_typ, busi_clas, tnv_vol, aft_par_vol, tnv_prc, tnv_val, occu_val, aft_occu_val, intr_val, deli_dt, intr_tran_dpsi, pnlt_val, cont_id, res_flag, busi_date, task_rs_id, dm_created_time, p_dt, sys_rs_id
+						FROM ${srcdbname}.evt_sett_clea_jour_his where p_dt between ${beg_date} and ${end_date}
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+						"tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"occu_dt",
+									"occu_time",
+									"busi_sys_id",
+									"trd_src_id",
+									"tnv_onum",
+									"prd_code",
+									"ast_unit_code",
+									"pfl_code",
+									"sh_code",
+									"seat_code",
+									"secu_id",
+									"exch_code",
+									"secu_code",
+									"src_secu_id",
+									"src_secu_trd_id",
+									"pos_id",
+									"curr_code",
+									"busi_typ",
+									"inv_typ",
+									"busi_clas",
+									"tnv_vol",
+									"aft_par_vol",
+									"tnv_prc",
+									"tnv_val",
+									"occu_val",
+									"aft_occu_val",
+									"intr_val",
+									"deli_dt",
+									"intr_tran_dpsi",
+									"pnlt_val",
+									"cont_id",
+									"res_flag",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["evt_sett_clea_jour_his"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from evt_sett_clea_jour_his where p_dt between ${beg_date} and ${end_date} "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "3"
+            },
+            "errorLimit": {"record":0}
+        }
+    }
+}
+
+

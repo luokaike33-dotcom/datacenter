@@ -1,0 +1,34 @@
+# ******************************************************************
+#    修改者                版本号            修改日期        修改内容
+#    lucas                1.2.10D        2023-7-18       新增
+# ******************************************************************
+table: fin_prd_hld_inpt 产品持仓信息补录表
+cols:
+OPER_TYP	BIGINT	操作类型
+PRD_CODE	VARCHAR2(32)	产品代码
+PRD_TYP	VARCHAR2(10)	组合类型
+HLD_BEG_DT	BIGINT	持仓开始日期
+HLD_END_DT	BIGINT	持仓结束日期
+SECU_ID	VARCHAR2(50)	证券编码
+INV_TYP	VARCHAR2(10)	投资类型
+CIR_ID	VARCHAR2(10)	流通标识
+AST_STAT	VARCHAR2(10)	资产状态
+POS_ID	VARCHAR2(10)	多空标识
+HLD_VOL	NUMBER(32,16)	持仓数量
+HLD_COST	NUMBER(32,16)	持仓成本
+QUOT_PRC	NUMBER(32,16)	行情价格
+ACCR_INTR	NUMBER(32,16)	应计利息
+RECV_DIVD	NUMBER(32,16)	应收股利
+INTR_ADJ	NUMBER(32,16)	利息调整
+IPMT_PVSN	NUMBER(32,16)	减值准备
+IPMT_PVSN_I	NUMBER(32,16)	减值准备一阶段
+IPMT_PVSN_II	NUMBER(32,16)	减值准备二阶段
+IPMT_PVSN_III	NUMBER(32,16)	减值准备三阶段
+PL_ADJ	NUMBER(32,16)	损益调整
+OTH_EQUI_CHG	NUMBER(32,16)	其他权益变动
+IPMT_INTR	NUMBER(32,16)	利息减值
+AGGR_FIXA	NUMBER(32,16)	累计折旧
+DM_CREATED_TIME	TIMESTAMP	数据中台创建时间
+partition:
+cluster:
+index:

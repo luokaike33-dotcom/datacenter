@@ -1,0 +1,18 @@
+# ******************************************************************
+#    修改者      版本号            修改日期        修改内容
+#    zone       1.2.10C           2023-06-12     初始化xcsql及改为系统来源分区表
+# ******************************************************************
+table:w_bankingficlasscbrc
+cols:
+object_id	varchar2(100)
+s_info_compcode	varchar2(40)
+s_info_compname	varchar2(100)
+s_info_typecode	varchar2(50)
+entry_dt	varchar2(8)
+remove_dt	varchar2(8)
+cur_sign	varchar2(10)
+partition:
+
+cluster:
+
+index:

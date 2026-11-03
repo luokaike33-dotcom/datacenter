@@ -1,0 +1,80 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select scdm, tzlb, tzrq, qsbh, zqdm, zqlb, ltlx, qylb, gpnf, qycs, zh1, zh2, rq1, rq2, rq3, je1, je2, je3, jg1, jg2, bz, wbhl, bl1, bl2, sl1, sl2, lx1, lx2, fzdm1, fzdm2, fjsm1, fjsm2, byzd, qybh, l_date, cqrq from ${srcoradbname}.thishktzxxinfo where l_date = ${p_dt}"],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_thishktzxxinfo/p_dt=${p_dt}",
+            "fileName": "o3_thishktzxxinfo",
+            "column": [
+               {"name":"scdm","type":"string"},
+               {"name":"tzlb","type":"string"},
+               {"name":"tzrq","type":"bigint"},
+               {"name":"qsbh","type":"string"},
+               {"name":"zqdm","type":"string"},
+               {"name":"zqlb","type":"string"},
+               {"name":"ltlx","type":"string"},
+               {"name":"qylb","type":"string"},
+               {"name":"gpnf","type":"bigint"},
+               {"name":"qycs","type":"bigint"},
+               {"name":"zh1","type":"string"},
+               {"name":"zh2","type":"string"},
+               {"name":"rq1","type":"bigint"},
+               {"name":"rq2","type":"bigint"},
+               {"name":"rq3","type":"bigint"},
+               {"name":"je1","type":"double"},
+               {"name":"je2","type":"double"},
+               {"name":"je3","type":"double"},
+               {"name":"jg1","type":"double"},
+               {"name":"jg2","type":"double"},
+               {"name":"bz","type":"string"},
+               {"name":"wbhl","type":"double"},
+               {"name":"bl1","type":"double"},
+               {"name":"bl2","type":"double"},
+               {"name":"sl1","type":"double"},
+               {"name":"sl2","type":"double"},
+               {"name":"lx1","type":"string"},
+               {"name":"lx2","type":"string"},
+               {"name":"fzdm1","type":"string"},
+               {"name":"fzdm2","type":"string"},
+               {"name":"fjsm1","type":"string"},
+               {"name":"fjsm2","type":"string"},
+               {"name":"byzd","type":"string"},
+               {"name":"qybh","type":"string"},
+               {"name":"l_date","type":"bigint"},
+               {"name":"cqrq","type":"bigint"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t",
+            "encoding":"utf-8"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

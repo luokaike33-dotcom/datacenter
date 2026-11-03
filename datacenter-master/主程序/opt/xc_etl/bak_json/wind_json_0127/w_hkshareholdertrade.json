@@ -1,0 +1,139 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      sec_id,
+                                      ann_dt,
+                                      end_dt,
+                                      chg_rean,
+                                      holder_name,
+                                      shrnum,
+                                      shrtype,
+                                      shrop,
+                                      type_code,
+                                      shrnum201,
+                                      shrnum202,
+                                      shrnum203,
+                                      shrnum204,
+                                      shrnum205,
+                                      shrnum206,
+                                      shrnum207,
+                                      shrnum208,
+                                      shrnum209,
+                                      shrnum210,
+                                      shrnum211,
+                                      shrnum212,
+                                      shrnum213,
+                                      shrnum214,
+                                      crncy_code,
+                                      exhp,
+                                      exap,
+                                      otcap,
+                                      otcp_type,
+                                      preshrnum,
+                                      preshrpct,
+                                      aftshrnum,
+                                      aftshrpct,
+                                      compname,
+                                      comptype,
+                                      holder_type,
+                                      is_mng,
+                                      is_actctrl,
+                                      drvt_type,
+                                      drvt_num,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_hkshareholdertrade.json' as task_rs_id
+                                from ${srcoradbname}.hkshareholdertrade"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_hkshareholdertrade",
+                        "fileName": "w_hkshareholdertrade",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"sec_id","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"end_dt","type":"string"},
+                                      {"name":"chg_rean","type":"string"},
+                                      {"name":"holder_name","type":"string"},
+                                      {"name":"shrnum","type":"double"},
+                                      {"name":"shrtype","type":"bigint"},
+                                      {"name":"shrop","type":"string"},
+                                      {"name":"type_code","type":"string"},
+                                      {"name":"shrnum201","type":"double"},
+                                      {"name":"shrnum202","type":"double"},
+                                      {"name":"shrnum203","type":"double"},
+                                      {"name":"shrnum204","type":"double"},
+                                      {"name":"shrnum205","type":"double"},
+                                      {"name":"shrnum206","type":"double"},
+                                      {"name":"shrnum207","type":"double"},
+                                      {"name":"shrnum208","type":"double"},
+                                      {"name":"shrnum209","type":"double"},
+                                      {"name":"shrnum210","type":"double"},
+                                      {"name":"shrnum211","type":"double"},
+                                      {"name":"shrnum212","type":"double"},
+                                      {"name":"shrnum213","type":"double"},
+                                      {"name":"shrnum214","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"exhp","type":"double"},
+                                      {"name":"exap","type":"double"},
+                                      {"name":"otcap","type":"double"},
+                                      {"name":"otcp_type","type":"string"},
+                                      {"name":"preshrnum","type":"double"},
+                                      {"name":"preshrpct","type":"double"},
+                                      {"name":"aftshrnum","type":"double"},
+                                      {"name":"aftshrpct","type":"double"},
+                                      {"name":"compname","type":"string"},
+                                      {"name":"comptype","type":"bigint"},
+                                      {"name":"holder_type","type":"bigint"},
+                                      {"name":"is_mng","type":"bigint"},
+                                      {"name":"is_actctrl","type":"bigint"},
+                                      {"name":"drvt_type","type":"bigint"},
+                                      {"name":"drvt_num","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

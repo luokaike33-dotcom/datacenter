@@ -1,0 +1,109 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      s_margin_tradingbalance,
+                                      s_margin_purchwithborrowmoney,
+                                      s_margin_repaymenttobroker,
+                                      s_margin_seclendingbalance,
+                                      s_margin_seclendingbalancevol,
+                                      s_margin_salesofborrowedsec,
+                                      s_margin_repaymentofborrowsec,
+                                      s_margin_margintradebalance,
+                                      s_refin_sl_vol_3d,
+                                      s_refin_sl_vol_7d,
+                                      s_refin_sl_vol_14d,
+                                      s_refin_sl_vol_28d,
+                                      s_refin_sl_vol_182d,
+                                      s_refin_sb_vol_3d,
+                                      s_refin_sb_vol_7d,
+                                      s_refin_sb_vol_14d,
+                                      s_sb_vol_28d,
+                                      s_sb_vol_182d,
+                                      s_refin_sl_eod_vol,
+                                      s_refin_sb_eod_vol,
+                                      s_refin_sl_eop_vol,
+                                      s_refin_sl_eop_bal,
+                                      s_refin_repay_vol,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharemargintrade.json' as task_rs_id
+                                from ${srcoradbname}.asharemargintrade WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharemargintrade/busi_month=${busi_month}",
+                        "fileName": "w_asharemargintrade",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"s_margin_tradingbalance","type":"double"},
+                                      {"name":"s_margin_purchwithborrowmoney","type":"double"},
+                                      {"name":"s_margin_repaymenttobroker","type":"double"},
+                                      {"name":"s_margin_seclendingbalance","type":"double"},
+                                      {"name":"s_margin_seclendingbalancevol","type":"double"},
+                                      {"name":"s_margin_salesofborrowedsec","type":"double"},
+                                      {"name":"s_margin_repaymentofborrowsec","type":"double"},
+                                      {"name":"s_margin_margintradebalance","type":"double"},
+                                      {"name":"s_refin_sl_vol_3d","type":"bigint"},
+                                      {"name":"s_refin_sl_vol_7d","type":"bigint"},
+                                      {"name":"s_refin_sl_vol_14d","type":"bigint"},
+                                      {"name":"s_refin_sl_vol_28d","type":"bigint"},
+                                      {"name":"s_refin_sl_vol_182d","type":"bigint"},
+                                      {"name":"s_refin_sb_vol_3d","type":"bigint"},
+                                      {"name":"s_refin_sb_vol_7d","type":"bigint"},
+                                      {"name":"s_refin_sb_vol_14d","type":"bigint"},
+                                      {"name":"s_sb_vol_28d","type":"bigint"},
+                                      {"name":"s_sb_vol_182d","type":"bigint"},
+                                      {"name":"s_refin_sl_eod_vol","type":"bigint"},
+                                      {"name":"s_refin_sb_eod_vol","type":"bigint"},
+                                      {"name":"s_refin_sl_eop_vol","type":"bigint"},
+                                      {"name":"s_refin_sl_eop_bal","type":"double"},
+                                      {"name":"s_refin_repay_vol","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

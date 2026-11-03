@@ -1,0 +1,125 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      acquirer_name,
+                                      is_privatization,
+                                      start_date,
+                                      end_date,
+                                      circulation_stock_num,
+                                      circulation_stock_proportion,
+                                      purchasing_price,
+                                      conv_code,
+                                      restricted_stock_num,
+                                      restricted_stock_proportion,
+                                      restricted_purchasing_price,
+                                      restricted_conv_code,
+                                      total_amount_funds,
+                                      payment_method,
+                                      circulation_stock_num1,
+                                      total_amount_funds1,
+                                      offer_for_offer,
+                                      effective_conditions,
+                                      price_description,
+                                      financialadvisor,
+                                      s_profitnotice_firstanndate,
+                                      s_profitnotice_date,
+                                      s_result_bulletin_day,
+                                      nann_date,
+                                      shareholding_ratio,
+                                      new_shareholding_ratio,
+                                      circulation_stock_ratio,
+                                      restricted_stock_num1,
+                                      restricted_stock_ratio,
+                                      capital_description,
+                                      offer_code,
+                                      event_id,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareofferforoffer.json' as task_rs_id
+                                from ${srcoradbname}.ashareofferforoffer"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareofferforoffer",
+                        "fileName": "w_ashareofferforoffer",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"acquirer_name","type":"string"},
+                                      {"name":"is_privatization","type":"bigint"},
+                                      {"name":"start_date","type":"string"},
+                                      {"name":"end_date","type":"string"},
+                                      {"name":"circulation_stock_num","type":"double"},
+                                      {"name":"circulation_stock_proportion","type":"double"},
+                                      {"name":"purchasing_price","type":"double"},
+                                      {"name":"conv_code","type":"string"},
+                                      {"name":"restricted_stock_num","type":"double"},
+                                      {"name":"restricted_stock_proportion","type":"double"},
+                                      {"name":"restricted_purchasing_price","type":"double"},
+                                      {"name":"restricted_conv_code","type":"string"},
+                                      {"name":"total_amount_funds","type":"double"},
+                                      {"name":"payment_method","type":"string"},
+                                      {"name":"circulation_stock_num1","type":"double"},
+                                      {"name":"total_amount_funds1","type":"double"},
+                                      {"name":"offer_for_offer","type":"string"},
+                                      {"name":"effective_conditions","type":"string"},
+                                      {"name":"price_description","type":"string"},
+                                      {"name":"financialadvisor","type":"string"},
+                                      {"name":"s_profitnotice_firstanndate","type":"string"},
+                                      {"name":"s_profitnotice_date","type":"string"},
+                                      {"name":"s_result_bulletin_day","type":"string"},
+                                      {"name":"nann_date","type":"string"},
+                                      {"name":"shareholding_ratio","type":"double"},
+                                      {"name":"new_shareholding_ratio","type":"double"},
+                                      {"name":"circulation_stock_ratio","type":"double"},
+                                      {"name":"restricted_stock_num1","type":"double"},
+                                      {"name":"restricted_stock_ratio","type":"double"},
+                                      {"name":"capital_description","type":"string"},
+                                      {"name":"offer_code","type":"bigint"},
+                                      {"name":"event_id","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

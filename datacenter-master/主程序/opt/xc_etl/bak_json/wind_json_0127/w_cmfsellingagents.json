@@ -1,0 +1,75 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      f_info_windcode,
+                                      f_ann_date,
+                                      f_agency_nameid,
+                                      f_agency_name,
+                                      f_relation,
+                                      f_begin_date,
+                                      f_end_date,
+                                      cur_sign,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cmfsellingagents.json' as task_rs_id
+                                from ${srcoradbname}.cmfsellingagents"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cmfsellingagents",
+                        "fileName": "w_cmfsellingagents",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"f_info_windcode","type":"string"},
+                                      {"name":"f_ann_date","type":"string"},
+                                      {"name":"f_agency_nameid","type":"string"},
+                                      {"name":"f_agency_name","type":"string"},
+                                      {"name":"f_relation","type":"string"},
+                                      {"name":"f_begin_date","type":"string"},
+                                      {"name":"f_end_date","type":"string"},
+                                      {"name":"cur_sign","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

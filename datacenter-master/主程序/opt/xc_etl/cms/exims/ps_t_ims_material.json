@@ -1,0 +1,67 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {"reader": {
+                "name": "hivereader",
+                "parameter": {
+                    "hive_cmd": "beeline",
+                    "hiveSql": ["
+                        SELECT
+                            c_fundcode,
+                            c_fundname,
+                            c_custname,
+                            c_identityno,
+                            c_identitytype,
+                            f_banlances,
+                            f_realshares,
+                            c_tradetype,
+                            d_cdate
+                        FROM ${srcdbname}.ps_t_ims_material "],
+                    "defaultFS": "hdfs://${srchdfsurl}",
+                    "tmpDatabasePath": "${srchivedbpath}",
+                    "tmpDatabase": "${srcdbname}",
+                    "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                    "hive_ldap_user_name": "${srcusername}",
+                    "hive_ldap_password": "${srcpassword}",
+                    "haveKerberos": "${haveKerberos}",
+                    "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                    "kerberosPrincipal": "${kerberosPrincipal}"
+                }
+            },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"c_fundcode",
+									"c_fundname",
+									"c_custname",
+									"c_identityno",
+									"c_identitytype",
+									"f_banlances",
+									"f_realshares",
+									"c_tradetype",
+									"d_cdate"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["t_ims_material"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table t_ims_material"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

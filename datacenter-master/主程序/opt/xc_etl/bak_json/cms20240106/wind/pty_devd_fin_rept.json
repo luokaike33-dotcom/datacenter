@@ -1,0 +1,100 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/pty_devd_fin_rept/busi_month=${busi_month}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"double"},
+                                    {"index":4,"type":"double"},
+                                    {"index":5,"type":"double"},
+                                    {"index":6,"type":"double"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"double"},
+                                    {"index":9,"type":"double"},
+                                    {"index":10,"type":"double"},
+                                    {"index":11,"type":"double"},
+                                    {"index":12,"type":"double"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"double"},
+                                    {"index":15,"type":"double"},
+                                    {"index":16,"type":"double"},
+                                    {"index":17,"type":"double"},
+                                    {"index":18,"type":"double"},
+                                    {"index":19,"type":"double"},
+                                    {"index":20,"type":"long"},
+                                    {"index":21,"type":"string"},
+                                    {"index":22,"type":"string"},
+                                    {"name":"busi_month","type":"long","value":"${busi_month}"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "com_id",
+                                    "pub_dt",
+                                    "rept_merg_type",
+                                    "basi_ps_payf",
+                                    "ps_nast",
+                                    "ps_cptl_resv",
+                                    "prn_corp_net_prof_grow_rate",
+                                    "busi_incm_grow_rate",
+                                    "li_rate",
+                                    "quic_rate",
+                                    "ast_liab_rate",
+                                    "rece_tnrt",
+                                    "inv_tnrt",
+                                    "li_ast_tnrt",
+                                    "fix_ast_tnrt",
+                                    "tot_ast_tnrt",
+                                    "busi_prft_rate",
+                                    "sale_net_prft_rate",
+                                    "tot_ast_remu_rate",
+                                    "dedc_abnl_pl_net_prft",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    "busi_month",
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["pty_devd_fin_rept"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from pty_devd_fin_rept where busi_month ='${busi_month}' and 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {
+              "record": "0",
+              "percentage": "0"
+            }
+        }
+    }
+}

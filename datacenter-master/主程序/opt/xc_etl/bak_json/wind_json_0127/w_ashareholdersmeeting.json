@@ -1,0 +1,95 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_dt,
+                                      meeting_dt,
+                                      meeting_type,
+                                      votingcode,
+                                      smtgrecdate,
+                                      spotmtgstartdate,
+                                      spotmtgenddate,
+                                      is_intnet,
+                                      intnetcode,
+                                      intnetname,
+                                      meeting_content,
+                                      change_his,
+                                      meetevent_id,
+                                      is_new,
+                                      intnet_startdate,
+                                      intnet_enddate,
+                                      meeting_time,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareholdersmeeting.json' as task_rs_id
+                                from ${srcoradbname}.ashareholdersmeeting"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareholdersmeeting",
+                        "fileName": "w_ashareholdersmeeting",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"meeting_dt","type":"string"},
+                                      {"name":"meeting_type","type":"string"},
+                                      {"name":"votingcode","type":"bigint"},
+                                      {"name":"smtgrecdate","type":"string"},
+                                      {"name":"spotmtgstartdate","type":"string"},
+                                      {"name":"spotmtgenddate","type":"string"},
+                                      {"name":"is_intnet","type":"string"},
+                                      {"name":"intnetcode","type":"string"},
+                                      {"name":"intnetname","type":"string"},
+                                      {"name":"meeting_content","type":"string"},
+                                      {"name":"change_his","type":"string"},
+                                      {"name":"meetevent_id","type":"string"},
+                                      {"name":"is_new","type":"bigint"},
+                                      {"name":"intnet_startdate","type":"string"},
+                                      {"name":"intnet_enddate","type":"string"},
+                                      {"name":"meeting_time","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,63 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,trade_dt,s_info_windcode,sec_id,indexname,indexname_eng,s_con_windcode,con_sec_id,exchange,tot_shr,free_shr_ratio,shr_calculation,weightfactor,closevalue,open_adjusted,tot_mv,mv_calculation,weight,opdate,opmode from ${srcoradbname}.aindexcsi1000weight where trade_dt between '${busi_month}'||'01' and to_char(add_months(to_date('${busi_month}'||01,'yyyyMMdd'),1)-1,'yyyyMMdd')"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_aindexcsi1000weight/busi_month=${busi_month}",
+                        "fileName": "w_aindexcsi1000weight",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"trade_dt","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"sec_id","type":"string"},
+                            {"name":"indexname","type":"string"},
+                            {"name":"indexname_eng","type":"string"},
+                            {"name":"s_con_windcode","type":"string"},
+                            {"name":"con_sec_id","type":"string"},
+                            {"name":"exchange","type":"string"},
+                            {"name":"tot_shr","type":"double"},
+                            {"name":"free_shr_ratio","type":"double"},
+                            {"name":"shr_calculation","type":"double"},
+                            {"name":"weightfactor","type":"double"},
+                            {"name":"closevalue","type":"double"},
+                            {"name":"open_adjusted","type":"double"},
+                            {"name":"tot_mv","type":"double"},
+                            {"name":"mv_calculation","type":"double"},
+                            {"name":"weight","type":"double"},
+                            {"name":"opdate","type":"date"},
+                            {"name":"opmode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

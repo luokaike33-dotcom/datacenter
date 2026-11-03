@@ -1,0 +1,96 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,n_id_sub,d_biz,c_port_code,c_asset_code,c_dv_rta,c_td_number,c_od_number,c_sec_code,c_sec_var_mx,n_nh_days,c_dv_freq,c_cury_code,c_mkt_code,c_tdchan_code,c_td_code,c_im_code,c_td_type,c_ivt_clss,c_hld_attr,c_td_attr,c_ml_attr,d_fwddue,d_ins_begin,c_rta_code,n_rate,n_yslx,n_spread,n_upper_limit,n_lower_limit,c_dv_type_sub,n_td_amount,n_port_td_money,n_td_income,n_jz_rate,n_td_comm,n_td_money,d_settle,n_st_money,c_ca_code,d_biz_first,c_open_addr,c_open_acc_no,c_open_acc_name,c_vir_sec_code,c_bank_name,c_branch_bank_name,c_update_time,c_data_idf,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vc_deposit.json' as task_rs_id from ${srcoradbname}.vc_deposit"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vc_deposit",
+                        "fileName": "fa45_vc_deposit",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"n_id_sub","type":"string"},
+                            {"name":"d_biz","type":"date"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"c_asset_code","type":"string"},
+                            {"name":"c_dv_rta","type":"string"},
+                            {"name":"c_td_number","type":"string"},
+                            {"name":"c_od_number","type":"string"},
+                            {"name":"c_sec_code","type":"string"},
+                            {"name":"c_sec_var_mx","type":"string"},
+                            {"name":"n_nh_days","type":"double"},
+                            {"name":"c_dv_freq","type":"string"},
+                            {"name":"c_cury_code","type":"string"},
+                            {"name":"c_mkt_code","type":"string"},
+                            {"name":"c_tdchan_code","type":"string"},
+                            {"name":"c_td_code","type":"string"},
+                            {"name":"c_im_code","type":"string"},
+                            {"name":"c_td_type","type":"string"},
+                            {"name":"c_ivt_clss","type":"string"},
+                            {"name":"c_hld_attr","type":"string"},
+                            {"name":"c_td_attr","type":"string"},
+                            {"name":"c_ml_attr","type":"string"},
+                            {"name":"d_fwddue","type":"date"},
+                            {"name":"d_ins_begin","type":"date"},
+                            {"name":"c_rta_code","type":"string"},
+                            {"name":"n_rate","type":"double"},
+                            {"name":"n_yslx","type":"double"},
+                            {"name":"n_spread","type":"double"},
+                            {"name":"n_upper_limit","type":"double"},
+                            {"name":"n_lower_limit","type":"double"},
+                            {"name":"c_dv_type_sub","type":"string"},
+                            {"name":"n_td_amount","type":"double"},
+                            {"name":"n_port_td_money","type":"double"},
+                            {"name":"n_td_income","type":"double"},
+                            {"name":"n_jz_rate","type":"double"},
+                            {"name":"n_td_comm","type":"double"},
+                            {"name":"n_td_money","type":"double"},
+                            {"name":"d_settle","type":"date"},
+                            {"name":"n_st_money","type":"double"},
+                            {"name":"c_ca_code","type":"string"},
+                            {"name":"d_biz_first","type":"date"},
+                            {"name":"c_open_addr","type":"string"},
+                            {"name":"c_open_acc_no","type":"string"},
+                            {"name":"c_open_acc_name","type":"string"},
+                            {"name":"c_vir_sec_code","type":"string"},
+                            {"name":"c_bank_name","type":"string"},
+                            {"name":"c_branch_bank_name","type":"string"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_data_idf","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

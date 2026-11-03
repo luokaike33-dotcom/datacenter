@@ -1,0 +1,121 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      s_tech_tvma6,
+                                      s_tech_tvma20,
+                                      s_tech_tvma60,
+                                      s_tech_tvstd6,
+                                      s_tech_tvstd20,
+                                      s_tech_vema5,
+                                      s_tech_vema10,
+                                      s_tech_vema12,
+                                      s_tech_vema26,
+                                      s_tech_vroc6,
+                                      s_tech_vroc12,
+                                      s_tech_vr,
+                                      s_tech_turnoverrate5,
+                                      s_tech_turnoverrate10,
+                                      s_tech_turnoverrate20,
+                                      s_tech_turnoverrate60,
+                                      s_tech_turnoverrate120,
+                                      s_tech_turnoverrate240,
+                                      s_tech_turnoverratevol20,
+                                      s_tech_mktfaciind,
+                                      s_tech_cyf,
+                                      s_tech_volumevolatility,
+                                      s_tech_volume1m60,
+                                      s_tech_volumn1m,
+                                      s_tech_turn5dturn120,
+                                      s_tech_turn10dturn120,
+                                      s_tech_turn20dturn120,
+                                      s_tech_amount1m60,
+                                      s_tech_cry,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_turnovertechnicalfactor.json' as task_rs_id
+                                from ${srcoradbname}.turnovertechnicalfactor WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_turnovertechnicalfactor/busi_month=${busi_month}",
+                        "fileName": "w_turnovertechnicalfactor",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"s_tech_tvma6","type":"double"},
+                                      {"name":"s_tech_tvma20","type":"double"},
+                                      {"name":"s_tech_tvma60","type":"double"},
+                                      {"name":"s_tech_tvstd6","type":"double"},
+                                      {"name":"s_tech_tvstd20","type":"double"},
+                                      {"name":"s_tech_vema5","type":"double"},
+                                      {"name":"s_tech_vema10","type":"double"},
+                                      {"name":"s_tech_vema12","type":"double"},
+                                      {"name":"s_tech_vema26","type":"double"},
+                                      {"name":"s_tech_vroc6","type":"double"},
+                                      {"name":"s_tech_vroc12","type":"double"},
+                                      {"name":"s_tech_vr","type":"double"},
+                                      {"name":"s_tech_turnoverrate5","type":"double"},
+                                      {"name":"s_tech_turnoverrate10","type":"double"},
+                                      {"name":"s_tech_turnoverrate20","type":"double"},
+                                      {"name":"s_tech_turnoverrate60","type":"double"},
+                                      {"name":"s_tech_turnoverrate120","type":"double"},
+                                      {"name":"s_tech_turnoverrate240","type":"double"},
+                                      {"name":"s_tech_turnoverratevol20","type":"double"},
+                                      {"name":"s_tech_mktfaciind","type":"double"},
+                                      {"name":"s_tech_cyf","type":"double"},
+                                      {"name":"s_tech_volumevolatility","type":"double"},
+                                      {"name":"s_tech_volume1m60","type":"double"},
+                                      {"name":"s_tech_volumn1m","type":"double"},
+                                      {"name":"s_tech_turn5dturn120","type":"double"},
+                                      {"name":"s_tech_turn10dturn120","type":"double"},
+                                      {"name":"s_tech_turn20dturn120","type":"double"},
+                                      {"name":"s_tech_amount1m60","type":"double"},
+                                      {"name":"s_tech_cry","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

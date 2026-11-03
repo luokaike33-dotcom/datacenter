@@ -1,0 +1,67 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fin_prd_capi_chg",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"double"},
+                                    {"index":3,"type":"double"},
+                                    {"index":4,"type":"long"},
+                                    {"index":5,"type":"string"},
+									{"name":"dm_created_time","type":"string","value":"${kerberosPrincipal}"}
+                                    {"index":7,"type":"string"}
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+                                    "prd_code",
+                                    "chg_dt",
+                                    "capi_add",
+                                    "capi_reduce",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "dm_src_info"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:mysql://${tgrurl}",
+                              "selectedDatabase": "${selectedDatabase}",
+                              "table": ["fin_prd_capi_chg"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "loadUrl": [${loadUrl}],
+                        "loadProps": {"column_separator": "\\x01","row_delimiter":"\\x02"},
+                        "preSql":["truncate table data_mart.fin_prd_capi_chg"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "3"
+            }
+        }
+    }
+}

@@ -1,0 +1,65 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select l_date, l_detail_id, l_unit_id, l_fund_id, l_basecombi_id, l_asset_id, vc_stockholder_id, vc_bind_seat, c_invest_type, c_position_flag, vc_inter_code, l_holding_amount, l_open_date, l_open_time, en_open_price, l_open_amount, en_closed_profit, en_total_fee, en_today_closed_profit, vc_deal_no, c_special_flag, en_bailcomb_amount from ${srcoradbname}.thisholdingdetail where l_date = ${p_dt}"],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_thisholdingdetail/p_dt=${p_dt}",
+            "fileName": "o3_thisholdingdetail",
+            "column": [
+              {"name":"l_date","type":"bigint"},
+              {"name":"l_detail_id","type":"bigint"},
+              {"name":"l_unit_id","type":"bigint"},
+              {"name":"l_fund_id","type":"bigint"},
+              {"name":"l_basecombi_id","type":"bigint"},
+              {"name":"l_asset_id","type":"bigint"},
+              {"name":"vc_stockholder_id","type":"string"},
+              {"name":"vc_bind_seat","type":"string"},
+              {"name":"c_invest_type","type":"string"},
+              {"name":"c_position_flag","type":"string"},
+              {"name":"vc_inter_code","type":"string"},
+              {"name":"l_holding_amount","type":"double"},
+              {"name":"l_open_date","type":"bigint"},
+              {"name":"l_open_time","type":"bigint"},
+              {"name":"en_open_price","type":"double"},
+              {"name":"l_open_amount","type":"double"},
+              {"name":"en_closed_profit","type":"double"},
+              {"name":"en_total_fee","type":"double"},
+              {"name":"en_today_closed_profit","type":"double"},
+              {"name":"vc_deal_no","type":"string"},
+              {"name":"c_special_flag","type":"string"},
+              {"name":"en_bailcomb_amount","type":"double"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,c_port_code,c_asset_code,d_biz,d_trade_date,c_td_number,c_td_type,c_dv_type_sub,c_dt_code,n_way,c_sec_code,c_ple_sec,c_ple_amount,n_ple_orig_cost,n_ple_port_cost,n_fv_issue,n_net_price,n_full_price,d_fwddue,c_update_time,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vc_pawnedsec.json' as task_rs_id from ${srcoradbname}.vc_pawnedsec"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vc_pawnedsec",
+                        "fileName": "fa45_vc_pawnedsec",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"c_asset_code","type":"string"},
+                            {"name":"d_biz","type":"date"},
+                            {"name":"d_trade_date","type":"date"},
+                            {"name":"c_td_number","type":"string"},
+                            {"name":"c_td_type","type":"string"},
+                            {"name":"c_dv_type_sub","type":"string"},
+                            {"name":"c_dt_code","type":"string"},
+                            {"name":"n_way","type":"double"},
+                            {"name":"c_sec_code","type":"string"},
+                            {"name":"c_ple_sec","type":"string"},
+                            {"name":"c_ple_amount","type":"double"},
+                            {"name":"n_ple_orig_cost","type":"double"},
+                            {"name":"n_ple_port_cost","type":"double"},
+                            {"name":"n_fv_issue","type":"double"},
+                            {"name":"n_net_price","type":"double"},
+                            {"name":"n_full_price","type":"double"},
+                            {"name":"d_fwddue","type":"date"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

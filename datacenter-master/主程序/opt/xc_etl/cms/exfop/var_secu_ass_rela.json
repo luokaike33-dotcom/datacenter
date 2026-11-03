@@ -1,0 +1,78 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+                                    secu_id,
+                                    src_secu_id,
+                                    secu_typ_code,
+                                    lst_sts_code,
+                                    trd_mkt,
+                                    extr_secu_flag,
+                                    chg_flag,
+                                    main_secu_id,
+                                    trd_code,
+                                    busi_date,
+                                    dm_src_info,
+                                    task_rs_id,
+                                    dm_created_time,
+                                    sys_rs_id
+							FROM ${srcdbname}.var_secu_ass_rela "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"src_secu_id",
+									"secu_typ_code",
+									"lst_sts_code",
+									"trd_mkt",
+									"extr_secu_flag",
+									"chg_flag",
+									"main_secu_id",
+									"trd_code",
+									"busi_date",
+									"dm_src_info",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["var_secu_ass_rela"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table var_secu_ass_rela"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      opr_period,
+                                      pch_startdt,
+                                      pch_enddt,
+                                      opr_startdt,
+                                      opr_enddt,
+                                      redm_startdt,
+                                      redm_enddt,
+                                      anticipate_annualyeild,
+                                      annualyeild,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cmfundoperateperiod.json' as task_rs_id
+                                from ${srcoradbname}.cmfundoperateperiod"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cmfundoperateperiod",
+                        "fileName": "w_cmfundoperateperiod",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"opr_period","type":"bigint"},
+                                      {"name":"pch_startdt","type":"string"},
+                                      {"name":"pch_enddt","type":"string"},
+                                      {"name":"opr_startdt","type":"string"},
+                                      {"name":"opr_enddt","type":"string"},
+                                      {"name":"redm_startdt","type":"string"},
+                                      {"name":"redm_enddt","type":"string"},
+                                      {"name":"anticipate_annualyeild","type":"double"},
+                                      {"name":"annualyeild","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,97 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      broker_id,
+                                      typecode,
+                                      start_date,
+                                      closing_date,
+                                      make_market_num,
+                                      listed_companies_num,
+                                      market_making_enterprise_ratio,
+                                      trading_volume,
+                                      trading_volume_ratio,
+                                      market_turnover,
+                                      market_turnover_ratio,
+                                      report_period,
+                                      supervision_company_num,
+                                      this_period_disclosure_num,
+                                      accumulative_disclosure_num,
+                                      not_yet_disclosure_num,
+                                      corrections_num,
+                                      delayed_disclosure_num,
+                                      existing_problems_num,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_neeqweekreportsofbrokers.json' as task_rs_id
+                                from ${srcoradbname}.neeqweekreportsofbrokers"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_neeqweekreportsofbrokers",
+                        "fileName": "w_neeqweekreportsofbrokers",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"broker_id","type":"string"},
+                                      {"name":"typecode","type":"bigint"},
+                                      {"name":"start_date","type":"string"},
+                                      {"name":"closing_date","type":"string"},
+                                      {"name":"make_market_num","type":"double"},
+                                      {"name":"listed_companies_num","type":"double"},
+                                      {"name":"market_making_enterprise_ratio","type":"double"},
+                                      {"name":"trading_volume","type":"double"},
+                                      {"name":"trading_volume_ratio","type":"double"},
+                                      {"name":"market_turnover","type":"double"},
+                                      {"name":"market_turnover_ratio","type":"double"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"supervision_company_num","type":"bigint"},
+                                      {"name":"this_period_disclosure_num","type":"bigint"},
+                                      {"name":"accumulative_disclosure_num","type":"bigint"},
+                                      {"name":"not_yet_disclosure_num","type":"bigint"},
+                                      {"name":"corrections_num","type":"bigint"},
+                                      {"name":"delayed_disclosure_num","type":"bigint"},
+                                      {"name":"existing_problems_num","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

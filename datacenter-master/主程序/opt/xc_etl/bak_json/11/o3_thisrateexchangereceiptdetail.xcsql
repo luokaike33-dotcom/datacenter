@@ -1,0 +1,66 @@
+# ******************************************************************
+#    修改者                版本号            修改日期        修改内容
+#    russki              1.2.10C         2023-06-02    新增xcsql表配置
+# ******************************************************************
+table: o3_thisrateexchangereceiptdetail 利率互换冲销明细历史表
+cols:
+  L_SERIAL_NO NUMBER(10) 流水号
+  L_DATE NUMBER(8) 日期
+  L_CONFIRM_NO NUMBER(10) 确认序号
+  L_TRADE_DATE NUMBER(8) 确认日期
+  VC_DEAL_NO VARCHAR2(64) 成交编号
+  C_EXCHANGE_TYPE VARCHAR2(1) 互换方向
+  L_FUND_ID NUMBER(8) 基金序号
+  L_BASECOMBI_ID NUMBER(12) 影响持仓的组合编号
+  VC_INTER_CODE VARCHAR2(8) 证券内码
+  VC_LIMIT_TIME VARCHAR2(32) 期限
+  EN_FIRST_BALANCE NUMBER(16,2) 首次金额
+  EN_NOW_BALANCE NUMBER(16,2) 冲销金额
+  EN_REMAIN_BALANCE NUMBER(16,2) 冲销剩余金额
+  EN_REAL_VALUE NUMBER(16,2) 实际冲销价值
+  EN_SYS_VALUE NUMBER(16,2) 系统冲销价值
+  C_STATUS VARCHAR2(1) 状态
+  L_BEGIN_DATE NUMBER(8) 开始日期
+  L_END_DATE NUMBER(8) 结束日期
+  L_FIRST_BEGIN_DATE NUMBER(8) 首期起息日
+  L_DAILY_INSTRUCTION_NO NUMBER(10) 指令号
+  L_INDEX_DAILY_MODIFY NUMBER(10) 指令修改序
+  L_TRADE_RIVAL_NO NUMBER(10) 交易对手
+  L_OPERATOR_NO NUMBER(8) 操作员代码
+  C_OWNER_RATE_TYPE VARCHAR2(1) 本方利率类型
+  EN_OWNER_RATE NUMBER(9,8) 本方利率
+  VC_OWNER_PAY_PERIOD VARCHAR2(32) 本支付周期
+  C_OWNER_CALC_METHOD VARCHAR2(1) 本计息方法
+  C_OWNER_DAY_TYPE VARCHAR2(1) 本计息基准
+  VC_OWNER_RATE_PERIOD VARCHAR2(32) 本重置频率
+  L_OWNER_FIRST_RATE_DATE NUMBER(8) 本首利确日
+  L_OWNER_FIRST_PAY_DATE NUMBER(8) 本首支付日
+  C_OWNER_CALC_DAYS_TYPE VARCHAR2(1) 本计息调整
+  C_OWNER_PAY_DATE_TYPE VARCHAR2(1) 本支付调整
+  C_OWNER_BAIL_CHANGEFLAG VARCHAR2(1) 本方保证品变动标识
+  L_OWNER_BAIL_SUBMIT_DATE NUMBER(8) 本方保证品提交日
+  C_RIVAL_RATE_TYPE VARCHAR2(1) 对手方利率类型
+  EN_RIVAL_RATE NUMBER(9,8) 对手方利率
+  VC_RIVAL_PAY_PERIOD VARCHAR2(32) 对支付周期
+  C_RIVAL_CALC_METHOD VARCHAR2(1) 对计息方法
+  C_RIVAL_DAY_TYPE VARCHAR2(1) 对计息基准
+  VC_RIVAL_RATE_PERIOD VARCHAR2(32) 对重置频率
+  L_RIVAL_FIRST_RATE_DATE NUMBER(8) 对首利确日
+  L_RIVAL_FIRST_PAY_DATE NUMBER(8) 对首支付日
+  C_RIVAL_CALC_DAYS_TYPE VARCHAR2(1) 对计息调整
+  C_RIVAL_PAY_DATE_TYPE VARCHAR2(1) 对支付调整
+  C_RIVAL_BAIL_CHANGEFLAG VARCHAR2(1) 对手方保证品变动标识
+  L_RIVAL_BAIL_SUBMIT_DATE NUMBER(8) 对手方保证品提交日
+  VC_FROZEN_SERIAL_NOS VARCHAR2(512) 保证品冻结序号串
+  L_CONTRA_RIVAL_NO NUMBER(10) 冲销对手
+  L_BASIC_DATE NUMBER(8) 基准日期
+  VC_CONTRA_NO VARCHAR2(64) 合同编号
+  BATH_DT VARCHAR2(10) 日期
+  DATA_INS_TIME TIMESTAMP 数据来源时间
+  TASK_RS_ID VARCHAR2(100) 任务来源标识
+  P_DT BIGINT 日分区字段
+partition:
+    [cdh] p_dt
+    [tdh] p_dt
+cluster:
+index:

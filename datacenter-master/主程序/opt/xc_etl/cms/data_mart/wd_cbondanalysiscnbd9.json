@@ -1,0 +1,128 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/w_cbondanalysiscnbd9",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"double"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"double"},
+									{"index":31,"type":"double"},
+									{"index":32,"type":"long"},
+									{"index":33,"type":"date"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"date"},
+									{"index":37,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"trade_dt",
+									"b_anal_matu_cnbd",
+									"b_anal_dirty_cnbd",
+									"b_anal_accrint_cnbd",
+									"b_anal_net_cnbd",
+									"b_anal_yield_cnbd",
+									"b_anal_modidura_cnbd",
+									"b_anal_cnvxty_cnbd",
+									"b_anal_vobp_cnbd",
+									"b_anal_sprdura_cnbd",
+									"b_anal_sprcnxt_cnbd",
+									"b_anal_accrintclose_cnbd",
+									"b_anal_price",
+									"b_anal_netprice",
+									"b_anal_yield",
+									"b_anal_modifiedduration",
+									"b_anal_convexity",
+									"b_anal_bpvalue",
+									"b_anal_sduration",
+									"b_anal_scnvxty",
+									"b_anal_interestduration_cnbd",
+									"b_anal_interestcnvxty_cnbd",
+									"b_anal_interestduration",
+									"b_anal_interestcnvxty",
+									"b_anal_price_cnbd",
+									"b_anal_bpyield",
+									"b_anal_exchange",
+									"b_anal_credibility",
+									"b_anal_residualpri",
+									"b_anal_exercise_rate",
+									"b_anal_priority",
+									"opdate",
+									"opmode",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_cbondanalysiscnbd9"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table wd_cbondanalysiscnbd9"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

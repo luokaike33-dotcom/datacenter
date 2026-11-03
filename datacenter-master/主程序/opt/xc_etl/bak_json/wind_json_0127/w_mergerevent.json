@@ -1,0 +1,127 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      event_id,
+                                      ann_date,
+                                      update_date,
+                                      event_title,
+                                      underlying,
+                                      underlying_type_code,
+                                      is_related_party_transac,
+                                      is_majorassetrestructure,
+                                      is_control_change,
+                                      restructure_way_code,
+                                      restructure_type_code,
+                                      merger_type_code,
+                                      merger_way_code,
+                                      is_be_approval,
+                                      progress_code,
+                                      trade_value,
+                                      crncy_code,
+                                      pricing_basis_code,
+                                      evalue_method_code,
+                                      evalue_way_code,
+                                      payment_way_code,
+                                      cash_payment,
+                                      evalue_value,
+                                      evalue_basis_date_,
+                                      transfer_numbers,
+                                      transfer_price,
+                                      stockright_proportion,
+                                      appreciation_rate,
+                                      merger_aim_code,
+                                      location_type_code,
+                                      ecd,
+                                      completion_date,
+                                      chronicle,
+                                      relevantintelligence_id,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_mergerevent.json' as task_rs_id
+                                from ${srcoradbname}.mergerevent"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_mergerevent",
+                        "fileName": "w_mergerevent",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"event_id","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"update_date","type":"string"},
+                                      {"name":"event_title","type":"string"},
+                                      {"name":"underlying","type":"string"},
+                                      {"name":"underlying_type_code","type":"bigint"},
+                                      {"name":"is_related_party_transac","type":"bigint"},
+                                      {"name":"is_majorassetrestructure","type":"bigint"},
+                                      {"name":"is_control_change","type":"bigint"},
+                                      {"name":"restructure_way_code","type":"bigint"},
+                                      {"name":"restructure_type_code","type":"bigint"},
+                                      {"name":"merger_type_code","type":"bigint"},
+                                      {"name":"merger_way_code","type":"bigint"},
+                                      {"name":"is_be_approval","type":"bigint"},
+                                      {"name":"progress_code","type":"bigint"},
+                                      {"name":"trade_value","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"pricing_basis_code","type":"bigint"},
+                                      {"name":"evalue_method_code","type":"bigint"},
+                                      {"name":"evalue_way_code","type":"bigint"},
+                                      {"name":"payment_way_code","type":"bigint"},
+                                      {"name":"cash_payment","type":"double"},
+                                      {"name":"evalue_value","type":"double"},
+                                      {"name":"evalue_basis_date_","type":"string"},
+                                      {"name":"transfer_numbers","type":"double"},
+                                      {"name":"transfer_price","type":"double"},
+                                      {"name":"stockright_proportion","type":"double"},
+                                      {"name":"appreciation_rate","type":"double"},
+                                      {"name":"merger_aim_code","type":"bigint"},
+                                      {"name":"location_type_code","type":"bigint"},
+                                      {"name":"ecd","type":"string"},
+                                      {"name":"completion_date","type":"string"},
+                                      {"name":"chronicle","type":"string"},
+                                      {"name":"relevantintelligence_id","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

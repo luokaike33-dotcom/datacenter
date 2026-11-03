@@ -1,0 +1,106 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/pty_ratn_rslt",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"long"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"double"},
+                                    {"index":9,"type":"double"},
+                                    {"index":10,"type":"double"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"double"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"double"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"string"},
+                                    {"index":17,"type":"string"},
+                                    {"index":18,"type":"string"},
+                                    {"index":19,"type":"string"},
+                                    {"index":20,"type":"double"},
+                                    {"index":21,"type":"long"},
+                                    {"index":22,"type":"string"},
+                                    {"index":23,"type":"string"},
+                                    {"index":24,"type":"string"},
+                                    {"index":25,"type":"string"},
+                                    {"index":26,"type":"long"},
+                                    {"index":27,"type":"string"},
+                                    {"index":28,"type":"string"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "jour_no",
+                                    "iss_bgn_dt",
+                                    "ivst_typ",
+                                    "ivst_id",
+                                    "ivst_name",
+                                    "crrc",
+                                    "sub_prc",
+                                    "ratn_prc",
+                                    "sub_vol",
+                                    "act_ratn_vol",
+                                    "trd_code",
+                                    "paid_sub_amt",
+                                    "payb_sub_amt",
+                                    "refundment",
+                                    "hldp_maty",
+                                    "memo",
+                                    "ratn_obj_acc",
+                                    "inqy_ins_id",
+                                    "inqy_ins_name",
+                                    "inv_stk_vol",
+                                    "ratn_obj_clas",
+                                    "ratn_obj_id",
+                                    "ratn_obj_asso_id",
+                                    "ratn_obj_acc_code",
+                                    "eventid",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["pty_ratn_rslt"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from pty_ratn_rslt where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

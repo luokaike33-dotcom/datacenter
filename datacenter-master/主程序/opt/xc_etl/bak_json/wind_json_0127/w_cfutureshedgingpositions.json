@@ -1,0 +1,71 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      fs_info_sccode,
+                                      fs_info_date,
+                                      buy_hedging_quota,
+                                      buy_hedging_hold_amount,
+                                      sell_hedging_quota,
+                                      sell_hedging_hold_amount,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cfutureshedgingpositions.json' as task_rs_id
+                                from ${srcoradbname}.cfutureshedgingpositions"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cfutureshedgingpositions",
+                        "fileName": "w_cfutureshedgingpositions",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"fs_info_sccode","type":"string"},
+                                      {"name":"fs_info_date","type":"string"},
+                                      {"name":"buy_hedging_quota","type":"double"},
+                                      {"name":"buy_hedging_hold_amount","type":"double"},
+                                      {"name":"sell_hedging_quota","type":"double"},
+                                      {"name":"sell_hedging_hold_amount","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

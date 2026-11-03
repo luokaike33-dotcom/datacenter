@@ -1,0 +1,160 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/tmp_prod_nav",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"long"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"double"},
+									{"index":36,"type":"double"},
+									{"index":37,"type":"double"},
+									{"index":38,"type":"double"},
+									{"index":39,"type":"double"},
+									{"index":40,"type":"double"},
+									{"index":41,"type":"double"},
+									{"index":42,"type":"double"},
+									{"index":43,"type":"double"},
+									{"index":44,"type":"double"},
+									{"index":45,"type":"double"},
+									{"index":46,"type":"double"},
+									{"index":47,"type":"double"},
+									{"index":48,"type":"long"},
+									{"index":49,"type":"double"},
+									{"index":50,"type":"double"},
+									{"index":51,"type":"double"},
+									{"index":52,"type":"double"},
+									{"index":53,"type":"double"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sk_product",
+									"bus_date",
+									"ta_nav_date",
+									"ta_cfm_date",
+									"fa_bus_date",
+									"fa_cfm_date",
+									"dk_tano",
+									"dk_prod_status_of_cur",
+									"dk_prod_status_of_lst",
+									"dk_prod_cvt_sts",
+									"dk_prod_mip_sts",
+									"dk_prod_trst_sts",
+									"dk_prod_mrgsplt_sts",
+									"net_value",
+									"comp_net_value",
+									"total_net_value",
+									"d90_incm_rate",
+									"m_unt_incm",
+									"total_m_unt_incm",
+									"d7_incm_rate",
+									"rlz_d7_assets",
+									"back_adj_factor",
+									"back_adj_net_value",
+									"back_adj_net_growth_rate",
+									"dk_is_nav_published",
+									"dk_nav_confirm_flag",
+									"dk_is_current",
+									"dk_is_valid",
+									"sdata_serialno",
+									"memo",
+									"ddvc",
+									"dk_system_of_upd",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"last_shares",
+									"last_assets",
+									"income_rate_day",
+									"income_rate_week",
+									"income_rate_2week",
+									"income_rate_month",
+									"income_rate_season",
+									"income_rate_halt",
+									"income_rate_year",
+									"income_rate_2year",
+									"income_rate_3year",
+									"income_rate_5year",
+									"income_rate_setup",
+									"fa_workday_flag",
+									"fa_manager_fee",
+									"fa_reserve_risk",
+									"fa_trustee_fee",
+									"fa_sale_svr_fee",
+									"fa_perf_pay"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["prod_nav"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from prod_nav where 1=1"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

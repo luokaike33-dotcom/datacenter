@@ -1,0 +1,149 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      statement_type,
+                                      iflisted_data,
+                                      report_period,
+                                      s_fa_eps_diluted,
+                                      s_fa_bps_sh,
+                                      s_fa_bps_adjust,
+                                      roe_diluted,
+                                      s_info_div,
+                                      ann_dt,
+                                      s_fa_eps_ex,
+                                      roe_weighted,
+                                      roe_exweighted,
+                                      s_fa_eps_basic,
+                                      s_fa_eps_exbasic,
+                                      roe_ex,
+                                      s_fa_deductedprofit,
+                                      s_fa_current,
+                                      s_fa_quick,
+                                      s_fa_arturn,
+                                      s_fa_invturn,
+                                      s_ft_debttoassets,
+                                      s_fa_ocfps,
+                                      net_profit,
+                                      rd_expense,
+                                      s_fa_eps_diluted2,
+                                      s_fa_eps_exdiluted,
+                                      s_fa_bps,
+                                      s_fa_extraordinary,
+                                      s_fa_tot_assets,
+                                      s_fa_yoyeps_basic,
+                                      s_fa_yoyeps_diluted,
+                                      s_fa_yoyequity,
+                                      growth_bps_sh,
+                                      s_fa_yoyocfps,
+                                      yoy_net_cash_flows,
+                                      s_fa_deductedprofit_yoy,
+                                      yoy_roe_diluted,
+                                      s_fa_yoyop,
+                                      s_fa_yoyebt,
+                                      net_profit_yoy,
+                                      crncy_code,
+                                      statement_type_code,
+                                      contributionps,
+                                      memo,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondimportantindicators.json' as task_rs_id
+                                from ${srcoradbname}.cbondimportantindicators WHERE report_period BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondimportantindicators/busi_month=${busi_month}",
+                        "fileName": "w_cbondimportantindicators",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"statement_type","type":"string"},
+                                      {"name":"iflisted_data","type":"bigint"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"s_fa_eps_diluted","type":"double"},
+                                      {"name":"s_fa_bps_sh","type":"double"},
+                                      {"name":"s_fa_bps_adjust","type":"double"},
+                                      {"name":"roe_diluted","type":"double"},
+                                      {"name":"s_info_div","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"s_fa_eps_ex","type":"double"},
+                                      {"name":"roe_weighted","type":"double"},
+                                      {"name":"roe_exweighted","type":"double"},
+                                      {"name":"s_fa_eps_basic","type":"double"},
+                                      {"name":"s_fa_eps_exbasic","type":"double"},
+                                      {"name":"roe_ex","type":"double"},
+                                      {"name":"s_fa_deductedprofit","type":"double"},
+                                      {"name":"s_fa_current","type":"double"},
+                                      {"name":"s_fa_quick","type":"double"},
+                                      {"name":"s_fa_arturn","type":"double"},
+                                      {"name":"s_fa_invturn","type":"double"},
+                                      {"name":"s_ft_debttoassets","type":"double"},
+                                      {"name":"s_fa_ocfps","type":"double"},
+                                      {"name":"net_profit","type":"double"},
+                                      {"name":"rd_expense","type":"double"},
+                                      {"name":"s_fa_eps_diluted2","type":"double"},
+                                      {"name":"s_fa_eps_exdiluted","type":"double"},
+                                      {"name":"s_fa_bps","type":"double"},
+                                      {"name":"s_fa_extraordinary","type":"double"},
+                                      {"name":"s_fa_tot_assets","type":"double"},
+                                      {"name":"s_fa_yoyeps_basic","type":"double"},
+                                      {"name":"s_fa_yoyeps_diluted","type":"double"},
+                                      {"name":"s_fa_yoyequity","type":"double"},
+                                      {"name":"growth_bps_sh","type":"double"},
+                                      {"name":"s_fa_yoyocfps","type":"double"},
+                                      {"name":"yoy_net_cash_flows","type":"double"},
+                                      {"name":"s_fa_deductedprofit_yoy","type":"double"},
+                                      {"name":"yoy_roe_diluted","type":"double"},
+                                      {"name":"s_fa_yoyop","type":"double"},
+                                      {"name":"s_fa_yoyebt","type":"double"},
+                                      {"name":"net_profit_yoy","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"statement_type_code","type":"bigint"},
+                                      {"name":"contributionps","type":"double"},
+                                      {"name":"memo","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

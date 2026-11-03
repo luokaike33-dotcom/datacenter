@@ -1,0 +1,130 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/o3_ttradetypes",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"long"},
+									{"index":18,"type":"long"},
+									{"index":19,"type":"long"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"long"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"long"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"date"},
+									{"index":38,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_serial_id",
+									"c_trade_type",
+									"vc_trade_level",
+									"l_parent_id",
+									"l_fund_id",
+									"vc_trade_no",
+									"vc_trade_name",
+									"c_calculate_type",
+									"c_calculate_model",
+									"l_calculate_circle",
+									"l_last_date",
+									"c_trade_status",
+									"l_operator_no",
+									"c_share_flag",
+									"vc_remarks",
+									"c_stockpool_type",
+									"en_trade_power",
+									"l_root_id",
+									"l_max_amount",
+									"l_company_id",
+									"vc_dynamic_sql",
+									"vc_param1_value",
+									"vc_param2_value",
+									"vc_param3_value",
+									"vc_param1_name",
+									"vc_param2_name",
+									"vc_param3_name",
+									"l_date",
+									"vc_file_path",
+									"c_company_ralation",
+									"vc_underlying_index",
+									"l_dimlayer_id",
+									"vc_company_mutex_ids",
+									"vc_relation_trade_ids",
+									"vc_timestamp",
+									"vc_dynamic_condition",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_ttradetypes"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from o3_ttradetypes"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

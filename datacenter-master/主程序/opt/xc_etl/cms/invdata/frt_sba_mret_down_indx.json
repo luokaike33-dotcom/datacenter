@@ -1,0 +1,92 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+                        select 
+								rept_date,
+								yr,
+								mth,
+								prd_comb_code,
+								prd_name,
+								net_value,
+								total_net_value,
+								ytd_incm,
+								weighted_net_value,
+								sty_yield,
+								setup_yield,
+								setup_ann_yield,
+								setup_ann_volatility,
+								setup_maxdrawdown,
+								setup_shpr,
+								setup_up_rose_mth_count,
+								setup_next_down_mth_count,
+							  bacthno,
+                inserttime,
+                updatetime,
+                sk_month
+							FROM ${srcdbname}.frt_sba_mret_down_indx  "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"rept_date",
+									"yr",
+									"mth",
+									"prd_comb_code",
+									"prd_name",
+									"net_value",
+									"total_net_value",
+									"ytd_incm",
+									"weighted_net_value",
+									"sty_yield",
+									"setup_yield",
+									"setup_ann_yield",
+									"setup_ann_volatility",
+									"setup_maxdrawdown",
+									"setup_shpr",
+									"setup_up_rose_mth_count",
+									"setup_next_down_mth_count",
+									"bacthno",
+                  "inserttime",
+									"updatetime",
+									"sk_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["frt_sba_mret_down_indx"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table frt_sba_mret_down_indx"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

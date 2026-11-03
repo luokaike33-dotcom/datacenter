@@ -1,0 +1,120 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {"reader": {
+                "name": "hivereader",
+                "parameter": {
+                    "hive_cmd": "beeline",
+                    "hiveSql": ["
+                           select 
+                            combi_id, 
+                            cast(null as string) as trace_id, 
+                            '1' as enabled_flag, 
+                            'SYSTEM' as create_by, 
+                            cast(from_unixtime(unix_timestamp(),'yyyy-MM-dd HH:mm:ss') as date)  as create_date, 
+                            'SYSTEM' as update_by, 
+                            cast(from_unixtime(unix_timestamp(),'yyyy-MM-dd HH:mm:ss') as date)  as update_date, 
+                            concat('STRA_',combi_id) as prod_code, 
+                            '1' as sys_sts, 
+                            combi_name as prod_sht, 
+                            '2' as prod_source, 
+                            combi_name as prod_name, 
+                            cast(null as string) as inv_typ_comi, 
+                            cast(null as string) as is_srp, 
+                            cast(null as string) as is_out_cnf, 
+                            cast(null as string) as is_cash_magr, 
+                            cast(null as string) as is_qdii, 
+                            cast(current_date() as date)  as valu_cnfm_dt, 
+                            cast(from_unixtime(unix_timestamp(setup_date,'yyyyMMdd'),'yyyy-MM-dd') as date) as found_dt, 
+                            99991231 as end_dt, 
+                            cast(null as string) as is_fof_mom, 
+                            '1' as prd_cald, 
+                            cast(null as string) as track_idx, 
+                            cast(null as string) as is_citd_amor, 
+                            cast(null as string) as is_fcode, 
+                            '102001' as pfm_basi, 
+                            'STRA' as sys_rs_id, 
+                            '102001' as contr_basi, 
+                            cast('9999-12-31' as date) as clr_dt, 
+                            cast(null as string) as fund_typi, 
+                            cast(null as string) as fund_typii, 
+                            combi_name as prd_full_name, 
+                            combi_name as prd_name, 
+                            '3' as prd_typ, 
+                            cast(null as string) as lst_nav_date, 
+                            '102001' as jrgc_basi
+                            from ${srcdbname}.ims_t_icm_combi "],
+                    "defaultFS": "hdfs://${srchdfsurl}",
+                    "tmpDatabasePath": "${srchivedbpath}",
+                    "tmpDatabase": "${srcdbname}",
+                    "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                    "hive_ldap_user_name": "${srcusername}",
+                    "hive_ldap_password": "${srcpassword}",
+                    "haveKerberos": "${haveKerberos}",
+                    "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                    "kerberosPrincipal": "${kerberosPrincipal}"
+                }
+            },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"id", 
+                                    "trace_id", 
+                                    "enabled_flag", 
+                                    "create_by", 
+                                    "create_date", 
+                                    "update_by", 
+                                    "update_date", 
+                                    "prod_code", 
+                                    "sys_sts", 
+                                    "prod_sht", 
+                                    "prod_source", 
+                                    "prod_name", 
+                                    "inv_typ_comi", 
+                                    "is_srp", 
+                                    "is_out_cnf", 
+                                    "is_cash_magr", 
+                                    "is_qdii", 
+                                    "valu_cnfm_dt", 
+                                    "found_dt", 
+                                    "end_dt", 
+                                    "is_fof_mom", 
+                                    "prd_cald", 
+                                    "track_idx", 
+                                    "is_citd_amor", 
+                                    "is_fcode", 
+                                    "pfm_basi", 
+                                    "sys_rs_id", 
+                                    "contr_basi", 
+                                    "clr_dt", 
+                                    "fund_typi", 
+                                    "fund_typii", 
+                                    "prd_full_name", 
+                                    "prd_name", 
+                                    "prd_typ", 
+                                    "lst_nav_date", 
+                                    "jrgc_basi"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["prd_base_info"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from prd_base_info where sys_rs_id = 'STRA'"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+

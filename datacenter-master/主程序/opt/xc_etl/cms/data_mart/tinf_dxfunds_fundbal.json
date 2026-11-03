@@ -1,0 +1,88 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+                                fa_audit_date,
+                                agencyno,
+                                agency_name,
+                                bk_product,
+                                product_cname,
+                                bk_product_of_m,
+                                product_cname_of_m,
+                                all_capital,
+                                cust_manager_id,
+                                cust_manager_name,
+                                prod_manager_id,
+                                prod_manager_name,
+                                invest_manager_id,
+                                invest_manager_name,
+                                dk_prod_lv2_type,
+                                dk_system_of_upd,
+                                batchno,
+                                inserttime,
+                                updatetime
+							FROM ${srcdbname}.tinf_dxfunds_fundbal"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"fa_audit_date",
+									"agencyno",
+									"agency_name",
+									"bk_product",
+									"product_cname",
+									"bk_product_of_m",
+									"product_cname_of_m",
+									"all_capital",
+									"cust_manager_id",
+									"cust_manager_name",
+									"prod_manager_id",
+									"prod_manager_name",
+									"invest_manager_id",
+									"invest_manager_name",
+									"dk_prod_lv2_type",
+									"dk_system_of_upd",
+									"batchno",
+									"inserttime",
+									"updatetime"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["tinf_dxfunds_fundbal"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table tinf_dxfunds_fundbal"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

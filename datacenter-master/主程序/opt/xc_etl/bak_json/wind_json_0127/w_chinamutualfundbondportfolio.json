@@ -1,0 +1,54 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,f_prt_enddate,crncy_code,s_info_bondwindcode,f_prt_bdvalue,f_prt_bdquantity,f_prt_bdvaluetonav,f_ann_date,opdate,opmode from ${srcoradbname}.chinamutualfundbondportfolio"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundbondportfolio",
+                        "fileName": "w_chinamutualfundbondportfolio",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"f_prt_enddate","type":"STRING"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"s_info_bondwindcode","type":"STRING"},
+                        {"name":"f_prt_bdvalue","type":"DOUBLE"},
+                        {"name":"f_prt_bdquantity","type":"DOUBLE"},
+                        {"name":"f_prt_bdvaluetonav","type":"DOUBLE"},
+                        {"name":"f_ann_date","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

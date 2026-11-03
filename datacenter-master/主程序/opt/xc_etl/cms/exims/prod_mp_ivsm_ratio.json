@@ -1,0 +1,81 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/prod_mp_ivsm_ratio",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"double"},
+									{"index":2,"type":"double"},
+									{"index":3,"type":"double"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"mprd_code",
+									"min_equi_asset_ivst_ratio",
+									"max_equi_asset_ivst_ratio",
+									"max_hk_equi_asset_ivst_ratio",
+									"min_bond_asset_ivst_ratio",
+									"max_bond_asset_ivst_ratio",
+									"min_curr_asset_ivst_ratio",
+									"max_curr_asset_ivst_ratio",
+									"wrnt_ivsm_high_ratio",
+									"prd_inr_code",
+									"inserttime",
+									"updatetime",
+									"src_system",
+									"delete_flag",
+									"last_update_request",
+									"batchno",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["prod_mp_ivsm_ratio"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table prod_mp_ivsm_ratio"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

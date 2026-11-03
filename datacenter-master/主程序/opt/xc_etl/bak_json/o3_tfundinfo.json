@@ -1,0 +1,661 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": [
+                  "select l_fund_id, vc_fund_code, vc_fund_name, vc_fund_caption, l_default_asset, l_default_combi, l_open_date, c_interest_class, c_value_class, c_fund_type, c_fund_status, c_check_type, c_out_bond_type, vc_remarks, l_end_date, c_accountant_type, c_faload_state, vc_sequare_code, vc_ta_code, l_bank_id, en_fund_share, c_need_fa, c_fadeal_state, vc_currency_no, l_local_custodian, l_foreign_custodian, vc_permit_market, c_change_method, c_multi_currency, vc_collect_currency_no, c_cash_addup, c_liquidate_alone, c_tn_liquidate, l_liquidate_time, l_business_date, l_liquidate_date, c_synonym_flag, vc_bank_account, c_calculate_type, vc_cash_control_point, vc_stock_control_point, l_branch_date, c_account_type, c_tax_flag, c_long_stop_type, l_paper_no, l_net_price_digits, l_beentrust_no, vc_bank_name, vc_trust_account, vc_account_name, l_pattern_id, c_frozen_day_type, l_frozen_days, vc_object_code, c_bond_risk_value, c_groupfa, c_tasettle_type, vc_subcontract_no, vc_intrabank_no, vc_pay_no, c_bond_risk_cost, en_foreigh_quota, l_apply_exchange_days, l_redemption_exchange_days, vc_foreign_trust_account, c_invest_direction, c_market_type, vc_permit_etfs, c_invest_type, c_use_loose_balance, c_etf_value_type, c_future_liquidate_alone, c_futures_invest_type, c_bondaccount_type, vc_bank_linkman, vc_bank_phone, vc_bank_fax, vc_provincecode, vc_city, l_set_no, c_bond_stop_type, c_gx_cash_linked, l_tadeal_serialno, l_future_branch_date, vc_shclearing_account, c_rz_type, en_rz_limit, vc_rz_items, en_future_stoploss_ratio, c_tax_type, c_frozen_byasset, vc_faimp_source, l_frozen_start_days, vc_fa_net_name, c_trade_type, en_navtosub_ratio, c_class_bond_type, c_exchange_abs_type, c_bank_abs_type, l_yysh_cash_frozen, l_yysh_stock_frozen, vc_bank_account_name, vc_shclearing_account_name, l_asset_ref_time, c_exchange_net_type, c_initializtion_flag, l_approval_operator_no, c_zzd_type, en_fact_collect, en_fact_collect_shares, c_inactive_type, en_fund_facevalue, l_org_id, l_dept_id, c_zq_gzms, c_yhjzq_price_source, c_jyszq_price_source, vc_fund_id, c_fa_precision_mode, c_commision_mode, vc_fund_value_upseat, c_hgzcfkjs_mode, l_sjsgzj_ws, l_sjskzzgzj_wz, c_uft_trade, c_approve_mode, c_ggtgzjgxs_mode, c_agent_type, vc_default_saleorg, c_bankbond_gz_decimal, c_fundflow_type, vc_check_saleorg, l_valuemodel_id, c_uc_qhliq_flag, l_last_import_date, c_gzxyzr_value_type, c_jyssmz_value_type, vc_timestamp, l_cancel_date, l_ggt_set_no, c_jysqjjyzq_value_mode, c_liquidate_status, c_futures_liquidate_status, l_provision_asset, c_trade_settle_mode, vc_open_range, c_ggt_tax_flag, c_resaccount_type,vc_discount_restype,to_char(sysdate-1,'yyyymmdd') as bath_dt, cast(sysdate as timestamp) as data_ins_time, 'o3_tfundinfo.json' AS task_rs_id from ${srcoradbname}.tfundinfo"
+                ],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_tfundinfo",
+            "fileName": "o3_tfundinfo",
+            "column": [
+              {
+                "name": "l_fund_id",
+                "type": "int"
+              },
+              {
+                "name": "vc_fund_code",
+                "type": "string"
+              },
+              {
+                "name": "vc_fund_name",
+                "type": "string"
+              },
+              {
+                "name": "vc_fund_caption",
+                "type": "string"
+              },
+              {
+                "name": "l_default_asset",
+                "type": "int"
+              },
+              {
+                "name": "l_default_combi",
+                "type": "bigint"
+              },
+              {
+                "name": "l_open_date",
+                "type": "int"
+              },
+              {
+                "name": "c_interest_class",
+                "type": "string"
+              },
+              {
+                "name": "c_value_class",
+                "type": "string"
+              },
+              {
+                "name": "c_fund_type",
+                "type": "string"
+              },
+              {
+                "name": "c_fund_status",
+                "type": "string"
+              },
+              {
+                "name": "c_check_type",
+                "type": "string"
+              },
+              {
+                "name": "c_out_bond_type",
+                "type": "string"
+              },
+              {
+                "name": "vc_remarks",
+                "type": "string"
+              },
+              {
+                "name": "l_end_date",
+                "type": "int"
+              },
+              {
+                "name": "c_accountant_type",
+                "type": "string"
+              },
+              {
+                "name": "c_faload_state",
+                "type": "string"
+              },
+              {
+                "name": "vc_sequare_code",
+                "type": "string"
+              },
+              {
+                "name": "vc_ta_code",
+                "type": "string"
+              },
+              {
+                "name": "l_bank_id",
+                "type": "bigint"
+              },
+              {
+                "name": "en_fund_share",
+                "type": "double"
+              },
+              {
+                "name": "c_need_fa",
+                "type": "string"
+              },
+              {
+                "name": "c_fadeal_state",
+                "type": "string"
+              },
+              {
+                "name": "vc_currency_no",
+                "type": "string"
+              },
+              {
+                "name": "l_local_custodian",
+                "type": "bigint"
+              },
+              {
+                "name": "l_foreign_custodian",
+                "type": "bigint"
+              },
+              {
+                "name": "vc_permit_market",
+                "type": "string"
+              },
+              {
+                "name": "c_change_method",
+                "type": "string"
+              },
+              {
+                "name": "c_multi_currency",
+                "type": "string"
+              },
+              {
+                "name": "vc_collect_currency_no",
+                "type": "string"
+              },
+              {
+                "name": "c_cash_addup",
+                "type": "string"
+              },
+              {
+                "name": "c_liquidate_alone",
+                "type": "string"
+              },
+              {
+                "name": "c_tn_liquidate",
+                "type": "string"
+              },
+              {
+                "name": "l_liquidate_time",
+                "type": "int"
+              },
+              {
+                "name": "l_business_date",
+                "type": "int"
+              },
+              {
+                "name": "l_liquidate_date",
+                "type": "int"
+              },
+              {
+                "name": "c_synonym_flag",
+                "type": "string"
+              },
+              {
+                "name": "vc_bank_account",
+                "type": "string"
+              },
+              {
+                "name": "c_calculate_type",
+                "type": "string"
+              },
+              {
+                "name": "vc_cash_control_point",
+                "type": "string"
+              },
+              {
+                "name": "vc_stock_control_point",
+                "type": "string"
+              },
+              {
+                "name": "l_branch_date",
+                "type": "int"
+              },
+              {
+                "name": "c_account_type",
+                "type": "string"
+              },
+              {
+                "name": "c_tax_flag",
+                "type": "string"
+              },
+              {
+                "name": "c_long_stop_type",
+                "type": "string"
+              },
+              {
+                "name": "l_paper_no",
+                "type": "int"
+              },
+              {
+                "name": "l_net_price_digits",
+                "type": "int"
+              },
+              {
+                "name": "l_beentrust_no",
+                "type": "bigint"
+              },
+              {
+                "name": "vc_bank_name",
+                "type": "string"
+              },
+              {
+                "name": "vc_trust_account",
+                "type": "string"
+              },
+              {
+                "name": "vc_account_name",
+                "type": "string"
+              },
+              {
+                "name": "l_pattern_id",
+                "type": "int"
+              },
+              {
+                "name": "c_frozen_day_type",
+                "type": "string"
+              },
+              {
+                "name": "l_frozen_days",
+                "type": "bigint"
+              },
+              {
+                "name": "vc_object_code",
+                "type": "string"
+              },
+              {
+                "name": "c_bond_risk_value",
+                "type": "string"
+              },
+              {
+                "name": "c_groupfa",
+                "type": "string"
+              },
+              {
+                "name": "c_tasettle_type",
+                "type": "string"
+              },
+              {
+                "name": "vc_subcontract_no",
+                "type": "string"
+              },
+              {
+                "name": "vc_intrabank_no",
+                "type": "string"
+              },
+              {
+                "name": "vc_pay_no",
+                "type": "string"
+              },
+              {
+                "name": "c_bond_risk_cost",
+                "type": "string"
+              },
+              {
+                "name": "en_foreigh_quota",
+                "type": "double"
+              },
+              {
+                "name": "l_apply_exchange_days",
+                "type": "int"
+              },
+              {
+                "name": "l_redemption_exchange_days",
+                "type": "int"
+              },
+              {
+                "name": "vc_foreign_trust_account",
+                "type": "string"
+              },
+              {
+                "name": "c_invest_direction",
+                "type": "string"
+              },
+              {
+                "name": "c_market_type",
+                "type": "string"
+              },
+              {
+                "name": "vc_permit_etfs",
+                "type": "string"
+              },
+              {
+                "name": "c_invest_type",
+                "type": "string"
+              },
+              {
+                "name": "c_use_loose_balance",
+                "type": "string"
+              },
+              {
+                "name": "c_etf_value_type",
+                "type": "string"
+              },
+              {
+                "name": "c_future_liquidate_alone",
+                "type": "string"
+              },
+              {
+                "name": "c_futures_invest_type",
+                "type": "string"
+              },
+              {
+                "name": "c_bondaccount_type",
+                "type": "string"
+              },
+              {
+                "name": "vc_bank_linkman",
+                "type": "string"
+              },
+              {
+                "name": "vc_bank_phone",
+                "type": "string"
+              },
+              {
+                "name": "vc_bank_fax",
+                "type": "string"
+              },
+              {
+                "name": "vc_provincecode",
+                "type": "string"
+              },
+              {
+                "name": "vc_city",
+                "type": "string"
+              },
+              {
+                "name": "l_set_no",
+                "type": "bigint"
+              },
+              {
+                "name": "c_bond_stop_type",
+                "type": "string"
+              },
+              {
+                "name": "c_gx_cash_linked",
+                "type": "string"
+              },
+              {
+                "name": "l_tadeal_serialno",
+                "type": "int"
+              },
+              {
+                "name": "l_future_branch_date",
+                "type": "int"
+              },
+              {
+                "name": "vc_shclearing_account",
+                "type": "string"
+              },
+              {
+                "name": "c_rz_type",
+                "type": "string"
+              },
+              {
+                "name": "en_rz_limit",
+                "type": "double"
+              },
+              {
+                "name": "vc_rz_items",
+                "type": "string"
+              },
+              {
+                "name": "en_future_stoploss_ratio",
+                "type": "double"
+              },
+              {
+                "name": "c_tax_type",
+                "type": "string"
+              },
+              {
+                "name": "c_frozen_byasset",
+                "type": "string"
+              },
+              {
+                "name": "vc_faimp_source",
+                "type": "string"
+              },
+              {
+                "name": "l_frozen_start_days",
+                "type": "int"
+              },
+              {
+                "name": "vc_fa_net_name",
+                "type": "string"
+              },
+              {
+                "name": "c_trade_type",
+                "type": "string"
+              },
+              {
+                "name": "en_navtosub_ratio",
+                "type": "double"
+              },
+              {
+                "name": "c_class_bond_type",
+                "type": "string"
+              },
+              {
+                "name": "c_exchange_abs_type",
+                "type": "string"
+              },
+              {
+                "name": "c_bank_abs_type",
+                "type": "string"
+              },
+              {
+                "name": "l_yysh_cash_frozen",
+                "type": "int"
+              },
+              {
+                "name": "l_yysh_stock_frozen",
+                "type": "int"
+              },
+              {
+                "name": "vc_bank_account_name",
+                "type": "string"
+              },
+              {
+                "name": "vc_shclearing_account_name",
+                "type": "string"
+              },
+              {
+                "name": "l_asset_ref_time",
+                "type": "int"
+              },
+              {
+                "name": "c_exchange_net_type",
+                "type": "string"
+              },
+              {
+                "name": "c_initializtion_flag",
+                "type": "string"
+              },
+              {
+                "name": "l_approval_operator_no",
+                "type": "int"
+              },
+              {
+                "name": "c_zzd_type",
+                "type": "string"
+              },
+              {
+                "name": "en_fact_collect",
+                "type": "double"
+              },
+              {
+                "name": "en_fact_collect_shares",
+                "type": "double"
+              },
+              {
+                "name": "c_inactive_type",
+                "type": "string"
+              },
+              {
+                "name": "en_fund_facevalue",
+                "type": "double"
+              },
+              {
+                "name": "l_org_id",
+                "type": "bigint"
+              },
+              {
+                "name": "l_dept_id",
+                "type": "bigint"
+              },
+              {
+                "name": "c_zq_gzms",
+                "type": "string"
+              },
+              {
+                "name": "c_yhjzq_price_source",
+                "type": "string"
+              },
+              {
+                "name": "c_jyszq_price_source",
+                "type": "string"
+              },
+              {
+                "name": "vc_fund_id",
+                "type": "string"
+              },
+              {
+                "name": "c_fa_precision_mode",
+                "type": "string"
+              },
+              {
+                "name": "c_commision_mode",
+                "type": "string"
+              },
+              {
+                "name": "vc_fund_value_upseat",
+                "type": "string"
+              },
+              {
+                "name": "c_hgzcfkjs_mode",
+                "type": "string"
+              },
+              {
+                "name": "l_sjsgzj_ws",
+                "type": "int"
+              },
+              {
+                "name": "l_sjskzzgzj_wz",
+                "type": "int"
+              },
+              {
+                "name": "c_uft_trade",
+                "type": "string"
+              },
+              {
+                "name": "c_approve_mode",
+                "type": "string"
+              },
+              {
+                "name": "c_ggtgzjgxs_mode",
+                "type": "string"
+              },
+              {
+                "name": "c_agent_type",
+                "type": "string"
+              },
+              {
+                "name": "vc_default_saleorg",
+                "type": "string"
+              },
+              {
+                "name": "c_bankbond_gz_decimal",
+                "type": "string"
+              },
+              {
+                "name": "c_fundflow_type",
+                "type": "string"
+              },
+              {
+                "name": "vc_check_saleorg",
+                "type": "string"
+              },
+              {
+                "name": "l_valuemodel_id",
+                "type": "int"
+              },
+              {
+                "name": "c_uc_qhliq_flag",
+                "type": "string"
+              },
+              {
+                "name": "l_last_import_date",
+                "type": "int"
+              },
+              {
+                "name": "c_gzxyzr_value_type",
+                "type": "string"
+              },
+              {
+                "name": "c_jyssmz_value_type",
+                "type": "string"
+              },
+              {
+                "name": "vc_timestamp",
+                "type": "string"
+              },
+              {
+                "name": "l_cancel_date",
+                "type": "int"
+              },
+              {
+                "name": "l_ggt_set_no",
+                "type": "bigint"
+              },
+              {
+                "name": "c_jysqjjyzq_value_mode",
+                "type": "string"
+              },
+              {
+                "name": "c_liquidate_status",
+                "type": "string"
+              },
+              {
+                "name": "c_futures_liquidate_status",
+                "type": "string"
+              },
+              {
+                "name": "l_provision_asset",
+                "type": "int"
+              },
+              {
+                "name": "c_trade_settle_mode",
+                "type": "string"
+              },
+              {
+                "name": "vc_open_range",
+                "type": "string"
+              },
+              {
+                "name": "c_ggt_tax_flag",
+                "type": "string"
+              },
+              {
+                "name": "c_resaccount_type",
+                "type": "string"
+              },
+              {
+                "name": "vc_discount_restype",
+                "type": "string"
+              },
+              {
+                "name": "bath_dt",
+                "type": "string"
+              },
+              {
+                "name": "data_ins_time",
+                "type": "timestamp"
+              },
+              {
+                "name": "task_rs_id",
+                "type": "string"
+              }
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"
+      }
+    },
+    "errorLimit": {
+      "record": "0",
+      "percentage": "0"
+    }
+  }
+}

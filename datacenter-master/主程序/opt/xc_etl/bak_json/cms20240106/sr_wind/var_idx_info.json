@@ -1,0 +1,113 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_idx_info",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"DOUBLE"},
+                                    {"index":17,"type":"DOUBLE"},
+                                    {"index":18,"type":"DOUBLE"},
+                                    {"index":19,"type":"double"},
+                                    {"index":20,"type":"double"},
+                                    {"index":21,"type":"string"},
+                                    {"index":22,"type":"string"},
+                                    {"index":23,"type":"string"},
+                                    {"index":24,"type":"string"},
+                                    {"index":25,"type":"string"},
+                                    {"index":26,"type":"string"},
+                                    {"index":27,"type":"string"},
+                                    {"index":28,"type":"long"},
+                                    {"index":29,"type":"string"},
+									{"name":"dm_created_time","type":"string","value":"${kerberosPrincipal}"}
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "trd_code",
+                                    "chi_name",
+                                    "pub_com_id",
+                                    "pub_com_name",
+                                    "crt_com_id",
+                                    "crt_com_name",
+                                    "typ_code",
+                                    "typ_code_desc",
+                                    "typ_codei",
+                                    "typ_codei_desc",
+                                    "typ_codeii",
+                                    "typ_codeii_desc",
+                                    "exch_code",
+                                    "exch_name",
+                                    "curr_code",
+                                    "pub_dt",
+                                    "end_dt",
+                                    "bas_dt",
+                                    "bas_pnt",
+                                    "compo_num",
+                                    "wt_meth",
+                                    "wt_typ_name",
+                                    "styl",
+                                    "idx_syn",
+                                    "idx_rela_typ",
+                                    "main_secu_id",
+                                    "coms_type",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:mysql://${tgrurl}",
+                              "selectedDatabase": "${selectedDatabase}",
+                              "table": ["var_idx_info"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "loadUrl": [${loadUrl}],
+                        "loadProps": {"column_separator": "\\x01","row_delimiter":"\\x02"},
+                        "preSql":["truncate table data_mart.var_idx_info "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

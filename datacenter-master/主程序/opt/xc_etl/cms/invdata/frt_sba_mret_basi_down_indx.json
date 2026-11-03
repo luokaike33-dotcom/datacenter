@@ -1,0 +1,84 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+                        select 
+                            rept_date,
+                            prd_comb_code,
+                            indx_code,
+                            yr,
+                            clqn_prc_yuan,
+                            ann_volatility,
+                            ann_yield,
+                            shpr,
+                            maxdrawdown,
+                            sty_yield,
+                            setup_yield,
+                            ytd_incm,
+                            setup_tdy_cprc,
+                            bacthno,
+                            inserttime,
+                            updatetime,
+                            sk_month
+							FROM ${srcdbname}.frt_sba_mret_basi_down_indx  "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"rept_date",
+									"prd_comb_code",
+									"indx_code",
+									"yr",
+									"clqn_prc_yuan",
+									"ann_volatility",
+									"ann_yield",
+									"shpr",
+									"maxdrawdown",
+									"sty_yield",
+									"setup_yield",
+									"ytd_incm",
+                  "setup_tdy_cprc",
+                  "bacthno",
+                  "inserttime",
+									"updatetime",
+									"sk_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["frt_sba_mret_basi_down_indx"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table frt_sba_mret_basi_down_indx"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

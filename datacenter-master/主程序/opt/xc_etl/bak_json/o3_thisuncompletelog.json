@@ -1,0 +1,72 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select l_trade_date,l_complete_date,l_fund_id,l_asset_id,l_basecombi_id,c_market_no,vc_stockholder_id,vc_seat_id,vc_inter_code,c_entrust_direction,l_amount,en_banlance,c_deal_flag,vc_remark,c_invest_type,l_busin_flag,en_back_balance,l_back_date,c_cash_transfer,l_in_asset_id,l_serial_no,l_deal_serail_no,vc_purchasing_code,vc_deal_no,vc_report_id,c_produce_mark,en_fee,l_instance_id,c_busin_class from ${srcoradbname}.thisuncompletelog where l_trade_date = ${p_dt}"],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_thisuncompletelog/p_dt=${p_dt}",
+            "fileName": "o3_thisuncompletelog",
+            "column": [
+              {"name":"l_trade_date","type":"int"},
+              {"name":"l_complete_date","type":"int"},
+              {"name":"l_fund_id","type":"int"},
+              {"name":"l_asset_id","type":"int"},
+              {"name":"l_basecombi_id","type":"bigint"},
+              {"name":"c_market_no","type":"string"},
+              {"name":"vc_stockholder_id","type":"string"},
+              {"name":"vc_seat_id","type":"string"},
+              {"name":"vc_inter_code","type":"string"},
+              {"name":"c_entrust_direction","type":"string"},
+              {"name":"l_amount","type":"double"},
+              {"name":"en_banlance","type":"double"},
+              {"name":"c_deal_flag","type":"string"},
+              {"name":"vc_remark","type":"string"},
+              {"name":"c_invest_type","type":"string"},
+              {"name":"l_busin_flag","type":"int"},
+              {"name":"en_back_balance","type":"double"},
+              {"name":"l_back_date","type":"int"},
+              {"name":"c_cash_transfer","type":"string"},
+              {"name":"l_in_asset_id","type":"int"},
+              {"name":"l_serial_no","type":"bigint"},
+              {"name":"l_deal_serail_no","type":"int"},
+              {"name":"vc_purchasing_code","type":"string"},
+              {"name":"vc_deal_no","type":"string"},
+              {"name":"vc_report_id","type":"string"},
+              {"name":"c_produce_mark","type":"string"},
+              {"name":"en_fee","type":"double"},
+              {"name":"l_instance_id","type":"bigint"},
+              {"name":"c_busin_class","type":"string"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

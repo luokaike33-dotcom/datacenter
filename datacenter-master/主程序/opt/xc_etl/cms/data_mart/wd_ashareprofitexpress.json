@@ -1,0 +1,132 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/w_ashareprofitexpress",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"double"},
+									{"index":31,"type":"double"},
+									{"index":32,"type":"double"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"double"},
+									{"index":35,"type":"date"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"date"},
+									{"index":39,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"ann_dt",
+									"report_period",
+									"oper_rev",
+									"oper_profit",
+									"tot_profit",
+									"net_profit_excl_min_int_inc",
+									"tot_assets",
+									"tot_shrhldr_eqy_excl_min_int",
+									"eps_diluted",
+									"roe_diluted",
+									"s_isaudit",
+									"yoynet_profit_excl_min_int_inc",
+									"brief_performance",
+									"memo",
+									"s_fa_bps",
+									"s_fa_yoysales",
+									"s_fa_yoyop",
+									"s_fa_yoyebt",
+									"s_fa_yoynetprofit_deducted",
+									"s_fa_yoyeps_basic",
+									"s_fa_roe_yearly",
+									"s_fa_growth_assets",
+									"s_fa_yoyequity",
+									"growth_bps_sh",
+									"last_year_oper_rev",
+									"last_year_oper_profit",
+									"last_year_tot_profit",
+									"last_year_net_profit_excl_inc",
+									"last_year_eps_diluted",
+									"s_early_net_assets",
+									"s_early_bps",
+									"actual_ann_dt",
+									"performexp_npdedtoshareholder",
+									"opdate",
+									"opmode",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_ashareprofitexpress"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table wd_ashareprofitexpress "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

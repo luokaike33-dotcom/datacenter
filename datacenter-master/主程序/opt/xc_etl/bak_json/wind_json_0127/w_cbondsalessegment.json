@@ -1,0 +1,99 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      s_segment_item,
+                                      s_segment_cost_ratio,
+                                      s_segment_profit_ratio,
+                                      s_segment_sales_ratio,
+                                      s_report_period,
+                                      s_crncy_code,
+                                      s_segment_sales,
+                                      s_segment_profit,
+                                      s_segment_itemcode,
+                                      s_segment_cost,
+                                      s_grossprofitmargin,
+                                      s_prime_oper_rev_yoy,
+                                      s_prime_oper_cost_yoy,
+                                      s_gross_profit_margin_yoy,
+                                      s_segment_item_code,
+                                      s_segment_sales_code,
+                                      s_accounts_id,
+                                      s_is_publishvalue,
+                                      s_gross_profit_yoy,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondsalessegment.json' as task_rs_id
+                                from ${srcoradbname}.cbondsalessegment WHERE s_report_period BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondsalessegment/busi_month=${busi_month}",
+                        "fileName": "w_cbondsalessegment",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"s_segment_item","type":"string"},
+                                      {"name":"s_segment_cost_ratio","type":"bigint"},
+                                      {"name":"s_segment_profit_ratio","type":"bigint"},
+                                      {"name":"s_segment_sales_ratio","type":"bigint"},
+                                      {"name":"s_report_period","type":"string"},
+                                      {"name":"s_crncy_code","type":"string"},
+                                      {"name":"s_segment_sales","type":"bigint"},
+                                      {"name":"s_segment_profit","type":"bigint"},
+                                      {"name":"s_segment_itemcode","type":"string"},
+                                      {"name":"s_segment_cost","type":"bigint"},
+                                      {"name":"s_grossprofitmargin","type":"bigint"},
+                                      {"name":"s_prime_oper_rev_yoy","type":"bigint"},
+                                      {"name":"s_prime_oper_cost_yoy","type":"bigint"},
+                                      {"name":"s_gross_profit_margin_yoy","type":"bigint"},
+                                      {"name":"s_segment_item_code","type":"string"},
+                                      {"name":"s_segment_sales_code","type":"bigint"},
+                                      {"name":"s_accounts_id","type":"string"},
+                                      {"name":"s_is_publishvalue","type":"bigint"},
+                                      {"name":"s_gross_profit_yoy","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,122 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,crncy_code,ann_dt,cb_info_preplandate,cb_info_smtganncedate,cb_issue_anncelstdate,cb_info_listeddate,cb_info_listdate,cb_info_isseparation,cb_info_distributo,cb_info_recommender,cb_clause_ischainterest,cb_clause_iscominterest,cb_clause_cominterest,cb_clause_cominterestitem,cb_clause_conversionitem,cb_clause_convchangeitem,cb_clause_convmonth,cb_clause_iniconvprice,cb_clause_iniconvproportion,cb_clause_callitem,cb_clause_reset_item,cb_clause_resetitem,cb_clause_rationitem,cb_list_passdate,cb_list_permitdate,cb_list_announcedate,cb_list_annocedate,cb_list_type,cb_list_fee,cb_list_rationdate,cb_list_rationchkindate,cb_list_rationpaymtdate,cb_list_rationcode,cb_list_rationname,cb_list_rationprice,cb_list_rationratiode,cb_list_rationratiomo,cb_list_rationvol,cb_list_originals,cb_list_dtonl,cb_list_pchasecodeonl,cb_list_pchnameonl,cb_list_pchpriceonl,cb_list_issuevolonl,cb_list_codeonl,cb_list_excesspchonl,cb_result_efsubscrpoff,cb_result_sucrateoff,cb_list_dateinstoff,cb_list_volinstoff,cb_result_sucrateon,cb_list_effectpchvoloff,cb_list_effpchof,cb_list_sucrateoff,cb_list_prerationvol,s_info_compcode,cb_list_issuesize,cb_list_issuequantity,sec_id,minunline_no,depunline_ratio,maxunline_no,unline_ud,is_convertible_bonds,minunline_public,maxunline_public,b_info_term_year_,b_info_interesttype,b_info_couponrate,b_info_interestfrequency,cb_result_sucrateon2,b_info_coupontxt,s_ratioanncedate,s_ratiodate, null as firstprelandate,opdate,opmode from ${srcoradbname}.ccbondissuance"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_ccbondissuance",
+                        "fileName": "w_ccbondissuance",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"ann_dt","type":"STRING"},
+                        {"name":"cb_info_preplandate","type":"STRING"},
+                        {"name":"cb_info_smtganncedate","type":"STRING"},
+                        {"name":"cb_issue_anncelstdate","type":"STRING"},
+                        {"name":"cb_info_listeddate","type":"STRING"},
+                        {"name":"cb_info_listdate","type":"STRING"},
+                        {"name":"cb_info_isseparation","type":"DOUBLE"},
+                        {"name":"cb_info_distributo","type":"STRING"},
+                        {"name":"cb_info_recommender","type":"STRING"},
+                        {"name":"cb_clause_ischainterest","type":"DOUBLE"},
+                        {"name":"cb_clause_iscominterest","type":"DOUBLE"},
+                        {"name":"cb_clause_cominterest","type":"DOUBLE"},
+                        {"name":"cb_clause_cominterestitem","type":"STRING"},
+                        {"name":"cb_clause_conversionitem","type":"STRING"},
+                        {"name":"cb_clause_convchangeitem","type":"STRING"},
+                        {"name":"cb_clause_convmonth","type":"STRING"},
+                        {"name":"cb_clause_iniconvprice","type":"DOUBLE"},
+                        {"name":"cb_clause_iniconvproportion","type":"DOUBLE"},
+                        {"name":"cb_clause_callitem","type":"STRING"},
+                        {"name":"cb_clause_reset_item","type":"STRING"},
+                        {"name":"cb_clause_resetitem","type":"STRING"},
+                        {"name":"cb_clause_rationitem","type":"STRING"},
+                        {"name":"cb_list_passdate","type":"STRING"},
+                        {"name":"cb_list_permitdate","type":"STRING"},
+                        {"name":"cb_list_announcedate","type":"STRING"},
+                        {"name":"cb_list_annocedate","type":"STRING"},
+                        {"name":"cb_list_type","type":"STRING"},
+                        {"name":"cb_list_fee","type":"DOUBLE"},
+                        {"name":"cb_list_rationdate","type":"STRING"},
+                        {"name":"cb_list_rationchkindate","type":"STRING"},
+                        {"name":"cb_list_rationpaymtdate","type":"STRING"},
+                        {"name":"cb_list_rationcode","type":"STRING"},
+                        {"name":"cb_list_rationname","type":"STRING"},
+                        {"name":"cb_list_rationprice","type":"DOUBLE"},
+                        {"name":"cb_list_rationratiode","type":"DOUBLE"},
+                        {"name":"cb_list_rationratiomo","type":"DOUBLE"},
+                        {"name":"cb_list_rationvol","type":"DOUBLE"},
+                        {"name":"cb_list_originals","type":"DOUBLE"},
+                        {"name":"cb_list_dtonl","type":"STRING"},
+                        {"name":"cb_list_pchasecodeonl","type":"STRING"},
+                        {"name":"cb_list_pchnameonl","type":"STRING"},
+                        {"name":"cb_list_pchpriceonl","type":"DOUBLE"},
+                        {"name":"cb_list_issuevolonl","type":"DOUBLE"},
+                        {"name":"cb_list_codeonl","type":"DOUBLE"},
+                        {"name":"cb_list_excesspchonl","type":"DOUBLE"},
+                        {"name":"cb_result_efsubscrpoff","type":"DOUBLE"},
+                        {"name":"cb_result_sucrateoff","type":"DOUBLE"},
+                        {"name":"cb_list_dateinstoff","type":"STRING"},
+                        {"name":"cb_list_volinstoff","type":"DOUBLE"},
+                        {"name":"cb_result_sucrateon","type":"DOUBLE"},
+                        {"name":"cb_list_effectpchvoloff","type":"DOUBLE"},
+                        {"name":"cb_list_effpchof","type":"DOUBLE"},
+                        {"name":"cb_list_sucrateoff","type":"DOUBLE"},
+                        {"name":"cb_list_prerationvol","type":"DOUBLE"},
+                        {"name":"s_info_compcode","type":"STRING"},
+                        {"name":"cb_list_issuesize","type":"DOUBLE"},
+                        {"name":"cb_list_issuequantity","type":"DOUBLE"},
+                        {"name":"sec_id","type":"STRING"},
+                        {"name":"minunline_no","type":"DOUBLE"},
+                        {"name":"depunline_ratio","type":"STRING"},
+                        {"name":"maxunline_no","type":"DOUBLE"},
+                        {"name":"unline_ud","type":"STRING"},
+                        {"name":"is_convertible_bonds","type":"DOUBLE"},
+                        {"name":"minunline_public","type":"DOUBLE"},
+                        {"name":"maxunline_public","type":"DOUBLE"},
+                        {"name":"b_info_term_year_","type":"DOUBLE"},
+                        {"name":"b_info_interesttype","type":"STRING"},
+                        {"name":"b_info_couponrate","type":"DOUBLE"},
+                        {"name":"b_info_interestfrequency","type":"STRING"},
+                        {"name":"cb_result_sucrateon2","type":"DOUBLE"},
+                        {"name":"b_info_coupontxt","type":"STRING"},
+                        {"name":"s_ratioanncedate","type":"STRING"},
+                        {"name":"s_ratiodate","type":"STRING"},
+                        {"name":"firstprelandate","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

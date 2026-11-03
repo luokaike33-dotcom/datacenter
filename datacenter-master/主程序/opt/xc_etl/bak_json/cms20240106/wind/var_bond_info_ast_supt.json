@@ -1,0 +1,94 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_bond_info_ast_supt",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"long"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"long"},
+                                    {"index":13,"type":"long"},
+                                    {"index":14,"type":"long"},
+                                    {"index":15,"type":"long"},
+                                    {"index":16,"type":"long"},
+                                    {"index":17,"type":"string"},
+                                    {"index":18,"type":"string"},
+                                    {"index":19,"type":"string"},
+                                    {"index":20,"type":"long"},
+                                    {"index":21,"type":"string"},
+                                    {"index":22,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "abs_id",
+                                    "abs_name",
+                                    "abs_sht",
+                                    "spo_name",
+                                    "spo_id",
+                                    "iss_name",
+                                    "iss_id",
+                                    "iss_amt",
+                                    "curr_code",
+                                    "pool_name",
+                                    "bgn_dt",
+                                    "ass_typ",
+                                    "dely_dt",
+                                    "found_dt",
+                                    "f_pay_dt",
+                                    "fnl_dt",
+                                    "iss_ntc_dt",
+                                    "is_int_cre",
+                                    "is_ext_cre",
+                                    "ast_is_tab",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_bond_info_ast_supt"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_bond_info_ast_supt where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

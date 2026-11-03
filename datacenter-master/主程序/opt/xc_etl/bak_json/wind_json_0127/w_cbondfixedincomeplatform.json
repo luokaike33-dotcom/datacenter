@@ -1,0 +1,95 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      s_info_name,
+                                      bid_trade_time,
+                                      bid_quotingparty,
+                                      bid_clean_price,
+                                      bid_num,
+                                      bid_price,
+                                      bid_yield_to_maturity,
+                                      ask_trade_time,
+                                      ask_quotingparty,
+                                      ask_clean_price,
+                                      ask_num,
+                                      ask_price,
+                                      ask_yield_to_maturity,
+                                      rate,
+                                      bid_order_number,
+                                      ask_order_number,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondfixedincomeplatform.json' as task_rs_id
+                                from ${srcoradbname}.cbondfixedincomeplatform WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondfixedincomeplatform/busi_month=${busi_month}",
+                        "fileName": "w_cbondfixedincomeplatform",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"s_info_name","type":"string"},
+                                      {"name":"bid_trade_time","type":"string"},
+                                      {"name":"bid_quotingparty","type":"string"},
+                                      {"name":"bid_clean_price","type":"double"},
+                                      {"name":"bid_num","type":"double"},
+                                      {"name":"bid_price","type":"double"},
+                                      {"name":"bid_yield_to_maturity","type":"double"},
+                                      {"name":"ask_trade_time","type":"string"},
+                                      {"name":"ask_quotingparty","type":"string"},
+                                      {"name":"ask_clean_price","type":"double"},
+                                      {"name":"ask_num","type":"double"},
+                                      {"name":"ask_price","type":"double"},
+                                      {"name":"ask_yield_to_maturity","type":"double"},
+                                      {"name":"rate","type":"double"},
+                                      {"name":"bid_order_number","type":"string"},
+                                      {"name":"ask_order_number","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

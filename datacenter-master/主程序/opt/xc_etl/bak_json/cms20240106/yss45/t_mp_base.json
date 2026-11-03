@@ -1,0 +1,142 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/t_mp_base",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"long"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"long"},
+									{"index":16,"type":"long"},
+									{"index":17,"type":"long"},
+									{"index":18,"type":"long"},
+									{"index":19,"type":"long"},
+									{"index":20,"type":"long"},
+									{"index":21,"type":"long"},
+									{"index":22,"type":"long"},
+									{"index":23,"type":"long"},
+									{"index":24,"type":"long"},
+									{"index":25,"type":"long"},
+									{"index":26,"type":"long"},
+									{"index":27,"type":"long"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"long"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"long"},
+									{"index":40,"type":"long"},
+									{"index":41,"type":"long"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"string"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"bk_product_of_m",
+									"prod_inr_code",
+									"prod_belg",
+									"prod_short_name",
+									"prod_cname",
+									"prod_short_ename",
+									"prod_ename",
+									"prod_cald",
+									"prod_introd",
+									"risk_level_code",
+									"bchmk_desc",
+									"bk_currency",
+									"per_parv",
+									"issue_lmt",
+									"issue_start_date",
+									"issue_end_date",
+									"setup_date",
+									"share_lock_period",
+									"listing_date",
+									"due_date",
+									"lst_liqu_date",
+									"lst_liqu_data_date",
+									"lst_liqu_drmy_date",
+									"nav_precision",
+									"aeets_method",
+									"valu_cfm_days",
+									"trd_cfm_days",
+									"l_timelimit",
+									"vc_procontact",
+									"prod_mngr_name",
+									"cust_mngr_name",
+									"ivsm_advr",
+									"fund_acc",
+									"life_pd_status",
+									"c_clearer_new",
+									"pboc_prod_code",
+									"amac_prod_code",
+									"amac_prod_name",
+									"check_acc",
+									"fst_liqu_date",
+									"share_lock_period_unit",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["t_mp_base"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from t_mp_base"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

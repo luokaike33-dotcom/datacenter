@@ -1,0 +1,83 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      statement_type_name,
+                                      memo,
+                                      aging,
+                                      currency_code,
+                                      amount_money,
+                                      rate,
+                                      bad_debt_preparation,
+                                      report_period,
+                                      min_aging,
+                                      max_aging,
+                                      classification_criteria,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareagingstructure.json' as task_rs_id
+                                from ${srcoradbname}.ashareagingstructure"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareagingstructure",
+                        "fileName": "w_ashareagingstructure",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"statement_type_name","type":"string"},
+                                      {"name":"memo","type":"string"},
+                                      {"name":"aging","type":"string"},
+                                      {"name":"currency_code","type":"string"},
+                                      {"name":"amount_money","type":"double"},
+                                      {"name":"rate","type":"double"},
+                                      {"name":"bad_debt_preparation","type":"double"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"min_aging","type":"double"},
+                                      {"name":"max_aging","type":"double"},
+                                      {"name":"classification_criteria","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

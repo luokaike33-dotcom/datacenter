@@ -1,0 +1,52 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,f_info_bgndate,f_info_enddate,f_info_unityield,f_info_yearlyroe,ann_date,opdate,opmode from  ${srcoradbname}.cmoneymarketfincome where f_info_enddate between '${busi_month}'||'01' and to_char(add_months(to_date('${busi_month}'||01,'yyyyMMdd'),1)-1,'yyyyMMdd')"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cmoneymarketfincome/busi_month=${busi_month}",
+                        "fileName": "w_cmoneymarketfincome",
+                        "column": [
+                            {"name":"object_id","type":"STRING"},
+                            {"name":"s_info_windcode","type":"STRING"},
+                            {"name":"f_info_bgndate","type":"STRING"},
+                            {"name":"f_info_enddate","type":"STRING"},
+                            {"name":"f_info_unityield","type":"DOUBLE"},
+                            {"name":"f_info_yearlyroe","type":"DOUBLE"},
+                            {"name":"ann_date","type":"STRING"},
+                            {"name":"opdate","type":"DATE"},
+                            {"name":"opmode","type":"STRING"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

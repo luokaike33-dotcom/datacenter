@@ -1,0 +1,72 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select object_id,
+                  s_info_windcode,
+                  trade_dt,
+                  s_dq_presettle,
+                  s_dq_open,
+                  s_dq_high,
+                  s_dq_low,
+                  s_dq_close,
+                  s_dq_settle,
+                  s_dq_volume,
+                  s_dq_amount,
+                  s_dq_oi,
+                  s_dq_change,
+                  fs_info_type
+                  from ${srcoradbname}.cindexfutureseodprices"],
+                  "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                  }
+                ]
+              }
+            },
+              "writer": {
+                "name": "hdfswriter",
+                "parameter": {
+                  "defaultFS": "hdfs://${tgrhdfsurl}",
+                  "fileType": "orc",
+                  "path": "${tgrhivedbpath}/w_cindexfutureseodprices",
+                  "fileName": "w_cindexfutureseodprices",
+                  "column": [
+                    {"name":"object_id","type":"string"},
+                    {"name":"s_info_windcode","type":"string"},
+                    {"name":"trade_dt","type":"string"},
+                    {"name":"s_dq_presettle","type":"double"},
+                    {"name":"s_dq_open","type":"double"},
+                    {"name":"s_dq_high","type":"double"},
+                    {"name":"s_dq_low","type":"double"},
+                    {"name":"s_dq_close","type":"double"},
+                    {"name":"s_dq_settle","type":"double"},
+                    {"name":"s_dq_volume","type":"double"},
+                    {"name":"s_dq_amount","type":"double"},
+                    {"name":"s_dq_oi","type":"double"},
+                    {"name":"s_dq_change","type":"double"},
+                    {"name":"fs_info_type","type":"string"}
+                  ],
+                  "writeMode": "append",
+                  "fieldDelimiter": "\t",
+                  "encoding":"utf-8",
+                  "haveKerberos": "${haveKerberos}",
+                  "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                  "kerberosPrincipal": "${kerberosPrincipal}"
+                }
+              }
+              }
+            ],
+            "setting": {
+              "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+              }
+            }
+          }
+        }

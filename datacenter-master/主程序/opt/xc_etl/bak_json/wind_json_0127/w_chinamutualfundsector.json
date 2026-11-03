@@ -1,0 +1,51 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,f_info_windcode,s_info_sector,s_info_sectorentrydt,s_info_sectorexitdt,cur_sign,opdate,opmode from ${srcoradbname}.chinamutualfundsector"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundsector",
+                        "fileName": "w_chinamutualfundsector",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"f_info_windcode","type":"string"},
+                            {"name":"s_info_sector","type":"string"},
+                            {"name":"s_info_sectorentrydt","type":"string"},
+                            {"name":"s_info_sectorexitdt","type":"string"},
+                            {"name":"cur_sign","type":"string"},
+                            {"name":"opdate","type":"date"},
+                            {"name":"opmode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

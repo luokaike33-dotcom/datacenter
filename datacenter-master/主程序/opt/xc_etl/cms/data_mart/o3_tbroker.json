@@ -1,0 +1,109 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/o3_tbroker",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"long"},
+									{"index":25,"type":"long"},
+									{"index":26,"type":"long"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"long"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"vc_broker_no",
+									"vc_parent_broker_no",
+									"vc_broker_name",
+									"vc_country_no",
+									"vc_bic_code",
+									"c_fix_allocation",
+									"vc_omgeo_broker_type",
+									"vc_omgeo_broker_code",
+									"vc_omgeo_brmg",
+									"vc_trade_member",
+									"c_type",
+									"c_profit_available",
+									"vc_external_broker_no",
+									"c_right_confirm",
+									"c_accountcheck_type",
+									"vc_sign_funds",
+									"vc_reportcode_type",
+									"c_entrusts_combi",
+									"vc_client_id",
+									"vc_trade_member_sq",
+									"vc_trade_member_zz",
+									"vc_trade_member_dl",
+									"vc_price_type",
+									"vc_trade_member_ny",
+									"l_sh_report_number_digits",
+									"l_sz_report_number_digits",
+									"l_gz_report_number_digits",
+									"vc_timestamp",
+									"l_virtual_key",
+									"vc_liqcompany_name",
+									"vc_sellte_member"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_tbroker"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table o3_tbroker"]
+                    }
+                }
+            }
+        ]
+    }
+}
+
+

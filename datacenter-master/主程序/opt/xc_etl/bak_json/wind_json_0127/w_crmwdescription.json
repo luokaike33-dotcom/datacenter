@@ -1,0 +1,115 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      b_info_windcode,
+                                      b_create_fullname,
+                                      b_create_name,
+                                      b_create_nameid,
+                                      filenum,
+                                      b_create_ann_date,
+                                      b_create_object,
+                                      b_create_price,
+                                      b_create_amountplan,
+                                      b_create_amountact,
+                                      b_create_firstissue,
+                                      b_registration_date,
+                                      b_create_start_day,
+                                      b_create_end_day,
+                                      b_create_term_day,
+                                      b_create_payment_code,
+                                      b_cgross_principal_amount,
+                                      is_guarantee,
+                                      b_cgross_settlement_code,
+                                      b_voucher_code,
+                                      b_security_code,
+                                      b_unit_nominal_capital,
+                                      b_create_cancellation_day,
+                                      b_info_compcode,
+                                      b_create_debt_type,
+                                      b_create_debt_features,
+                                      b_info_code,
+                                      b_info_listdate,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_crmwdescription.json' as task_rs_id
+                                from ${srcoradbname}.crmwdescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_crmwdescription",
+                        "fileName": "w_crmwdescription",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"b_info_windcode","type":"string"},
+                                      {"name":"b_create_fullname","type":"string"},
+                                      {"name":"b_create_name","type":"string"},
+                                      {"name":"b_create_nameid","type":"string"},
+                                      {"name":"filenum","type":"string"},
+                                      {"name":"b_create_ann_date","type":"string"},
+                                      {"name":"b_create_object","type":"bigint"},
+                                      {"name":"b_create_price","type":"double"},
+                                      {"name":"b_create_amountplan","type":"double"},
+                                      {"name":"b_create_amountact","type":"double"},
+                                      {"name":"b_create_firstissue","type":"string"},
+                                      {"name":"b_registration_date","type":"string"},
+                                      {"name":"b_create_start_day","type":"string"},
+                                      {"name":"b_create_end_day","type":"string"},
+                                      {"name":"b_create_term_day","type":"double"},
+                                      {"name":"b_create_payment_code","type":"bigint"},
+                                      {"name":"b_cgross_principal_amount","type":"double"},
+                                      {"name":"is_guarantee","type":"bigint"},
+                                      {"name":"b_cgross_settlement_code","type":"bigint"},
+                                      {"name":"b_voucher_code","type":"bigint"},
+                                      {"name":"b_security_code","type":"bigint"},
+                                      {"name":"b_unit_nominal_capital","type":"double"},
+                                      {"name":"b_create_cancellation_day","type":"string"},
+                                      {"name":"b_info_compcode","type":"string"},
+                                      {"name":"b_create_debt_type","type":"string"},
+                                      {"name":"b_create_debt_features","type":"string"},
+                                      {"name":"b_info_code","type":"string"},
+                                      {"name":"b_info_listdate","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

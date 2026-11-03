@@ -1,0 +1,72 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+                                prd_code,
+                                sk_date,
+                                hold0_1y_qnty,
+                                hold1_2y_qnty,
+                                hold2_3y_qnty,
+                                hold3_4y_qnty,
+                                hold4_5y_qnty,
+                                hold5_6y_qnty,
+                                hold6_7y_qnty,
+                                hold7_8y_qnty,
+                                p_dt
+							FROM ${srcdbname}.fnce_cotn_hld_stk_qnty where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"sk_date",
+									"hold0_1y_qnty",
+									"hold1_2y_qnty",
+									"hold2_3y_qnty",
+									"hold3_4y_qnty",
+									"hold4_5y_qnty",
+									"hold5_6y_qnty",
+									"hold6_7y_qnty",
+									"hold7_8y_qnty",
+                                    "p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fnce_cotn_hld_stk_qnty"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fnce_cotn_hld_stk_qnty where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

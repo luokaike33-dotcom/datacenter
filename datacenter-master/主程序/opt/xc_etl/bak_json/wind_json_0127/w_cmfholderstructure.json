@@ -1,0 +1,95 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      sec_id,
+                                      ann_dt,
+                                      end_dt,
+                                      scope,
+                                      holder_number,
+                                      holder_avgholding,
+                                      holder_institution_holding,
+                                      holder_institution_holdingpct,
+                                      holder_personal_holding,
+                                      holder_personal_holdingpct,
+                                      holder_mngemp_holding,
+                                      holder_mngemp_holdingpct,
+                                      holder_feeder_holding,
+                                      holder_feeder_holdingpct,
+                                      pur_cost,
+                                      sell_income,
+                                      is_merge_data,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cmfholderstructure.json' as task_rs_id
+                                from ${srcoradbname}.cmfholderstructure"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cmfholderstructure",
+                        "fileName": "w_cmfholderstructure",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"sec_id","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"end_dt","type":"string"},
+                                      {"name":"scope","type":"string"},
+                                      {"name":"holder_number","type":"bigint"},
+                                      {"name":"holder_avgholding","type":"double"},
+                                      {"name":"holder_institution_holding","type":"double"},
+                                      {"name":"holder_institution_holdingpct","type":"double"},
+                                      {"name":"holder_personal_holding","type":"double"},
+                                      {"name":"holder_personal_holdingpct","type":"double"},
+                                      {"name":"holder_mngemp_holding","type":"double"},
+                                      {"name":"holder_mngemp_holdingpct","type":"double"},
+                                      {"name":"holder_feeder_holding","type":"double"},
+                                      {"name":"holder_feeder_holdingpct","type":"double"},
+                                      {"name":"pur_cost","type":"double"},
+                                      {"name":"sell_income","type":"double"},
+                                      {"name":"is_merge_data","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

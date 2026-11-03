@@ -1,0 +1,43 @@
+create table data_mart.o3_tstaticriskresult ( 
+  l_serial_no number(10),
+  l_date number(10),
+  c_check_type varchar2(100),
+  l_check_no number(10),
+  l_risk_serial_no number(10),
+  vc_risk_summary varchar2(100),
+  c_risk_type varchar2(100),
+  c_risk_subtype varchar2(100),
+  c_control_type varchar2(100),
+  c_fund_collect varchar2(100),
+  c_stock_collect varchar2(100),
+  l_layer_id number(10),
+  vc_inter_code varchar2(100),
+  l_asset_id number(10),
+  c_warn_level varchar2(100),
+  c_warn_operation varchar2(100),
+  en_value number(24,8),
+  en_setvalue number(24,8),
+  vc_result_message varchar2(100),
+  l_liquidate_fund_id number(10),
+  c_invest_type varchar2(100),
+  l_fact_layer_id number(10),
+  l_real_date number(10),
+  l_real_time number(10),
+  en_numerator_value number(21,5),
+  en_denominator_value number(21,5),
+  vc_remark varchar2(100),
+  c_duplicate varchar2(100),
+  l_etrade_serial_no number(10),
+  l_section_no number(10),
+  l_riskplan_id number(10),
+  vc_bill_id varchar2(100),
+  vc_stock_code1 varchar2(100),
+  vc_contract_no varchar2(100),
+  bath_dt varchar2(100),
+  data_ins_time timestamp,
+  task_rs_id varchar2(100)
+);
+
+
+
+

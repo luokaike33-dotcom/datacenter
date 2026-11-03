@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      convert_reason,
+                                      period,
+                                      convert_dt,
+                                      nav_typecode,
+                                      nav_min,
+                                      nav_max,
+                                      convert_typecode,
+                                      convert_fund_typecode,
+                                      convert_feeder_typecode,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_scfconvert.json' as task_rs_id
+                                from ${srcoradbname}.scfconvert"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_scfconvert",
+                        "fileName": "w_scfconvert",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"convert_reason","type":"bigint"},
+                                      {"name":"period","type":"double"},
+                                      {"name":"convert_dt","type":"string"},
+                                      {"name":"nav_typecode","type":"bigint"},
+                                      {"name":"nav_min","type":"double"},
+                                      {"name":"nav_max","type":"double"},
+                                      {"name":"convert_typecode","type":"bigint"},
+                                      {"name":"convert_fund_typecode","type":"bigint"},
+                                      {"name":"convert_feeder_typecode","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

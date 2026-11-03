@@ -1,0 +1,176 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+                        "hiveSql":["SELECT l_confirm_no, l_date, l_time, l_daily_instruction_no, l_index_daily_modify, l_busin_flag, c_busin_class, c_busin_pro_type, l_fund_id, l_basecombi_id, c_invest_type, vc_inter_code, c_entrust_direction, c_market_no, en_balance, en_cbalance, en_amount, en_price, en_fee_ratio, en_fee, c_deal_status, c_status, d_datetime, l_operator_no, c_exceed_flag, vc_in_intercode, l_rival_id, c_settle_type, en_interest, c_fee_deal_type, vc_remark, vc_stockholder_id, vc_seat_id, l_execconfirm_no, vc_attached_warrant_code, en_warrant_amount, l_warrant_combi, l_confirm_date, l_deal_date, l_in_combi_id, vc_in_stockholder_id, vc_in_seat_id, c_warrant_invest_type, c_external_deal_flag, en_down_price, en_commission, l_direct_date, l_direct_operator, l_approve_date, l_approve_operator, l_settle_date, c_entrust_status, l_batch_serial_no, c_in_invest_type, c_channel_no, vc_error_msg, c_cancel_status, vc_cancel_error_msg, en_price1, en_price2, vc_minor_bank, vc_account_no, vc_account_name, l_fa_confirm_date, c_fixsend_flag, l_instr_date, vc_instrid, l_stock_serial_no, vc_rivaltrader_name, l_rivalaccount_no, vc_rival_bank_account, en_prepay_balance, vc_confirm_no, l_old_confirm_no, l_old_deposit_confirm_no, vc_rivaltrader_id, l_old_pay_date, en_receivable_interest, en_punish_interest, en_received, l_org_id, l_dept_id, c_zxreceive_status, l_cancel_no, vc_zxorder_no, c_zxcancel_status, c_fundcheck_status, vc_zxcancel_no, c_ta_status, vc_ta_no, c_fee_type, vc_fund_account, vc_trade_account, c_bonus_type, l_currents_no, l_end_date, en_profit_ratio, c_tran_flag, c_tran_point, l_restricted_no, vc_unique_serial_no, l_check_operator, l_check_time, vc_ip_address, vc_mac, vc_volserial_no, vc_terminalinfo_extend, vc_capital_account, l_frozen_balance_date, l_invest_adviser, c_interest_deposit, vc_channel_code, vc_export_flag, c_exec_status, en_deal_amount, en_deal_balance, vc_otcorderid, en_cancel_amount, l_bondlending_amount, c_restricted_flag, p_dt
+						FROM ${srcdbname}.o3_thisoutconfirm where p_dt =${p_dt}
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+						"tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_confirm_no",
+									"l_date",
+									"l_time",
+									"l_daily_instruction_no",
+									"l_index_daily_modify",
+									"l_busin_flag",
+									"c_busin_class",
+									"c_busin_pro_type",
+									"l_fund_id",
+									"l_basecombi_id",
+									"c_invest_type",
+									"vc_inter_code",
+									"c_entrust_direction",
+									"c_market_no",
+									"en_balance",
+									"en_cbalance",
+									"en_amount",
+									"en_price",
+									"en_fee_ratio",
+									"en_fee",
+									"c_deal_status",
+									"c_status",
+									"d_datetime",
+									"l_operator_no",
+									"c_exceed_flag",
+									"vc_in_intercode",
+									"l_rival_id",
+									"c_settle_type",
+									"en_interest",
+									"c_fee_deal_type",
+									"vc_remark",
+									"vc_stockholder_id",
+									"vc_seat_id",
+									"l_execconfirm_no",
+									"vc_attached_warrant_code",
+									"en_warrant_amount",
+									"l_warrant_combi",
+									"l_confirm_date",
+									"l_deal_date",
+									"l_in_combi_id",
+									"vc_in_stockholder_id",
+									"vc_in_seat_id",
+									"c_warrant_invest_type",
+									"c_external_deal_flag",
+									"en_down_price",
+									"en_commission",
+									"l_direct_date",
+									"l_direct_operator",
+									"l_approve_date",
+									"l_approve_operator",
+									"l_settle_date",
+									"c_entrust_status",
+									"l_batch_serial_no",
+									"c_in_invest_type",
+									"c_channel_no",
+									"vc_error_msg",
+									"c_cancel_status",
+									"vc_cancel_error_msg",
+									"en_price1",
+									"en_price2",
+									"vc_minor_bank",
+									"vc_account_no",
+									"vc_account_name",
+									"l_fa_confirm_date",
+									"c_fixsend_flag",
+									"l_instr_date",
+									"vc_instrid",
+									"l_stock_serial_no",
+									"vc_rivaltrader_name",
+									"l_rivalaccount_no",
+									"vc_rival_bank_account",
+									"en_prepay_balance",
+									"vc_confirm_no",
+									"l_old_confirm_no",
+									"l_old_deposit_confirm_no",
+									"vc_rivaltrader_id",
+									"l_old_pay_date",
+									"en_receivable_interest",
+									"en_punish_interest",
+									"en_received",
+									"l_org_id",
+									"l_dept_id",
+									"c_zxreceive_status",
+									"l_cancel_no",
+									"vc_zxorder_no",
+									"c_zxcancel_status",
+									"c_fundcheck_status",
+									"vc_zxcancel_no",
+									"c_ta_status",
+									"vc_ta_no",
+									"c_fee_type",
+									"vc_fund_account",
+									"vc_trade_account",
+									"c_bonus_type",
+									"l_currents_no",
+									"l_end_date",
+									"en_profit_ratio",
+									"c_tran_flag",
+									"c_tran_point",
+									"l_restricted_no",
+									"vc_unique_serial_no",
+									"l_check_operator",
+									"l_check_time",
+									"vc_ip_address",
+									"vc_mac",
+									"vc_volserial_no",
+									"vc_terminalinfo_extend",
+									"vc_capital_account",
+									"l_frozen_balance_date",
+									"l_invest_adviser",
+									"c_interest_deposit",
+									"vc_channel_code",
+									"vc_export_flag",
+									"c_exec_status",
+									"en_deal_amount",
+									"en_deal_balance",
+									"vc_otcorderid",
+									"en_cancel_amount",
+									"l_bondlending_amount",
+									"c_restricted_flag",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_thisoutconfirm"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from o3_thisoutconfirm where p_dt =${p_dt} "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

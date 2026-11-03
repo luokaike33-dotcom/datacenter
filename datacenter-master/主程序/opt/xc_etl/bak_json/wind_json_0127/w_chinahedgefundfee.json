@@ -1,0 +1,91 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      sec_id,
+                                      change_dt,
+                                      feetypecode,
+                                      chargeway,
+                                      amountdownlimit,
+                                      amountuplimit,
+                                      returndownlimit,
+                                      returnuplimit,
+                                      navdownlimit,
+                                      navuplimit,
+                                      holdingperiod_downlimit,
+                                      holdingperiod_uplimit,
+                                      feeratio,
+                                      cur_sign,
+                                      supplementary,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_chinahedgefundfee.json' as task_rs_id
+                                from ${srcoradbname}.chinahedgefundfee"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_chinahedgefundfee",
+                        "fileName": "w_chinahedgefundfee",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"sec_id","type":"string"},
+                                      {"name":"change_dt","type":"string"},
+                                      {"name":"feetypecode","type":"bigint"},
+                                      {"name":"chargeway","type":"string"},
+                                      {"name":"amountdownlimit","type":"double"},
+                                      {"name":"amountuplimit","type":"double"},
+                                      {"name":"returndownlimit","type":"double"},
+                                      {"name":"returnuplimit","type":"double"},
+                                      {"name":"navdownlimit","type":"double"},
+                                      {"name":"navuplimit","type":"double"},
+                                      {"name":"holdingperiod_downlimit","type":"double"},
+                                      {"name":"holdingperiod_uplimit","type":"double"},
+                                      {"name":"feeratio","type":"double"},
+                                      {"name":"cur_sign","type":"bigint"},
+                                      {"name":"supplementary","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,57 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {"reader": {
+                "name": "hivereader",
+                "parameter": {
+                    "hive_cmd": "beeline",
+                    "hiveSql": ["
+                      
+                           SELECT business_date, product_code, ta_type, ta_trade_account, ta_trade_name, ta_lastshare, currency_id
+                        FROM ${srcdbname}.irdb_invdata_tshares "],
+                    "defaultFS": "hdfs://${srchdfsurl}",
+                    "tmpDatabasePath": "${srchivedbpath}",
+                    "tmpDatabase": "${srcdbname}",
+                    "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                    "hive_ldap_user_name": "${srcusername}",
+                    "hive_ldap_password": "${srcpassword}",
+                    "haveKerberos": "${haveKerberos}",
+                    "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                    "kerberosPrincipal": "${kerberosPrincipal}"
+                }
+            },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"business_date",
+									"product_code",
+									"ta_type",
+									"ta_trade_account",
+									"ta_trade_name",
+									"ta_lastshare",
+									"currency_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["tshares"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table tshares"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

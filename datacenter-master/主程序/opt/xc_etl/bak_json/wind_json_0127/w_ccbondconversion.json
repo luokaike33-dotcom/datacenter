@@ -1,0 +1,58 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,ann_dt,conv_code,conv_name,conv_price,crncy_code,conv_startdate,conv_enddate,trade_dt_last,forced_conv_date,forced_conv_price,rel_conv_month,isforced,forced_conv_reason from ${srcoradbname}.ccbondconversion"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_ccbondconversion",
+                        "fileName": "w_ccbondconversion",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"ann_dt","type":"STRING"},
+                        {"name":"conv_code","type":"STRING"},
+                        {"name":"conv_name","type":"STRING"},
+                        {"name":"conv_price","type":"DOUBLE"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"conv_startdate","type":"STRING"},
+                        {"name":"conv_enddate","type":"STRING"},
+                        {"name":"trade_dt_last","type":"STRING"},
+                        {"name":"forced_conv_date","type":"STRING"},
+                        {"name":"forced_conv_price","type":"DOUBLE"},
+                        {"name":"rel_conv_month","type":"DOUBLE"},
+                        {"name":"isforced","type":"DOUBLE"},
+                        {"name":"forced_conv_reason","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

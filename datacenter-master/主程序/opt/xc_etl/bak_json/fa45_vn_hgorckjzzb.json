@@ -1,0 +1,66 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,c_port_code,c_asset_code,c_sec_code,d_book_date,d_first_trade,c_td_no,c_devalue_stage_be,n_devalue_balance_be,c_busi_type,c_dt_code,n_devalue_money_td,n_devalue_balance_td,c_devalue_stage_td,c_rela_id,n_rem_cb,c_update_by,c_update_time,c_view_version,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vn_hgorckjzzb.json' as task_rs_id from ${srcoradbname}.vn_hgorckjzzb"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vn_hgorckjzzb",
+                        "fileName": "fa45_vn_hgorckjzzb",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"c_asset_code","type":"string"},
+                            {"name":"c_sec_code","type":"string"},
+                            {"name":"d_book_date","type":"date"},
+                            {"name":"d_first_trade","type":"date"},
+                            {"name":"c_td_no","type":"string"},
+                            {"name":"c_devalue_stage_be","type":"string"},
+                            {"name":"n_devalue_balance_be","type":"double"},
+                            {"name":"c_busi_type","type":"string"},
+                            {"name":"c_dt_code","type":"string"},
+                            {"name":"n_devalue_money_td","type":"double"},
+                            {"name":"n_devalue_balance_td","type":"double"},
+                            {"name":"c_devalue_stage_td","type":"string"},
+                            {"name":"c_rela_id","type":"string"},
+                            {"name":"n_rem_cb","type":"double"},
+                            {"name":"c_update_by","type":"string"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_view_version","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

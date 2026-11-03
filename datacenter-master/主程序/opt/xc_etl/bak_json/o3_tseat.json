@@ -1,0 +1,65 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select vc_seat_id,c_market_no,vc_seat_name,vc_main_seat,vc_company_no,vc_link_man,vc_link_type,vc_remark,vc_fund_ids,c_status,vc_market_remark,c_trade_attribute,l_logoff_date,vc_business_class,vc_password,vc_cyrjszh,l_securities_branch,l_virtual_key,vc_timestamp,c_distribution,l_modify_date from ${srcoradbname}.tseat "],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_tseat",
+            "fileName": "o3_tseat",
+            "column": [			
+              {"name":"vc_seat_id","type":"string"},
+              {"name":"c_market_no","type":"string"},
+              {"name":"vc_seat_name","type":"string"},
+              {"name":"vc_main_seat","type":"string"},
+              {"name":"vc_company_no","type":"string"},
+              {"name":"vc_link_man","type":"string"},
+              {"name":"vc_link_type","type":"string"},
+              {"name":"vc_remark","type":"string"},
+              {"name":"vc_fund_ids","type":"string"},
+              {"name":"c_status","type":"string"},
+              {"name":"vc_market_remark","type":"string"},
+              {"name":"c_trade_attribute","type":"string"},
+              {"name":"l_logoff_date","type":"bigint"},
+              {"name":"vc_business_class","type":"string"},
+              {"name":"vc_password","type":"string"},
+              {"name":"vc_cyrjszh","type":"string"},
+              {"name":"l_securities_branch","type":"string"},
+              {"name":"l_virtual_key","type":"bigint"},
+              {"name":"vc_timestamp","type":"string"},
+              {"name":"c_distribution","type":"string"},
+              {"name":"l_modify_date","type":"bigint"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t",
+            "encoding":"utf-8"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

@@ -1,0 +1,153 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      windcode,
+                                      underlyingwindcode,
+                                      callput,
+                                      equitycovered,
+                                      issuer,
+                                      issuer_type,
+                                      issuer_iponum,
+                                      issuernum,
+                                      inistrikeprice,
+                                      inistrikeratio,
+                                      duration_days,
+                                      duration_startdate,
+                                      duration_enddate,
+                                      issuedate,
+                                      issueprice,
+                                      crncy_code,
+                                      listeddate,
+                                      annissuedate,
+                                      annlisteddate,
+                                      settlementmethod,
+                                      exercisingend,
+                                      exercode,
+                                      exername,
+                                      isratioadjust,
+                                      adjustratio,
+                                      progress,
+                                      prelan_date,
+                                      smtg_date,
+                                      typebyissuer,
+                                      old_shrhldr_ratio,
+                                      placingrecorddate,
+                                      offeringobject,
+                                      guartype,
+                                      exercisestartdate,
+                                      ref_price,
+                                      iscallclause,
+                                      callprice,
+                                      calldescription,
+                                      guarantor,
+                                      guardescription,
+                                      warrantsource,
+                                      warrant_num_per_bond,
+                                      bondwindcode,
+                                      lasttradedate,
+                                      expiredate,
+                                      recorddate_putwarrant,
+                                      s_info_listboard,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cwarrantdescription.json' as task_rs_id
+                                from ${srcoradbname}.cwarrantdescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cwarrantdescription",
+                        "fileName": "w_cwarrantdescription",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"windcode","type":"string"},
+                                      {"name":"underlyingwindcode","type":"string"},
+                                      {"name":"callput","type":"string"},
+                                      {"name":"equitycovered","type":"string"},
+                                      {"name":"issuer","type":"string"},
+                                      {"name":"issuer_type","type":"string"},
+                                      {"name":"issuer_iponum","type":"double"},
+                                      {"name":"issuernum","type":"double"},
+                                      {"name":"inistrikeprice","type":"double"},
+                                      {"name":"inistrikeratio","type":"double"},
+                                      {"name":"duration_days","type":"double"},
+                                      {"name":"duration_startdate","type":"string"},
+                                      {"name":"duration_enddate","type":"string"},
+                                      {"name":"issuedate","type":"string"},
+                                      {"name":"issueprice","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"listeddate","type":"string"},
+                                      {"name":"annissuedate","type":"string"},
+                                      {"name":"annlisteddate","type":"string"},
+                                      {"name":"settlementmethod","type":"string"},
+                                      {"name":"exercisingend","type":"string"},
+                                      {"name":"exercode","type":"string"},
+                                      {"name":"exername","type":"string"},
+                                      {"name":"isratioadjust","type":"bigint"},
+                                      {"name":"adjustratio","type":"string"},
+                                      {"name":"progress","type":"string"},
+                                      {"name":"prelan_date","type":"string"},
+                                      {"name":"smtg_date","type":"string"},
+                                      {"name":"typebyissuer","type":"string"},
+                                      {"name":"old_shrhldr_ratio","type":"double"},
+                                      {"name":"placingrecorddate","type":"string"},
+                                      {"name":"offeringobject","type":"string"},
+                                      {"name":"guartype","type":"string"},
+                                      {"name":"exercisestartdate","type":"string"},
+                                      {"name":"ref_price","type":"double"},
+                                      {"name":"iscallclause","type":"bigint"},
+                                      {"name":"callprice","type":"double"},
+                                      {"name":"calldescription","type":"string"},
+                                      {"name":"guarantor","type":"string"},
+                                      {"name":"guardescription","type":"string"},
+                                      {"name":"warrantsource","type":"string"},
+                                      {"name":"warrant_num_per_bond","type":"double"},
+                                      {"name":"bondwindcode","type":"string"},
+                                      {"name":"lasttradedate","type":"string"},
+                                      {"name":"expiredate","type":"string"},
+                                      {"name":"recorddate_putwarrant","type":"string"},
+                                      {"name":"s_info_listboard","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

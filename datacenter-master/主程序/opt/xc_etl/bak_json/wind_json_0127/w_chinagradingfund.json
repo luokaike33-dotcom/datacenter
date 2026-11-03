@@ -1,0 +1,58 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,f_info_feeder_windcode,f_info_feeder_typecode,f_info_feeder_shareratio,f_info_term_typecode,f_info_period_ifdiv,f_info_term_iftrans,f_info_trans_bgndate,f_info_trans_enddate,f_info_prefer_ifdis,f_info_prefer_ifadd,f_info_prefer_formula,opdate,opmode from ${srcoradbname}.chinagradingfund"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinagradingfund",
+                        "fileName": "w_chinagradingfund",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"f_info_feeder_windcode","type":"STRING"},
+                        {"name":"f_info_feeder_typecode","type":"DOUBLE"},
+                        {"name":"f_info_feeder_shareratio","type":"DOUBLE"},
+                        {"name":"f_info_term_typecode","type":"DOUBLE"},
+                        {"name":"f_info_period_ifdiv","type":"DOUBLE"},
+                        {"name":"f_info_term_iftrans","type":"DOUBLE"},
+                        {"name":"f_info_trans_bgndate","type":"STRING"},
+                        {"name":"f_info_trans_enddate","type":"STRING"},
+                        {"name":"f_info_prefer_ifdis","type":"DOUBLE"},
+                        {"name":"f_info_prefer_ifadd","type":"DOUBLE"},
+                        {"name":"f_info_prefer_formula","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

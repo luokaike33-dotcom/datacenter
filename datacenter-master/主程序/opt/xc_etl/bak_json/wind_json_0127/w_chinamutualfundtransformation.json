@@ -1,0 +1,101 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      prewindcode,
+                                      postwindcode,
+                                      f_info_prename,
+                                      f_info_prefullname,
+                                      f_info_precode,
+                                      f_info_postname,
+                                      f_info_postfullname,
+                                      f_info_postcode,
+                                      f_info_postislist,
+                                      f_info_ctosuspenddate,
+                                      f_info_meetinganndate,
+                                      f_info_meetingdate,
+                                      f_info_approvalrate,
+                                      f_info_resumpdate,
+                                      f_info_cfundredemcode,
+                                      f_info_cfundenddate,
+                                      f_info_cfundendanndate,
+                                      f_info_tanstype,
+                                      f_unit_pch,
+                                      f_unit_splitshare,
+                                      f_infotanstypecode,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_chinamutualfundtransformation.json' as task_rs_id
+                                from ${srcoradbname}.chinamutualfundtransformation"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundtransformation",
+                        "fileName": "w_chinamutualfundtransformation",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"prewindcode","type":"string"},
+                                      {"name":"postwindcode","type":"string"},
+                                      {"name":"f_info_prename","type":"string"},
+                                      {"name":"f_info_prefullname","type":"string"},
+                                      {"name":"f_info_precode","type":"string"},
+                                      {"name":"f_info_postname","type":"string"},
+                                      {"name":"f_info_postfullname","type":"string"},
+                                      {"name":"f_info_postcode","type":"string"},
+                                      {"name":"f_info_postislist","type":"bigint"},
+                                      {"name":"f_info_ctosuspenddate","type":"string"},
+                                      {"name":"f_info_meetinganndate","type":"string"},
+                                      {"name":"f_info_meetingdate","type":"string"},
+                                      {"name":"f_info_approvalrate","type":"double"},
+                                      {"name":"f_info_resumpdate","type":"string"},
+                                      {"name":"f_info_cfundredemcode","type":"string"},
+                                      {"name":"f_info_cfundenddate","type":"string"},
+                                      {"name":"f_info_cfundendanndate","type":"string"},
+                                      {"name":"f_info_tanstype","type":"string"},
+                                      {"name":"f_unit_pch","type":"double"},
+                                      {"name":"f_unit_splitshare","type":"double"},
+                                      {"name":"f_infotanstypecode","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

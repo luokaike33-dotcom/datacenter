@@ -1,0 +1,130 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fin_prd_vou_min/p_dt=${p_dt}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"long"},
+                                    {"index":3,"type":"long"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"string"},
+                                    {"index":17,"type":"string"},
+                                    {"index":18,"type":"string"},
+                                    {"index":19,"type":"string"},
+                                    {"index":20,"type":"string"},
+                                    {"index":21,"type":"string"},
+                                    {"index":22,"type":"string"},
+                                    {"index":23,"type":"string"},
+                                    {"index":24,"type":"string"},
+                                    {"index":25,"type":"string"},
+                                    {"index":26,"type":"string"},
+                                    {"index":27,"type":"string"},
+                                    {"index":28,"type":"double"},
+                                    {"index":29,"type":"double"},
+                                    {"index":30,"type":"double"},
+                                    {"index":31,"type":"string"},
+                                    {"index":32,"type":"double"},
+                                    {"index":33,"type":"double"},
+                                    {"index":34,"type":"string"},
+                                    {"index":35,"type":"string"},
+                                    {"index":36,"type":"long"},
+                                    {"index":37,"type":"string"},
+                                    {"index":38,"type":"date"},
+                                    {"index":39,"type":"string"},
+                                    {"name":"p_dt""type":"long","value":"${p_dt}"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "prd_code",
+                                    "vou_dt",
+                                    "acc_year",
+                                    "acc_mth",
+                                    "vou_typ",
+                                    "vou_typ_name",
+                                    "vou_clafy",
+                                    "vou_no",
+                                    "vou_etnb",
+                                    "vou_abs",
+                                    "crse_code",
+                                    "crse_dir",
+                                    "crse_dim",
+                                    "crse_dim_code",
+                                    "crse_type",
+                                    "crse_typ",
+                                    "inv_typ",
+                                    "cir_id",
+                                    "secu_code",
+                                    "secu_name",
+                                    "secu_typ",
+                                    "secu_typi",
+                                    "secu_typii",
+                                    "mkt_typ",
+                                    "ast_stat",
+                                    "curr_code",
+                                    "pos_dir",
+                                    "trd_typ",
+                                    "lcrrc_deb_val",
+                                    "lcrrc_cs_val",
+                                    "frc_val",
+                                    "sett_crrc",
+                                    "vol",
+                                    "excr",
+                                    "is_true",
+                                    "is_add_manu",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "dm_src_info"
+                                    "p_dt"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["fin_prd_vou_min"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from fin_prd_vou_min where p_dt ='${p_dt}' and 1 =1 "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

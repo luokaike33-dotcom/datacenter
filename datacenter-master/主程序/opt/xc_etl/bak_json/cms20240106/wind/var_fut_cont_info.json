@@ -1,0 +1,122 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fut_cont_info",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                  {"index":0,"type":"string"},
+                                  {"index":1,"type":"string"},
+                                  {"index":2,"type":"string"},
+                                  {"index":3,"type":"long"},
+                                  {"index":4,"type":"double"},
+                                  {"index":5,"type":"double"},
+                                  {"index":6,"type":"long"},
+                                  {"index":7,"type":"long"},
+                                  {"index":8,"type":"string"},
+                                  {"index":9,"type":"string"},
+                                  {"index":10,"type":"double"},
+                                  {"index":11,"type":"string"},
+                                  {"index":12,"type":"string"},
+                                  {"index":13,"type":"string"},
+                                  {"index":14,"type":"string"},
+                                  {"index":15,"type":"string"},
+                                  {"index":16,"type":"double"},
+                                  {"index":17,"type":"string"},
+                                  {"index":18,"type":"string"},
+                                  {"index":19,"type":"string"},
+                                  {"index":20,"type":"string"},
+                                  {"index":21,"type":"string"},
+                                  {"index":22,"type":"string"},
+                                  {"index":23,"type":"string"},
+                                  {"index":24,"type":"string"},
+                                  {"index":25,"type":"string"},
+                                  {"index":26,"type":"double"},
+                                  {"index":27,"type":"string"},
+                                  {"index":28,"type":"long"},
+                                  {"index":29,"type":"string"},
+                                  {"index":30,"type":"double"},
+                                  {"index":31,"type":"double"},
+                                  {"index":32,"type":"string"},
+                                  {"index":33,"type":"string"},
+                                  {"index":34,"type":"long"},
+                                  {"index":35,"type":"string"},
+                                  {"index":36,"type":"date"},
+                                  
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                  "secu_id",
+                                  "secu_code",
+                                  "contr_secu_id",
+                                  "lst_dt",
+                                  "base_prc",
+                                  "trd_mar",
+                                  "dely_dt",
+                                  "lst_trd",
+                                  "secu_name",
+                                  "trd_met_unit",
+                                  "trd_unit",
+                                  "min_chg_price",
+                                  "fut_month_desc",
+                                  "trd_time_desc",
+                                  "last_dt_desc",
+                                  "dely_dt_desc",
+                                  "con_mul",
+                                  "dely_methed",
+                                  "dely_methed_desc",
+                                  "dely_addr_desc",
+                                  "lst_trd_desc",
+                                  "fut_val_desc",
+                                  "max_price_chg_desc",
+                                  "pos_limit_desc",
+                                  "trd_secu_id",
+                                  "quot_unit",
+                                  "avg_price_val",
+                                  "fut_typ_code",
+                                  "lst_dely_dt",
+                                  "typ_code",
+                                  "trd_chag",
+                                  "dely_chag",
+                                  "cont_type",
+                                  "subj_trd_var_code",
+                                  "busi_date",
+                                  "task_rs_id",
+                                  "dm_created_time"
+                                  
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_fut_cont_info"]
+                          }
+                        ],
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_fut_cont_info where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

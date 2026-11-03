@@ -1,0 +1,55 @@
+drop table if exists ty_ods.w_hkshareholdertrade;
+create table if not exists ty_ods.w_hkshareholdertrade
+(
+  object_id string comment '对象ID',
+  s_info_windcode string comment 'WIND代码',
+  sec_id string comment '证券ID',
+  ann_dt string comment '公告日期',
+  end_dt string comment '事件日期',
+  chg_rean string comment '披露原因',
+  holder_name string comment '最终持有人名称',
+  shrnum decimal(20,4) comment '增/减或涉及的股份数量',
+  shrtype bigint comment '[内部]股份类别',
+  shrop string comment '持有权益类型',
+  type_code string comment '持有股份的身份',
+  shrnum201 decimal(20,4) comment '201持有权益的股份数目',
+  shrnum202 decimal(20,4) comment '202持有权益的股份数目',
+  shrnum203 decimal(20,4) comment '203持有权益的股份数目',
+  shrnum204 decimal(20,4) comment '204持有权益的股份数目',
+  shrnum205 decimal(20,4) comment '205持有权益的股份数目',
+  shrnum206 decimal(20,4) comment '206持有权益的股份数目',
+  shrnum207 decimal(20,4) comment '207持有权益的股份数目',
+  shrnum208 decimal(20,4) comment '208持有权益的股份数目',
+  shrnum209 decimal(20,4) comment '209持有权益的股份数目',
+  shrnum210 decimal(20,4) comment '210持有权益的股份数目',
+  shrnum211 decimal(20,4) comment '211持有权益的股份数目',
+  shrnum212 decimal(20,4) comment '212持有权益的股份数目',
+  shrnum213 decimal(20,4) comment '213持有权益的股份数目',
+  shrnum214 decimal(20,4) comment '214持有权益的股份数目',
+  crncy_code string comment '交易货币代码',
+  exhp decimal(20,4) comment '场内每股最高价(元)',
+  exap decimal(20,4) comment '场内每股平均价(元)',
+  otcap decimal(20,4) comment '场外每股平均代价(元)',
+  otcp_type string comment '场外代价代号',
+  preshrnum decimal(20,4) comment '变动前股份总数(股)',
+  preshrpct decimal(20,4) comment '变动前占已发行H股或优先股比例(%)',
+  aftshrnum decimal(20,4) comment '变动后股份总数(股)',
+  aftshrpct decimal(20,4) comment '变动后占已发行H股或优先股比例(%)',
+  compname string comment '披露人名称',
+  comptype bigint comment '股东类型代码',
+  holder_type bigint comment '内部人类型代码',
+  is_mng bigint comment '是否董事',
+  is_actctrl bigint comment '是否实际控制人',
+  drvt_type bigint comment '衍生工具类别',
+  drvt_num decimal(20,4) comment '衍生权益数量(股)',
+  opdate timestamp,
+  opmode string,
+  bath_dt string,
+  data_ins_time timestamp,
+  task_rs_id string
+)
+row format delimited fields terminated by '\t'
+stored as orc;
+
+
+

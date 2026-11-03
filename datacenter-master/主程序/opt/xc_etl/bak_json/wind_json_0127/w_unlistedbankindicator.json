@@ -1,0 +1,110 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,ann_dt,report_period,statement_type,crncy_code,capi_ade_ratio,core_capi_ade_ratio,npl_ratio,loan_depo_ratio,loan_depo_ratio_rmb,loan_depo_ratio_normb,st_asset_liq_ratio_rmb,st_asset_liq_ratio_normb,loan_from_banks_ratio,lend_to_banks_ratio,largest_customer_loan,top_ten_customer_loan,total_loan,total_deposit,loan_loss_provision,bad_load_five_class,npl_provision_coverage,cost_income_ratio,non_interest_margin,net_capital,core_capi_net_amount,risk_weight_asset,interest_bearing_asset,interest_bearing_asset_comp,interest_bearing_lia,interest_bearing_lia_comp,non_interest_income,noneaning_asset,noneaning_lia,net_interest_margin,net_interest_margin_is_ann,net_interest_spread,net_interest_spread_is_ann,overdue_loan,total_interest_income,total_interest_exp,cash_on_hand,longterm_loans_ratio_cny,longterm_loans_ratio_fc,ibusiness_loan_ratio,interect_collection_ratio,cash_reserve_ratio_cny,cash_reserve_ratio_fc,overseas_funds_app_ratio,market_risk_capital,interest_bearing_asset_ifpub,interest_bearing_lia_ifpub,net_interest_margin_ifpub,coretier1capi_ade_ratio,s_info_compcode,tier1capi_ade_ratio,capi_ade_ratio_2013,net_capital_2013,tier1_net_capi,coretier1_net_capi,leverage_ratio,fluidity_coverage,credit_risks_total_assets,market_risk_total_assets,operational_risk_total_assets,loan_impairment_totalloan_tot,risk_weight_asset_2013 from ${srcoradbname}.unlistedbankindicator"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_unlistedbankindicator",
+                        "fileName": "w_unlistedbankindicator",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"ann_dt","type":"string"},
+                            {"name":"report_period","type":"string"},
+                            {"name":"statement_type","type":"string"},
+                            {"name":"crncy_code","type":"string"},
+                            {"name":"capi_ade_ratio","type":"double"},
+                            {"name":"core_capi_ade_ratio","type":"double"},
+                            {"name":"npl_ratio","type":"double"},
+                            {"name":"loan_depo_ratio","type":"double"},
+                            {"name":"loan_depo_ratio_rmb","type":"double"},
+                            {"name":"loan_depo_ratio_normb","type":"double"},
+                            {"name":"st_asset_liq_ratio_rmb","type":"double"},
+                            {"name":"st_asset_liq_ratio_normb","type":"double"},
+                            {"name":"loan_from_banks_ratio","type":"double"},
+                            {"name":"lend_to_banks_ratio","type":"double"},
+                            {"name":"largest_customer_loan","type":"double"},
+                            {"name":"top_ten_customer_loan","type":"double"},
+                            {"name":"total_loan","type":"double"},
+                            {"name":"total_deposit","type":"double"},
+                            {"name":"loan_loss_provision","type":"double"},
+                            {"name":"bad_load_five_class","type":"double"},
+                            {"name":"npl_provision_coverage","type":"double"},
+                            {"name":"cost_income_ratio","type":"double"},
+                            {"name":"non_interest_margin","type":"double"},
+                            {"name":"net_capital","type":"double"},
+                            {"name":"core_capi_net_amount","type":"double"},
+                            {"name":"risk_weight_asset","type":"double"},
+                            {"name":"interest_bearing_asset","type":"double"},
+                            {"name":"interest_bearing_asset_comp","type":"double"},
+                            {"name":"interest_bearing_lia","type":"double"},
+                            {"name":"interest_bearing_lia_comp","type":"double"},
+                            {"name":"non_interest_income","type":"double"},
+                            {"name":"noneaning_asset","type":"double"},
+                            {"name":"noneaning_lia","type":"double"},
+                            {"name":"net_interest_margin","type":"double"},
+                            {"name":"net_interest_margin_is_ann","type":"double"},
+                            {"name":"net_interest_spread","type":"double"},
+                            {"name":"net_interest_spread_is_ann","type":"double"},
+                            {"name":"overdue_loan","type":"double"},
+                            {"name":"total_interest_income","type":"double"},
+                            {"name":"total_interest_exp","type":"double"},
+                            {"name":"cash_on_hand","type":"double"},
+                            {"name":"longterm_loans_ratio_cny","type":"double"},
+                            {"name":"longterm_loans_ratio_fc","type":"double"},
+                            {"name":"ibusiness_loan_ratio","type":"double"},
+                            {"name":"interect_collection_ratio","type":"double"},
+                            {"name":"cash_reserve_ratio_cny","type":"double"},
+                            {"name":"cash_reserve_ratio_fc","type":"double"},
+                            {"name":"overseas_funds_app_ratio","type":"double"},
+                            {"name":"market_risk_capital","type":"double"},
+                            {"name":"interest_bearing_asset_ifpub","type":"double"},
+                            {"name":"interest_bearing_lia_ifpub","type":"double"},
+                            {"name":"net_interest_margin_ifpub","type":"double"},
+                            {"name":"coretier1capi_ade_ratio","type":"double"},
+                            {"name":"s_info_compcode","type":"string"},
+                            {"name":"tier1capi_ade_ratio","type":"double"},
+                            {"name":"capi_ade_ratio_2013","type":"double"},
+                            {"name":"net_capital_2013","type":"double"},
+                            {"name":"tier1_net_capi","type":"double"},
+                            {"name":"coretier1_net_capi","type":"double"},
+                            {"name":"leverage_ratio","type":"double"},
+                            {"name":"fluidity_coverage","type":"double"},
+                            {"name":"credit_risks_total_assets","type":"double"},
+                            {"name":"market_risk_total_assets","type":"double"},
+                            {"name":"operational_risk_total_assets","type":"double"},
+                            {"name":"loan_impairment_totalloan_tot","type":"double"},
+                            {"name":"risk_weight_asset_2013","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

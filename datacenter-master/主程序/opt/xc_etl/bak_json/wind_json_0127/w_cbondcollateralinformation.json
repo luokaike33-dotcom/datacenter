@@ -1,0 +1,81 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      b_agency_grnttypecode,
+                                      b_agency_collateraltypecode,
+                                      eqy_targetcomp,
+                                      b_guaranteeowner,
+                                      b_guaranteeowner_compcode,
+                                      b_info_collateralnumber,
+                                      b_info_collateralpunit,
+                                      b_info_collateralvalue,
+                                      crncy_code,
+                                      b_info_guarintroduction,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondcollateralinformation.json' as task_rs_id
+                                from ${srcoradbname}.cbondcollateralinformation"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondcollateralinformation",
+                        "fileName": "w_cbondcollateralinformation",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"b_agency_grnttypecode","type":"bigint"},
+                                      {"name":"b_agency_collateraltypecode","type":"bigint"},
+                                      {"name":"eqy_targetcomp","type":"string"},
+                                      {"name":"b_guaranteeowner","type":"string"},
+                                      {"name":"b_guaranteeowner_compcode","type":"string"},
+                                      {"name":"b_info_collateralnumber","type":"bigint"},
+                                      {"name":"b_info_collateralpunit","type":"string"},
+                                      {"name":"b_info_collateralvalue","type":"bigint"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"b_info_guarintroduction","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

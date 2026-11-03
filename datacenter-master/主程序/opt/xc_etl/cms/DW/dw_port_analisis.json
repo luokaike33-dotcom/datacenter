@@ -1,0 +1,120 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/dw_port_analisis/p_dt=${p_dt}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"double"},
+									{"index":3,"type":"double"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"long"},
+									{"index":26,"type":"date"},
+									{"index":27,"type":"date"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"date"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"name":"p_dt""type":"long","value":"${p_dt}"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"sk_portfolio",
+									"sk_date",
+									"port_nav_assets",
+									"port_total_assets",
+									"port_share",
+									"port_lever_rate",
+									"financing_cost_avg",
+									"financing_amount",
+									"financing_qouta",
+									"financing_qouta_available",
+									"yield_not_levered_by_value",
+									"yield_not_levered_by_cost",
+									"yield_levered_by_value",
+									"yield_levered_by_cost",
+									"bond_yeild",
+									"bond_coupon_rate",
+									"port_duration_not_levered",
+									"port_duration_levered",
+									"bond_duration",
+									"port_convexity_not_levered",
+									"port_convexity_levered",
+									"port_couponrate_not_levered",
+									"port_couponrate_levered",
+									"port_assets_static_yield",
+									"dk_srcsys",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"realize_days",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id",
+									"sys_rs_id",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["dw_port_analisis"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from dw_port_analisis where p_dt=${p_dt}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

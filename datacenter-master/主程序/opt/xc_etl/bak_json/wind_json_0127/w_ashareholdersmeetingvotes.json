@@ -1,0 +1,111 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_info_compcode,
+                                      ann_dt,
+                                      meeting_dt,
+                                      motion_title,
+                                      is_classified_vote,
+                                      favor_share,
+                                      favor_share_radio,
+                                      oppose_share,
+                                      oppose_share_radio,
+                                      abstained_share,
+                                      abstained_share_radio,
+                                      non_tradable_favor_share,
+                                      non_tradable_oppose_share,
+                                      non_tradable_abstain_share,
+                                      tradable_favor_share,
+                                      tradable_favor_share_radio,
+                                      tradable_oppose_share,
+                                      tradable_oppose_share_radio,
+                                      tradable_abstain_share,
+                                      tradable_abstain_share_radio,
+                                      is_passed,
+                                      is_shareholder_avoid,
+                                      avoid_share,
+                                      avoid_share_radio,
+                                      motion_type,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareholdersmeetingvotes.json' as task_rs_id
+                                from ${srcoradbname}.ashareholdersmeetingvotes"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareholdersmeetingvotes",
+                        "fileName": "w_ashareholdersmeetingvotes",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"meeting_dt","type":"string"},
+                                      {"name":"motion_title","type":"string"},
+                                      {"name":"is_classified_vote","type":"bigint"},
+                                      {"name":"favor_share","type":"double"},
+                                      {"name":"favor_share_radio","type":"double"},
+                                      {"name":"oppose_share","type":"double"},
+                                      {"name":"oppose_share_radio","type":"double"},
+                                      {"name":"abstained_share","type":"double"},
+                                      {"name":"abstained_share_radio","type":"double"},
+                                      {"name":"non_tradable_favor_share","type":"double"},
+                                      {"name":"non_tradable_oppose_share","type":"double"},
+                                      {"name":"non_tradable_abstain_share","type":"double"},
+                                      {"name":"tradable_favor_share","type":"double"},
+                                      {"name":"tradable_favor_share_radio","type":"double"},
+                                      {"name":"tradable_oppose_share","type":"double"},
+                                      {"name":"tradable_oppose_share_radio","type":"double"},
+                                      {"name":"tradable_abstain_share","type":"double"},
+                                      {"name":"tradable_abstain_share_radio","type":"double"},
+                                      {"name":"is_passed","type":"bigint"},
+                                      {"name":"is_shareholder_avoid","type":"bigint"},
+                                      {"name":"avoid_share","type":"double"},
+                                      {"name":"avoid_share_radio","type":"double"},
+                                      {"name":"motion_type","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

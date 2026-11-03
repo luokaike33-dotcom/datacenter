@@ -1,0 +1,61 @@
+drop table if exists ty_ods.w_cbondimportantindicators;
+create table if not exists ty_ods.w_cbondimportantindicators
+(
+  object_id string comment '对象ID',
+  s_info_compcode string comment '公司ID',
+  statement_type string comment '报表类型',
+  iflisted_data bigint comment '是否上市后数据',
+  report_period string comment '报告期',
+  s_fa_eps_diluted decimal(20,4) comment '每股收益-摊薄',
+  s_fa_bps_sh decimal(20,4) comment '归属于母公司股东的每股净资产',
+  s_fa_bps_adjust decimal(20,4) comment '每股净资产-调整',
+  roe_diluted decimal(20,4) comment '净资产收益率-摊薄(%)',
+  s_info_div string comment '分红方案',
+  ann_dt string comment '公告日期',
+  s_fa_eps_ex decimal(20,4) comment '每股收益-扣除',
+  roe_weighted decimal(20,4) comment '净资产收益率-加权(%)',
+  roe_exweighted decimal(20,4) comment '净资产收益率-扣除/加权(%)',
+  s_fa_eps_basic decimal(20,4) comment '每股收益-基本',
+  s_fa_eps_exbasic decimal(20,4) comment '每股收益-扣除/基本',
+  roe_ex decimal(20,4) comment '净资产收益率-扣除(%)',
+  s_fa_deductedprofit decimal(20,4) comment '扣除非经常性损益后的净利润(扣除少数股东损益)',
+  s_fa_current decimal(20,4) comment '流动比',
+  s_fa_quick decimal(20,4) comment '速动比',
+  s_fa_arturn decimal(20,4) comment '应收账款周转率',
+  s_fa_invturn decimal(20,4) comment '存货周转率',
+  s_ft_debttoassets decimal(20,4) comment '资产负债率(%)',
+  s_fa_ocfps decimal(20,4) comment '每股经营活动产生的现金流量净额',
+  net_profit decimal(20,4) comment '国际会计准则净利润',
+  rd_expense decimal(20,4) comment '研发费用',
+  s_fa_eps_diluted2 decimal(20,6) comment '每股收益-稀释',
+  s_fa_eps_exdiluted decimal(20,4) comment '每股收益-扣除/稀释',
+  s_fa_bps decimal(22,4) comment '每股净资产',
+  s_fa_extraordinary decimal(22,4) comment '非经常性损益',
+  s_fa_tot_assets decimal(22,4) comment '比年初增长率.总资产(%)',
+  s_fa_yoyeps_basic decimal(22,4) comment '同比增长率.基本每股收益(%)',
+  s_fa_yoyeps_diluted decimal(22,4) comment '同比增长率.稀释每股收益(%)',
+  s_fa_yoyequity decimal(22,4) comment '比年初增长率.归属母公司的股东权益(%)',
+  growth_bps_sh decimal(22,4) comment '比年初增长率.归属于母公司股东的每股净资产(%)',
+  s_fa_yoyocfps decimal(22,4) comment '同比增长率.每股经营活动产生的现金流量净额(%)',
+  yoy_net_cash_flows decimal(22,4) comment '同比增长率.经营活动产生的现金流量净额(%)',
+  s_fa_deductedprofit_yoy decimal(22,4) comment '同比增长率.扣除非经常性损益后的净利润(扣除少数股东损益)(%)',
+  yoy_roe_diluted decimal(22,4) comment '同比增长率.净资产收益率(摊薄)(%)',
+  s_fa_yoyop decimal(20,4) comment '同比增长率.营业利润(%)',
+  s_fa_yoyebt decimal(20,4) comment '同比增长率.利润总额(%)',
+  net_profit_yoy decimal(20,4) comment '同比增长率.净利润(%)',
+  crncy_code string comment '货币代码',
+  statement_type_code bigint comment '报表类型代码',
+  contributionps decimal(20,4) comment '每股社会贡献值',
+  memo string comment '备注',
+  opdate timestamp,
+  opmode string,
+  bath_dt string,
+  data_ins_time timestamp,
+  task_rs_id string
+)
+partitioned by(busi_month bigint)
+row format delimited fields terminated by '\t'
+stored as orc;
+
+
+

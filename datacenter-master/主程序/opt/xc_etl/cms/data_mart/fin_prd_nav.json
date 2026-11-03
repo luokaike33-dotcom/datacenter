@@ -1,0 +1,108 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+						"hiveSql":["SELECT PRD_CODE, SUB_CODE, FOFS_CODE, NAV_DT, PRD_TYP, TTL_NAVL, TTL_SHR, UNIT_NVAL, AGGR_UNIT_NVAL, NAV_ADD_RAT, AGGR_NAV_ADD_RAT, UNIT_YLD, AGGR_UNIT_YLD_SETP, ANN_YLD_RAT, TTL_AST, TTL_LIAB, PAID_CAPI, F_SAVC, F_MATY, F_EVAL_DVAT_VAL, F_EVAL_DVAT_RAT, REAL_INCM_D, REAL_INCM_M, REAL_INCM_Y, PRFI_TTL, PRFTRD_UNIT, PRFTRD_LOSS_UNREAL, PRFTRD_LOSS_REAL, CURR_CODE, CASH_NAV_RAT, PRD_STAT, PRD_STAT_YEST, SHR_ADD, SHR_REDUCE, PRD_RTN_YEST, PRFI_TTL_UN, GRT_VAL, NAV_MTH_RAT, NAV_YEAR_RAT, BUSI_DATE, TASK_RS_ID, DM_CREATED_TIME, CASH_POS, AGGR_CADI_AMT, TOT_SECU_IVSM, STK_IVSM, BOND_IVSM, CVTB_IVSM, FND_IVS, SUPP_DT, DM_SRC_INFO, P_DT, SYS_RS_ID
+						FROM ${srcdbname}.fin_prd_nav where p_dt between ${beg_date} and ${end_date}
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"sub_code",
+									"fofs_code",
+									"nav_dt",
+									"prd_typ",
+									"ttl_navl",
+									"ttl_shr",
+									"unit_nval",
+									"aggr_unit_nval",
+									"nav_add_rat",
+									"aggr_nav_add_rat",
+									"unit_yld",
+									"aggr_unit_yld_setp",
+									"ann_yld_rat",
+									"ttl_ast",
+									"ttl_liab",
+									"paid_capi",
+									"f_savc",
+									"f_maty",
+									"f_eval_dvat_val",
+									"f_eval_dvat_rat",
+									"real_incm_d",
+									"real_incm_m",
+									"real_incm_y",
+									"prfi_ttl",
+									"prftrd_unit",
+									"prftrd_loss_unreal",
+									"prftrd_loss_real",
+									"curr_code",
+									"cash_nav_rat",
+									"prd_stat",
+									"prd_stat_yest",
+									"shr_add",
+									"shr_reduce",
+									"prd_rtn_yest",
+									"prfi_ttl_un",
+									"grt_val",
+									"nav_mth_rat",
+									"nav_year_rat",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"cash_pos",
+									"aggr_cadi_amt",
+									"tot_secu_ivsm",
+									"stk_ivsm",
+									"bond_ivsm",
+									"cvtb_ivsm",
+									"fnd_ivs",
+									"supp_dt",
+									"dm_src_info",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fin_prd_nav"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from  fin_prd_nav where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

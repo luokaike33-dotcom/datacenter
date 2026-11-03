@@ -1,0 +1,24 @@
+# ******************************************************************
+#    修改者      版本号            修改日期        修改内容
+#    Barry       1.2.8B          2022-06-16     初始化xcsql及改为系统来源分区表
+# ******************************************************************
+table: w_cbondprices
+cols:
+    OBJECT_ID        VARCHAR2(100)
+    S_INFO_WINDCODE  VARCHAR2(40)
+    TRADE_DT         VARCHAR2(8)
+    B_DQ_OPEN        NUMBER(20,8)
+    B_DQ_HIGH        NUMBER(20,8)
+    B_DQ_LOW         NUMBER(20,8)
+    B_DQ_ORIGINCLOSE NUMBER(20,8)
+    B_DQ_VOLUME      NUMBER(20,8)
+    B_DQ_AMOUNT      NUMBER(20,8)
+    OPDATE           DATE
+    OPMODE           VARCHAR2(1)
+    [cdh] busi_month       bigint(10)       月份
+
+partition:
+  [cdh] busi_month
+cluster:
+
+index:

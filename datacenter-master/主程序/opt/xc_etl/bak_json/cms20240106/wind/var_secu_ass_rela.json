@@ -1,0 +1,77 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_secu_ass_rela/sys_rs_id=${sys_rs_id}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+			  	    {"index":8,"type":"string"},
+				    {"index":9,"type":"string"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"date"},
+                                    {"name":"sys_rs_id","type":"string","value":"${sys_rs_id}"}
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "src_secu_id",
+                                    "secu_typ_code",
+                                    "lst_sts_code",
+                                    "trd_mkt",
+                                    "extr_secu_flag",
+                                    "chg_flag",
+				    "main_secu_id",
+				    "trd_code",
+                                    "busi_date",
+                                    "dm_src_info",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "sys_rs_id" 
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_secu_ass_rela"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_secu_ass_rela where sys_rs_id='${sys_rs_id}'"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {
+              "record": "0",
+              "percentage": "0"
+            }
+        }
+    }
+}

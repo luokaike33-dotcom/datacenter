@@ -1,0 +1,47 @@
+# ******************************************************************
+#    修改者      版本号            修改日期        修改内容
+#    Barry       1.2.8B           2022-06-15     初始化xcsql及改为系统来源分区表
+# ******************************************************************
+table: w_cbondanalysiscnbd
+cols:
+   object_id                    varchar2(100)
+    s_info_windcode              varchar2(40)
+    trade_dt                     varchar2(8)
+    b_anal_matu_cnbd             number(20,4)
+    b_anal_dirty_cnbd            number(20,4)
+    b_anal_accrint_cnbd          number(20,4)
+    b_anal_net_cnbd              number(20,4)
+    b_anal_yield_cnbd            number(20,4)
+    b_anal_modidura_cnbd         number(20,4)
+    b_anal_cnvxty_cnbd           number(20,4)
+    b_anal_vobp_cnbd             number(20,4)
+    b_anal_sprdura_cnbd          number(20,4)
+    b_anal_sprcnxt_cnbd          number(20,4)
+    b_anal_accrintclose_cnbd     number(20,4)
+    b_anal_price                 number(20,4)
+    b_anal_netprice              number(20,4)
+    b_anal_yield                 number(20,4)
+    b_anal_modifiedduration      number(20,4)
+    b_anal_convexity             number(20,4)
+    b_anal_bpvalue               number(20,4)
+    b_anal_sduration             number(20,4)
+    b_anal_scnvxty               number(20,4)
+    b_anal_interestduration_cnbd number(20,4)
+    b_anal_interestcnvxty_cnbd   number(20,4)
+    b_anal_interestduration      number(20,4)
+    b_anal_interestcnvxty        number(20,4)
+    b_anal_price_cnbd            number(20,4)
+    b_anal_bpyield               number(20,4)
+    b_anal_exchange              varchar2(40)
+    b_anal_credibility           varchar2(40)
+    b_anal_residualpri           number(20,4)
+    b_anal_exercise_rate         number(20,6)
+    opdate                       date
+    opmode                       varchar2(1)
+    [cdh] busi_month       bigint(10)       月份
+
+partition:
+  [cdh] busi_month
+cluster:
+
+index:

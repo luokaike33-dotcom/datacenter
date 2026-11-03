@@ -1,0 +1,86 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+						"hiveSql":["SELECT id, tdate, bcode, dprice, cprice, dirtyprice, clearprice, wprice, yield, datasource, isvalid, tmstamp, entrydate, entrytime, basispointval, convexity, convexitydis, convexityint, coupontype, durationdis, durationint, durationmod, `exchange`, secode, cpricecny, currency, dpricecny, secsubtype, bath_dt, data_ins_time, task_rs_id, p_dt
+						FROM ${srcdbname}.fc_tq_bd_ubestimate where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"id",
+									"tdate",
+									"bcode",
+									"dprice",
+									"cprice",
+									"dirtyprice",
+									"clearprice",
+									"wprice",
+									"yield",
+									"datasource",
+									"isvalid",
+									"tmstamp",
+									"entrydate",
+									"entrytime",
+									"basispointval",
+									"convexity",
+									"convexitydis",
+									"convexityint",
+									"coupontype",
+									"durationdis",
+									"durationint",
+									"durationmod",
+									"exchange",
+									"secode",
+									"cpricecny",
+									"currency",
+									"dpricecny",
+									"secsubtype",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id",
+                                    "p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fc_tq_bd_ubestimate"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fc_tq_bd_ubestimate where p_dt between ${beg_date} and ${end_date} "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

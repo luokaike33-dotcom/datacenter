@@ -1,0 +1,58 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_con_windcode,trade_dt,i_weight,s_in_index,i_weight_11,i_weight_12,i_weight_14,i_weight_15,i_weight_16,i_weight_17,i_weight_18,opdate,opmode from ${srcoradbname}.aindexhs300closeweight where trade_dt between '${busi_month}'||'01' and to_char(add_months(to_date('${busi_month}'||01,'yyyyMMdd'),1)-1,'yyyyMMdd')"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_aindexhs300closeweight/busi_month=${busi_month}",
+                        "fileName": "w_aindexhs300closeweight",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"s_con_windcode","type":"string"},
+                            {"name":"trade_dt","type":"string"},
+                            {"name":"i_weight","type":"double"},
+                            {"name":"s_in_index","type":"double"},
+                            {"name":"i_weight_11","type":"double"},
+                            {"name":"i_weight_12","type":"string"},
+                            {"name":"i_weight_14","type":"double"},
+                            {"name":"i_weight_15","type":"double"},
+                            {"name":"i_weight_16","type":"string"},
+                            {"name":"i_weight_17","type":"double"},
+                            {"name":"i_weight_18","type":"double"},
+                            {"name":"opdate","type":"date"},
+                            {"name":"opmode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

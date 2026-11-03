@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,ann_date,isipo,s_issue_type,boardlotunit,s_issue_par,par_crncy_code,s_issue_price,crncy_code,fundraising_net,ptotal_num_shares,pnum_hkshares,pnum_intrnl_shares,total_num_shares,num_hk_shares,num_intrnl_shares,overallotmentamount,hkvalidshares,hkvalidmultiple,pricerange_up,pricerange_down,hearingdate,prc_dtrmntn_date,paymentdate,listdate,sbscrpt_startdate,sbscrpt_enddate,intrnl_validshares,intrnl_validmultiple,pn_selling_shrhldr,oan_selling_shrhldr,overallotment_fundraising,totalfundraising,lotwinningrate,minpurchase_1hand,result_ann_date,funduse,web_info_ann_date,initial_issue_price,null as right_issue_d_date,null as right_issue_l_date from ${srcoradbname}.hkshareissuance"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_hkshareissuance",
+                        "fileName": "w_hkshareissuance",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"ann_date","type":"STRING"},
+                        {"name":"isipo","type":"DOUBLE"},
+                        {"name":"s_issue_type","type":"STRING"},
+                        {"name":"boardlotunit","type":"DOUBLE"},
+                        {"name":"s_issue_par","type":"DOUBLE"},
+                        {"name":"par_crncy_code","type":"STRING"},
+                        {"name":"s_issue_price","type":"DOUBLE"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"fundraising_net","type":"DOUBLE"},
+                        {"name":"ptotal_num_shares","type":"DOUBLE"},
+                        {"name":"pnum_hkshares","type":"DOUBLE"},
+                        {"name":"pnum_intrnl_shares","type":"DOUBLE"},
+                        {"name":"total_num_shares","type":"DOUBLE"},
+                        {"name":"num_hk_shares","type":"DOUBLE"},
+                        {"name":"num_intrnl_shares","type":"DOUBLE"},
+                        {"name":"overallotmentamount","type":"DOUBLE"},
+                        {"name":"hkvalidshares","type":"DOUBLE"},
+                        {"name":"hkvalidmultiple","type":"DOUBLE"},
+                        {"name":"pricerange_up","type":"DOUBLE"},
+                        {"name":"pricerange_down","type":"DOUBLE"},
+                        {"name":"hearingdate","type":"STRING"},
+                        {"name":"prc_dtrmntn_date","type":"STRING"},
+                        {"name":"paymentdate","type":"STRING"},
+                        {"name":"listdate","type":"STRING"},
+                        {"name":"sbscrpt_startdate","type":"STRING"},
+                        {"name":"sbscrpt_enddate","type":"STRING"},
+                        {"name":"intrnl_validshares","type":"DOUBLE"},
+                        {"name":"intrnl_validmultiple","type":"DOUBLE"},
+                        {"name":"pn_selling_shrhldr","type":"DOUBLE"},
+                        {"name":"oan_selling_shrhldr","type":"DOUBLE"},
+                        {"name":"overallotment_fundraising","type":"DOUBLE"},
+                        {"name":"totalfundraising","type":"DOUBLE"},
+                        {"name":"lotwinningrate","type":"DOUBLE"},
+                        {"name":"minpurchase_1hand","type":"DOUBLE"},
+                        {"name":"result_ann_date","type":"STRING"},
+                        {"name":"funduse","type":"STRING"},
+                        {"name":"web_info_ann_date","type":"STRING"},
+                        {"name":"initial_issue_price","type":"DOUBLE"},
+                        {"name":"right_issue_d_date","type":"DOUBLE"},
+                        {"name":"right_issue_l_date","type":"DOUBLE"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

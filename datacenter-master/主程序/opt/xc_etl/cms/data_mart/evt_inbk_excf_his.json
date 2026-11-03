@@ -1,0 +1,158 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									busi_sys_id,
+									trd_src_id,
+									occu_dt,
+									occu_time,
+									excf_onum,
+									odr_rela_onum,
+									prd_code,
+									ast_unit_code,
+									pfl_code,
+									sh_code,
+									seat_code,
+									inv_typ,
+									secu_id,
+									exch_code,
+									secu_code,
+									src_secu_id,
+									src_secu_trd_id,
+									pos_id,
+									curr_code,
+									clr_sped,
+									entr_dir,
+									entr_vol,
+									whdw_vol,
+									entr_prc,
+									net_prc,
+									full_prc,
+									busi_typ,
+									busi_clas,
+									rat,
+									entr_val,
+									entr_tot_fee,
+									oper_no,
+									trd_cntp_id,
+									deli_dt,
+									cont_days,
+									inta_days,
+									cont_tnv_dt,
+									cont_end_dt,
+									fir_deli_dt,
+									end_deli_dt,
+									fir_deli_mode,
+									end_deli_mode,
+									fir_net_prc,
+									end_net_prc,
+									fir_hd_intr,
+									end_hd_intr,
+									buyb_val,
+									intr,
+									entr_stat,
+									busi_date,
+									task_rs_id,
+									dm_created_time,
+									p_dt,
+									sys_rs_id
+							FROM ${srcdbname}.evt_inbk_excf_his where p_dt between ${beg_date} and ${end_date}"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"busi_sys_id",
+									"trd_src_id",
+									"occu_dt",
+									"occu_time",
+									"excf_onum",
+									"odr_rela_onum",
+									"prd_code",
+									"ast_unit_code",
+									"pfl_code",
+									"sh_code",
+									"seat_code",
+									"inv_typ",
+									"secu_id",
+									"exch_code",
+									"secu_code",
+									"src_secu_id",
+									"src_secu_trd_id",
+									"pos_id",
+									"curr_code",
+									"clr_sped",
+									"entr_dir",
+									"entr_vol",
+									"whdw_vol",
+									"entr_prc",
+									"net_prc",
+									"full_prc",
+									"busi_typ",
+									"busi_clas",
+									"rat",
+									"entr_val",
+									"entr_tot_fee",
+									"oper_no",
+									"trd_cntp_id",
+									"deli_dt",
+									"cont_days",
+									"inta_days",
+									"cont_tnv_dt",
+									"cont_end_dt",
+									"fir_deli_dt",
+									"end_deli_dt",
+									"fir_deli_mode",
+									"end_deli_mode",
+									"fir_net_prc",
+									"end_net_prc",
+									"fir_hd_intr",
+									"end_hd_intr",
+									"buyb_val",
+									"intr",
+									"entr_stat",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["evt_inbk_excf_his"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from evt_inbk_excf_his where (p_dt < to_number(to_char(to_date(to_char(${end_date}), 'yyyyMMdd') -180, 'yyyyMMdd'))) or (p_dt between ${beg_date} and ${end_date})"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

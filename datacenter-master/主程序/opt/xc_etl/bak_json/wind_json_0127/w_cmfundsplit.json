@@ -1,0 +1,58 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,f_info_splittype,f_info_splitanndate,f_info_splitannoecdate,f_info_sharetransdate,f_info_sharekindate,f_info_splitinc,f_info_split_dt,concosinc,conrelinc,rel_windcode,f_info_splittypecode,opdate,opmode from ${srcoradbname}.cmfundsplit"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cmfundsplit",
+                        "fileName": "w_cmfundsplit",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"f_info_splittype","type":"STRING"},
+                        {"name":"f_info_splitanndate","type":"STRING"},
+                        {"name":"f_info_splitannoecdate","type":"STRING"},
+                        {"name":"f_info_sharetransdate","type":"STRING"},
+                        {"name":"f_info_sharekindate","type":"STRING"},
+                        {"name":"f_info_splitinc","type":"DOUBLE"},
+                        {"name":"f_info_split_dt","type":"STRING"},
+                        {"name":"concosinc","type":"DOUBLE"},
+                        {"name":"conrelinc","type":"DOUBLE"},
+                        {"name":"rel_windcode","type":"STRING"},
+                        {"name":"f_info_splittypecode","type":"DOUBLE"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

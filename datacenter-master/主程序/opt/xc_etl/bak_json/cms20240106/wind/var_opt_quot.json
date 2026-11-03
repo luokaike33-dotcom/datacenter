@@ -1,0 +1,100 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_opt_quot/p_dt=${p_dt}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"long"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"long"},
+                                    {"index":5,"type":"long"},
+                                    {"index":6,"type":"double"},
+                                    {"index":7,"type":"double"},
+                                    {"index":8,"type":"double"},
+                                    {"index":9,"type":"double"},
+                                    {"index":10,"type":"double"},
+                                    {"index":11,"type":"double"},
+                                    {"index":12,"type":"long"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"long"},
+                                    {"index":15,"type":"double"},
+                                    {"index":16,"type":"double"},
+                                    {"index":17,"type":"double"},
+                                    {"index":18,"type":"double"},
+                                    {"index":19,"type":"double"},
+                                    {"index":20,"type":"string"},
+                                    {"index":21,"type":"double"},
+                                    {"index":22,"type":"long"},
+                                    {"index":23,"type":"string"},
+                                    {"index":24,"type":"date"},
+                                    {"name":"p_dt","type":"long","value":"${p_dt}"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "secu_code",
+                                    "trd_code",
+                                    "secu_sht",
+                                    "secu_typ",
+                                    "trd_dt",
+                                    "prev_sett_prc",
+                                    "cls_prc",
+                                    "open_prc",
+                                    "high_prc",
+                                    "low_prc",
+                                    "sett_prc",
+                                    "tnv_vol",
+                                    "tnv_val",
+                                    "hld_vol",
+                                    "hld_vol_chg",
+                                    "day_clqn_chg",
+                                    "day_clqn_chg_rat",
+                                    "day_clr_chg",
+                                    "day_clr_chg_rat",
+                                    "curr_code",
+                                    "impl_vix_rat",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time",
+                                    "p_dt"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_opt_quot"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_opt_quot where p_dt ='${p_dt}' and 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

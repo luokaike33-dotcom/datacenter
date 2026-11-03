@@ -1,0 +1,130 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_stk_perf_ltts_fin/busi_month=${busi_month}",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"double"},
+									{"index":4,"type":"double"},
+									{"index":5,"type":"double"},
+									{"index":6,"type":"double"},
+									{"index":7,"type":"double"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"double"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"double"},
+									{"index":31,"type":"double"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"long"},
+									{"index":34,"type":"string"},
+									{"name":"dm_created_time","type":"string","value":"${kerberosPrincipal}"}
+									{"index":36,"type":"string"},
+									{"name":"busi_month","type":"long","value":"${busi_month}"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"affi_date",
+									"rept_pd",
+									"busi_tot_incm",
+									"busi_prof",
+									"prof_gamt",
+									"net_prof",
+									"tot_ast",
+									"sh_equi_tot_elm_min_sh_equi",
+									"eps_basi",
+									"roe_wght",
+									"is_audt",
+									"lst_yea_amnd_aft_net_prof",
+									"perf_sple_expl",
+									"memo",
+									"ps_nast",
+									"yoy_grow_rate_busi_tot_incm",
+									"yoy_grow_rate_busi_prof",
+									"yoy_grow_rate_prof_gamt",
+									"yoy_grow_rate_net_prof",
+									"yoy_grow_rate_basi_eps",
+									"yoy_add_redc_wght_avg_roe",
+									"eary_grow_rate_tot_ast",
+									"eary_grow_rate_equi",
+									"eary_grow_rate_nast",
+									"lst_yea_busi_tot_incm",
+									"lst_yea_busi_prof",
+									"lst_yea_prof_gamt",
+									"lst_yea_net_prof",
+									"lst_yea_eps",
+									"bgng_nast",
+									"bgng_ps_nast",
+									"inr_actl_affi_date",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id",
+									"busi_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:mysql://${tgrurl}/",
+                                "selectedDatabase": "${selectedDatabase}", 
+                                "table": ["var_stk_perf_ltts_fin"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "loadUrl":[${loadUrl}],
+                        "preSql":["delete from data_mart.var_stk_perf_ltts_fin where busi_month=${busi_month}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

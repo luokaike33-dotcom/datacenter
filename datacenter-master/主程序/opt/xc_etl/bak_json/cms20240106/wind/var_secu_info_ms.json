@@ -1,0 +1,112 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_secu_info_ms",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"string"},
+                                    {"index":5,"type":"string"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"string"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"string"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"string"},
+                                    {"index":17,"type":"double"},
+                                    {"index":18,"type":"long"},
+                                    {"index":19,"type":"long"},
+                                    {"index":20,"type":"string"},
+                                    {"index":21,"type":"string"},
+                                    {"index":22,"type":"string"},
+                                    {"index":23,"type":"string"},
+                                    {"index":24,"type":"string"},
+                                    {"index":25,"type":"string"},
+                                    {"index":26,"type":"string"},
+                                    {"index":27,"type":"string"},
+                                    {"index":28,"type":"long"},
+                                    {"index":29,"type":"long"},
+                                    {"index":30,"type":"string"},
+                                    {"index":31,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "com_id",
+                                    "com_name",
+                                    "trd_code",
+                                    "secu_sht",
+                                    "chi_name",
+                                    "name_sht",
+                                    "py_sht",
+                                    "eng_name",
+                                    "eng_sht",
+                                    "exch_code",
+                                    "exch_name",
+                                    "typ_code",
+                                    "typ_codei",
+                                    "typ_codeii",
+                                    "typ_desc",
+                                    "secu_var",
+                                    "par_val",
+                                    "lst_dt",
+                                    "dlst_dt",
+                                    "lst_sect_code",
+                                    "lst_sect_name",
+                                    "lst_sts_code",
+                                    "isin_code",
+                                    "curr_code",
+                                    "trd_curr_code",
+                                    "main_secu_id",
+                                    "nati",
+                                    "end_dt",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_secu_info_ms"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_secu_info_ms where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

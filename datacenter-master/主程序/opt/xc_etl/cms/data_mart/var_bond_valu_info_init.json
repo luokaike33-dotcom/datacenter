@@ -1,0 +1,97 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+                        "hiveSql":["SELECT secu_id, valu_dt, full_val, accr_int, net_val, yld_rat, mod_dur, conv_val, bas_pnt_val, ref_rat_dur, ref_rat_conv, sprd_dur, sprd_conv, act_full_prc, act_net_prc, act_yld_rat, act_term_y, act_mod_dur, act_conv, act_bas_pnt_val, act_ref_rat_dur, act_ref_rat_conv, act_sprd_dur, act_sprd_conv, abs_cof_cet, post_per, rel_li_cof, rel_li_num, cblt_code, cblt_desc, exer_flag, full_val_fnl, accr_int_fnl, rem_prin, sprd_yld_rat, typ_code, est_cat_r, data_prdu, busi_date, task_rs_id, dm_created_time, p_dt, sys_rs_id
+						FROM ${srcdbname}.var_bond_valu_info where p_dt between ${beg_date} and ${end_date}"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+						"tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"valu_dt",
+									"full_val",
+									"accr_int",
+									"net_val",
+									"yld_rat",
+									"mod_dur",
+									"conv_val",
+									"bas_pnt_val",
+									"ref_rat_dur",
+									"ref_rat_conv",
+									"sprd_dur",
+									"sprd_conv",
+									"act_full_prc",
+									"act_net_prc",
+									"act_yld_rat",
+									"act_term_y",
+									"act_mod_dur",
+									"act_conv",
+									"act_bas_pnt_val",
+									"act_ref_rat_dur",
+									"act_ref_rat_conv",
+									"act_sprd_dur",
+									"act_sprd_conv",
+									"abs_cof_cet",
+									"post_per",
+									"rel_li_cof",
+									"rel_li_num",
+									"cblt_code",
+									"cblt_desc",
+									"exer_flag",
+									"full_val_fnl",
+									"accr_int_fnl",
+									"rem_prin",
+									"sprd_yld_rat",
+									"typ_code",
+									"est_cat_r",
+									"data_prdu",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["var_bond_valu_info"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":[""]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

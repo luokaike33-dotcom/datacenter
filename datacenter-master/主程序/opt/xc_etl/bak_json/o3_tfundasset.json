@@ -1,0 +1,121 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["SELECT L_DATE, L_FUND_ID, EN_BEGIN_CASH, EN_CURRENT_CASH, EN_BASIC_FROZEN_BALANCE, EN_PREBUY_BALANCE, EN_PRESALE_BALANCE, EN_BUY_BALANCE, EN_SALE_BALANCE, EN_BUY_UNSETTLE_BALANCE, EN_SALE_UNSETTLE_BALANCE, EN_OTHER_EXPENSE, EN_OTHER_PROFIT, EN_INTEREST_BALANCE, EN_STOCK_ASSET, EN_BOND_ASSET, EN_FUND_ASSET, EN_WARRANT_ASSET, EN_HG_ASSET, EN_OTHER_ASSET, EN_ACCUMULATE_PROFIT, EN_FUTURES_ASSET, EN_FUTURES_BALANCE, EN_FUTURES_DEPOSIT, EN_FUTURES_PREPARE, EN_FUND_SHARE, EN_FUND_VALUE, EN_NAV, EN_FUND_VALUE_YESTERDAY, VC_CURRENCY_NO, EN_TOTAL_NAV, EN_NAV_YESTERDAY, D_LASTUPDATE, EN_UNIT_DIVIDENDS, EN_TOTAL_UNIT_DIVIDENDS, EN_7DAYS_YIELD_RATE, EN_10K_UNIT_YIELD, EN_DEPOSIT_BALANCE, EN_EXCHANGED_IN_QUOTA, EN_EXCHANGED_OUT_QUOTA, EN_TODAY_EXCHANGE_IN_QUOTA, EN_TODAY_EXCHANGE_OUT_QUOTA, EN_NEXT_EXCHANGE_OUT_QUOTA, EN_BOND_INTEREST, EN_BEGIN_FUND_VALUE, EN_FUND_TOTAL_VALUE, EN_PAYABLE_BOND_ASSET, VC_DIFF_DESCRIPTION, EN_T1_PREBUY_BALANCE, EN_T1_PRESALE_BALANCE, EN_REC_SEC_ASSET, EN_PAY_SEC_ASSET, EN_OPTION_ASSET, EN_BUY_UNASSET_BALANCE, EN_SALE_UNASSET_BALANCE, EN_ACCUMULATE_PROFIT_GQ, EN_TURN_PROFIT_GQ, EN_NET_GAIN_GQ, EN_UNCARRYOVER_NET_GAIN_GQ, EN_INTEREST_PROFIT_GQ, EN_TURN_INTEREST_PROFIT_GQ, EN_INTEREST_GAIN_GQ, EN_TURN_INTEREST_GAIN_GQ, EN_BEGINYEAR_TURN_PROFIT_GQ, EN_BEGINYEAR_UNTURN_PROFIT_GQ, EN_GOLD_ASSET, EN_GOLD_PROFIT, EN_GOLD_DEPOSIT, EN_STOCK_ASSET_GGT, EN_STOCK_ASSET_NOGGT, EN_ENERALHG_DEPOSIT, EN_AVG_FUND_VALUE, EN_BROKER_BALANCE, EN_GOLD_EQUITY, EN_GOLD_SPOT, EN_IRS_DEPOSIT, EN_FINADEBT_ASSET, EN_FINADEBT_INTEREST from ${srcoradbname}.TFUNDASSET"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_tfundasset", 
+                        "fileName": "o3_tfundasset",
+                        "column": [
+     {"name":"l_date","type":"double"},
+                    {"name":"l_fund_id","type":"double"},
+                    {"name":"en_begin_cash","type":"double"},
+                    {"name":"en_current_cash","type":"double"},
+                    {"name":"en_basic_frozen_balance","type":"double"},
+                    {"name":"en_prebuy_balance","type":"double"},
+                    {"name":"en_presale_balance","type":"double"},
+                    {"name":"en_buy_balance","type":"double"},
+                    {"name":"en_sale_balance","type":"double"},
+                    {"name":"en_buy_unsettle_balance","type":"double"},
+                    {"name":"en_sale_unsettle_balance","type":"double"},
+                    {"name":"en_other_expense","type":"double"},
+                    {"name":"en_other_profit","type":"double"},
+                    {"name":"en_interest_balance","type":"double"},
+                    {"name":"en_stock_asset","type":"double"},
+                    {"name":"en_bond_asset","type":"double"},
+                    {"name":"en_fund_asset","type":"double"},
+                    {"name":"en_warrant_asset","type":"double"},
+                    {"name":"en_hg_asset","type":"double"},
+                    {"name":"en_other_asset","type":"double"},
+                    {"name":"en_accumulate_profit","type":"double"},
+                    {"name":"en_futures_asset","type":"double"},
+                    {"name":"en_futures_balance","type":"double"},
+                    {"name":"en_futures_deposit","type":"double"},
+                    {"name":"en_futures_prepare","type":"double"},
+                    {"name":"en_fund_share","type":"double"},
+                    {"name":"en_fund_value","type":"double"},
+                    {"name":"en_nav","type":"double"},
+                    {"name":"en_fund_value_yesterday","type":"double"},
+                    {"name":"vc_currency_no","type":"string"},
+                    {"name":"en_total_nav","type":"double"},
+                    {"name":"en_nav_yesterday","type":"double"},
+                    {"name":"d_lastupdate","type":"timestamp"},
+                    {"name":"en_unit_dividends","type":"double"},
+                    {"name":"en_total_unit_dividends","type":"double"},
+                    {"name":"en_7days_yield_rate","type":"double"},
+                    {"name":"en_10k_unit_yield","type":"double"},
+                    {"name":"en_deposit_balance","type":"double"},
+                    {"name":"en_exchanged_in_quota","type":"double"},
+                    {"name":"en_exchanged_out_quota","type":"double"},
+                    {"name":"en_today_exchange_in_quota","type":"double"},
+                    {"name":"en_today_exchange_out_quota","type":"double"},
+                    {"name":"en_next_exchange_out_quota","type":"double"},
+                    {"name":"en_bond_interest","type":"double"},
+                    {"name":"en_begin_fund_value","type":"double"},
+                    {"name":"en_fund_total_value","type":"double"},
+                    {"name":"en_payable_bond_asset","type":"double"},
+                    {"name":"vc_diff_description","type":"string"},
+                    {"name":"en_t1_prebuy_balance","type":"double"},
+                    {"name":"en_t1_presale_balance","type":"double"},
+                    {"name":"en_rec_sec_asset","type":"double"},
+                    {"name":"en_pay_sec_asset","type":"double"},
+                    {"name":"en_option_asset","type":"double"},
+                    {"name":"en_buy_unasset_balance","type":"double"},
+                    {"name":"en_sale_unasset_balance","type":"double"},
+                    {"name":"en_accumulate_profit_gq","type":"double"},
+                    {"name":"en_turn_profit_gq","type":"double"},
+                    {"name":"en_net_gain_gq","type":"double"},
+                    {"name":"en_uncarryover_net_gain_gq","type":"double"},
+                    {"name":"en_interest_profit_gq","type":"double"},
+                    {"name":"en_turn_interest_profit_gq","type":"double"},
+                    {"name":"en_interest_gain_gq","type":"double"},
+                    {"name":"en_turn_interest_gain_gq","type":"double"},
+                    {"name":"en_beginyear_turn_profit_gq","type":"double"},
+                    {"name":"en_beginyear_unturn_profit_gq","type":"double"},
+                    {"name":"en_gold_asset","type":"double"},
+                    {"name":"en_gold_profit","type":"double"},
+                    {"name":"en_gold_deposit","type":"double"},
+                    {"name":"en_stock_asset_ggt","type":"double"},
+                    {"name":"en_stock_asset_noggt","type":"double"},
+                    {"name":"en_eneralhg_deposit","type":"double"},
+                    {"name":"en_avg_fund_value","type":"double"},
+                    {"name":"en_broker_balance","type":"double"},
+                    {"name":"en_gold_equity","type":"double"},
+                    {"name":"en_gold_spot","type":"double"},
+                    {"name":"en_irs_deposit","type":"double"},
+                    {"name":"en_finadebt_asset","type":"double"},
+                    {"name":"en_finadebt_interest","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

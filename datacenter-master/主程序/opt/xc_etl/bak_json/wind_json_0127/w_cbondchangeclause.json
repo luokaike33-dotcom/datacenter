@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_info_windcode2,
+                                      s_info_execdate,
+                                      ann_date,
+                                      s_info_repurchasestartdate,
+                                      s_info_repurchaseenddate,
+                                      s_info_min_operation_amount,
+                                      s_info_conversion_ratio,
+                                      s_info_trusteeship,
+                                      s_info_postright_trusteeship,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondchangeclause.json' as task_rs_id
+                                from ${srcoradbname}.cbondchangeclause"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondchangeclause",
+                        "fileName": "w_cbondchangeclause",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_info_windcode2","type":"string"},
+                                      {"name":"s_info_execdate","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"s_info_repurchasestartdate","type":"string"},
+                                      {"name":"s_info_repurchaseenddate","type":"string"},
+                                      {"name":"s_info_min_operation_amount","type":"double"},
+                                      {"name":"s_info_conversion_ratio","type":"string"},
+                                      {"name":"s_info_trusteeship","type":"double"},
+                                      {"name":"s_info_postright_trusteeship","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

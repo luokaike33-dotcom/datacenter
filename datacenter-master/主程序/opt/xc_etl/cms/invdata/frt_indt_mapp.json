@@ -1,0 +1,62 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+                                    csre2012_pri_indt,
+                                    csre2012_second_indt,
+                                    rpt_mapp_indt,
+                                    cast(date_format(current_date(), 'yyyyMMdd') as decimal(8, 0)) as batchno,
+                                    date_format(current_timestamp(), 'yyyy-MM-dd HH:mm:ss')        as inserttime,
+                                    date_format(current_timestamp(), 'yyyy-MM-dd HH:mm:ss')        as updatetime
+							FROM ${srcdbname}.frt_indt_mapp  "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"csre2012_pri_indt",
+									"csre2012_second_indt",
+									"rpt_mapp_indt",
+                                    "batchno",
+									"inserttime",
+									"updatetime"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["frt_indt_mapp"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table frt_indt_mapp"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

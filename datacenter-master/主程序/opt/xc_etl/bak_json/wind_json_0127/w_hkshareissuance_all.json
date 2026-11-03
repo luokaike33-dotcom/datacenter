@@ -1,0 +1,124 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select object_id,
+                  s_info_windcode,
+                  ann_date,
+                  isipo,
+                  s_issue_type,
+                  boardlotunit,
+                  s_issue_par,
+                  par_crncy_code,
+                  s_issue_price,
+                  crncy_code,
+                  fundraising_net,
+                  ptotal_num_shares,
+                  pnum_hkshares,
+                  pnum_intrnl_shares,
+                  total_num_shares,
+                  num_hk_shares,
+                  num_intrnl_shares,
+                  overallotmentamount,
+                  hkvalidshares,
+                  hkvalidmultiple,
+                  pricerange_up,
+                  pricerange_down,
+                  hearingdate,
+                  prc_dtrmntn_date,
+                  paymentdate,
+                  listdate,
+                  sbscrpt_startdate,
+                  sbscrpt_enddate,
+                  intrnl_validshares,
+                  intrnl_validmultiple,
+                  pn_selling_shrhldr,
+                  oan_selling_shrhldr,
+                  overallotment_fundraising,
+                  totalfundraising,
+                  lotwinningrate,
+                  minpurchase_1hand,
+                  result_ann_date,
+                  funduse,
+                  web_info_ann_date,
+                  initial_issue_price
+                  from ${srcoradbname}.hkshareissuance"],
+                  "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                  }
+                ]
+              }
+            },
+              "writer": {
+                "name": "hdfswriter",
+                "parameter": {
+                  "defaultFS": "hdfs://${tgrhdfsurl}",
+                  "fileType": "orc",
+                  "path": "${tgrhivedbpath}/w_hkshareissuance",
+                  "fileName": "w_hkshareissuance",
+                  "column": [
+                    {"name":"object_id","type":"string"},
+                    {"name":"s_info_windcode","type":"string"},
+                    {"name":"ann_date","type":"string"},
+                    {"name":"isipo","type":"double"},
+                    {"name":"s_issue_type","type":"string"},
+                    {"name":"boardlotunit","type":"double"},
+                    {"name":"s_issue_par","type":"double"},
+                    {"name":"par_crncy_code","type":"string"},
+                    {"name":"s_issue_price","type":"double"},
+                    {"name":"crncy_code","type":"string"},
+                    {"name":"fundraising_net","type":"double"},
+                    {"name":"ptotal_num_shares","type":"double"},
+                    {"name":"pnum_hkshares","type":"double"},
+                    {"name":"pnum_intrnl_shares","type":"double"},
+                    {"name":"total_num_shares","type":"double"},
+                    {"name":"num_hk_shares","type":"double"},
+                    {"name":"num_intrnl_shares","type":"double"},
+                    {"name":"overallotmentamount","type":"double"},
+                    {"name":"hkvalidshares","type":"double"},
+                    {"name":"hkvalidmultiple","type":"double"},
+                    {"name":"pricerange_up","type":"double"},
+                    {"name":"pricerange_down","type":"double"},
+                    {"name":"hearingdate","type":"string"},
+                    {"name":"prc_dtrmntn_date","type":"string"},
+                    {"name":"paymentdate","type":"string"},
+                    {"name":"listdate","type":"string"},
+                    {"name":"sbscrpt_startdate","type":"string"},
+                    {"name":"sbscrpt_enddate","type":"string"},
+                    {"name":"intrnl_validshares","type":"double"},
+                    {"name":"intrnl_validmultiple","type":"double"},
+                    {"name":"pn_selling_shrhldr","type":"double"},
+                    {"name":"oan_selling_shrhldr","type":"double"},
+                    {"name":"overallotment_fundraising","type":"double"},
+                    {"name":"totalfundraising","type":"double"},
+                    {"name":"lotwinningrate","type":"double"},
+                    {"name":"minpurchase_1hand","type":"double"},
+                    {"name":"result_ann_date","type":"string"},
+                    {"name":"funduse","type":"string"},
+                    {"name":"web_info_ann_date","type":"string"},
+                    {"name":"initial_issue_price","type":"double"}
+                  ],
+                  "writeMode": "append",
+                  "fieldDelimiter": "\t",
+                  "encoding":"utf-8",
+                  "haveKerberos": "${haveKerberos}",
+                  "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                  "kerberosPrincipal": "${kerberosPrincipal}"
+                }
+              }
+              }
+            ],
+            "setting": {
+              "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+              }
+            }
+          }
+        }

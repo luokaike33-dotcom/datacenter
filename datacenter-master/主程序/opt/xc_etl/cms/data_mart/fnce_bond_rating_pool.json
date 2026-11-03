@@ -1,0 +1,163 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									secu_id,
+									com_id,
+									com_name,
+									trd_code,
+									secu_sht,
+									chi_name,
+									name_sht,
+									exch_code,
+									exch_name,
+									type_code,
+									type_code_desc,
+									type_codeii,
+									type_codeii_desc,
+									secu_var,
+									lst_dt,
+									dlst_dt,
+									end_dt,
+									wind_secu_id,
+									rating_dt,
+									wind_long_latest_rat,
+									wind_long_lowest_rat,
+									wind_long_latest_dt,
+									wind_short_latest_rat,
+									wind_short_lowest_rat,
+									wind_short_latest_dt,
+									xnnp_long_latest_rat,
+									xnnp_long_lowest_rat,
+									xnnp_long_latest_dt,
+									xnnp_short_latest_rat,
+									xnnp_short_lowest_rat,
+									xnnp_short_latest_dt,
+									fc_long_latest_rat,
+									fc_long_lowest_rat,
+									fc_long_latest_dt,
+									fc_short_latest_rat,
+									fc_short_lowest_rat,
+									fc_short_latest_dt,
+									imp_long_latest_rat,
+									imp_long_lowest_rat,
+									imp_long_latest_dt,
+									zzzx_long_latest_rat,
+									zzzx_long_lowest_rat,
+									zzzx_long_latest_dt,
+									zzzx_short_latest_rat,
+									zzzx_short_lowest_rat,
+									zzzx_short_latest_dt,
+									o32_long_latest_rat,
+									o32_long_lowest_rat,
+									o32_long_latest_dt,
+									o32_short_latest_rat,
+									o32_short_lowest_rat,
+									o32_short_latest_dt,
+									task_rs_id,
+									p_dt
+							FROM ${srcdbname}.fnce_bond_rating_pool WHERE p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"com_id",
+									"com_name",
+									"trd_code",
+									"secu_sht",
+									"chi_name",
+									"name_sht",
+									"exch_code",
+									"exch_name",
+									"type_code",
+									"type_code_desc",
+									"type_codeii",
+									"type_codeii_desc",
+									"secu_var",
+									"lst_dt",
+									"dlst_dt",
+									"end_dt",
+									"wind_secu_id",
+									"rating_dt",
+									"wind_long_latest_rat",
+									"wind_long_lowest_rat",
+									"wind_long_latest_dt",
+									"wind_short_latest_rat",
+									"wind_short_lowest_rat",
+									"wind_short_latest_dt",
+									"xnnp_long_latest_rat",
+									"xnnp_long_lowest_rat",
+									"xnnp_long_latest_dt",
+									"xnnp_short_latest_rat",
+									"xnnp_short_lowest_rat",
+									"xnnp_short_latest_dt",
+									"fc_long_latest_rat",
+									"fc_long_lowest_rat",
+									"fc_long_latest_dt",
+									"fc_short_latest_rat",
+									"fc_short_lowest_rat",
+									"fc_short_latest_dt",
+									"imp_long_latest_rat",
+									"imp_long_lowest_rat",
+									"imp_long_latest_dt",
+									"zzzx_long_latest_rat",
+									"zzzx_long_lowest_rat",
+									"zzzx_long_latest_dt",
+									"zzzx_short_latest_rat",
+									"zzzx_short_lowest_rat",
+									"zzzx_short_latest_dt",
+									"o32_long_latest_rat",
+									"o32_long_lowest_rat",
+									"o32_long_latest_dt",
+									"o32_short_latest_rat",
+									"o32_short_lowest_rat",
+									"o32_short_latest_dt",
+									"task_rs_id",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fnce_bond_rating_pool"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["DELETE FROM fnce_bond_rating_pool where p_dt between ${beg_date} and ${end_date} "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

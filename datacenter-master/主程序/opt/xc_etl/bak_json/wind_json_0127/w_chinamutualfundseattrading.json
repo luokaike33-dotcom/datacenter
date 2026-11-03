@@ -1,0 +1,95 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_info_reportperiod,
+                                      s_info_securname,
+                                      f_trade_stockam,
+                                      f_trade_stockpro,
+                                      f_trade_bondam,
+                                      f_trade_bondpro,
+                                      f_trade_repoam,
+                                      f_trade_repopro,
+                                      f_trade_sbam,
+                                      f_trade_sbpro,
+                                      f_trade_warrantam,
+                                      f_trade_warrantpro,
+                                      f_trade_fundam,
+                                      f_trade_fundpro,
+                                      f_commissionam,
+                                      f_commissionpro,
+                                      crncy_code,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_chinamutualfundseattrading.json' as task_rs_id
+                                from ${srcoradbname}.chinamutualfundseattrading"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundseattrading",
+                        "fileName": "w_chinamutualfundseattrading",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_info_reportperiod","type":"string"},
+                                      {"name":"s_info_securname","type":"string"},
+                                      {"name":"f_trade_stockam","type":"double"},
+                                      {"name":"f_trade_stockpro","type":"double"},
+                                      {"name":"f_trade_bondam","type":"double"},
+                                      {"name":"f_trade_bondpro","type":"double"},
+                                      {"name":"f_trade_repoam","type":"double"},
+                                      {"name":"f_trade_repopro","type":"double"},
+                                      {"name":"f_trade_sbam","type":"double"},
+                                      {"name":"f_trade_sbpro","type":"double"},
+                                      {"name":"f_trade_warrantam","type":"double"},
+                                      {"name":"f_trade_warrantpro","type":"double"},
+                                      {"name":"f_trade_fundam","type":"double"},
+                                      {"name":"f_trade_fundpro","type":"double"},
+                                      {"name":"f_commissionam","type":"double"},
+                                      {"name":"f_commissionpro","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

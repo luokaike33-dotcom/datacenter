@@ -1,0 +1,102 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["SELECT L_OPERATOR_NO, VC_OPERATOR_NAME, VC_PASSWORD, VC_DOMAIN_NAME, VC_ADDRESS, VC_EMAIL, VC_TEL_NO, C_CARD_TYPE, VC_CARD_NO, C_PASSWORD_TYPE, L_MODI_PASSWORD, L_EXPIRE_DAYS, C_OPERATOR_STATUS, VC_MANAGE_RIGHT, L_REGISTER_DATE, L_CANCEL_DATE, C_FORCE_CHG_PASSWORD, VC_OPERATOR_NO, C_CONNECT_TYPE, VC_BUSIN_CLASSES, L_PASSWORD_MINLENGTH, L_LAST_LOGIN_DATE, C_STOCKCODE_TYPE, VC_FAX, VC_STAMP, L_FUND_VALIDITY, VC_PRE_STAMP, L_TRANSACTOR_NO, C_REF_SHM, VC_TELLER_CODE, C_LOGIN_TYPE, VC_FUND_DEF_RIGHTS, L_ORG_ID, C_COMBI_ASSET_RIGHTS, C_FIRST_LOGIN, VC_ADD_STOCKPOOL_RIGHTS, VC_ADD_STOCKPOOL_TYPE, L_DEPT_ID, C_ISADMIN, C_CARIGHTADDBYF, L_ORGANIZE_ID, L_PASSWORDERRORNO, C_ALLOW_SENDINMSG, VC_STAYNO, VC_LASTLOGINMSG, L_MOULD_ID, VC_LOGINSTATUS, VC_OPERAPTOR_POSTION, VC_JJT_ACCOUNT, C_ALLOW_DOWNFILE, VC_TIMESTAMP, C_CANMOBILEAPP, C_ALLOW_FAIS, C_FLOW_MANAGER, VC_GMPASSWORD, L_FROZEN_TO_DATE, L_FROZEN_TO_TIME, VC_CA_STAMP from ${srcoradbname}.TOPERATOR"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_toperator", 
+                        "fileName": "o3_toperator",
+                        "column": [
+      {"name":"l_operator_no","type":"double"},  
+                      {"name":"vc_operator_name","type":"string"},  
+                      {"name":"vc_password","type":"string"},  
+                      {"name":"vc_domain_name","type":"string"},  
+                      {"name":"vc_address","type":"string"},  
+                      {"name":"vc_email","type":"string"},  
+                      {"name":"vc_tel_no","type":"string"},  
+                      {"name":"c_card_type","type":"string"},  
+                      {"name":"vc_card_no","type":"string"},  
+                      {"name":"c_password_type","type":"string"},  
+                      {"name":"l_modi_password","type":"double"},  
+                      {"name":"l_expire_days","type":"double"},  
+                      {"name":"c_operator_status","type":"string"},  
+                      {"name":"vc_manage_right","type":"string"},  
+                      {"name":"l_register_date","type":"double"},  
+                      {"name":"l_cancel_date","type":"double"},  
+                      {"name":"c_force_chg_password","type":"string"},  
+                      {"name":"vc_operator_no","type":"string"},  
+                      {"name":"c_connect_type","type":"string"},  
+                      {"name":"vc_busin_classes","type":"string"},  
+                      {"name":"l_password_minlength","type":"double"},  
+                      {"name":"l_last_login_date","type":"double"},  
+                      {"name":"c_stockcode_type","type":"string"},  
+                      {"name":"vc_fax","type":"string"},  
+                      {"name":"vc_stamp","type":"string"},  
+                      {"name":"l_fund_validity","type":"double"},  
+                      {"name":"vc_pre_stamp","type":"string"},  
+                      {"name":"l_transactor_no","type":"double"},  
+                      {"name":"c_ref_shm","type":"string"},  
+                      {"name":"vc_teller_code","type":"string"},  
+                      {"name":"c_login_type","type":"string"},  
+                      {"name":"vc_fund_def_rights","type":"string"},  
+                      {"name":"l_org_id","type":"double"},  
+                      {"name":"c_combi_asset_rights","type":"string"},  
+                      {"name":"c_first_login","type":"string"},  
+                      {"name":"vc_add_stockpool_rights","type":"string"},  
+                      {"name":"vc_add_stockpool_type","type":"string"},  
+                      {"name":"l_dept_id","type":"double"},  
+                      {"name":"c_isadmin","type":"string"},  
+                      {"name":"c_carightaddbyf","type":"string"},  
+                      {"name":"l_organize_id","type":"double"},  
+                      {"name":"l_passworderrorno","type":"double"},  
+                      {"name":"c_allow_sendinmsg","type":"string"},  
+                      {"name":"vc_stayno","type":"string"},  
+                      {"name":"vc_lastloginmsg","type":"string"},  
+                      {"name":"l_mould_id","type":"double"},  
+                      {"name":"vc_loginstatus","type":"string"},  
+                      {"name":"vc_operaptor_postion","type":"string"},  
+                      {"name":"vc_jjt_account","type":"string"},  
+                      {"name":"c_allow_downfile","type":"string"},  
+                      {"name":"vc_timestamp","type":"string"},  
+                      {"name":"c_canmobileapp","type":"string"},  
+                      {"name":"c_allow_fais","type":"string"},  
+                      {"name":"c_flow_manager","type":"string"},  
+                      {"name":"vc_gmpassword","type":"string"},  
+                      {"name":"l_frozen_to_date","type":"double"},  
+                      {"name":"l_frozen_to_time","type":"double"},  
+                      {"name":"vc_ca_stamp","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}
+

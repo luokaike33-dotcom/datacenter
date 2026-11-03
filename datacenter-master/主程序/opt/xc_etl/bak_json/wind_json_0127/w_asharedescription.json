@@ -1,0 +1,62 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_info_code,s_info_name,s_info_compname,s_info_compnameeng,s_info_isincode,s_info_exchmarket,s_info_listboard,s_info_listdate,s_info_delistdate,s_info_sedolcode,crncy_code,s_info_pinyin,s_info_listboardname,is_shsc,s_info_compcode,opdate,opmode from ${srcoradbname}.asharedescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_asharedescription",
+                        "fileName": "w_asharedescription",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_info_code","type":"STRING"},
+                        {"name":"s_info_name","type":"STRING"},
+                        {"name":"s_info_compname","type":"STRING"},
+                        {"name":"s_info_compnameeng","type":"STRING"},
+                        {"name":"s_info_isincode","type":"STRING"},
+                        {"name":"s_info_exchmarket","type":"STRING"},
+                        {"name":"s_info_listboard","type":"STRING"},
+                        {"name":"s_info_listdate","type":"STRING"},
+                        {"name":"s_info_delistdate","type":"STRING"},
+                        {"name":"s_info_sedolcode","type":"STRING"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"s_info_pinyin","type":"STRING"},
+                        {"name":"s_info_listboardname","type":"STRING"},
+                        {"name":"is_shsc","type":"DOUBLE"},
+                        {"name":"s_info_compcode","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

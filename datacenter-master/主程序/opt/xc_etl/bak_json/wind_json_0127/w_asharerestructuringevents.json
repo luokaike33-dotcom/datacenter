@@ -1,0 +1,147 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      progress,
+                                      event,
+                                      form,
+                                      purpose,
+                                      type,
+                                      trading_object,
+                                      trading_objectcode,
+                                      is_m_a,
+                                      is_imptrestructuring,
+                                      is_controlchanged,
+                                      shares_traded,
+                                      totalvaluedeals,
+                                      buyertopaycash,
+                                      crncy_code,
+                                      paymentmethod,
+                                      injectedassetbooknet,
+                                      assetinjectedassessnet,
+                                      ultimateassessmethod,
+                                      basedate,
+                                      appreciationrate,
+                                      indepfinaadviser,
+                                      acquireradviser,
+                                      suspensiondate,
+                                      prelandate,
+                                      smtganncedate,
+                                      passdate,
+                                      approveddate,
+                                      seo_dt,
+                                      ann_dt,
+                                      institutionlisted_dt,
+                                      orientationseo_dt,
+                                      issuevolume,
+                                      seo_price,
+                                      seo_downprice,
+                                      base_dt_avgp_20_m,
+                                      base_dt,
+                                      base_dt_type,
+                                      estimatednetprofit,
+                                      forecastyear,
+                                      issuedsharesago_seo_m,
+                                      issuedsharesago_seo_a,
+                                      first_ann_date,
+                                      event_id,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharerestructuringevents.json' as task_rs_id
+                                from ${srcoradbname}.asharerestructuringevents"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharerestructuringevents",
+                        "fileName": "w_asharerestructuringevents",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"progress","type":"bigint"},
+                                      {"name":"event","type":"string"},
+                                      {"name":"form","type":"bigint"},
+                                      {"name":"purpose","type":"bigint"},
+                                      {"name":"type","type":"bigint"},
+                                      {"name":"trading_object","type":"string"},
+                                      {"name":"trading_objectcode","type":"bigint"},
+                                      {"name":"is_m_a","type":"bigint"},
+                                      {"name":"is_imptrestructuring","type":"bigint"},
+                                      {"name":"is_controlchanged","type":"bigint"},
+                                      {"name":"shares_traded","type":"double"},
+                                      {"name":"totalvaluedeals","type":"double"},
+                                      {"name":"buyertopaycash","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"paymentmethod","type":"bigint"},
+                                      {"name":"injectedassetbooknet","type":"double"},
+                                      {"name":"assetinjectedassessnet","type":"double"},
+                                      {"name":"ultimateassessmethod","type":"bigint"},
+                                      {"name":"basedate","type":"string"},
+                                      {"name":"appreciationrate","type":"double"},
+                                      {"name":"indepfinaadviser","type":"string"},
+                                      {"name":"acquireradviser","type":"string"},
+                                      {"name":"suspensiondate","type":"string"},
+                                      {"name":"prelandate","type":"string"},
+                                      {"name":"smtganncedate","type":"string"},
+                                      {"name":"passdate","type":"string"},
+                                      {"name":"approveddate","type":"string"},
+                                      {"name":"seo_dt","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"institutionlisted_dt","type":"string"},
+                                      {"name":"orientationseo_dt","type":"string"},
+                                      {"name":"issuevolume","type":"double"},
+                                      {"name":"seo_price","type":"double"},
+                                      {"name":"seo_downprice","type":"double"},
+                                      {"name":"base_dt_avgp_20_m","type":"double"},
+                                      {"name":"base_dt","type":"string"},
+                                      {"name":"base_dt_type","type":"string"},
+                                      {"name":"estimatednetprofit","type":"double"},
+                                      {"name":"forecastyear","type":"string"},
+                                      {"name":"issuedsharesago_seo_m","type":"double"},
+                                      {"name":"issuedsharesago_seo_a","type":"double"},
+                                      {"name":"first_ann_date","type":"string"},
+                                      {"name":"event_id","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

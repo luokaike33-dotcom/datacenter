@@ -1,0 +1,65 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,trade_dt,b_info_type,b_info_listingmarketnumbers,b_anal_dirty_csi,b_anal_yield_csi,b_anal_modidura_csi,b_anal_cnvxty_csi,b_anal_net_csi,b_anal_accrint_csi,b_anal_full_ifexe,b_anal_net_ifexe,b_anal_ytm_ifexe,b_anal_modidura_ifexe,b_anal_cnvxty_ifexe,recommended,b_anal_est_couponrate from ${srcoradbname}.cbondanalysiscsi where trade_dt between '${busi_month}'||'01' and to_char(add_months(to_date('${busi_month}'||01,'yyyyMMdd'),1)-1,'yyyyMMdd')"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondanalysiscsi/busi_month=${busi_month}",
+                        "fileName": "w_cbondanalysiscsi",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"trade_dt","type":"string"},
+                            {"name":"b_info_type","type":"string"},
+                            {"name":"b_info_listingmarketnumbers","type":"double"},
+                            {"name":"b_anal_dirty_csi","type":"double"},
+                            {"name":"b_anal_yield_csi","type":"double"},
+                            {"name":"b_anal_modidura_csi","type":"double"},
+                            {"name":"b_anal_cnvxty_csi","type":"double"},
+                            {"name":"b_anal_net_csi","type":"double"},
+                            {"name":"b_anal_accrint_csi","type":"double"},
+                            {"name":"b_anal_full_ifexe","type":"double"},
+                            {"name":"b_anal_net_ifexe","type":"double"},
+                            {"name":"b_anal_ytm_ifexe","type":"double"},
+                            {"name":"b_anal_modidura_ifexe","type":"double"},
+                            {"name":"b_anal_cnvxty_ifexe","type":"double"},
+                            {"name":"recommended","type":"double"},
+                            {"name":"b_anal_est_couponrate","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {
+              "record": "0",
+              "percentage": "0"
+            }
+        }
+    }
+}

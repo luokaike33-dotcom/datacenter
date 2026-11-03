@@ -1,0 +1,74 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select OBJECT_ID,
+                  S_INFO_WINDCODE,
+                  S_HOLDER_NAME,
+                  TYPEOFINVESTOR,
+                  PLACEMENT,
+                  TRADE_DT,
+                  ANN_DT,
+                  LOCKMONTH,
+                  TRADABLE_DT,
+                  IS_SEOORIPO,
+                  LATEST_OWN_QTY,
+                  PLACEMENT_FINANCING,
+                  MEETEVENT_ID,
+                  S_SHARE_LSTTYPENAME,
+                  S_INFO_COMPCODE
+                  from ${srcoradbname}.neeqsplacementdetails"],
+                  "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                  }
+                ]
+              }
+            },
+              "writer": {
+                "name": "hdfswriter",
+                "parameter": {
+                  "defaultFS": "hdfs://${tgrhdfsurl}",
+                  "fileType": "orc",
+                  "path": "${tgrhivedbpath}/w_neeqsplacementdetails",
+                  "fileName": "w_neeqsplacementdetails",
+                  "column": [
+                    {"name":"OBJECT_ID","type":"string"},
+                    {"name":"S_INFO_WINDCODE","type":"string"},
+                    {"name":"S_HOLDER_NAME","type":"string"},
+                    {"name":"TYPEOFINVESTOR","type":"string"},
+                    {"name":"PLACEMENT","type":"double"},
+                    {"name":"TRADE_DT","type":"string"},
+                    {"name":"ANN_DT","type":"string"},
+                    {"name":"LOCKMONTH","type":"double"},
+                    {"name":"TRADABLE_DT","type":"string"},
+                    {"name":"IS_SEOORIPO","type":"double"},
+                    {"name":"LATEST_OWN_QTY","type":"double"},
+                    {"name":"PLACEMENT_FINANCING","type":"double"},
+                    {"name":"MEETEVENT_ID","type":"string"},
+                    {"name":"S_SHARE_LSTTYPENAME","type":"string"},
+                    {"name":"S_INFO_COMPCODE","type":"string"}
+                  ],
+                  "writeMode": "append",
+                  "fieldDelimiter": "\t",
+                  "encoding":"utf-8",
+                  "haveKerberos": "${haveKerberos}",
+                  "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                  "kerberosPrincipal": "${kerberosPrincipal}"
+                }
+              }
+              }
+            ],
+            "setting": {
+              "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+              }
+            }
+          }
+        }

@@ -1,0 +1,85 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select L_RIVAL_ID,VC_RIVAL_CODE,VC_NAME,VC_ALL_NAME,C_RIVAL_TYPE,C_OUTER_APPRAISE,C_INSIDE_APPRAISE,C_APPRAISE,VC_ADDRESS,VC_LINKMAN,VC_PHONE,VC_FAX,VC_SUMMARY,L_BANK_ID,VC_MARKET_TYPES,C_STATUS,EN_CAPITAL,EN_TOTAL_ASSET,EN_NET_ASSET,L_BANKHEAD_ID,VC_BANK_ACCOUNT,C_TRADE_CLASS,VC_SHCLEARING_ACCOUNT,C_CHINABOND_DVP,C_SHCLEARING_DVP,VC_PARTY_CODE,L_ISSUER_ID,VC_BANK_NAME,VC_SHCLEARING_NAME,VC_TIMESTAMP,VC_FIXED_ID,EN_ASSET_SCALE,L_ORG_ID,C_ORGMASTERORSLAVE,L_MASTERORG_RIVAL_ID,VC_HIS_NAME,C_MARKET_MAKER,L_UPPER_BANK_ID,VC_UPPER_BANK_NAME,C_RIVAL_PROPERTY,VC_SPV_CODE,VC_DIRECT_RIVAL_TYPE from ${srcoradbname}.ttraderival"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_ttraderival", 
+                        "fileName": "o3_ttraderival",
+                        "column": [
+     {"name":"l_rival_id","type":"bigint"},
+     {"name":"vc_rival_code","type":"string"},
+     {"name":"vc_name","type":"string"},
+     {"name":"vc_all_name","type":"string"},
+     {"name":"c_rival_type","type":"string"},
+     {"name":"c_outer_appraise","type":"string"},
+     {"name":"c_inside_appraise","type":"string"},
+     {"name":"c_appraise","type":"string"},
+     {"name":"vc_address","type":"string"},
+     {"name":"vc_linkman","type":"string"},
+     {"name":"vc_phone","type":"string"},
+     {"name":"vc_fax","type":"string"},
+     {"name":"vc_summary","type":"string"},
+     {"name":"l_bank_id","type":"bigint"},
+     {"name":"vc_market_types","type":"string"},
+     {"name":"c_status","type":"string"},
+     {"name":"en_capital","type":"double"},
+     {"name":"en_total_asset","type":"double"},
+     {"name":"en_net_asset","type":"double"},
+     {"name":"l_bankhead_id","type":"bigint"},
+     {"name":"vc_bank_account","type":"string"},
+     {"name":"c_trade_class","type":"string"},
+     {"name":"vc_shclearing_account","type":"string"},
+     {"name":"c_chinabond_dvp","type":"string"},
+     {"name":"c_shclearing_dvp","type":"string"},
+     {"name":"vc_party_code","type":"string"},
+     {"name":"l_issuer_id","type":"bigint"},
+     {"name":"vc_bank_name","type":"string"},
+     {"name":"vc_shclearing_name","type":"string"},
+     {"name":"vc_timestamp","type":"string"},
+     {"name":"vc_fixed_id","type":"string"},
+     {"name":"en_asset_scale","type":"double"},
+     {"name":"l_org_id","type":"bigint"},
+     {"name":"c_orgmasterorslave","type":"string"},
+     {"name":"l_masterorg_rival_id","type":"bigint"},
+     {"name":"vc_his_name","type":"string"},
+     {"name":"c_market_maker","type":"string"},
+     {"name":"l_upper_bank_id","type":"bigint"},
+     {"name":"vc_upper_bank_name","type":"string"},
+     {"name":"c_rival_property","type":"string"},
+     {"name":"vc_spv_code","type":"string"},
+     {"name":"vc_direct_rival_type","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

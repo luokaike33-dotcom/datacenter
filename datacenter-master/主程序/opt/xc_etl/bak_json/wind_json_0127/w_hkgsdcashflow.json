@@ -1,0 +1,125 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      ann_dt,
+                                      begin_dt,
+                                      end_dt,
+                                      report_type,
+                                      statement_type,
+                                      is_calc,
+                                      crncy_code,
+                                      net_cash_flows_oper_act,
+                                      net_profit_cs,
+                                      plus_net_da,
+                                      op_cap_change,
+                                      oth_noncash_change,
+                                      net_cash_flows_inv_act,
+                                      cash_recp_fixasset_sell,
+                                      less_cap_expense,
+                                      less_inv_incr,
+                                      inv_decr,
+                                      net_oth_icf,
+                                      net_cash_flows_fund_act,
+                                      debt_incr,
+                                      less_debt_decr,
+                                      cap_incr,
+                                      plus_net_cap_decr,
+                                      tot_div_paid,
+                                      net_oth_fcf,
+                                      e_change_effect,
+                                      oth_cf_adjust,
+                                      net_incr_cash_cash_equ,
+                                      cash_cash_equ_beg_period,
+                                      cash_cash_equ_end_period,
+                                      s_meno,
+                                      s_info_comptype,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_hkgsdcashflow.json' as task_rs_id
+                                from ${srcoradbname}.hkgsdcashflow WHERE end_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_hkgsdcashflow/busi_month=${busi_month}",
+                        "fileName": "w_hkgsdcashflow",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"begin_dt","type":"string"},
+                                      {"name":"end_dt","type":"string"},
+                                      {"name":"report_type","type":"bigint"},
+                                      {"name":"statement_type","type":"bigint"},
+                                      {"name":"is_calc","type":"bigint"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"net_cash_flows_oper_act","type":"double"},
+                                      {"name":"net_profit_cs","type":"double"},
+                                      {"name":"plus_net_da","type":"double"},
+                                      {"name":"op_cap_change","type":"double"},
+                                      {"name":"oth_noncash_change","type":"double"},
+                                      {"name":"net_cash_flows_inv_act","type":"double"},
+                                      {"name":"cash_recp_fixasset_sell","type":"double"},
+                                      {"name":"less_cap_expense","type":"double"},
+                                      {"name":"less_inv_incr","type":"double"},
+                                      {"name":"inv_decr","type":"double"},
+                                      {"name":"net_oth_icf","type":"double"},
+                                      {"name":"net_cash_flows_fund_act","type":"double"},
+                                      {"name":"debt_incr","type":"double"},
+                                      {"name":"less_debt_decr","type":"double"},
+                                      {"name":"cap_incr","type":"double"},
+                                      {"name":"plus_net_cap_decr","type":"double"},
+                                      {"name":"tot_div_paid","type":"double"},
+                                      {"name":"net_oth_fcf","type":"double"},
+                                      {"name":"e_change_effect","type":"double"},
+                                      {"name":"oth_cf_adjust","type":"double"},
+                                      {"name":"net_incr_cash_cash_equ","type":"double"},
+                                      {"name":"cash_cash_equ_beg_period","type":"double"},
+                                      {"name":"cash_cash_equ_end_period","type":"double"},
+                                      {"name":"s_meno","type":"string"},
+                                      {"name":"s_info_comptype","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,97 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      comp_id,
+                                      ann_dt,
+                                      expirydate,
+                                      approveobj,
+                                      batchnum_ndrc,
+                                      max_amount,
+                                      issueterm,
+                                      ratetype,
+                                      paymenttype,
+                                      paymentcycle,
+                                      is_install,
+                                      specialclausestype,
+                                      creditrating,
+                                      creditratingagency,
+                                      guarintroduction,
+                                      fundusing,
+                                      lu_compcode,
+                                      lu_type,
+                                      allowtime,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondcbissueapprove.json' as task_rs_id
+                                from ${srcoradbname}.cbondcbissueapprove"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondcbissueapprove",
+                        "fileName": "w_cbondcbissueapprove",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"comp_id","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"expirydate","type":"string"},
+                                      {"name":"approveobj","type":"string"},
+                                      {"name":"batchnum_ndrc","type":"string"},
+                                      {"name":"max_amount","type":"double"},
+                                      {"name":"issueterm","type":"double"},
+                                      {"name":"ratetype","type":"bigint"},
+                                      {"name":"paymenttype","type":"bigint"},
+                                      {"name":"paymentcycle","type":"bigint"},
+                                      {"name":"is_install","type":"bigint"},
+                                      {"name":"specialclausestype","type":"string"},
+                                      {"name":"creditrating","type":"string"},
+                                      {"name":"creditratingagency","type":"string"},
+                                      {"name":"guarintroduction","type":"string"},
+                                      {"name":"fundusing","type":"string"},
+                                      {"name":"lu_compcode","type":"string"},
+                                      {"name":"lu_type","type":"bigint"},
+                                      {"name":"allowtime","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

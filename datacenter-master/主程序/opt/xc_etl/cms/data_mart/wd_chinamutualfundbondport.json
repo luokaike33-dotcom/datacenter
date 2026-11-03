@@ -1,0 +1,72 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+                        SELECT object_id,
+                                s_info_windcode,
+                                f_prt_enddate,
+                                crncy_code,
+                                s_info_bondwindcode,
+                                f_prt_bdvalue,
+                                f_prt_bdquantity,
+                                f_prt_bdvaluetonav,
+                                f_ann_date,
+                                opdate,
+                                opmode
+							FROM ${srcdbname}.w_chinamutualfundbondportfolio t where  f_prt_enddate
+                            between date_format(cast(from_unixtime(unix_timestamp(cast(${end_date} as string),'yyyyMMdd')) as date)-interval 6 month ,'yyyyMMdd') and cast(${end_date} as string)"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"f_prt_enddate",
+									"crncy_code",
+									"s_info_bondwindcode",
+									"f_prt_bdvalue",
+									"f_prt_bdquantity",
+									"f_prt_bdvaluetonav",
+									"f_ann_date",
+									"opdate",
+									"opmode"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_chinamutualfundbondport"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from wd_chinamutualfundbondport where f_prt_enddate between to_char(ADD_MONTHS(to_date(cast(${end_date} as varchar2(10)),'yyyyMMdd'),-6),'yyyyMMdd') and cast(${end_date} as varchar2(10)) "]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

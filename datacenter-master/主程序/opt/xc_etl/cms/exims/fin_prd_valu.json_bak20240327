@@ -1,0 +1,91 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+						"hive_cmd":"beeline",
+                        "hiveSql":["SELECT jour_no, prd_code, secu_id, crse_code, proj_code, valu_dt, crse_name, vol, cost_unit, cost, cost_netva, quot_prc, mval, mval_netva, valu_appre, crse_debc_dir, sett_crrc, excr, cost_frc, frc_quot, frc_mval, trd_code, trd_mkt, also_info, inv_typ, cir_id, ast_stat, pos_id, data_typ, acg_proj, busi_date, task_rs_id, dm_created_time, dm_src_info, p_dt, sys_rs_id
+						FROM ${srcdbname}.fin_prd_valu where p_dt =${p_dt}					
+						"],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+						"tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"jour_no",
+									"prd_code",
+									"secu_id",
+									"crse_code",
+									"proj_code",
+									"valu_dt",
+									"crse_name",
+									"vol",
+									"cost_unit",
+									"cost",
+									"cost_netva",
+									"quot_prc",
+									"mval",
+									"mval_netva",
+									"valu_appre",
+									"crse_debc_dir",
+									"sett_crrc",
+									"excr",
+									"cost_frc",
+									"frc_quot",
+									"frc_mval",
+									"trd_code",
+									"trd_mkt",
+									"also_info",
+									"inv_typ",
+									"cir_id",
+									"ast_stat",
+									"pos_id",
+									"data_typ",
+									"acg_proj",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"dm_src_info",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fin_prd_valu"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fin_prd_valu where p_dt = ${p_dt}"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

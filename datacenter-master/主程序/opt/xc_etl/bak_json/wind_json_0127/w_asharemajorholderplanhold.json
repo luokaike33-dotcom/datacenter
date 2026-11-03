@@ -1,0 +1,87 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      s_holder_name,
+                                      s_ph_startdate,
+                                      s_ph_enddate,
+                                      s_ph_conditionornot,
+                                      s_ph_triggerprice,
+                                      s_ph_continuousdays,
+                                      s_ph_calculatedays,
+                                      s_ph_calculatepricemode,
+                                      s_ph_sharenumdownlimit,
+                                      s_ph_sharenumuplimit,
+                                      s_ph_intendputmoneydownlimit,
+                                      s_ph_intendputmoneyuplimit,
+                                      s_ph_priceuplimit,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharemajorholderplanhold.json' as task_rs_id
+                                from ${srcoradbname}.asharemajorholderplanhold"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharemajorholderplanhold",
+                        "fileName": "w_asharemajorholderplanhold",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"s_holder_name","type":"string"},
+                                      {"name":"s_ph_startdate","type":"string"},
+                                      {"name":"s_ph_enddate","type":"string"},
+                                      {"name":"s_ph_conditionornot","type":"bigint"},
+                                      {"name":"s_ph_triggerprice","type":"double"},
+                                      {"name":"s_ph_continuousdays","type":"double"},
+                                      {"name":"s_ph_calculatedays","type":"double"},
+                                      {"name":"s_ph_calculatepricemode","type":"string"},
+                                      {"name":"s_ph_sharenumdownlimit","type":"double"},
+                                      {"name":"s_ph_sharenumuplimit","type":"double"},
+                                      {"name":"s_ph_intendputmoneydownlimit","type":"double"},
+                                      {"name":"s_ph_intendputmoneyuplimit","type":"double"},
+                                      {"name":"s_ph_priceuplimit","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

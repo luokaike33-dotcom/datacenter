@@ -1,0 +1,148 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fund_sub",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"long"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"string"},
+                                    {"index":3,"type":"string"},
+                                    {"index":4,"type":"double"},
+                                    {"index":5,"type":"double"},
+                                    {"index":6,"type":"string"},
+                                    {"index":7,"type":"long"},
+                                    {"index":8,"type":"long"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"long"},
+                                    {"index":11,"type":"long"},
+                                    {"index":12,"type":"long"},
+                                    {"index":13,"type":"long"},
+                                    {"index":14,"type":"string"},
+                                    {"index":15,"type":"long"},
+                                    {"index":16,"type":"long"},
+                                    {"index":17,"type":"double"},
+                                    {"index":18,"type":"double"},
+                                    {"index":19,"type":"double"},
+                                    {"index":20,"type":"double"},
+                                    {"index":21,"type":"double"},
+                                    {"index":22,"type":"double"},
+                                    {"index":23,"type":"double"},
+                                    {"index":24,"type":"double"},
+                                    {"index":25,"type":"double"},
+                                    {"index":26,"type":"double"},
+                                    {"index":27,"type":"double"},
+                                    {"index":28,"type":"double"},
+                                    {"index":29,"type":"double"},
+                                    {"index":30,"type":"double"},
+                                    {"index":31,"type":"double"},
+                                    {"index":32,"type":"double"},
+                                    {"index":33,"type":"long"},
+                                    {"index":34,"type":"long"},
+                                    {"index":35,"type":"string"},
+                                    {"index":36,"type":"double"},
+                                    {"index":37,"type":"double"},
+                                    {"index":38,"type":"long"},
+                                    {"index":39,"type":"long"},
+                                    {"index":40,"type":"string"},
+                                    {"index":41,"type":"double"},
+                                    {"index":42,"type":"double"},
+                                    {"index":43,"type":"long"},
+                                    {"index":44,"type":"long"},
+                                    {"index":45,"type":"string"},
+                                    {"index":46,"type":"double"},
+                                    {"index":47,"type":"double"},
+                                    {"index":48,"type":"string"},
+                                    {"index":49,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "busi_date",
+                                    "secu_id",
+                                    "sub_code",
+                                    "sub_name",
+                                    "min_sub",
+                                    "sub_add_f",
+                                    "sub_add_f_rmk",
+                                    "sub_bgn_dt_otc",
+                                    "sub_end_dt_otc",
+                                    "sub_desc_otc",
+                                    "sub_min_otc",
+                                    "sub_max_otc",
+                                    "sub_bgn_dt_exch",
+                                    "sub_end_dt_exch",
+                                    "sub_exch",
+                                    "sub_min_exch",
+                                    "sub_max_exch",
+                                    "psn_sub_shr",
+                                    "inst_sub_shr",
+                                    "mgt_sub_shr",
+                                    "prof_shr",
+                                    "inst_shr_exch",
+                                    "psn_shr_exch",
+                                    "trd_shr",
+                                    "net_val",
+                                    "net_val_otc",
+                                    "net_val_exch",
+                                    "sh_num",
+                                    "sh_num_valid",
+                                    "sh_num_psn",
+                                    "sh_num_inst",
+                                    "sh_num_exch",
+                                    "sub_cptl_int",
+                                    "sub_bgn_dt_on",
+                                    "sub_end_dt_on",
+                                    "sub_desc_on",
+                                    "sub_min_on",
+                                    "sub_max_on",
+                                    "sub_bgn_dt_off",
+                                    "sub_end_dt_off",
+                                    "sub_desc_off",
+                                    "sub_min_off",
+                                    "sub_max_off",
+                                    "sub_stk_bgn_dt_off",
+                                    "sub_stk_end_dt_off",
+                                    "sub_stk_descoff",
+                                    "sub_stk_min_off",
+                                    "sub_stk_max_off",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_fund_sub"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_fund_sub where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

@@ -1,0 +1,65 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select l_date, l_unit_id, en_today_dividend, en_total_dividend, l_dividend_right_amount, l_shareout_right, en_shareout_price, l_today_shareout, l_total_shareout, l_new_right_amount, l_increase_right_amount, en_new_price, l_uncirculated_amount, l_yjuncirculated_amount, en_new_profit, en_bond_interest_invest, en_bond_interest_profit, en_remark, vc_remark, en_ontheway_dividend, l_today_dividend_right_amount, l_distribution_limit_amount from ${srcoradbname}.tspecstock"],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_tspecstock",
+            "fileName": "o3_tspecstock",
+            "column": [
+              {"name":"l_date","type":"bigint"},
+              {"name":"l_unit_id","type":"bigint"},
+              {"name":"en_today_dividend","type":"double"},
+              {"name":"en_total_dividend","type":"double"},
+              {"name":"l_dividend_right_amount","type":"bigint"},
+              {"name":"l_shareout_right","type":"bigint"},
+              {"name":"en_shareout_price","type":"double"},
+              {"name":"l_today_shareout","type":"bigint"},
+              {"name":"l_total_shareout","type":"bigint"},
+              {"name":"l_new_right_amount","type":"bigint"},
+              {"name":"l_increase_right_amount","type":"bigint"},
+              {"name":"en_new_price","type":"double"},
+              {"name":"l_uncirculated_amount","type":"double"},
+              {"name":"l_yjuncirculated_amount","type":"double"},
+              {"name":"en_new_profit","type":"double"},
+              {"name":"en_bond_interest_invest","type":"double"},
+              {"name":"en_bond_interest_profit","type":"double"},
+              {"name":"en_remark","type":"double"},
+              {"name":"vc_remark","type":"string"},
+              {"name":"en_ontheway_dividend","type":"double"},
+              {"name":"l_today_dividend_right_amount","type":"bigint"},
+              {"name":"l_distribution_limit_amount","type":"bigint"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      report_period,
+                                      ann_dt,
+                                      amount_poverty_alleviation,
+                                      amount_antipy_donation,
+                                      amount_target_loan,
+                                      amount_personal_antipy_loan,
+                                      amount_comp_antipy_loan,
+                                      amount_comp_antipy_funds,
+                                      amount_borw_funds_demo,
+                                      amount_industry_development,
+                                      amount_transfer_employment,
+                                      amount_antipy_relocation,
+                                      amount_antipy_education,
+                                      amount_antipy_health,
+                                      amount_ecological_antipy,
+                                      amount_social_assistance,
+                                      amount_social_antipy,
+                                      amount_infrastructure_antipy,
+                                      amount_cultural_antipy,
+                                      amount_livelihood_antipy,
+                                      amount_otherproject_antipy,
+                                      targeted_antipy_balance,
+                                      per_antipy_loan_balance,
+                                      comp_antipy_loan_balance,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharepovertyalleviationdata.json' as task_rs_id
+                                from ${srcoradbname}.asharepovertyalleviationdata"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharepovertyalleviationdata",
+                        "fileName": "w_asharepovertyalleviationdata",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"amount_poverty_alleviation","type":"double"},
+                                      {"name":"amount_antipy_donation","type":"double"},
+                                      {"name":"amount_target_loan","type":"double"},
+                                      {"name":"amount_personal_antipy_loan","type":"double"},
+                                      {"name":"amount_comp_antipy_loan","type":"double"},
+                                      {"name":"amount_comp_antipy_funds","type":"double"},
+                                      {"name":"amount_borw_funds_demo","type":"double"},
+                                      {"name":"amount_industry_development","type":"double"},
+                                      {"name":"amount_transfer_employment","type":"double"},
+                                      {"name":"amount_antipy_relocation","type":"double"},
+                                      {"name":"amount_antipy_education","type":"double"},
+                                      {"name":"amount_antipy_health","type":"double"},
+                                      {"name":"amount_ecological_antipy","type":"double"},
+                                      {"name":"amount_social_assistance","type":"double"},
+                                      {"name":"amount_social_antipy","type":"double"},
+                                      {"name":"amount_infrastructure_antipy","type":"double"},
+                                      {"name":"amount_cultural_antipy","type":"double"},
+                                      {"name":"amount_livelihood_antipy","type":"double"},
+                                      {"name":"amount_otherproject_antipy","type":"double"},
+                                      {"name":"targeted_antipy_balance","type":"double"},
+                                      {"name":"per_antipy_loan_balance","type":"double"},
+                                      {"name":"comp_antipy_loan_balance","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,180 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/w_chinamutualfunddescription",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"long"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"long"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"long"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"long"},
+									{"index":41,"type":"string"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"string"},
+									{"index":44,"type":"double"},
+									{"index":45,"type":"double"},
+									{"index":46,"type":"string"},
+									{"index":47,"type":"string"},
+									{"index":48,"type":"double"},
+									{"index":49,"type":"double"},
+									{"index":50,"type":"string"},
+									{"index":51,"type":"string"},
+									{"index":52,"type":"double"},
+									{"index":53,"type":"double"},
+									{"index":54,"type":"string"},
+									{"index":55,"type":"string"},
+									{"index":56,"type":"string"},
+									{"index":57,"type":"string"},
+									{"index":58,"type":"double"},
+									{"index":59,"type":"string"},
+									{"index":60,"type":"double"},
+									{"index":61,"type":"double"},
+									{"index":62,"type":"date"},
+									{"index":63,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"f_info_windcode",
+									"f_info_front_code",
+									"f_info_backend_code",
+									"f_info_fullname",
+									"f_info_name",
+									"f_info_corp_fundmanagementcomp",
+									"f_info_custodianbank",
+									"f_info_firstinvesttype",
+									"f_info_setupdate",
+									"f_info_maturitydate",
+									"f_issue_totalunit",
+									"f_info_managementfeeratio",
+									"f_info_custodianfeeratio",
+									"crny_code",
+									"f_info_ptmyear",
+									"f_issue_oef_startdateinst",
+									"f_issue_oef_dnddateinst",
+									"f_info_parvalue",
+									"f_info_trusttype",
+									"f_info_trustee",
+									"f_pchredm_pchstartdate",
+									"f_info_redmstartdate",
+									"f_info_minbuyamount",
+									"f_info_expectedrateofreturn",
+									"f_info_issuingplace",
+									"f_info_benchmark",
+									"f_info_status",
+									"f_info_restrictedornot",
+									"f_info_structuredornot",
+									"f_info_exchmarket",
+									"f_info_firstinveststyle",
+									"f_info_issuedate",
+									"f_info_type",
+									"f_info_isinitial",
+									"f_info_pinyin",
+									"f_info_investscope",
+									"f_info_investobject",
+									"f_info_investconception",
+									"f_info_decision_basis",
+									"is_indexfund",
+									"f_info_delistdate",
+									"f_info_corp_fundmanagementid",
+									"f_info_custodianbankid",
+									"max_num_holder",
+									"max_num_coltarget",
+									"investstrategy",
+									"risk_return",
+									"f_pchredm_pchminamt",
+									"f_pchredm_pchminamt_ex",
+									"f_info_listdate",
+									"f_info_anndate",
+									"f_closed_operation_period",
+									"f_closed_operation_interval",
+									"f_info_registrant",
+									"f_personal_startdateind",
+									"f_personal_enddateind",
+									"f_info_fund_id",
+									"f_sales_service_rate",
+									"f_investment_area",
+									"close_institu_oef_down",
+									"close_institu_oef_up",
+									"opdate",
+									"opmode"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_chinamutualfunddescription"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table wd_chinamutualfunddescription"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

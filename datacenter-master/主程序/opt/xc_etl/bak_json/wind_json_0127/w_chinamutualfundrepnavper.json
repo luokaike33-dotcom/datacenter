@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_date,
+                                      f_info_reportperiod,
+                                      period_code,
+                                      f_nav_return,
+                                      f_nav_stddevreturn,
+                                      f_nav_benchreturn,
+                                      f_nav_benchstddev,
+                                      f_nav_benchdevreturn,
+                                      f_nav_stddevnavbench,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_chinamutualfundrepnavper.json' as task_rs_id
+                                from ${srcoradbname}.chinamutualfundrepnavper WHERE f_info_reportperiod BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundrepnavper/busi_month=${busi_month}",
+                        "fileName": "w_chinamutualfundrepnavper",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"f_info_reportperiod","type":"string"},
+                                      {"name":"period_code","type":"string"},
+                                      {"name":"f_nav_return","type":"double"},
+                                      {"name":"f_nav_stddevreturn","type":"double"},
+                                      {"name":"f_nav_benchreturn","type":"double"},
+                                      {"name":"f_nav_benchstddev","type":"double"},
+                                      {"name":"f_nav_benchdevreturn","type":"double"},
+                                      {"name":"f_nav_stddevnavbench","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

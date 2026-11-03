@@ -1,0 +1,72 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									prd_code,
+									sk_date,
+									cvtbd_incm_ctbn,
+									not_cvtbd_incm_ctbn,
+									rate_incm_ctbn,
+									credit_incm_ctbn,
+									abs_incm_ctbn,
+									revre_incm_ctbn,
+									bond_incm_ctbn,
+									update_time,
+									p_dt
+							FROM ${srcdbname}.fnce_bond_ass_ctbn where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"prd_code",
+									"sk_date",
+									"cvtbd_incm_ctbn",
+									"not_cvtbd_incm_ctbn",
+									"rate_incm_ctbn",
+									"credit_incm_ctbn",
+									"abs_incm_ctbn",
+									"revre_incm_ctbn",
+									"bond_incm_ctbn",
+									"update_time",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fnce_bond_ass_ctbn"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fnce_bond_ass_ctbn where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

@@ -1,0 +1,110 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fund_typ_covt",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"long"},
+                                    {"index":1,"type":"string"},
+                                    {"index":2,"type":"long"},
+                                    {"index":3,"type":"long"},
+                                    {"index":4,"type":"long"},
+                                    {"index":5,"type":"long"},
+                                    {"index":6,"type":"long"},
+                                    {"index":7,"type":"long"},
+                                    {"index":8,"type":"string"},
+                                    {"index":9,"type":"string"},
+                                    {"index":10,"type":"string"},
+                                    {"index":11,"type":"string"},
+                                    {"index":12,"type":"long"},
+                                    {"index":13,"type":"string"},
+                                    {"index":14,"type":"long"},
+                                    {"index":15,"type":"string"},
+                                    {"index":16,"type":"double"},
+                                    {"index":17,"type":"double"},
+                                    {"index":18,"type":"double"},
+                                    {"index":19,"type":"double"},
+                                    {"index":20,"type":"double"},
+                                    {"index":21,"type":"double"},
+                                    {"index":22,"type":"long"},
+                                    {"index":23,"type":"long"},
+                                    {"index":24,"type":"long"},
+                                    {"index":25,"type":"long"},
+                                    {"index":26,"type":"long"},
+                                    {"index":27,"type":"long"},
+                                    {"index":28,"type":"long"},
+                                    {"index":29,"type":"string"},
+                                    {"index":30,"type":"date"},
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+                                    "busi_date",
+                                    "info_sour",
+                                    "trs_meet_ntc_dt",
+                                    "trs_meet_dt",
+                                    "rt_reg_dt",
+                                    "trs_rslt_dt",
+                                    "trs_dt",
+                                    "trs_typ",
+                                    "old_secu_id",
+                                    "new_secu_id",
+                                    "old_typ",
+                                    "new_typ",
+                                    "old_trd_code",
+                                    "old_secu_sht",
+                                    "new_trd_code",
+                                    "new_secu_sht",
+                                    "vote_shr",
+                                    "vote_ttl_rat",
+                                    "aprv_shr",
+                                    "aprv_ttl_rat",
+                                    "oppo_shr",
+                                    "abs_shr",
+                                    "is_pass",
+                                    "susp_dt",
+                                    "resu_dt",
+                                    "dlst_ntc_dt",
+                                    "dlst_dt",
+                                    "is_cont_pur",
+                                    "pur_ntc_dt",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                              "table": ["var_fund_typ_covt"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "preSql":["delete from var_fund_typ_covt where 1=1"]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+# ******************************************************************
+#    修改者                版本号            修改日期        修改内容
+#    lucas                1.2.10C        2023-5-31       新增
+# ******************************************************************
+table: fin_prd_bons_inpt 产品分红信息补录表
+cols:
+PRD_CODE	VARCHAR2(32)	产品代码
+RT_REG_DT	BIGINT	股权登记日期
+EX_RD_DT	BIGINT	除权除息日期
+UNIT_SHR_BONS	NUMBER(32,16)	每份分红
+SPLI_CNV_RAT	NUMBER(32,16)	拆分折算比例
+BONS_SHR	NUMBER(32,16)	分红份额
+BONS_VAL	NUMBER(32,16)	分红金额
+DM_CREATED_TIME	TIMESTAMP	数据中台创建时间
+partition:
+cluster:
+index:

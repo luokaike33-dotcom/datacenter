@@ -1,0 +1,71 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      virt_prd_code,
+                                      prd_code,
+                                      create_by,
+                                      create_time,
+                                      update_by,
+                                      update_time,
+                                      expiry_dt,
+                                      effect_dt,
+                                      has_sync,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'virt_prd_cfg_info.json' as task_rs_id
+                                from ${srcoradbname}.virt_prd_cfg_info"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/virt_prd_cfg_info",
+                        "fileName": "virt_prd_cfg_info",
+                        "column": [
+                                      {"name":"virt_prd_code","type":"string"},
+                                      {"name":"prd_code","type":"string"},
+                                      {"name":"create_by","type":"string"},
+                                      {"name":"create_time","type":"timestamp"},
+                                      {"name":"update_by","type":"string"},
+                                      {"name":"update_time","type":"timestamp"},
+                                      {"name":"expiry_dt","type":"bigint"},
+                                      {"name":"effect_dt","type":"bigint"},
+                                      {"name":"has_sync","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

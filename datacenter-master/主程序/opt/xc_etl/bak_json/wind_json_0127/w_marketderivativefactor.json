@@ -1,0 +1,103 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      s_tech_price1m,
+                                      s_tech_price3m,
+                                      s_tech_price1y,
+                                      s_tech_rvi,
+                                      s_tech_moneyflow20,
+                                      s_tech_emv14,
+                                      s_tech_emv6,
+                                      s_tech_aroon,
+                                      s_tech_aroondown,
+                                      s_tech_aroonup,
+                                      s_tech_ad6,
+                                      s_tech_ad20,
+                                      s_tech_ar,
+                                      s_tech_br,
+                                      s_tech_arbr,
+                                      s_tech_cr20,
+                                      s_tech_bearpower,
+                                      s_tech_bullpower,
+                                      s_tech_dhilo,
+                                      s_tech_skewness,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_marketderivativefactor.json' as task_rs_id
+                                from ${srcoradbname}.marketderivativefactor WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_marketderivativefactor/busi_month=${busi_month}",
+                        "fileName": "w_marketderivativefactor",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"s_tech_price1m","type":"double"},
+                                      {"name":"s_tech_price3m","type":"double"},
+                                      {"name":"s_tech_price1y","type":"double"},
+                                      {"name":"s_tech_rvi","type":"double"},
+                                      {"name":"s_tech_moneyflow20","type":"double"},
+                                      {"name":"s_tech_emv14","type":"double"},
+                                      {"name":"s_tech_emv6","type":"double"},
+                                      {"name":"s_tech_aroon","type":"double"},
+                                      {"name":"s_tech_aroondown","type":"double"},
+                                      {"name":"s_tech_aroonup","type":"double"},
+                                      {"name":"s_tech_ad6","type":"double"},
+                                      {"name":"s_tech_ad20","type":"double"},
+                                      {"name":"s_tech_ar","type":"double"},
+                                      {"name":"s_tech_br","type":"double"},
+                                      {"name":"s_tech_arbr","type":"double"},
+                                      {"name":"s_tech_cr20","type":"double"},
+                                      {"name":"s_tech_bearpower","type":"double"},
+                                      {"name":"s_tech_bullpower","type":"double"},
+                                      {"name":"s_tech_dhilo","type":"double"},
+                                      {"name":"s_tech_skewness","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

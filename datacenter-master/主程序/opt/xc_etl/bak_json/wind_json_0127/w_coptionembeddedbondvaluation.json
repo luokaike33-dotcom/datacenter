@@ -1,0 +1,89 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      price_type_code,
+                                      price_type,
+                                      b_anal_nxoptiondate,
+                                      b_anal_termifexercise,
+                                      b_anal_ytm_ifexe,
+                                      b_anal_durationifexercise,
+                                      b_anal_modiduration_ifexe,
+                                      b_anal_convexity_ifexe,
+                                      b_anal_basevalue_ifexe,
+                                      b_anal_bduration_ifexe,
+                                      b_anal_bconvexity_ifexe,
+                                      b_anal_sduration_ifexe,
+                                      b_anal_sconvexity_ifexe,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_coptionembeddedbondvaluation.json' as task_rs_id
+                                from ${srcoradbname}.coptionembeddedbondvaluation WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_coptionembeddedbondvaluation/busi_month=${busi_month}",
+                        "fileName": "w_coptionembeddedbondvaluation",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"price_type_code","type":"bigint"},
+                                      {"name":"price_type","type":"string"},
+                                      {"name":"b_anal_nxoptiondate","type":"string"},
+                                      {"name":"b_anal_termifexercise","type":"double"},
+                                      {"name":"b_anal_ytm_ifexe","type":"double"},
+                                      {"name":"b_anal_durationifexercise","type":"double"},
+                                      {"name":"b_anal_modiduration_ifexe","type":"double"},
+                                      {"name":"b_anal_convexity_ifexe","type":"double"},
+                                      {"name":"b_anal_basevalue_ifexe","type":"double"},
+                                      {"name":"b_anal_bduration_ifexe","type":"double"},
+                                      {"name":"b_anal_bconvexity_ifexe","type":"double"},
+                                      {"name":"b_anal_sduration_ifexe","type":"double"},
+                                      {"name":"b_anal_sconvexity_ifexe","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,67 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select l_date, vc_settlement_group, vc_product_group, vc_product, vc_inter_code, vc_month, c_target_market, vc_target_code, l_multiple, l_last_trade_date, l_last_settlement_date, l_last_trade_time, en_price, en_pre_price, en_position_amount, en_position_amount_pre, c_status, en_real_price, c_market_price, l_kind_no, l_virtual_key, vc_timestamp, en_yesterday_deal_amount, vc_ctd_code from ${srcoradbname}.tfuturesinfo"],
+                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://${tgrhdfsurl}",
+            "fileType": "orc",
+            "haveKerberos":"${haveKerberos}",
+            "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+            "kerberosPrincipal":"${kerberosPrincipal}",
+            "path": "${tgrhivedbpath}/o3_tfuturesinfo",
+            "fileName": "o3_tfuturesinfo",
+            "column": [
+              {"name":"l_date","type":"bigint"},
+              {"name":"vc_settlement_group","type":"string"},
+              {"name":"vc_product_group","type":"string"},
+              {"name":"vc_product","type":"string"},
+              {"name":"vc_inter_code","type":"string"},
+              {"name":"vc_month","type":"string"},
+              {"name":"c_target_market","type":"string"},
+              {"name":"vc_target_code","type":"string"},
+              {"name":"l_multiple","type":"bigint"},
+              {"name":"l_last_trade_date","type":"bigint"},
+              {"name":"l_last_settlement_date","type":"bigint"},
+              {"name":"l_last_trade_time","type":"bigint"},
+              {"name":"en_price","type":"double"},
+              {"name":"en_pre_price","type":"double"},
+              {"name":"en_position_amount","type":"double"},
+              {"name":"en_position_amount_pre","type":"double"},
+              {"name":"c_status","type":"string"},
+              {"name":"en_real_price","type":"double"},
+              {"name":"c_market_price","type":"string"},
+              {"name":"l_kind_no","type":"bigint"},
+              {"name":"l_virtual_key","type":"bigint"},
+              {"name":"vc_timestamp","type":"string"},
+              {"name":"en_yesterday_deal_amount","type":"double"},
+              {"name":"vc_ctd_code","type":"string"}
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t"
+          }
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+      }
+    }
+  }
+}

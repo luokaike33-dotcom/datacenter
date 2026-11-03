@@ -1,0 +1,68 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,f_e_bch_dt,f_div_progress,cash_dvd_per_sh_tax,crncy_code,eqy_record_dt,ex_dt,f_div_edexdate,pay_dt,f_div_paydate,f_div_impdate,f_sh_bch_y,f_bch_unit,f_e_apr,f_ex_div_dt,f_e_apr_amount,f_reinv_bch_dt,f_reinv_toac_dt,f_reinv_redeem_dt,ann_date,f_div_object,f_div_ipaydt,opdate,opmode from ${srcoradbname}.chinamfdividend"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamfdividend",
+                        "fileName": "w_chinamfdividend",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"f_e_bch_dt","type":"STRING"},
+                        {"name":"f_div_progress","type":"STRING"},
+                        {"name":"cash_dvd_per_sh_tax","type":"DOUBLE"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"eqy_record_dt","type":"STRING"},
+                        {"name":"ex_dt","type":"STRING"},
+                        {"name":"f_div_edexdate","type":"STRING"},
+                        {"name":"pay_dt","type":"STRING"},
+                        {"name":"f_div_paydate","type":"STRING"},
+                        {"name":"f_div_impdate","type":"STRING"},
+                        {"name":"f_sh_bch_y","type":"STRING"},
+                        {"name":"f_bch_unit","type":"DOUBLE"},
+                        {"name":"f_e_apr","type":"DOUBLE"},
+                        {"name":"f_ex_div_dt","type":"STRING"},
+                        {"name":"f_e_apr_amount","type":"DOUBLE"},
+                        {"name":"f_reinv_bch_dt","type":"STRING"},
+                        {"name":"f_reinv_toac_dt","type":"STRING"},
+                        {"name":"f_reinv_redeem_dt","type":"STRING"},
+                        {"name":"ann_date","type":"STRING"},
+                        {"name":"f_div_object","type":"STRING"},
+                        {"name":"f_div_ipaydt","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,99 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_exname,
+                                      cntry_code,
+                                      s_info_sccode,
+                                      design_delvy_wrhs,
+                                      office_address,
+                                      deposit_address,
+                                      contact_info,
+                                      warehouse_numb,
+                                      delivery_wrhs_type,
+                                      bussiness_address,
+                                      postcode,
+                                      loading_station,
+                                      agrmt_storage,
+                                      delivery_zone,
+                                      is_ben_wrhs,
+                                      upgrade_discount,
+                                      maximun_stand_wrhs,
+                                      daily_delivery_speed,
+                                      product_specifications,
+                                      is_normal_business,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cfuturesdeliverywhinfo.json' as task_rs_id
+                                from ${srcoradbname}.cfuturesdeliverywhinfo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cfuturesdeliverywhinfo",
+                        "fileName": "w_cfuturesdeliverywhinfo",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_exname","type":"string"},
+                                      {"name":"cntry_code","type":"string"},
+                                      {"name":"s_info_sccode","type":"string"},
+                                      {"name":"design_delvy_wrhs","type":"string"},
+                                      {"name":"office_address","type":"string"},
+                                      {"name":"deposit_address","type":"string"},
+                                      {"name":"contact_info","type":"string"},
+                                      {"name":"warehouse_numb","type":"string"},
+                                      {"name":"delivery_wrhs_type","type":"string"},
+                                      {"name":"bussiness_address","type":"string"},
+                                      {"name":"postcode","type":"string"},
+                                      {"name":"loading_station","type":"string"},
+                                      {"name":"agrmt_storage","type":"double"},
+                                      {"name":"delivery_zone","type":"string"},
+                                      {"name":"is_ben_wrhs","type":"bigint"},
+                                      {"name":"upgrade_discount","type":"string"},
+                                      {"name":"maximun_stand_wrhs","type":"double"},
+                                      {"name":"daily_delivery_speed","type":"double"},
+                                      {"name":"product_specifications","type":"string"},
+                                      {"name":"is_normal_business","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

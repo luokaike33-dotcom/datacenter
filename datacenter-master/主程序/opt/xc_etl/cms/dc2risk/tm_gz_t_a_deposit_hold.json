@@ -1,0 +1,92 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/tm_gz_t_a_deposit_hold",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"double"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"long"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"n_id",
+									"d_biz",
+									"c_port_code",
+									"c_td_number",
+									"c_od_number",
+									"c_sec_code",
+									"c_deposit_type",
+									"c_mkt_code",
+									"d_fwddue",
+									"n_advance_date",
+									"n_advance_rate",
+									"n_notify_days",
+									"d_ins_begin",
+									"n_rate",
+									"n_td_amount",
+									"n_td_money",
+									"n_port_td_money",
+									"c_advance_type",
+									"n_yslx",
+									"d_biz_first",
+									"c_branch_bank",
+									"c_bank_code"
+									
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["yhfinrisk.tm_gz_t_a_deposit_hold"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from yhfinrisk.tm_gz_t_a_deposit_hold   where d_biz  between ${beg_date}  and ${end_date}"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

@@ -1,0 +1,158 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fa45_vc_deposit",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"date"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"double"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"string"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"date"},
+									{"index":23,"type":"date"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+									{"index":27,"type":"double"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"double"},
+									{"index":32,"type":"double"},
+									{"index":33,"type":"double"},
+									{"index":34,"type":"double"},
+									{"index":35,"type":"double"},
+									{"index":36,"type":"double"},
+									{"index":37,"type":"date"},
+									{"index":38,"type":"double"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"date"},
+									{"index":41,"type":"string"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"string"},
+									{"index":44,"type":"string"},
+									{"index":45,"type":"string"},
+									{"index":46,"type":"string"},
+									{"index":47,"type":"string"},
+									{"index":48,"type":"string"},
+									{"index":49,"type":"string"},
+									{"index":50,"type":"string"},
+									{"index":51,"type":"date"},
+									{"index":52,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"n_id",
+									"n_id_sub",
+									"d_biz",
+									"c_port_code",
+									"c_asset_code",
+									"c_dv_rta",
+									"c_td_number",
+									"c_od_number",
+									"c_sec_code",
+									"c_sec_var_mx",
+									"n_nh_days",
+									"c_dv_freq",
+									"c_cury_code",
+									"c_mkt_code",
+									"c_tdchan_code",
+									"c_td_code",
+									"c_im_code",
+									"c_td_type",
+									"c_ivt_clss",
+									"c_hld_attr",
+									"c_td_attr",
+									"c_ml_attr",
+									"d_fwddue",
+									"d_ins_begin",
+									"c_rta_code",
+									"n_rate",
+									"n_yslx",
+									"n_spread",
+									"n_upper_limit",
+									"n_lower_limit",
+									"c_dv_type_sub",
+									"n_td_amount",
+									"n_port_td_money",
+									"n_td_income",
+									"n_jz_rate",
+									"n_td_comm",
+									"n_td_money",
+									"d_settle",
+									"n_st_money",
+									"c_ca_code",
+									"d_biz_first",
+									"c_open_addr",
+									"c_open_acc_no",
+									"c_open_acc_name",
+									"c_vir_sec_code",
+									"c_bank_name",
+									"c_branch_bank_name",
+									"c_update_time",
+									"c_data_idf",
+									"c_timestamp",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fa45_vc_deposit"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table fa45_vc_deposit"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":0}
+        }
+    }
+}
+
+

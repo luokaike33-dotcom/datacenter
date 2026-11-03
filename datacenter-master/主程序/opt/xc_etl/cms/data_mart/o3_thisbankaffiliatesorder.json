@@ -1,0 +1,191 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                
+					"reader": {
+						"name": "hivereader",
+						"parameter": {
+							"hive_cmd":"beeline",
+							"hiveSql":["
+								SELECT l_date, l_time, vc_market_indicator, vc_report_code, vc_name, vc_deal_no, vc_original_deal_no, en_total_face_value, en_price, l_first_settle_date, l_end_settle_date, en_settle_balance, en_settle_end_balance, en_accrued_interest_amt, en_accrued_interest_total_amt, en_miscfeeamt, vc_caption, vc_maturity, l_trade_balance, c_side, en_end_yld, en_discount_rate, en_full_price, l_limit_days, l_hold_days, c_first_delivery_type, c_end_delivery_type, c_trade_type, en_principal, en_total_principal, en_benk_price, vc_bench_name, c_interest_accrual_method, en_iop_value, c_trade_method, l_pay_date, l_settle_day_reset, l_interest_day_reset, l_first_interest_start_day, c_order_status, vc_self_party_id, vc_self_party_name, vc_self_party_full_name, vc_self_acc_name, vc_self_acc_bank_name, vc_self_acc_no, vc_self_acc_bank_no, vc_self_bond_acc_name, vc_self_bond_cust_name, vc_self_bond_acc_no, vc_self_trader_name, vc_self_trader_code, vc_self_fund_bank_name, vc_self_fund_acc_name, vc_self_fund_bank_no, vc_self_remark, vc_self_swiftcode, vc_self_cash_acc_name, vc_self_cust_no, vc_self_cust_name, vc_self_marg_cust_acc_name, vc_self_marg_acc_bank_no, vc_self_marg_acc_no, vc_self_marg_bank_name, vc_self_marg_acc_name, vc_counterpty_party_id, vc_counterpty_party_name, vc_counterpty_party_full_name, vc_counterpty_acc_name, vc_counterpty_acc_bank_name, vc_counterpty_acc_no, vc_counterpty_acc_bank_no, vc_counterpty_bond_acc_name, vc_counterpty_bond_cust_name, vc_counterpty_bond_acc_no, vc_counterpty_trader_name, vc_counterpty_trader_code, vc_counterpty_marg_acc_name, vc_counterpty_marg_bank_name, vc_counterpty_marg_acc_no, vc_counterpty_marg_acc_bank_no, vc_counterpty_marg_cust_acc_nm, vc_counterpty_cust_name, vc_counterpty_cust_no, vc_counterpty_cash_acc_name, vc_counterpty_swiftcode, vc_counterpty_remark, vc_counterpty_fund_acc_name, vc_counterpty_fund_bank_name, vc_counterpty_fund_bank_no, vc_quote_no, vc_exec_type, en_strike_yld, vc_dealtrtype, vc_transtime, c_couponpayment_indicator, c_contingency_indicator, l_start_date, l_end_date, l_dissetmet, l_int_fix_date, l_calc_agency, c_margin_change_indicator, c_marginreq, l_settl_type, vc_reference, vc_self_acc_bank_name2, vc_self_acc_bank_no2, vc_self_bond_cust_name2, vc_self_bond_acc_name2, vc_self_bond_acc_no2, vc_self_acc_name2, vc_self_acc_no2, vc_counterpty_acc_bank_name2, vc_counterpty_acc_bank_no2, vc_counterpty_bond_cust_name2, vc_counterpty_bond_acc_name2, vc_counterpty_bond_acc_no2, vc_counterpty_acc_name2, vc_counterpty_acc_no2, l_trade_balance1, en_accrued_interest_total_amt1, en_settle_end_balance1, en_total_face_value1, l_trade_balance2, en_accrued_interest_total_amt2, en_settle_end_balance2, en_total_face_value2, c_force, vc_clear_method, bath_dt, data_ins_time, task_rs_id, p_dt
+								FROM ${srcdbname}.o3_thisbankaffiliatesorder
+								"],
+							"defaultFS": "hdfs://${srchdfsurl}",
+							"tmpDatabasePath":"${srchivedbpath}",
+							"tmpDatabase":"${srcdbname}",
+							"hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+							"hive_ldap_user_name":"${srcusername}",
+							"hive_ldap_password":"${srcpassword}",
+							"haveKerberos": "${haveKerberos}",
+							"kerberosKeytabFilePath": "${kbsfilepath}",
+							"kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_date",
+									"l_time",
+									"vc_market_indicator",
+									"vc_report_code",
+									"vc_name",
+									"vc_deal_no",
+									"vc_original_deal_no",
+									"en_total_face_value",
+									"en_price",
+									"l_first_settle_date",
+									"l_end_settle_date",
+									"en_settle_balance",
+									"en_settle_end_balance",
+									"en_accrued_interest_amt",
+									"en_accrued_interest_total_amt",
+									"en_miscfeeamt",
+									"vc_caption",
+									"vc_maturity",
+									"l_trade_balance",
+									"c_side",
+									"en_end_yld",
+									"en_discount_rate",
+									"en_full_price",
+									"l_limit_days",
+									"l_hold_days",
+									"c_first_delivery_type",
+									"c_end_delivery_type",
+									"c_trade_type",
+									"en_principal",
+									"en_total_principal",
+									"en_benk_price",
+									"vc_bench_name",
+									"c_interest_accrual_method",
+									"en_iop_value",
+									"c_trade_method",
+									"l_pay_date",
+									"l_settle_day_reset",
+									"l_interest_day_reset",
+									"l_first_interest_start_day",
+									"c_order_status",
+									"vc_self_party_id",
+									"vc_self_party_name",
+									"vc_self_party_full_name",
+									"vc_self_acc_name",
+									"vc_self_acc_bank_name",
+									"vc_self_acc_no",
+									"vc_self_acc_bank_no",
+									"vc_self_bond_acc_name",
+									"vc_self_bond_cust_name",
+									"vc_self_bond_acc_no",
+									"vc_self_trader_name",
+									"vc_self_trader_code",
+									"vc_self_fund_bank_name",
+									"vc_self_fund_acc_name",
+									"vc_self_fund_bank_no",
+									"vc_self_remark",
+									"vc_self_swiftcode",
+									"vc_self_cash_acc_name",
+									"vc_self_cust_no",
+									"vc_self_cust_name",
+									"vc_self_marg_cust_acc_name",
+									"vc_self_marg_acc_bank_no",
+									"vc_self_marg_acc_no",
+									"vc_self_marg_bank_name",
+									"vc_self_marg_acc_name",
+									"vc_counterpty_party_id",
+									"vc_counterpty_party_name",
+									"vc_counterpty_party_full_name",
+									"vc_counterpty_acc_name",
+									"vc_counterpty_acc_bank_name",
+									"vc_counterpty_acc_no",
+									"vc_counterpty_acc_bank_no",
+									"vc_counterpty_bond_acc_name",
+									"vc_counterpty_bond_cust_name",
+									"vc_counterpty_bond_acc_no",
+									"vc_counterpty_trader_name",
+									"vc_counterpty_trader_code",
+									"vc_counterpty_marg_acc_name",
+									"vc_counterpty_marg_bank_name",
+									"vc_counterpty_marg_acc_no",
+									"vc_counterpty_marg_acc_bank_no",
+									"vc_counterpty_marg_cust_acc_nm",
+									"vc_counterpty_cust_name",
+									"vc_counterpty_cust_no",
+									"vc_counterpty_cash_acc_name",
+									"vc_counterpty_swiftcode",
+									"vc_counterpty_remark",
+									"vc_counterpty_fund_acc_name",
+									"vc_counterpty_fund_bank_name",
+									"vc_counterpty_fund_bank_no",
+									"vc_quote_no",
+									"vc_exec_type",
+									"en_strike_yld",
+									"vc_dealtrtype",
+									"vc_transtime",
+									"c_couponpayment_indicator",
+									"c_contingency_indicator",
+									"l_start_date",
+									"l_end_date",
+									"l_dissetmet",
+									"l_int_fix_date",
+									"l_calc_agency",
+									"c_margin_change_indicator",
+									"c_marginreq",
+									"l_settl_type",
+									"vc_reference",
+									"vc_self_acc_bank_name2",
+									"vc_self_acc_bank_no2",
+									"vc_self_bond_cust_name2",
+									"vc_self_bond_acc_name2",
+									"vc_self_bond_acc_no2",
+									"vc_self_acc_name2",
+									"vc_self_acc_no2",
+									"vc_counterpty_acc_bank_name2",
+									"vc_counterpty_acc_bank_no2",
+									"vc_counterpty_bond_cust_name2",
+									"vc_counterpty_bond_acc_name2",
+									"vc_counterpty_bond_acc_no2",
+									"vc_counterpty_acc_name2",
+									"vc_counterpty_acc_no2",
+									"l_trade_balance1",
+									"en_accrued_interest_total_amt1",
+									"en_settle_end_balance1",
+									"en_total_face_value1",
+									"l_trade_balance2",
+									"en_accrued_interest_total_amt2",
+									"en_settle_end_balance2",
+									"en_total_face_value2",
+									"c_force",
+									"vc_clear_method",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_thisbankaffiliatesorder"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table o3_thisbankaffiliatesorder "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

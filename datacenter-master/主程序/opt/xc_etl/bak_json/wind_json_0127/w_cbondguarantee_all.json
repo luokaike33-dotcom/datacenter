@@ -1,0 +1,84 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "oraclereader",
+          "parameter": {
+            "username": "${srcorausername}",
+            "password": "${srcorapassword}",
+            "where": "",
+            "connection": [
+              {
+                "querySql": ["select object_id,
+                  s_info_compcode,
+                  relation,
+                  guarantor,
+                  relation2,
+                  securedparty,
+                  method1,
+                  amount,
+                  crncy_code,
+                  term,
+                  start_dt,
+                  end_dt,
+                  is_complete,
+                  is_related,
+                  trade_dt,
+                  report_period,
+                  is_overdue,
+                  overdue_amount,
+                  is_counterguarantee,
+                  ann_dt
+                  from ${srcoradbname}.cbondguarantee"],
+                  "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                  }
+                ]
+              }
+            },
+              "writer": {
+                "name": "hdfswriter",
+                "parameter": {
+                  "defaultFS": "hdfs://${tgrhdfsurl}",
+                  "fileType": "orc",
+                  "path": "${tgrhivedbpath}/w_cbondguarantee",
+                  "fileName": "w_cbondguarantee",
+                  "column": [
+                    {"name":"object_id","type":"string"},
+                    {"name":"s_info_compcode","type":"string"},
+                    {"name":"relation","type":"string"},
+                    {"name":"guarantor","type":"string"},
+                    {"name":"relation2","type":"string"},
+                    {"name":"securedparty","type":"string"},
+                    {"name":"method1","type":"string"},
+                    {"name":"amount","type":"double"},
+                    {"name":"crncy_code","type":"string"},
+                    {"name":"term","type":"double"},
+                    {"name":"start_dt","type":"string"},
+                    {"name":"end_dt","type":"string"},
+                    {"name":"is_complete","type":"double"},
+                    {"name":"is_related","type":"double"},
+                    {"name":"trade_dt","type":"string"},
+                    {"name":"report_period","type":"string"},
+                    {"name":"is_overdue","type":"double"},
+                    {"name":"overdue_amount","type":"double"},
+                    {"name":"is_counterguarantee","type":"double"},
+                    {"name":"ann_dt","type":"string"}
+                  ],
+                  "writeMode": "append",
+                  "fieldDelimiter": "\t",
+                  "encoding":"utf-8",
+                  "haveKerberos": "${haveKerberos}",
+                  "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                  "kerberosPrincipal": "${kerberosPrincipal}"
+                }
+              }
+              }
+            ],
+            "setting": {
+              "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+              }
+            }
+          }
+        }

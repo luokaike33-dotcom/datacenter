@@ -1,0 +1,73 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      member_name,
+                                      underwriting_group_type,
+                                      object_id,
+                                      b_year,
+                                      member_id,
+                                      member_type,
+                                      member_type_num,
+                                      underwriting_group_num,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondunderwritingmember.json' as task_rs_id
+                                from ${srcoradbname}.cbondunderwritingmember"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondunderwritingmember",
+                        "fileName": "w_cbondunderwritingmember",
+                        "column": [
+                                      {"name":"member_name","type":"string"},
+                                      {"name":"underwriting_group_type","type":"string"},
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"b_year","type":"string"},
+                                      {"name":"member_id","type":"string"},
+                                      {"name":"member_type","type":"string"},
+                                      {"name":"member_type_num","type":"bigint"},
+                                      {"name":"underwriting_group_num","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

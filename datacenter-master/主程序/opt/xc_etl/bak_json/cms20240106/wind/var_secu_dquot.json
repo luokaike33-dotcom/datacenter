@@ -1,0 +1,122 @@
+{
+  "job": {
+    "content": [
+      {
+        "reader": {
+          "name": "hdfsreader",
+          "parameter": {
+            "path": "${srchivedbpath}/var_secu_dquot/p_dt=${p_dt}",
+            "defaultFS": "hdfs://${srchdfsurl}",
+            
+      "column": [
+        {"index":0,"type":"string"},
+        {"index":1,"type":"long"},
+        {"index":2,"type":"string"},
+        {"index":3,"type":"double"},
+        {"index":4,"type":"double"},
+        {"index":5,"type":"double"},
+        {"index":6,"type":"double"},
+        {"index":7,"type":"double"},
+        {"index":8,"type":"double"},
+        {"index":9,"type":"double"},
+        {"index":10,"type":"double"},
+        {"index":11,"type":"double"},
+        {"index":12,"type":"double"},
+        {"index":13,"type":"double"},
+        {"index":14,"type":"double"},
+        {"index":15,"type":"double"},
+        {"index":16,"type":"double"},
+        {"index":17,"type":"double"},
+        {"index":18,"type":"double"},
+        {"index":19,"type":"double"},
+        {"index":20,"type":"double"},
+        {"index":21,"type":"double"},
+        {"index":22,"type":"double"},
+        {"index":23,"type":"double"},
+        {"index":24,"type":"double"},
+        {"index":25,"type":"double"},
+        {"index":26,"type":"string"},
+        {"index":27,"type":"double"},
+        {"index":28,"type":"double"},
+        {"index":29,"type":"double"},
+        {"index":30,"type":"double"},
+        {"index":31,"type":"double"},
+        {"index":32,"type":"long"},
+        {"index":33,"type":"string"},
+        {"index":34,"type":"string"},
+        {"index":35,"type":"date"},
+        {"name":"p_dt","type":"long","value":"${p_dt}"},
+        
+      ],
+      "fileType": "orc",
+      "encoding": "UTF-8",
+      "fieldDelimiter": "\t",
+      "haveKerberos": "${haveKerberos}",
+      "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+      "kerberosPrincipal": "${kerberosPrincipal}",
+      "kerberosConfFilePath": "${kerberosConfFilePath}"
+      }
+    },
+      "writer": {
+        "name": "oraclewriter",
+        "parameter": {
+          "column": [
+            "secu_id",
+            "trd_dt",
+            "trd_sts",
+            "prev_cls_prc",
+            "open_prc",
+            "high_prc",
+            "low_prc",
+            "avg_price",
+            "cls_prc",
+            "accr_intr",
+            "tnv_vol",
+            "tnv_val",
+            "tnv_deal",
+            "day_chg",
+            "day_chg_rat",
+            "day_amp",
+            "chk_ftor",
+            "aft_chk_open_prc",
+            "aft_chk_high_prc",
+            "aft_chk_low_prc",
+            "aft_chk_cls_prc",
+            "pb",
+            "pe_lyr",
+            "pe_ttm",
+            "pe_mrq",
+            "tnv_rat",
+            "curr_code",
+            "ttl_val",
+            "circ_val",
+            "divd_rate_lyr",
+            "pcf_lyr",
+            "peg",
+            "busi_date",
+            "dm_src_info",
+            "task_rs_id",
+            "dm_created_time"
+            "p_dt",
+            
+          ],
+          "connection": [
+            {
+              "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+              "table": ["var_secu_dquot"]
+            }
+          ],
+          "password": "${tgrpassword}",
+          "username": "${tgrusername}",
+          "preSql":["delete from var_secu_dquot where p_dt ='${p_dt}' and 1=1"]
+        }
+      }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": "1"
+      }
+    }
+  }
+}

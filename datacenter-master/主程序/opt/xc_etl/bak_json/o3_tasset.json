@@ -1,0 +1,102 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select l_asset_id,l_fund_id,vc_asset_name,c_overdraft,vc_remarks,l_account_id,l_securities_branch,vc_capital_account,vc_capital_password,vc_bank_name,vc_account_name,l_local_custodian,vc_bank_account,c_trust,c_asset_type,vc_asset_no,vc_fa_account_no,vc_intrabank_no,vc_pay_no,c_cash_pool,l_transfer_order,c_cash_available_type,en_cash_available_value,l_securities_branch_qh,vc_capital_account_qh,vc_capital_password_qh,c_asset_status,l_cash_conf_date,l_cash_conf_time,vc_bank_linkman,vc_bank_phone,vc_bank_fax,vc_provincecode,vc_city,vc_instr_branch_organ,vc_invest_overdraft,c_futuer_liquidation,c_futuer_liquidation_status,c_invest_area,c_third_party_custody,c_capital_account_flag,c_capital_account_flag_qh,c_t1_cash_available_type,en_t1_cash_available_value,c_credit_asset,c_capital_rzrq_flag,c_uft_trade,c_branch_adjust_flag,c_branch_adjust_flag_qh,c_instr_auto,c_future_instr_auto,c_entrust_auto,c_future_entrust_auto,l_set_id,vc_timestamp,vc_self_margin_account,NULL AS bath_dt,sysdate AS data_ins_time,NULL AS task_rs_id  from ${srcoradbname}.tasset"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_tasset", 
+                        "fileName": "o3_tasset",
+                        "column": [
+     {"name":"l_asset_id","type":"int"},
+     {"name":"l_fund_id","type":"int"},
+     {"name":"vc_asset_name","type":"string"},
+     {"name":"c_overdraft","type":"string"},
+     {"name":"vc_remarks","type":"string"},
+     {"name":"l_account_id","type":"bigint"},
+     {"name":"l_securities_branch","type":"bigint"},
+     {"name":"vc_capital_account","type":"string"},
+     {"name":"vc_capital_password","type":"string"},
+     {"name":"vc_bank_name","type":"string"},
+     {"name":"vc_account_name","type":"string"},
+     {"name":"l_local_custodian","type":"bigint"},
+     {"name":"vc_bank_account","type":"string"},
+     {"name":"c_trust","type":"string"},
+     {"name":"c_asset_type","type":"string"},
+     {"name":"vc_asset_no","type":"string"},
+     {"name":"vc_fa_account_no","type":"string"},
+     {"name":"vc_intrabank_no","type":"string"},
+     {"name":"vc_pay_no","type":"string"},
+     {"name":"c_cash_pool","type":"string"},
+     {"name":"l_transfer_order","type":"bigint"},
+     {"name":"c_cash_available_type","type":"string"},
+     {"name":"en_cash_available_value","type":"double"},
+     {"name":"l_securities_branch_qh","type":"double"},
+     {"name":"vc_capital_account_qh","type":"string"},
+     {"name":"vc_capital_password_qh","type":"string"},
+     {"name":"c_asset_status","type":"string"},
+     {"name":"l_cash_conf_date","type":"int"},
+     {"name":"l_cash_conf_time","type":"int"},
+     {"name":"vc_bank_linkman","type":"string"},
+     {"name":"vc_bank_phone","type":"string"},
+     {"name":"vc_bank_fax","type":"string"},
+     {"name":"vc_provincecode","type":"string"},
+     {"name":"vc_city","type":"string"},
+     {"name":"vc_instr_branch_organ","type":"string"},
+     {"name":"vc_invest_overdraft","type":"string"},
+     {"name":"c_futuer_liquidation","type":"string"},
+     {"name":"c_futuer_liquidation_status","type":"string"},
+     {"name":"c_invest_area","type":"string"},
+     {"name":"c_third_party_custody","type":"string"},
+     {"name":"c_capital_account_flag","type":"string"},
+     {"name":"c_capital_account_flag_qh","type":"string"},
+     {"name":"c_t1_cash_available_type","type":"string"},
+     {"name":"en_t1_cash_available_value","type":"double"},
+     {"name":"c_credit_asset","type":"string"},
+     {"name":"c_capital_rzrq_flag","type":"string"},
+     {"name":"c_uft_trade","type":"string"},
+     {"name":"c_branch_adjust_flag","type":"string"},
+     {"name":"c_branch_adjust_flag_qh","type":"string"},
+     {"name":"c_instr_auto","type":"string"},
+     {"name":"c_future_instr_auto","type":"string"},
+     {"name":"c_entrust_auto","type":"string"},
+     {"name":"c_future_entrust_auto","type":"string"},
+     {"name":"l_set_id","type":"int"},
+     {"name":"vc_timestamp","type":"string"},
+     {"name":"vc_self_margin_account","type":"string"},
+     {"name":"bath_dt","type":"string"},
+     {"name":"data_ins_time","type":"timestamp"},
+     {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,125 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      con_num,
+                                      pe_lyr,
+                                      pe_ttm,
+                                      pb_lf,
+                                      pcf_lyr,
+                                      pcf_ttm,
+                                      ps_lyr,
+                                      ps_ttm,
+                                      mv_total,
+                                      mv_float,
+                                      dividend_yield,
+                                      peg_his,
+                                      tot_shr,
+                                      tot_shr_float,
+                                      tot_shr_free,
+                                      turnover,
+                                      turnover_free,
+                                      est_net_profit_y1,
+                                      est_net_profit_y2,
+                                      est_bus_inc_y1,
+                                      est_bus_inc_y2,
+                                      est_eps_y1,
+                                      est_eps_y2,
+                                      est_yoyprofit_y1,
+                                      est_yoyprofit_y2,
+                                      est_yoygr_y1,
+                                      est_yoygr_y2,
+                                      est_pe_y1,
+                                      est_pe_y2,
+                                      est_peg_y1,
+                                      est_peg_y2,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_hkindexvaluation.json' as task_rs_id
+                                from ${srcoradbname}.hkindexvaluation"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_hkindexvaluation",
+                        "fileName": "w_hkindexvaluation",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"con_num","type":"double"},
+                                      {"name":"pe_lyr","type":"double"},
+                                      {"name":"pe_ttm","type":"double"},
+                                      {"name":"pb_lf","type":"double"},
+                                      {"name":"pcf_lyr","type":"double"},
+                                      {"name":"pcf_ttm","type":"double"},
+                                      {"name":"ps_lyr","type":"double"},
+                                      {"name":"ps_ttm","type":"double"},
+                                      {"name":"mv_total","type":"double"},
+                                      {"name":"mv_float","type":"double"},
+                                      {"name":"dividend_yield","type":"double"},
+                                      {"name":"peg_his","type":"double"},
+                                      {"name":"tot_shr","type":"double"},
+                                      {"name":"tot_shr_float","type":"double"},
+                                      {"name":"tot_shr_free","type":"double"},
+                                      {"name":"turnover","type":"double"},
+                                      {"name":"turnover_free","type":"double"},
+                                      {"name":"est_net_profit_y1","type":"double"},
+                                      {"name":"est_net_profit_y2","type":"double"},
+                                      {"name":"est_bus_inc_y1","type":"double"},
+                                      {"name":"est_bus_inc_y2","type":"double"},
+                                      {"name":"est_eps_y1","type":"double"},
+                                      {"name":"est_eps_y2","type":"double"},
+                                      {"name":"est_yoyprofit_y1","type":"double"},
+                                      {"name":"est_yoyprofit_y2","type":"double"},
+                                      {"name":"est_yoygr_y1","type":"double"},
+                                      {"name":"est_yoygr_y2","type":"double"},
+                                      {"name":"est_pe_y1","type":"double"},
+                                      {"name":"est_pe_y2","type":"double"},
+                                      {"name":"est_peg_y1","type":"double"},
+                                      {"name":"est_peg_y2","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

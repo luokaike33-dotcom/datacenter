@@ -1,0 +1,115 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      secu_id,
+                                      cal_date,
+                                      guid,
+                                      tdy_prc_exer,
+                                      up_day_prc_exer,
+                                      up_day_bond_nprc_exer,
+                                      tot_yld_exer,
+                                      coup_yld_exer,
+                                      hold_yld_exer,
+                                      cnvx_yld_exer,
+                                      trea_spr_yld_exer,
+                                      trea_rid_yld_exer,
+                                      cred_spr_yld_exer,
+                                      cred_rid_yld_exer,
+                                      maty_stru_yld_exer,
+                                      tdy_prc_not_exer,
+                                      up_day_prc_not_exer,
+                                      up_day_bond_nprc_not_exer,
+                                      tot_yld_not_exer,
+                                      coup_yld_not_exer,
+                                      hold_yld_not_exer,
+                                      cnvx_yld_not_exer,
+                                      trea_spr_yld_not_exer,
+                                      trea_rid_yld_not_exer,
+                                      cred_spr_yld_not_exer,
+                                      cred_rid_yld_not_exer,
+                                      maty_stru_yld_not_exer,
+                                      recm_exer_typ,
+                                      cred_cr_code,
+									  p_dt,
+                                      sys_rs_id,
+                                      'mid_bond_indx_info.json' as task_rs_id,
+                                      dm_created_time
+                                from ${srcoradbname}.mid_bond_indx_info WHERE p_dt = '${p_dt}'"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "cal_date",
+                                    "guid",
+                                    "tdy_prc_exer",
+                                    "up_day_prc_exer",
+                                    "up_day_bond_nprc_exer",
+                                    "tot_yld_exer",
+                                    "coup_yld_exer",
+                                    "hold_yld_exer",
+                                    "cnvx_yld_exer",
+                                    "trea_spr_yld_exer",
+                                    "trea_rid_yld_exer",
+                                    "cred_spr_yld_exer",
+                                    "cred_rid_yld_exer",
+                                    "maty_stru_yld_exer",
+                                    "tdy_prc_not_exer",
+                                    "up_day_prc_not_exer",
+                                    "up_day_bond_nprc_not_exer",
+                                    "tot_yld_not_exer",
+                                    "coup_yld_not_exer",
+                                    "hold_yld_not_exer",
+                                    "cnvx_yld_not_exer",
+                                    "trea_spr_yld_not_exer",
+                                    "trea_rid_yld_not_exer",
+                                    "cred_spr_yld_not_exer",
+                                    "cred_rid_yld_not_exer",
+                                    "maty_stru_yld_not_exer",
+                                    "recm_exer_typ",
+                                    "cred_cr_code",
+                                    "p_dt",
+                                    "sys_rs_id",
+                                    "task_rs_id",
+                                    "dm_created_time"      
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:mysql://${tgrurl}",
+                              "selectedDatabase": "${selectedDatabase}",
+                              "table": ["mid_bond_indx_info"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "loadUrl": [${loadUrl}],
+                        "loadProps": {"column_separator": "\\x01","row_delimiter":"\\x02"},
+                        "preSql":["delete from data_mart.mid_bond_indx_info where p_dt ='${p_dt}' "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

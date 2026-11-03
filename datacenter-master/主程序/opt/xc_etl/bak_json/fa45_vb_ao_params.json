@@ -1,0 +1,63 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,c_iden,c_port_code,c_asset_code,c_port_cls_code,c_dsp_code,c_dsp_name,c_dv_params_value,n_check_state,c_update_by,c_check_by,c_check_time,d_begin,d_end,c_desc,c_update_time,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vb_ao_params.json' as task_rs_id from ${srcoradbname}.vb_ao_params"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vb_ao_params",
+                        "fileName": "fa45_vb_ao_params",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"c_iden","type":"string"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"c_asset_code","type":"string"},
+                            {"name":"c_port_cls_code","type":"string"},
+                            {"name":"c_dsp_code","type":"string"},
+                            {"name":"c_dsp_name","type":"string"},
+                            {"name":"c_dv_params_value","type":"string"},
+                            {"name":"n_check_state","type":"int"},
+                            {"name":"c_update_by","type":"string"},
+                            {"name":"c_check_by","type":"string"},
+                            {"name":"c_check_time","type":"string"},
+                            {"name":"d_begin","type":"date"},
+                            {"name":"d_end","type":"date"},
+                            {"name":"c_desc","type":"string"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

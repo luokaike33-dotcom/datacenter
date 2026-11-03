@@ -1,0 +1,50 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_compcode,s_info_windcode,wind_sec_code,entry_dt,remove_dt,cur_sign from ${srcoradbname}.neeqgradation"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_neeqgradation",
+                        "fileName": "w_neeqgradation",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_compcode","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"wind_sec_code","type":"STRING"},
+                        {"name":"entry_dt","type":"STRING"},
+                        {"name":"remove_dt","type":"STRING"},
+                        {"name":"cur_sign","type":"DOUBLE"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

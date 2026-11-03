@@ -1,0 +1,87 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fund_bons",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        
+                        "column": [
+                                    {"index":0,"type":"string"},
+                                    {"index":1,"type":"DOUBLE"},
+                                    {"index":2,"type":"DOUBLE"},
+                                    {"index":3,"type":"DOUBLE"},
+                                    {"index":4,"type":"long"},
+                                    {"index":5,"type":"DOUBLE"},
+                                    {"index":6,"type":"DOUBLE"},
+                                    {"index":7,"type":"DOUBLE"},
+                                    {"index":8,"type":"DOUBLE"},
+                                    {"index":9,"type":"DOUBLE"},
+                                    {"index":10,"type":"DOUBLE"},
+                                    {"index":11,"type":"double"},
+                                    {"index":12,"type":"double"},
+                                    {"index":13,"type":"double"},
+                                    {"index":14,"type":"DOUBLE"},
+                                    {"index":15,"type":"DOUBLE"},
+                                    {"index":16,"type":"string"},
+									{"name":"dm_created_time","type":"string","value":"${kerberosPrincipal}"}
+                                    
+                                   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kerberosKeytabFilePath}",
+                        "kerberosPrincipal": "${kerberosPrincipal}",
+                        "kerberosConfFilePath": "${kerberosConfFilePath}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+                                    "secu_id",
+                                    "rt_reg_dt",
+                                    "plan_ntc_dt",
+                                    "impl_ntc_dt",
+                                    "ex_rd_dt_exch",
+                                    "dvd_pay_dt_exch",
+                                    "ex_rd_dt_otc",
+                                    "dvd_pay_dt",
+                                    "nav_cfm_dt",
+                                    "shr_acct_dt",
+                                    "div_redem_bgn_dt",
+                                    "cash_bfr_tax_rmb",
+                                    "cash_aft_tax_rmb",
+                                    "ttl_cash_rmb",
+                                    "dvd_ben_dt",
+                                    "busi_date",
+                                    "task_rs_id",
+                                    "dm_created_time"
+                                    
+                        ],
+                        "connection": [
+                         {
+                              "jdbcUrl": "jdbc:mysql://${tgrurl}",
+                              "selectedDatabase": "${selectedDatabase}",
+                              "table": ["var_fund_bons"]
+                          }
+                        ], 
+                        "password": "${tgrpassword}",
+                        "username": "${tgrusername}",
+                        "loadUrl": [${loadUrl}],
+                        "loadProps": {"column_separator": "\\x01","row_separator":"\\x02"},
+                        "preSql":["truncate table data_mart.var_fund_bons "]
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

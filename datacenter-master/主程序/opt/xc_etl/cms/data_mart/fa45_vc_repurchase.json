@@ -1,0 +1,154 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fa45_vc_repurchase",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"date"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"date"},
+									{"index":9,"type":"date"},
+									{"index":10,"type":"date"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"string"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"double"},
+									{"index":29,"type":"double"},
+									{"index":30,"type":"double"},
+									{"index":31,"type":"double"},
+									{"index":32,"type":"date"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"date"},
+									{"index":36,"type":"double"},
+									{"index":37,"type":"double"},
+									{"index":38,"type":"double"},
+									{"index":39,"type":"double"},
+									{"index":40,"type":"double"},
+									{"index":41,"type":"double"},
+									{"index":42,"type":"double"},
+									{"index":43,"type":"double"},
+									{"index":44,"type":"double"},
+									{"index":45,"type":"string"},
+									{"index":46,"type":"string"},
+									{"index":47,"type":"string"},
+									{"index":48,"type":"string"},
+									{"index":49,"type":"date"},
+									{"index":50,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"n_id",
+									"n_id_sub",
+									"d_biz",
+									"c_port_code",
+									"c_asset_code",
+									"c_sec_code",
+									"c_dv_type_sub",
+									"c_cury_code",
+									"d_trade_date",
+									"d_fwddue",
+									"d_sett_fact",
+									"c_td_number",
+									"c_od_number",
+									"n_days",
+									"n_hg_rate",
+									"n_ref_rate",
+									"c_td_relaparty",
+									"c_sett_org",
+									"c_mkt_code",
+									"c_td_plat",
+									"c_tdchan_code",
+									"c_td_code",
+									"c_im_code",
+									"c_td_type",
+									"c_ivt_clss",
+									"c_hld_attr",
+									"c_td_attr",
+									"c_ml_attr",
+									"n_td_amount",
+									"n_td_money",
+									"n_td_income",
+									"n_st_money",
+									"d_settle",
+									"c_ca_code",
+									"c_jgfs_type",
+									"d_biz_first",
+									"n_td_yhs",
+									"n_td_jsf",
+									"n_td_ghf",
+									"n_td_zgf",
+									"n_td_jsfwf",
+									"n_td_fee",
+									"n_stfxj",
+									"n_td_comm",
+									"n_bk_hhf",
+									"c_data_idf",
+									"c_update_time",
+									"c_timestamp",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fa45_vc_repurchase"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table fa45_vc_repurchase"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":0}
+        }
+    }
+}
+
+

@@ -1,0 +1,148 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/t_sp_base",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"long"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"long"},
+									{"index":8,"type":"long"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"long"},
+									{"index":12,"type":"long"},
+									{"index":13,"type":"long"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"string"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"long"},
+									{"index":22,"type":"long"},
+									{"index":23,"type":"long"},
+									{"index":24,"type":"long"},
+									{"index":25,"type":"long"},
+									{"index":26,"type":"long"},
+									{"index":27,"type":"long"},
+									{"index":28,"type":"long"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"long"},
+									{"index":31,"type":"long"},
+									{"index":32,"type":"double"},
+									{"index":33,"type":"long"},
+									{"index":34,"type":"double"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"long"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"long"},
+									{"index":41,"type":"long"},
+									{"index":42,"type":"long"},
+									{"index":43,"type":"long"},
+									{"index":44,"type":"long"},
+									{"index":45,"type":"string"},
+									{"index":46,"type":"string"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"bk_product_of_m",
+									"bk_product",
+									"prod_cname",
+									"prod_short_name",
+									"issue_start_date",
+									"issue_end_date",
+									"setup_date",
+									"due_date",
+									"lst_liqu_date",
+									"lst_liqu_data_date",
+									"lst_liqu_drmy_date",
+									"fst_liqu_date",
+									"rcd_date",
+									"bk_currency",
+									"belg_dept_name",
+									"amac_prod_code",
+									"amac_prod_name",
+									"setup_ast",
+									"setup_share",
+									"pay_income_currency",
+									"pay_prin_currency",
+									"bons_type_code",
+									"ctrl_coll_pd_prod_lmt_flag",
+									"ctrl_coll_pd_seller_lmt_flag",
+									"ctrl_openday_prod_lmt_flag",
+									"ctrl_openday_seller_lmt_flag",
+									"ds_flag",
+									"otbk_sa_flag",
+									"prbk_sa_flag",
+									"sale_area",
+									"sale_obj",
+									"risk_level_code",
+									"sgle_ivst_hold_share_pct_max",
+									"share_type",
+									"expe_coll_balance",
+									"bchmk_desc",
+									"lstg_exch",
+									"sub_prod_inr_code",
+									"perf_remu_accr_freq",
+									"perf_remu_accr_dtl",
+									"perf_remu_accr_dept",
+									"take_perf_remu_flag",
+									"openday_aep_accr_flag",
+									"side_pokt_flag",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["t_sp_base"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table t_sp_base"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

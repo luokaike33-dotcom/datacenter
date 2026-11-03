@@ -1,0 +1,105 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      trade_dt,
+                                      volume_ratio_5d,
+                                      vam_1m,
+                                      vam_5m,
+                                      vam_22m,
+                                      vam_60m,
+                                      ama_1w,
+                                      ama_1m,
+                                      ama_1q,
+                                      vmacd,
+                                      vmacd_dea,
+                                      vmacd_macd,
+                                      vosc,
+                                      tapi_16d,
+                                      tapi_6d,
+                                      vstd_10d,
+                                      vmacd_ema12d,
+                                      vmacd_ema26d,
+                                      vrsi_6d,
+                                      vroc_12d,
+                                      sobv,
+                                      vr_26d,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharetechindicators.json' as task_rs_id
+                                from ${srcoradbname}.asharetechindicators WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharetechindicators/busi_month=${busi_month}",
+                        "fileName": "w_asharetechindicators",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"volume_ratio_5d","type":"double"},
+                                      {"name":"vam_1m","type":"double"},
+                                      {"name":"vam_5m","type":"double"},
+                                      {"name":"vam_22m","type":"double"},
+                                      {"name":"vam_60m","type":"double"},
+                                      {"name":"ama_1w","type":"double"},
+                                      {"name":"ama_1m","type":"double"},
+                                      {"name":"ama_1q","type":"double"},
+                                      {"name":"vmacd","type":"double"},
+                                      {"name":"vmacd_dea","type":"double"},
+                                      {"name":"vmacd_macd","type":"double"},
+                                      {"name":"vosc","type":"double"},
+                                      {"name":"tapi_16d","type":"double"},
+                                      {"name":"tapi_6d","type":"double"},
+                                      {"name":"vstd_10d","type":"double"},
+                                      {"name":"vmacd_ema12d","type":"double"},
+                                      {"name":"vmacd_ema26d","type":"double"},
+                                      {"name":"vrsi_6d","type":"double"},
+                                      {"name":"vroc_12d","type":"double"},
+                                      {"name":"sobv","type":"double"},
+                                      {"name":"vr_26d","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

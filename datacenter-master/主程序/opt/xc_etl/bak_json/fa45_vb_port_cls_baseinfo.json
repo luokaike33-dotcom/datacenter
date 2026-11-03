@@ -1,0 +1,64 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select n_id,c_port_code,c_asset_code,c_port_cls_code,c_port_cls_name,c_dv_port_cls,c_port_cls_code_p,c_dv_port_cls_type,c_dv_port_cls_level,c_dc_code,d_establish,d_due,n_year_income,c_algo_code_i,c_income_type,c_desc,c_update_time,c_timestamp,to_char(sysdate,'yyyyMMdd') as bath_dt,sysdate as data_ins_time,'fa45_vb_port_cls_baseinfo.json' as task_rs_id from ${srcoradbname}.vb_port_cls_baseinfo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_vb_port_cls_baseinfo",
+                        "fileName": "fa45_vb_port_cls_baseinfo",
+                        "column": [
+                            {"name":"n_id","type":"string"},
+                            {"name":"c_port_code","type":"string"},
+                            {"name":"c_asset_code","type":"string"},
+                            {"name":"c_port_cls_code","type":"string"},
+                            {"name":"c_port_cls_name","type":"string"},
+                            {"name":"c_dv_port_cls","type":"string"},
+                            {"name":"c_port_cls_code_p","type":"string"},
+                            {"name":"c_dv_port_cls_type","type":"string"},
+                            {"name":"c_dv_port_cls_level","type":"string"},
+                            {"name":"c_dc_code","type":"string"},
+                            {"name":"d_establish","type":"date"},
+                            {"name":"d_due","type":"date"},
+                            {"name":"n_year_income","type":"double"},
+                            {"name":"c_algo_code_i","type":"string"},
+                            {"name":"c_income_type","type":"string"},
+                            {"name":"c_desc","type":"string"},
+                            {"name":"c_update_time","type":"string"},
+                            {"name":"c_timestamp","type":"string"},
+                            {"name":"bath_dt","type":"string"},
+                            {"name":"data_ins_time","type":"timestamp"},
+                            {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

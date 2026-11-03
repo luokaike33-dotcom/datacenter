@@ -1,0 +1,81 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":1}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+						select l_date,
+                        vc_inter_code,
+                        en_ratio,
+                        vc_broker_no,
+                        vc_stockholder_id,
+                        en_basic_margin,
+                        en_maintain_margin,
+                        l_last_change_date,
+                        l_asset_id,
+                        en_sale_ratio,
+                        l_virtual_key,
+                        vc_timestamp,
+                        bath_dt,
+                        data_ins_time,
+                        task_rs_id,
+                        p_dt
+							FROM ${srcdbname}.o3_thisfuturedepositratio WHERE p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"l_date",
+									"vc_inter_code",
+									"en_ratio",
+									"vc_broker_no",
+									"vc_stockholder_id",
+									"en_basic_margin",
+									"en_maintain_margin",
+									"l_last_change_date",
+									"l_asset_id",
+									"en_sale_ratio",
+									"l_virtual_key",
+									"vc_timestamp",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id",
+                                    "p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["o3_thisfuturedepositratio"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from o3_thisfuturedepositratio where p_dt between ${beg_date} and ${end_date} "]
+                    }
+                }
+            }
+        ]
+    }
+}
+
+

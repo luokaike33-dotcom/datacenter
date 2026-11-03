@@ -1,0 +1,64 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_info_code,s_info_name,s_info_sccode,s_info_callput,s_info_strikeprice,s_info_month,s_info_maturitydate,s_info_ftdate,s_info_lasttradingdate,s_info_exercisingend,s_info_lddate,s_info_lprice,s_info_trade,s_info_excode,s_info_exname,s_info_counit,null as adj_sign,opdate,opmode from ${srcoradbname}.chinaoptiondescription"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinaoptiondescription",
+                        "fileName": "w_chinaoptiondescription",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"s_info_code","type":"string"},
+                            {"name":"s_info_name","type":"string"},
+                            {"name":"s_info_sccode","type":"string"},
+                            {"name":"s_info_callput","type":"double"},
+                            {"name":"s_info_strikeprice","type":"double"},
+                            {"name":"s_info_month","type":"string"},
+                            {"name":"s_info_maturitydate","type":"string"},
+                            {"name":"s_info_ftdate","type":"string"},
+                            {"name":"s_info_lasttradingdate","type":"string"},
+                            {"name":"s_info_exercisingend","type":"string"},
+                            {"name":"s_info_lddate","type":"string"},
+                            {"name":"s_info_lprice","type":"double"},
+                            {"name":"s_info_trade","type":"string"},
+                            {"name":"s_info_excode","type":"string"},
+                            {"name":"s_info_exname","type":"string"},
+                            {"name":"s_info_counit","type":"double"},
+                            {"name":"adj_sign","type":"string"},
+                            {"name":"opdate","type":"date"},
+                            {"name":"opmode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

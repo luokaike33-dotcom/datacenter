@@ -1,0 +1,67 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd":"beeline",
+						"hiveSql":["SELECT bk_product,bk_product_of_m,dk_cust_type,shares,all_shares,capital,all_capital,fa_manager_fee,fa_trustee_fee,bus_date,dk_system_of_sdata  FROM ${srcdbname}.tinf_msp_product_fundbal_d  where bus_date between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "starrockswriter",
+                    "parameter": {
+                        "column": [
+									"bk_product",
+									"bk_product_of_m",
+									"dk_cust_type",
+									"shares",
+									"all_shares",
+									"capital",
+									"all_capital",
+									"fa_manager_fee",
+									"fa_trustee_fee",
+									"bus_date",
+									"dk_system_of_sdata"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:mysql://${tgrurl}/",
+                                "selectedDatabase": "${selectedDatabase}", 
+                                "table": ["tinf_msp_product_fundbal_d"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "loadUrl": [${loadUrl}],
+						"loadProps": {"column_separator": "\\x01","row_delimiter":"\\x02"},
+                        "preSql": ["delete from data_mart.tinf_msp_product_fundbal_d where bus_date  >= ${beg_date} and  bus_date  <=${end_date}  "]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

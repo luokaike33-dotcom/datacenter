@@ -1,0 +1,127 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									object_id,
+									s_info_windcode,
+									trade_dt,
+									b_anal_matu_cnbd,
+									b_anal_dirty_cnbd,
+									b_anal_accrint_cnbd,
+									b_anal_net_cnbd,
+									b_anal_yield_cnbd,
+									b_anal_modidura_cnbd,
+									b_anal_cnvxty_cnbd,
+									b_anal_vobp_cnbd,
+									b_anal_sprdura_cnbd,
+									b_anal_sprcnxt_cnbd,
+									b_anal_accrintclose_cnbd,
+									b_anal_price,
+									b_anal_netprice,
+									b_anal_yield,
+									b_anal_modifiedduration,
+									b_anal_convexity,
+									b_anal_bpvalue,
+									b_anal_sduration,
+									b_anal_scnvxty,
+									b_anal_interestduration_cnbd,
+									b_anal_interestcnvxty_cnbd,
+									b_anal_interestduration,
+									b_anal_interestcnvxty,
+									b_anal_price_cnbd,
+									b_anal_bpyield,
+									b_anal_exchange,
+									b_anal_credibility,
+									b_anal_residualpri,
+									b_anal_exercise_rate,
+									b_anal_priority,
+									opdate,
+									opmode,
+									busi_month
+							FROM ${srcdbname}.w_cbondanalysiscnbd7 WHERE busi_month  between substr(cast(${beg_date} as string),1,6) and substr(cast(${end_date} as string),1,6)  "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"trade_dt",
+									"b_anal_matu_cnbd",
+									"b_anal_dirty_cnbd",
+									"b_anal_accrint_cnbd",
+									"b_anal_net_cnbd",
+									"b_anal_yield_cnbd",
+									"b_anal_modidura_cnbd",
+									"b_anal_cnvxty_cnbd",
+									"b_anal_vobp_cnbd",
+									"b_anal_sprdura_cnbd",
+									"b_anal_sprcnxt_cnbd",
+									"b_anal_accrintclose_cnbd",
+									"b_anal_price",
+									"b_anal_netprice",
+									"b_anal_yield",
+									"b_anal_modifiedduration",
+									"b_anal_convexity",
+									"b_anal_bpvalue",
+									"b_anal_sduration",
+									"b_anal_scnvxty",
+									"b_anal_interestduration_cnbd",
+									"b_anal_interestcnvxty_cnbd",
+									"b_anal_interestduration",
+									"b_anal_interestcnvxty",
+									"b_anal_price_cnbd",
+									"b_anal_bpyield",
+									"b_anal_exchange",
+									"b_anal_credibility",
+									"b_anal_residualpri",
+									"b_anal_exercise_rate",
+									"b_anal_priority",
+									"opdate",
+									"opmode",
+									"busi_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_cbondanalysiscnbd7"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["DELETE FROM wd_cbondanalysiscnbd7 WHERE busi_month between substr(cast(${beg_date} as varchar2(50)),1,6) and substr(cast(${end_date} as varchar2(50)),1,6)"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

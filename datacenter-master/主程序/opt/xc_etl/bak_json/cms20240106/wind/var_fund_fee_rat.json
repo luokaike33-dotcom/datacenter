@@ -1,0 +1,118 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/var_fund_fee_rat",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"long"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"long"},
+									{"index":6,"type":"long"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"string"},
+									{"index":10,"type":"long"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"long"},
+									{"index":15,"type":"double"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"long"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"double"},
+									{"index":26,"type":"long"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"date"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"long"},
+									{"index":31,"type":"long"},
+									{"value":"","type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"secu_id",
+									"bgn_dt",
+									"fee_typ",
+									"pub_dt",
+									"info_sour",
+									"ar_sn",
+									"end_dt",
+									"bk_calc_med",
+									"ben_med",
+									"fee_calc_med",
+									"rat_unit",
+									"min_rat",
+									"rat_rel",
+									"max_rat",
+									"val_unit",
+									"min_val",
+									"val_rel",
+									"max_val",
+									"prd_unit",
+									"min_prd",
+									"prd_rel",
+									"max_prd",
+									"chg_meth",
+									"trs_secu_id",
+									"fee_obj",
+									"feer",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"feer_extr",
+									"tradingplacecode",
+									"is_current",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["var_fund_fee_rat"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table var_fund_fee_rat"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

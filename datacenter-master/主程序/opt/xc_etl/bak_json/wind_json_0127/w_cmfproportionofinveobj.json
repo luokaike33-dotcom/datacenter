@@ -1,0 +1,95 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      change_dt,
+                                      invest_pct_typecode,
+                                      stock_invest_pct_down,
+                                      stock_invest_pct_up,
+                                      bond_invest_pct_down,
+                                      bond_invest_pct_up,
+                                      mmt_invest_pct_down,
+                                      mmt_invest_pct_up,
+                                      fund_invest_pct_down,
+                                      fund_invest_pct_up,
+                                      comm_invest_pct_down,
+                                      comm_invest_pct_up,
+                                      is_tot_pct,
+                                      other_invest_pct_down,
+                                      other_invest_pct_up,
+                                      conseption_typecode,
+                                      hkstock_ivt_ratio,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cmfproportionofinveobj.json' as task_rs_id
+                                from ${srcoradbname}.cmfproportionofinveobj"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cmfproportionofinveobj",
+                        "fileName": "w_cmfproportionofinveobj",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"change_dt","type":"string"},
+                                      {"name":"invest_pct_typecode","type":"bigint"},
+                                      {"name":"stock_invest_pct_down","type":"bigint"},
+                                      {"name":"stock_invest_pct_up","type":"bigint"},
+                                      {"name":"bond_invest_pct_down","type":"bigint"},
+                                      {"name":"bond_invest_pct_up","type":"bigint"},
+                                      {"name":"mmt_invest_pct_down","type":"bigint"},
+                                      {"name":"mmt_invest_pct_up","type":"bigint"},
+                                      {"name":"fund_invest_pct_down","type":"bigint"},
+                                      {"name":"fund_invest_pct_up","type":"bigint"},
+                                      {"name":"comm_invest_pct_down","type":"bigint"},
+                                      {"name":"comm_invest_pct_up","type":"bigint"},
+                                      {"name":"is_tot_pct","type":"bigint"},
+                                      {"name":"other_invest_pct_down","type":"bigint"},
+                                      {"name":"other_invest_pct_up","type":"bigint"},
+                                      {"name":"conseption_typecode","type":"bigint"},
+                                      {"name":"hkstock_ivt_ratio","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

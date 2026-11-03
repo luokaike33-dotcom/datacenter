@@ -1,0 +1,92 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									hld_date,
+									prd_code,
+									prd_short_name,
+									secu_id,
+									chi_name,
+									secu_type_code,
+									hld_mval,
+									fst_hld_date,
+									fst_hld_mval,
+									buy_bal,
+									sell_bal,
+									income,
+									adj_buy_bal,
+									yield,
+                  memo_1,
+                  memo_2,
+									inserttime,
+									updatetime,
+									batchno,
+									task_rs_id,
+									p_dt
+							FROM ${srcdbname}.risk_prd_hld_secu_yield where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"hld_date",
+									"prd_code",
+									"prd_short_name",
+									"secu_id",
+									"chi_name",
+									"secu_type_code",
+									"hld_mval",
+									"fst_hld_date",
+									"fst_hld_mval",
+									"buy_bal",
+									"sell_bal",
+									"income",
+									"adj_buy_bal",
+									"yield",
+                  "memo_1",         
+                  "memo_2",
+									"inserttime",
+									"updatetime",
+									"batchno",
+									"task_rs_id",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["risk_prd_hld_secu_yield"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from risk_prd_hld_secu_yield where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

@@ -1,0 +1,127 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_dt,
+                                      report_period,
+                                      oper_rev,
+                                      oper_profit,
+                                      tot_profit,
+                                      net_profit_excl_min_int_inc,
+                                      tot_assets,
+                                      tot_shrhldr_eqy_excl_min_int,
+                                      eps_diluted,
+                                      roe_diluted,
+                                      s_isaudit,
+                                      yoynet_profit_excl_min_int_inc,
+                                      brief_performance,
+                                      memo,
+                                      s_fa_bps,
+                                      s_fa_yoysales,
+                                      s_fa_yoyop,
+                                      s_fa_yoyebt,
+                                      s_fa_yoynetprofit_deducted,
+                                      s_fa_yoyeps_basic,
+                                      s_fa_roe_yearly,
+                                      s_fa_growth_assets,
+                                      s_fa_yoyequity,
+                                      growth_bps_sh,
+                                      last_year_oper_rev,
+                                      last_year_oper_profit,
+                                      last_year_tot_profit,
+                                      last_year_net_profit_excl_inc,
+                                      last_year_eps_diluted,
+                                      s_early_net_assets,
+                                      s_early_bps,
+                                      actual_ann_dt,
+                                      performexp_npdedtoshareholder,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_ashareprofitexpress.json' as task_rs_id
+                                from ${srcoradbname}.ashareprofitexpress WHERE report_period BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareprofitexpress/busi_month=${busi_month}",
+                        "fileName": "w_ashareprofitexpress",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"oper_rev","type":"double"},
+                                      {"name":"oper_profit","type":"double"},
+                                      {"name":"tot_profit","type":"double"},
+                                      {"name":"net_profit_excl_min_int_inc","type":"double"},
+                                      {"name":"tot_assets","type":"double"},
+                                      {"name":"tot_shrhldr_eqy_excl_min_int","type":"double"},
+                                      {"name":"eps_diluted","type":"double"},
+                                      {"name":"roe_diluted","type":"double"},
+                                      {"name":"s_isaudit","type":"bigint"},
+                                      {"name":"yoynet_profit_excl_min_int_inc","type":"double"},
+                                      {"name":"brief_performance","type":"string"},
+                                      {"name":"memo","type":"string"},
+                                      {"name":"s_fa_bps","type":"double"},
+                                      {"name":"s_fa_yoysales","type":"double"},
+                                      {"name":"s_fa_yoyop","type":"double"},
+                                      {"name":"s_fa_yoyebt","type":"double"},
+                                      {"name":"s_fa_yoynetprofit_deducted","type":"double"},
+                                      {"name":"s_fa_yoyeps_basic","type":"double"},
+                                      {"name":"s_fa_roe_yearly","type":"double"},
+                                      {"name":"s_fa_growth_assets","type":"double"},
+                                      {"name":"s_fa_yoyequity","type":"double"},
+                                      {"name":"growth_bps_sh","type":"double"},
+                                      {"name":"last_year_oper_rev","type":"double"},
+                                      {"name":"last_year_oper_profit","type":"double"},
+                                      {"name":"last_year_tot_profit","type":"double"},
+                                      {"name":"last_year_net_profit_excl_inc","type":"double"},
+                                      {"name":"last_year_eps_diluted","type":"double"},
+                                      {"name":"s_early_net_assets","type":"double"},
+                                      {"name":"s_early_bps","type":"double"},
+                                      {"name":"actual_ann_dt","type":"string"},
+                                      {"name":"performexp_npdedtoshareholder","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

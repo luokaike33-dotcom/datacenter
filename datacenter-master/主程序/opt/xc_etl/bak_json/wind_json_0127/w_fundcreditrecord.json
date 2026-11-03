@@ -1,0 +1,103 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      event_id,
+                                      regulators_id,
+                                      ann_date,
+                                      effective_date,
+                                      regulatory_object_name,
+                                      regulatory_object_id,
+                                      regulatory_object_code,
+                                      regulatory_object_type,
+                                      measures_disposition,
+                                      measures_disposition_code,
+                                      punishment_measures_code,
+                                      penalty_amount,
+                                      business_restrictive_measures,
+                                      punishment_time_code,
+                                      debar_measures_code,
+                                      institution_id,
+                                      irregularities,
+                                      legal_basis,
+                                      detailed_content,
+                                      type_code,
+                                      involving_comp_id,
+                                      is_effective,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_fundcreditrecord.json' as task_rs_id
+                                from ${srcoradbname}.fundcreditrecord"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_fundcreditrecord",
+                        "fileName": "w_fundcreditrecord",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"event_id","type":"string"},
+                                      {"name":"regulators_id","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"effective_date","type":"string"},
+                                      {"name":"regulatory_object_name","type":"string"},
+                                      {"name":"regulatory_object_id","type":"string"},
+                                      {"name":"regulatory_object_code","type":"bigint"},
+                                      {"name":"regulatory_object_type","type":"bigint"},
+                                      {"name":"measures_disposition","type":"string"},
+                                      {"name":"measures_disposition_code","type":"bigint"},
+                                      {"name":"punishment_measures_code","type":"bigint"},
+                                      {"name":"penalty_amount","type":"double"},
+                                      {"name":"business_restrictive_measures","type":"bigint"},
+                                      {"name":"punishment_time_code","type":"bigint"},
+                                      {"name":"debar_measures_code","type":"bigint"},
+                                      {"name":"institution_id","type":"string"},
+                                      {"name":"irregularities","type":"string"},
+                                      {"name":"legal_basis","type":"string"},
+                                      {"name":"detailed_content","type":"string"},
+                                      {"name":"type_code","type":"bigint"},
+                                      {"name":"involving_comp_id","type":"string"},
+                                      {"name":"is_effective","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

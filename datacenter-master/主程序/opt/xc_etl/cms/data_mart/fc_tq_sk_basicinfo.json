@@ -1,0 +1,162 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/fc_tq_sk_basicinfo",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"long"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"string"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"string"},
+									{"index":9,"type":"long"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"string"},
+									{"index":12,"type":"string"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"double"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"string"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"string"},
+									{"index":21,"type":"string"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"string"},
+									{"index":24,"type":"string"},
+									{"index":25,"type":"string"},
+									{"index":26,"type":"string"},
+									{"index":27,"type":"string"},
+									{"index":28,"type":"string"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"},
+									{"index":32,"type":"string"},
+									{"index":33,"type":"string"},
+									{"index":34,"type":"string"},
+									{"index":35,"type":"string"},
+									{"index":36,"type":"string"},
+									{"index":37,"type":"string"},
+									{"index":38,"type":"string"},
+									{"index":39,"type":"string"},
+									{"index":40,"type":"string"},
+									{"index":41,"type":"string"},
+									{"index":42,"type":"string"},
+									{"index":43,"type":"string"},
+									{"index":44,"type":"long"},
+									{"index":45,"type":"string"},
+									{"index":46,"type":"date"},
+									{"index":47,"type":"string"},
+									{"index":48,"type":"string"},
+									{"index":49,"type":"string"},
+									{"index":50,"type":"double"},
+									{"index":51,"type":"double"},
+									{"index":52,"type":"string"},
+									{"index":53,"type":"date"},
+									{"index":54,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"id",
+									"securityid",
+									"secode",
+									"symbol",
+									"exchange",
+									"setype",
+									"compcode",
+									"sesname",
+									"seengname",
+									"decnum",
+									"cur",
+									"isincode",
+									"sedolcode",
+									"parvalue",
+									"totalshare",
+									"liststatus",
+									"listdate",
+									"listoprice",
+									"delistdate",
+									"delistcprice",
+									"csrclevel1code",
+									"csrclevel1name",
+									"csrclevel2code",
+									"csrclevel2name",
+									"gicslevel1code",
+									"gicslevel1name",
+									"gicslevel2code",
+									"gicslevel2name",
+									"swlevel1code",
+									"swlevel1name",
+									"swlevel2code",
+									"swlevel2name",
+									"csilevel1code",
+									"csilevel1name",
+									"csilevel2code",
+									"csilevel2name",
+									"fclevel1code",
+									"fclevel1name",
+									"fclevel2code",
+									"fclevel2name",
+									"provincecode",
+									"provincename",
+									"citycode",
+									"cityname",
+									"isvalid",
+									"tmstamp",
+									"entrydate",
+									"entrytime",
+									"valuecur",
+									"board",
+									"stockcbx",
+									"cdrcby",
+									"bath_dt",
+									"data_ins_time",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fc_tq_sk_basicinfo"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table fc_tq_sk_basicinfo"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

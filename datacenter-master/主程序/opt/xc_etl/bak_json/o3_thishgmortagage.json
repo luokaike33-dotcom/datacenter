@@ -1,0 +1,64 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select l_date,l_serial_no,l_fund_id,l_basecombi_id,c_invest_type,vc_inter_code,en_ratio,l_mortagage_amount,c_mortagage_side,c_bail_type,l_asset_id,l_mortgage_date,c_status,c_effect_status,l_lose_efficacy_date,en_original_interest,en_original_balance,en_mortgage_interest,en_mortgage_balance,vc_deal_no,l_archive_date from ${srcoradbname}.thishgmortagage where l_date = ${p_dt}"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_thishgmortagage/p_dt=${p_dt}",
+                        "fileName": "o3_thishgmortagage",
+                        "column": [
+     {"name":"l_date","type":"int"},
+     {"name":"l_serial_no","type":"bigint"},
+     {"name":"l_fund_id","type":"int"},
+     {"name":"l_basecombi_id","type":"bigint"},
+     {"name":"c_invest_type","type":"string"},
+     {"name":"vc_inter_code","type":"string"},
+     {"name":"en_ratio","type":"double"},
+     {"name":"l_mortagage_amount","type":"double"},
+     {"name":"c_mortagage_side","type":"string"},
+     {"name":"c_bail_type","type":"string"},
+     {"name":"l_asset_id","type":"int"},
+     {"name":"l_mortgage_date","type":"int"},
+     {"name":"c_status","type":"string"},
+     {"name":"c_effect_status","type":"string"},
+     {"name":"l_lose_efficacy_date","type":"int"},
+     {"name":"en_original_interest","type":"double"},
+     {"name":"en_original_balance","type":"double"},
+     {"name":"en_mortgage_interest","type":"double"},
+     {"name":"en_mortgage_balance","type":"double"},
+     {"name":"vc_deal_no","type":"string"},
+     {"name":"l_archive_date","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

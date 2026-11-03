@@ -1,0 +1,111 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "${srchivedbpath}/ims_t_qdii_bond_info",
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "column": [
+									{"index":0,"type":"string"},
+									{"index":1,"type":"string"},
+									{"index":2,"type":"string"},
+									{"index":3,"type":"long"},
+									{"index":4,"type":"string"},
+									{"index":5,"type":"string"},
+									{"index":6,"type":"string"},
+									{"index":7,"type":"string"},
+									{"index":8,"type":"double"},
+									{"index":9,"type":"double"},
+									{"index":10,"type":"string"},
+									{"index":11,"type":"double"},
+									{"index":12,"type":"double"},
+									{"index":13,"type":"double"},
+									{"index":14,"type":"string"},
+									{"index":15,"type":"string"},
+									{"index":16,"type":"string"},
+									{"index":17,"type":"double"},
+									{"index":18,"type":"double"},
+									{"index":19,"type":"double"},
+									{"index":20,"type":"double"},
+									{"index":21,"type":"double"},
+									{"index":22,"type":"string"},
+									{"index":23,"type":"double"},
+									{"index":24,"type":"double"},
+							        {"index":25,"type":"double"},
+									{"index":26,"type":"double"},
+                                    {"index":27,"type":"double"},
+									{"index":28,"type":"long"},
+									{"index":29,"type":"string"},
+									{"index":30,"type":"string"},
+									{"index":31,"type":"string"}
+								   ],
+                        "fileType": "orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"trade_date",
+									"security",
+									"error_code",
+									"num_fields",
+									"security_desc",
+									"market_sector_des",
+									"issue_date",
+									"maturity",
+									"amt_issued",
+									"issue_px",
+									"guarantors_list",
+									"dur_adj_mid",
+									"dur_adj_oas_mid",
+									"dur_mid",
+									"is_perpetual",
+									"security_type",
+									"pricing_source",
+									"px_mid",
+									"px_ask",
+									"px_bid",
+									"last_price",
+									"fund_net_asset_val",
+									"nav_crncy",
+									"eqy_sh_out",
+									"fund_total_assets",
+							        "px_last",
+									"yld_cnv_ask",
+									"yld_cnv_bid",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"task_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["ims_t_qdii_bond_info"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["truncate table ims_t_qdii_bond_info"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

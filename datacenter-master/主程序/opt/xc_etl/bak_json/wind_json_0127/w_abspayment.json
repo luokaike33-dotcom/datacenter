@@ -1,0 +1,89 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      ann_dt,
+                                      classification_code,
+                                      int_acc_start_dt,
+                                      int_acc_end_dt,
+                                      payment_dt,
+                                      principal_begin,
+                                      principal_balance,
+                                      coupon_rate,
+                                      principal_amount,
+                                      principal_payable,
+                                      principal_trans_to_np,
+                                      principal_loss,
+                                      interest_payable,
+                                      interest_amount,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_abspayment.json' as task_rs_id
+                                from ${srcoradbname}.abspayment"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_abspayment",
+                        "fileName": "w_abspayment",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"classification_code","type":"bigint"},
+                                      {"name":"int_acc_start_dt","type":"string"},
+                                      {"name":"int_acc_end_dt","type":"string"},
+                                      {"name":"payment_dt","type":"string"},
+                                      {"name":"principal_begin","type":"double"},
+                                      {"name":"principal_balance","type":"double"},
+                                      {"name":"coupon_rate","type":"double"},
+                                      {"name":"principal_amount","type":"double"},
+                                      {"name":"principal_payable","type":"double"},
+                                      {"name":"principal_trans_to_np","type":"double"},
+                                      {"name":"principal_loss","type":"double"},
+                                      {"name":"interest_payable","type":"double"},
+                                      {"name":"interest_amount","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

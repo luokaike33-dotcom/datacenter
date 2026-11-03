@@ -1,0 +1,61 @@
+drop table if exists ty_ods.w_ashareearningest;
+create table if not exists ty_ods.w_ashareearningest
+(
+  object_id string comment '对象ID',
+  s_info_windcode string comment 'Wind代码',
+  wind_code string comment 'Wind代码1',
+  research_inst_name string comment '研究机构名称',
+  analyst_name string comment '分析师名称',
+  est_dt string comment '预测日期',
+  reporting_period string comment '预测报告期',
+  est_eps_diluted decimal(20,4) comment '预测每股收益(摊薄)(元)',
+  est_net_profit decimal(20,4) comment '预测净利润(万元)',
+  est_main_bus_inc decimal(20,4) comment '预测主营业务收入(万元)',
+  est_ebit decimal(20,4) comment '预测息税前利润(万元)',
+  est_ebitda decimal(20,4) comment '预测息税折旧摊销前利润(万元)',
+  est_base_cap decimal(20,4) comment '预测基准股本(万股)',
+  ann_dt string comment '公告日期(内部)',
+  s_est_cps decimal(20,4) comment '预测每股现金流',
+  s_est_dps decimal(20,4) comment '预测每股股利',
+  s_est_bps decimal(20,4) comment '预测每股净资产',
+  s_est_ebt decimal(20,4) comment '预测利润总额（万元）',
+  s_est_roa decimal(20,4) comment '预测总资产收益率',
+  s_est_roe decimal(20,4) comment '预测净资产收益率',
+  s_est_oprofit decimal(20,4) comment '预测营业利润(万元）',
+  s_est_epsdiluted decimal(20,4) comment '预测每股收益(稀释)(元)',
+  s_est_epsbasic decimal(20,4) comment '预测每股收益(基本)(元)',
+  s_est_oc decimal(20,4) comment '预测营业成本及附加（万元）',
+  s_est_npcal decimal(20,4) comment '预测净利润（换算）（万元）',
+  s_est_epscal decimal(20,4) comment '预测每股收益（换算）',
+  s_est_nprate decimal(20,4) comment '预测净利润调整比率',
+  s_est_epsrate decimal(20,4) comment '预测EPS调整比率',
+  s_est_pe decimal(20,4) comment '预测市盈率',
+  s_est_pb decimal(20,4) comment '预测市净率',
+  s_est_evebitda decimal(20,4) comment '预测EV/EBITDA',
+  s_est_dividendyield decimal(20,4) comment '预测股息率',
+  s_est_enddate string comment '预测有效截止',
+  s_est_ope decimal(10,4) comment '预测主营业务利润率',
+  analyst_id string comment '分析师id',
+  collect_time timestamp comment '收录时间',
+  first_optime timestamp comment '首次入库时间',
+  report_typecode bigint comment '报告类型',
+  report_name string comment '报告标题',
+  report_summary string comment '报告摘要',
+  est_base_cap_dif_code bigint comment '预测基准股本差异原因代码',
+  s_est_value_calculation bigint comment '综合值计算标记',
+  report_id string comment '报告ID',
+  research_inst_compcode string comment '研究机构公司id',
+  s_est_ps decimal(20,4) comment '市销率',
+  s_est_gross_profit_margin decimal(20,4) comment '预测毛利率',
+  opdate timestamp,
+  opmode string,
+  bath_dt string,
+  data_ins_time timestamp,
+  task_rs_id string
+)
+ COMMENT '中国A股盈利预测明细'
+row format delimited fields terminated by '\t'
+stored as orc;
+
+
+

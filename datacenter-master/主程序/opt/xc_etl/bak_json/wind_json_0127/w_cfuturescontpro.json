@@ -1,0 +1,74 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_info_code,s_info_name,s_info_tunit,s_info_punit,s_info_mfprice,s_info_ftmargins,s_info_cdmonths,s_info_thours,s_info_ltdated,s_info_ddate,s_info_cemultiplier,s_info_listdate,s_info_delistdate,s_info_exname,s_info_dmean,s_info_dsite,s_info_ltdatehour,s_info_cevalue,s_info_maxpricefluct,s_info_poslimit,s_info_udlsecode,fs_info_punit,s_info_rtd,s_sub_typcode,contract_id,s_info_type_code,opdate,opmode,null as s_info_udlsewindcode from ${srcoradbname}.cfuturescontpro"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_cfuturescontpro",
+                        "fileName": "w_cfuturescontpro",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_info_code","type":"STRING"},
+                        {"name":"s_info_name","type":"STRING"},
+                        {"name":"s_info_tunit","type":"STRING"},
+                        {"name":"s_info_punit","type":"DOUBLE"},
+                        {"name":"s_info_mfprice","type":"STRING"},
+                        {"name":"s_info_ftmargins","type":"STRING"},
+                        {"name":"s_info_cdmonths","type":"STRING"},
+                        {"name":"s_info_thours","type":"STRING"},
+                        {"name":"s_info_ltdated","type":"STRING"},
+                        {"name":"s_info_ddate","type":"STRING"},
+                        {"name":"s_info_cemultiplier","type":"DOUBLE"},
+                        {"name":"s_info_listdate","type":"STRING"},
+                        {"name":"s_info_delistdate","type":"STRING"},
+                        {"name":"s_info_exname","type":"STRING"},
+                        {"name":"s_info_dmean","type":"STRING"},
+                        {"name":"s_info_dsite","type":"STRING"},
+                        {"name":"s_info_ltdatehour","type":"STRING"},
+                        {"name":"s_info_cevalue","type":"STRING"},
+                        {"name":"s_info_maxpricefluct","type":"STRING"},
+                        {"name":"s_info_poslimit","type":"STRING"},
+                        {"name":"s_info_udlsecode","type":"STRING"},
+                        {"name":"fs_info_punit","type":"STRING"},
+                        {"name":"s_info_rtd","type":"DOUBLE"},
+                        {"name":"s_sub_typcode","type":"DOUBLE"},
+                        {"name":"contract_id","type":"STRING"},
+                        {"name":"s_info_type_code","type":"DOUBLE"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"},
+                        {"name":"s_info_udlsewindcode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

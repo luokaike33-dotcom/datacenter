@@ -1,0 +1,93 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      ann_date,
+                                      s_info_manager_name,
+                                      s_info_manager_enname,
+                                      s_info_manager_gender,
+                                      s_info_manager_nationality,
+                                      s_info_manager_birthyear,
+                                      s_info_manager_typecode,
+                                      s_info_manager_post,
+                                      s_info_manager_enpost,
+                                      s_info_manager_startdate,
+                                      s_info_manager_leavedate,
+                                      s_info_manager_introduction,
+                                      s_info_manager_enintroduction,
+                                      manid,
+                                      op_date,
+                                      is_in_office,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_hksharemanagement.json' as task_rs_id
+                                from ${srcoradbname}.hksharemanagement"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_hksharemanagement",
+                        "fileName": "w_hksharemanagement",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_date","type":"string"},
+                                      {"name":"s_info_manager_name","type":"string"},
+                                      {"name":"s_info_manager_enname","type":"string"},
+                                      {"name":"s_info_manager_gender","type":"string"},
+                                      {"name":"s_info_manager_nationality","type":"string"},
+                                      {"name":"s_info_manager_birthyear","type":"string"},
+                                      {"name":"s_info_manager_typecode","type":"bigint"},
+                                      {"name":"s_info_manager_post","type":"string"},
+                                      {"name":"s_info_manager_enpost","type":"string"},
+                                      {"name":"s_info_manager_startdate","type":"string"},
+                                      {"name":"s_info_manager_leavedate","type":"string"},
+                                      {"name":"s_info_manager_introduction","type":"string"},
+                                      {"name":"s_info_manager_enintroduction","type":"string"},
+                                      {"name":"manid","type":"string"},
+                                      {"name":"op_date","type":"string"},
+                                      {"name":"is_in_office","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

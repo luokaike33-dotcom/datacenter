@@ -1,0 +1,125 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_compcode,
+                                      ann_dt,
+                                      report_period,
+                                      statement_type,
+                                      crncy_code,
+                                      non_current_gains_losses,
+                                      tax_return,
+                                      government_subsidy,
+                                      capital_occupation_fee,
+                                      consolidated_gains_losses,
+                                      non_assets_gains_losses,
+                                      investment_gains_losses,
+                                      impairment_assets,
+                                      debt_restructuring,
+                                      enterprise_restructuring,
+                                      trading_price_unfair,
+                                      net_profit_loss_subsidiaries,
+                                      expected_liabilities,
+                                      onoiae,
+                                      other_projects,
+                                      non_recurring_gains_losses,
+                                      income_tax_impact,
+                                      profit_loss_shareholders,
+                                      non_recurring_gains_losses1,
+                                      s_fa_deductedprofittoprofit,
+                                      s_fa_deductedprofittoprofit1,
+                                      fairvalue_change_gains_losses,
+                                      provision_impairment_reversed,
+                                      proceeds_loan,
+                                      changes_real_estate_value,
+                                      profit_loss_adjustment,
+                                      custody_fee_income,
+                                      is_published,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_asharenonprofitloss.json' as task_rs_id
+                                from ${srcoradbname}.asharenonprofitloss"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_asharenonprofitloss",
+                        "fileName": "w_asharenonprofitloss",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_compcode","type":"string"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"report_period","type":"string"},
+                                      {"name":"statement_type","type":"string"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"non_current_gains_losses","type":"double"},
+                                      {"name":"tax_return","type":"double"},
+                                      {"name":"government_subsidy","type":"double"},
+                                      {"name":"capital_occupation_fee","type":"double"},
+                                      {"name":"consolidated_gains_losses","type":"double"},
+                                      {"name":"non_assets_gains_losses","type":"double"},
+                                      {"name":"investment_gains_losses","type":"double"},
+                                      {"name":"impairment_assets","type":"double"},
+                                      {"name":"debt_restructuring","type":"double"},
+                                      {"name":"enterprise_restructuring","type":"double"},
+                                      {"name":"trading_price_unfair","type":"double"},
+                                      {"name":"net_profit_loss_subsidiaries","type":"double"},
+                                      {"name":"expected_liabilities","type":"double"},
+                                      {"name":"onoiae","type":"double"},
+                                      {"name":"other_projects","type":"double"},
+                                      {"name":"non_recurring_gains_losses","type":"double"},
+                                      {"name":"income_tax_impact","type":"double"},
+                                      {"name":"profit_loss_shareholders","type":"double"},
+                                      {"name":"non_recurring_gains_losses1","type":"double"},
+                                      {"name":"s_fa_deductedprofittoprofit","type":"double"},
+                                      {"name":"s_fa_deductedprofittoprofit1","type":"double"},
+                                      {"name":"fairvalue_change_gains_losses","type":"double"},
+                                      {"name":"provision_impairment_reversed","type":"double"},
+                                      {"name":"proceeds_loan","type":"double"},
+                                      {"name":"changes_real_estate_value","type":"double"},
+                                      {"name":"profit_loss_adjustment","type":"double"},
+                                      {"name":"custody_fee_income","type":"double"},
+                                      {"name":"is_published","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

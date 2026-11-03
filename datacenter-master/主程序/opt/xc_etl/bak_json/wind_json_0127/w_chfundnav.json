@@ -1,0 +1,79 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      sec_id,
+                                      f_info_windcode,
+                                      price_date,
+                                      f_nav_unit,
+                                      f_nav_accumulated,
+                                      f_nav_divaccumulated,
+                                      crncy_code,
+                                      is_ex_date,
+                                      f_nav_adjfactor,
+                                      f_nav_adjusted,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_chfundnav.json' as task_rs_id
+                                from ${srcoradbname}.chfundnav"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_chfundnav",
+                        "fileName": "w_chfundnav",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"sec_id","type":"string"},
+                                      {"name":"f_info_windcode","type":"string"},
+                                      {"name":"price_date","type":"string"},
+                                      {"name":"f_nav_unit","type":"double"},
+                                      {"name":"f_nav_accumulated","type":"double"},
+                                      {"name":"f_nav_divaccumulated","type":"double"},
+                                      {"name":"crncy_code","type":"string"},
+                                      {"name":"is_ex_date","type":"bigint"},
+                                      {"name":"f_nav_adjfactor","type":"double"},
+                                      {"name":"f_nav_adjusted","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

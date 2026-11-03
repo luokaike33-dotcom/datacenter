@@ -1,0 +1,84 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									object_id,
+									s_info_windcode,
+									trade_dt,
+									crncy_code,
+									s_dq_preclose,
+									s_dq_open,
+									s_dq_high,
+									s_dq_low,
+									s_dq_close,
+									s_dq_change,
+									s_dq_pctchange,
+									s_dq_volume,
+									s_dq_amount,
+									sec_id,
+									opdate,
+									opmode,
+									busi_month
+							FROM ${srcdbname}.w_aindexeodprices where busi_month between cast(substr(cast(${beg_date} as string),1,6) as decimal(6,0)) and cast(substr(cast(${end_date} as string),1,6) as decimal(6,0)) "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"trade_dt",
+									"crncy_code",
+									"s_dq_preclose",
+									"s_dq_open",
+									"s_dq_high",
+									"s_dq_low",
+									"s_dq_close",
+									"s_dq_change",
+									"s_dq_pctchange",
+									"s_dq_volume",
+									"s_dq_amount",
+									"sec_id",
+									"opdate",
+									"opmode",
+									"busi_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_aindexeodprices"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from wd_aindexeodprices where busi_month between substr(${beg_date} ,1,6) and substr(${end_date},1,6)"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

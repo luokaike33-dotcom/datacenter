@@ -1,0 +1,156 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									stra_code,
+									sub_code,
+									fofs_code,
+									nav_dt,
+									stra_typ,
+									ttl_navl,
+									ttl_shr,
+									unit_nval,
+									aggr_unit_nval,
+									nav_add_rat,
+									aggr_nav_add_rat,
+									unit_yld,
+									aggr_unit_yld_setp,
+									ann_yld_rat,
+									ttl_ast,
+									ttl_liab,
+									paid_capi,
+									f_savc,
+									f_maty,
+									f_eval_dvat_val,
+									f_eval_dvat_rat,
+									real_incm_d,
+									real_incm_m,
+									real_incm_y,
+									prfi_ttl,
+									prftrd_unit,
+									prftrd_loss_unreal,
+									prftrd_loss_real,
+									curr_code,
+									cash_nav_rat,
+									stra_stat,
+									stra_stat_yest,
+									shr_add,
+									shr_reduce,
+									stra_rtn_yest,
+									prfi_ttl_un,
+									grt_val,
+									nav_mth_rat,
+									nav_year_rat,
+									cash_pos,
+									aggr_cadi_amt,
+									tot_secu_ivsm,
+									stk_ivsm,
+									bond_ivsm,
+									cvtb_ivsm,
+									fnd_ivs,
+									supp_dt,
+									busi_date,
+									task_rs_id,
+									dm_created_time,
+									dm_src_info,
+									p_dt,
+									sys_rs_id
+							FROM ${srcdbname}.fin_stra_nav where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"stra_code",
+									"sub_code",
+									"fofs_code",
+									"nav_dt",
+									"stra_typ",
+									"ttl_navl",
+									"ttl_shr",
+									"unit_nval",
+									"aggr_unit_nval",
+									"nav_add_rat",
+									"aggr_nav_add_rat",
+									"unit_yld",
+									"aggr_unit_yld_setp",
+									"ann_yld_rat",
+									"ttl_ast",
+									"ttl_liab",
+									"paid_capi",
+									"f_savc",
+									"f_maty",
+									"f_eval_dvat_val",
+									"f_eval_dvat_rat",
+									"real_incm_d",
+									"real_incm_m",
+									"real_incm_y",
+									"prfi_ttl",
+									"prftrd_unit",
+									"prftrd_loss_unreal",
+									"prftrd_loss_real",
+									"curr_code",
+									"cash_nav_rat",
+									"stra_stat",
+									"stra_stat_yest",
+									"shr_add",
+									"shr_reduce",
+									"stra_rtn_yest",
+									"prfi_ttl_un",
+									"grt_val",
+									"nav_mth_rat",
+									"nav_year_rat",
+									"cash_pos",
+									"aggr_cadi_amt",
+									"tot_secu_ivsm",
+									"stk_ivsm",
+									"bond_ivsm",
+									"cvtb_ivsm",
+									"fnd_ivs",
+									"supp_dt",
+									"busi_date",
+									"task_rs_id",
+									"dm_created_time",
+									"dm_src_info",
+									"p_dt",
+									"sys_rs_id"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["fin_stra_nav"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from fin_stra_nav where p_dt between ${beg_date} and ${end_date}"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

@@ -1,0 +1,109 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      b_info_windcode,
+                                      b_mkt,
+                                      b_con_windcode,
+                                      b_name,
+                                      b_info_type,
+                                      trade_dt,
+                                      b_info_listingmarketnumbers,
+                                      b_code_ib,
+                                      b_code_sh,
+                                      b_code_sz,
+                                      b_anal_yield_csi,
+                                      b_anal_modidura_csi_m,
+                                      b_anal_modidura_csi,
+                                      b_anal_convexity,
+                                      b_dq_volume,
+                                      b_dq_amount,
+                                      b_anal_accruedinterest,
+                                      b_analysis_class,
+                                      b_name_ib,
+                                      b_info_listdate_ib,
+                                      b_name_sh,
+                                      b_info_listdate_sh,
+                                      b_name_sz,
+                                      b_info_listdate_sz,
+                                      b_weight,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_csitotalbondindemembers.json' as task_rs_id
+                                from ${srcoradbname}.csitotalbondindemembers WHERE trade_dt = '${p_dt}'"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_csitotalbondindemembers/p_dt=${p_dt}",
+                        "fileName": "w_csitotalbondindemembers",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"b_info_windcode","type":"string"},
+                                      {"name":"b_mkt","type":"string"},
+                                      {"name":"b_con_windcode","type":"string"},
+                                      {"name":"b_name","type":"string"},
+                                      {"name":"b_info_type","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"b_info_listingmarketnumbers","type":"bigint"},
+                                      {"name":"b_code_ib","type":"string"},
+                                      {"name":"b_code_sh","type":"string"},
+                                      {"name":"b_code_sz","type":"string"},
+                                      {"name":"b_anal_yield_csi","type":"double"},
+                                      {"name":"b_anal_modidura_csi_m","type":"double"},
+                                      {"name":"b_anal_modidura_csi","type":"double"},
+                                      {"name":"b_anal_convexity","type":"double"},
+                                      {"name":"b_dq_volume","type":"double"},
+                                      {"name":"b_dq_amount","type":"double"},
+                                      {"name":"b_anal_accruedinterest","type":"double"},
+                                      {"name":"b_analysis_class","type":"string"},
+                                      {"name":"b_name_ib","type":"string"},
+                                      {"name":"b_info_listdate_ib","type":"string"},
+                                      {"name":"b_name_sh","type":"string"},
+                                      {"name":"b_info_listdate_sh","type":"string"},
+                                      {"name":"b_name_sz","type":"string"},
+                                      {"name":"b_info_listdate_sz","type":"string"},
+                                      {"name":"b_weight","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

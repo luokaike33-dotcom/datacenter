@@ -1,0 +1,115 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      sw_industry_code,
+                                      trade_dt,
+                                      sw_industry_number,
+                                      s_val_avgpe_sw,
+                                      s_val_avgpb_sw,
+                                      s_val_avgps_sw,
+                                      s_val_avgpcf_sw,
+                                      s_val_avgroe_sw,
+                                      s_val_avgroa_sw,
+                                      s_val_avggp_sw,
+                                      s_val_avgbtomv_sw,
+                                      s_val_avgpebitda_sw,
+                                      s_val_avgpb_mrq_sw,
+                                      s_val_avgpbusinc_sw,
+                                      s_val_stdpe_sw,
+                                      s_val_stdpb_sw,
+                                      s_val_stdps_sw,
+                                      s_val_stdpcf_sw,
+                                      s_val_stdroe_sw,
+                                      s_val_stdroa_sw,
+                                      s_val_stdgp_sw,
+                                      s_val_stdbtomv_sw,
+                                      s_val_stdpebitda_sw,
+                                      s_val_stdpb_mrq_sw,
+                                      s_val_stdpbusinc_sw,
+                                      s_val_avgrevenue5_sw,
+                                      s_val_avgrevenue20_sw,
+                                      sw_industries_name,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_industryderivativefactor.json' as task_rs_id
+                                from ${srcoradbname}.industryderivativefactor"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_industryderivativefactor",
+                        "fileName": "w_industryderivativefactor",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"sw_industry_code","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"sw_industry_number","type":"bigint"},
+                                      {"name":"s_val_avgpe_sw","type":"double"},
+                                      {"name":"s_val_avgpb_sw","type":"double"},
+                                      {"name":"s_val_avgps_sw","type":"double"},
+                                      {"name":"s_val_avgpcf_sw","type":"double"},
+                                      {"name":"s_val_avgroe_sw","type":"double"},
+                                      {"name":"s_val_avgroa_sw","type":"double"},
+                                      {"name":"s_val_avggp_sw","type":"double"},
+                                      {"name":"s_val_avgbtomv_sw","type":"double"},
+                                      {"name":"s_val_avgpebitda_sw","type":"double"},
+                                      {"name":"s_val_avgpb_mrq_sw","type":"double"},
+                                      {"name":"s_val_avgpbusinc_sw","type":"double"},
+                                      {"name":"s_val_stdpe_sw","type":"double"},
+                                      {"name":"s_val_stdpb_sw","type":"double"},
+                                      {"name":"s_val_stdps_sw","type":"double"},
+                                      {"name":"s_val_stdpcf_sw","type":"double"},
+                                      {"name":"s_val_stdroe_sw","type":"double"},
+                                      {"name":"s_val_stdroa_sw","type":"double"},
+                                      {"name":"s_val_stdgp_sw","type":"double"},
+                                      {"name":"s_val_stdbtomv_sw","type":"double"},
+                                      {"name":"s_val_stdpebitda_sw","type":"double"},
+                                      {"name":"s_val_stdpb_mrq_sw","type":"double"},
+                                      {"name":"s_val_stdpbusinc_sw","type":"double"},
+                                      {"name":"s_val_avgrevenue5_sw","type":"double"},
+                                      {"name":"s_val_avgrevenue20_sw","type":"double"},
+                                      {"name":"sw_industries_name","type":"string"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

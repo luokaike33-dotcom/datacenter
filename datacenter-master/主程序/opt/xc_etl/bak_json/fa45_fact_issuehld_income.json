@@ -1,0 +1,50 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select sk_date,bk_portfolio,dk_iss_type,issue_code_of_mkt,sk_market,income,query_date from ${srcoradbname}.v_irdb2xc_fact_issuehld_income"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/fa45_fact_issuehld_income",
+                        "fileName": "fa45_fact_issuehld_income",
+                        "column": [
+			    {"name":"sk_date","type":"string"},
+                            {"name":"bk_portfolio","type":"string"},
+                            {"name":"dk_iss_type","type":"string"},
+                            {"name":"issue_code_of_mkt","type":"string"},
+                            {"name":"sk_market","type":"string"},
+                            {"name":"income","type":"string"},
+			    {"name":"query_date","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

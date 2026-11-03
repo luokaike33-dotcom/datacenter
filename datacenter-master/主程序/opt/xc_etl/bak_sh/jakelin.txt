@@ -1,0 +1,78 @@
+# sh /opt/xc_etl/ods_all.sh xy xy#123456 wind 10.160.102.25:5088/infodb 10.160.96.22:8020 false "" "" /user/hive/warehouse/ty_ods.db ty_ods /opt/datax/bin /opt/xc_etl/ods/wind_json/ 20231001 20231031 4 w_cindexfutureseodprices
+
+# sh /opt/xc_etl/ods_all.sh xy xy#123456 stg 10.64.3.34:5088/irdb 10.160.96.22:8020 false "" "" /user/hive/warehouse/ty_ods.db ty_ods /opt/datax/bin /opt/xc_etl/ods/stg_json/ 20231001 20231031 0 oa_uf_otc_derivates
+
+#sh /opt/xc_etl/ods_all.sh xy 7ujm%8ik, fa45 10.64.97.22:5005/fapdb 10.160.96.22:8020 false "" "" /user/hive/warehouse/ty_ods.db ty_ods /opt/datax/bin /opt/xc_etl/ods/yss45_json/ 20221231 20221231 1 fa45_vf_subjectbalance
+
+# sh /opt/xc_etl/ods_all.sh xy xy#123456 riskdata 10.64.3.34:5088/irdb 10.160.96.22:8020 false "" "" /user/hive/warehouse/ty_ods.db ty_ods /opt/datax/bin /opt/xc_etl/ods/stg_json/ 20231001 20231031 0 rpt_para_private
+
+# sh /opt/xc_etl/ods_all.sh xy xy#123456 riskdata 10.64.3.34:5088/irdb 10.160.96.22:8020 false "" "" /user/hive/warehouse/ty_ods.db ty_ods /opt/datax/bin /opt/xc_etl/ods/stg_json/ 20231001 20231031 0 rpt_para_otc_derivatives
+
+# sh /opt/xc_etl/dwd_all.sh /opt/xc_etl/dwd/wind/ "" "" ty_ods ty_dwd 20231001 20231031 1 false var_fut_quot
+
+export HADOOP_USER_NAME=etl_ty
+sh /opt/xc_etl/cms_sr_all.sh /user/hive/warehouse/ty_dwd.db 10.160.96.22:8020 false "" "" "" "" cdh starrocks 10.64.96.131:9030 root xunce@2021 10.160.96.22:10000 etl_ty etl_ty#1234 ty_dwd /opt/datax/bin /opt/xc_etl/cms/sr_fa/ YSSFA45 20220831 20220831 1 var_sale_prd_nav_info
+
+beeline -u jdbc:hive2://10.160.96.22:10000 -n etl_ty -p etl_ty#1234 -e "; use ty_dwd; create table tmp_datax_hivereader_20240109_1704793160417310169 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\u0001' STORED AS TEXTFILE  as select
+								prd_code,
+								sub_code,
+								fofs_code,
+								prd_name,
+								prd_typ,
+								prd_cald,
+								impt_crt_dt,
+								found_dt,
+								prod_sht_py,
+								prd_full_name,
+								prod_name_py,
+								prod_intr,
+								crrc,
+								parv_unit,
+								iss_lmt,
+								dqr_end,
+								end_dt,
+								clr_dt,
+								is_citd_amor,
+								is_fcode,
+								valu_cnfm_dt,
+								is_intr_tax_free,
+								valu_sped,
+								busi_date,
+								task_rs_id,
+								dm_created_time,
+								bgng_unit_nav,
+								is_cross,
+								dm_src_info,
+								sys_rs_id
+								from ty_dwd.pty_prd_base_info where prd_typ=1"
+
+
+sh /opt/xc_etl/oracle_sr.sh fidata fidata#1234 fidata 10.160.97.21:5088/tydb 10.64.96.131:9030 root xunce@2021 /opt/datax/bin /opt/xc_etl/cms/ 20231212 20231214 1 mid_bond_indx_info
+
+#将不带where的delete替换为truncate
+sed -i '/where/!s/delete\ from/truncate\ table/g' *
+
+#将where 1=1替换为空
+sed -i '/s/\ where\ 1=1//g' *
+
+grep -r busi_month /opt/xc_etl/ods/wind_json/ | awk '{print $1}'|cut -d ':' -f 1|xargs sed -i 's#channel\"\:\ \"1#channel\"\:\ \"3#g'
+
+ grep -r busi_month /opt/xc_etl/ods/wind_json/ | awk '{print $1}'|cut -d ':' -f 1|xargs grep -r channel
+
+sh /opt/xc_etl/cms_xbrl_common.sh /user/hive/warehouse/ty_dwm.db 10.160.96.22:8020 false "" "" "" "" cdh oracle 10.160.97.21:5088/tydb fidata fidata#1234 10.160.96.22:10000 etl_ty etl_ty#1234 ty_dwm /opt/datax/bin /opt/xc_etl/cms/XBRL/ "" 20231231 20231231 0 xbrl_endy_ret_7_1
+
+--20240327 调整模型层with为临时表
+--步骤1 查找存在with的模型清洗脚本
+find /opt/xc_etl/dwd/ -type f -name "*.hql" | xargs grep -riw with
+
+--步骤2 备份
+/opt/xc_etl/dwd --> /opt/xc_etl/bak_sh/
+
+--步骤3 调整
+2.1：with --> create temporary table ${dwd_db}.
+2.2：as后面的()要去掉
+2.3：)后面的逗号改为分号, --> ;
+2.4：引用with的***改为引用临时表{dwd_db}.***
+
+--步骤4 验证
+sh /opt/xc_etl/dwd_all.sh /opt/xc_etl/dwd/wind/ "" "" ty_ods ty_dwd 20231001 20231031 1 false 调整的表名

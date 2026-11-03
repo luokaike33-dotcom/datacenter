@@ -1,0 +1,97 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select l_date,l_fund_id,l_basecombi_id,vc_inter_code,vc_inter_no,vc_receipt_no,vc_account_no,vc_account_name,vc_place,l_bank,vc_minor_bank,vc_deposit_owner,en_balance,en_rate,l_limit_time,l_begin_date,l_end_date,l_last_interest_date,l_last_mod_interest_date,en_total_interest,en_interest,en_punish_interest,vc_remark,c_status,l_operator_no,l_confirm_no,l_deposit_confirm_no,l_notify_days,en_receivable_interest,c_auto_redeposit,c_interest_deposit,c_rate_type,c_interest_pay_type,c_deposit_type,en_basic_rate,c_day_type,c_float_type,l_interest_pay_date,c_interest_pay_freq,c_rate_change_type,c_advance_limit_flag,l_pay_settle_date,c_limit_unit,en_advance_rate,c_input_type,l_advance_date,en_payin_balance,en_pre_pay_balance,l_qs_confirm_no,vc_second_deposit_no,l_account_id,vc_bank_branch_code,l_last_rate_mod_date,en_mod_receivable_interest from ${srcoradbname}.tdepositreceipt"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_tdepositreceipt", 
+                        "fileName": "o3_tdepositreceipt",
+                        "column": [
+     {"name":"l_date","type":"int"},
+     {"name":"l_fund_id","type":"int"},
+     {"name":"l_basecombi_id","type":"bigint"},
+     {"name":"vc_inter_code","type":"string"},
+     {"name":"vc_inter_no","type":"string"},
+     {"name":"vc_receipt_no","type":"string"},
+     {"name":"vc_account_no","type":"string"},
+     {"name":"vc_account_name","type":"string"},
+     {"name":"vc_place","type":"string"},
+     {"name":"l_bank","type":"bigint"},
+     {"name":"vc_minor_bank","type":"string"},
+     {"name":"vc_deposit_owner","type":"string"},
+     {"name":"en_balance","type":"double"},
+     {"name":"en_rate","type":"double"},
+     {"name":"l_limit_time","type":"double"},
+     {"name":"l_begin_date","type":"int"},
+     {"name":"l_end_date","type":"int"},
+     {"name":"l_last_interest_date","type":"int"},
+     {"name":"l_last_mod_interest_date","type":"int"},
+     {"name":"en_total_interest","type":"double"},
+     {"name":"en_interest","type":"double"},
+     {"name":"en_punish_interest","type":"double"},
+     {"name":"vc_remark","type":"string"},
+     {"name":"c_status","type":"string"},
+     {"name":"l_operator_no","type":"int"},
+     {"name":"l_confirm_no","type":"bigint"},
+     {"name":"l_deposit_confirm_no","type":"int"},
+     {"name":"l_notify_days","type":"int"},
+     {"name":"en_receivable_interest","type":"double"},
+     {"name":"c_auto_redeposit","type":"string"},
+     {"name":"c_interest_deposit","type":"string"},
+     {"name":"c_rate_type","type":"string"},
+     {"name":"c_interest_pay_type","type":"string"},
+     {"name":"c_deposit_type","type":"string"},
+     {"name":"en_basic_rate","type":"double"},
+     {"name":"c_day_type","type":"string"},
+     {"name":"c_float_type","type":"string"},
+     {"name":"l_interest_pay_date","type":"int"},
+     {"name":"c_interest_pay_freq","type":"string"},
+     {"name":"c_rate_change_type","type":"string"},
+     {"name":"c_advance_limit_flag","type":"string"},
+     {"name":"l_pay_settle_date","type":"int"},
+     {"name":"c_limit_unit","type":"string"},
+     {"name":"en_advance_rate","type":"double"},
+     {"name":"c_input_type","type":"string"},
+     {"name":"l_advance_date","type":"int"},
+     {"name":"en_payin_balance","type":"double"},
+     {"name":"en_pre_pay_balance","type":"double"},
+     {"name":"l_qs_confirm_no","type":"int"},
+     {"name":"vc_second_deposit_no","type":"string"},
+     {"name":"l_account_id","type":"int"},
+     {"name":"vc_bank_branch_code","type":"string"},
+     {"name":"l_last_rate_mod_date","type":"int"},
+     {"name":"en_mod_receivable_interest","type":"double"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

@@ -1,0 +1,1 @@
+sh ods_windtable.sh "xy" "xy#123456" "wind" "10.96.1.61:5088/infodb" "10.160.96.22:8020" "false" "" "" "/user/hive/warehouse/ty_ods.db" "ty_ods" "/opt/datax/bin" "/opt/xc_etl/ods/wind_json" "20230808" "20230811" "0" "tables.txt"

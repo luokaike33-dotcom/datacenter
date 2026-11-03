@@ -1,0 +1,74 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd":"beeline",
+                        "hiveSql":["SELECT object_id, f_info_windcode, ann_date, price_date, f_nav_unit, f_nav_accumulated, f_nav_divaccumulated, f_nav_adjfactor, crncy_code, f_prt_netasset, f_asset_mergedsharesornot, netasset_total, f_nav_adjusted, is_exdividenddate, f_nav_distribution, s_info_asharecode, opdate, opmode, busi_month
+                        FROM ${srcdbname}.w_chinamutualfundnav where busi_month = ${busi_month};                        
+                        "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath":"${srchivedbpath}",
+                        "tmpDatabase":"${srcdbname}",
+                        "hive_jdbc_url":"jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name":"${srcusername}",
+                        "hive_ldap_password":"${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"f_info_windcode",
+									"ann_date",
+									"price_date",
+									"f_nav_unit",
+									"f_nav_accumulated",
+									"f_nav_divaccumulated",
+									"f_nav_adjfactor",
+									"crncy_code",
+									"f_prt_netasset",
+									"f_asset_mergedsharesornot",
+									"netasset_total",
+									"f_nav_adjusted",
+									"is_exdividenddate",
+									"f_nav_distribution",
+									"s_info_asharecode",
+									"opdate",
+									"opmode",
+                                    "busi_month"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_chinamutualfundnav"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from wd_chinamutualfundnav where busi_month = ${busi_month} or busi_month <= to_number(to_char((TO_date(to_char(${busi_month}),'yyyyMM')-730),'yyyyMM'))"]
+                    }
+                }
+            }
+        ], 
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+        }
+    }
+}
+
+

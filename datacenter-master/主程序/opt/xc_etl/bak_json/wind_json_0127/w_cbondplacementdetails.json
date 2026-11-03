@@ -1,0 +1,89 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      s_info_windcode,
+                                      typeofinvestor,
+                                      investor_name,
+                                      investor_id,
+                                      placement,
+                                      lockmonth,
+                                      ann_ordqty,
+                                      ann_dt,
+                                      trade_dt,
+                                      refund_payback_amount,
+                                      share_type,
+                                      tradable_dt,
+                                      latest_own_qty,
+                                      latest_own_qty_financing,
+                                      investor_type_code,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_cbondplacementdetails.json' as task_rs_id
+                                from ${srcoradbname}.cbondplacementdetails WHERE trade_dt BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_cbondplacementdetails/busi_month=${busi_month}",
+                        "fileName": "w_cbondplacementdetails",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"s_info_windcode","type":"string"},
+                                      {"name":"typeofinvestor","type":"string"},
+                                      {"name":"investor_name","type":"string"},
+                                      {"name":"investor_id","type":"string"},
+                                      {"name":"placement","type":"double"},
+                                      {"name":"lockmonth","type":"double"},
+                                      {"name":"ann_ordqty","type":"double"},
+                                      {"name":"ann_dt","type":"string"},
+                                      {"name":"trade_dt","type":"string"},
+                                      {"name":"refund_payback_amount","type":"double"},
+                                      {"name":"share_type","type":"string"},
+                                      {"name":"tradable_dt","type":"string"},
+                                      {"name":"latest_own_qty","type":"double"},
+                                      {"name":"latest_own_qty_financing","type":"double"},
+                                      {"name":"investor_type_code","type":"bigint"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

@@ -1,0 +1,74 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                "channel": 3
+            },
+            "errorLimit": {"record":0}
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "hivereader",
+                    "parameter": {
+                        "hive_cmd": "beeline",
+                        "hiveSql": ["
+							SELECT
+									object_id,
+									s_info_windcode,
+									trade_dt,
+									option_type,
+									b_redemptiondate,
+									opdate,
+									opmode,
+									batchno,
+									inserttime,
+									updatetime,
+									task_rs_id,
+									p_dt
+							FROM ${srcdbname}.w_cbondexercisedate where p_dt between ${beg_date} and ${end_date} "],
+                        "defaultFS": "hdfs://${srchdfsurl}",
+                        "tmpDatabasePath": "${srchivedbpath}",
+                        "tmpDatabase": "${srcdbname}",
+                        "hive_jdbc_url": "jdbc:hive2://${srcjdbcurl}/${srcdbname}",
+                        "hive_ldap_user_name": "${srcusername}",
+                        "hive_ldap_password": "${srcpassword}",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}"
+                    }
+                },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "column": [
+									"object_id",
+									"s_info_windcode",
+									"trade_dt",
+									"option_type",
+									"b_redemptiondate",
+									"opdate",
+									"opmode",
+									"batchno",
+									"inserttime",
+									"updatetime",
+									"task_rs_id",
+									"p_dt"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:oracle:thin:@${tgrurl}",
+                                "table": ["wd_cbondexercisedate"]
+                                    }
+                        ], 
+                        "password": "${tgrpassword}", 
+                        "username": "${tgrusername}", 
+                        "preSql":["delete from wd_cbondexercisedate where (p_dt < to_number(to_char(to_date(to_char(${end_date}), 'yyyyMMdd') -365, 'yyyyMMdd'))) or (p_dt between ${beg_date} and ${end_date})"]
+                    }
+                }
+            }
+        ] 
+    }
+}
+
+

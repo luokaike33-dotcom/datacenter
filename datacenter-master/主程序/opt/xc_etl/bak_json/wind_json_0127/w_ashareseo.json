@@ -1,0 +1,116 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,s_fellow_progress,s_fellow_issuetype,crncy_code,s_fellow_price,s_fellow_amount,s_fellow_collection,s_fellow_recorddate,s_fellow_paystartdate,s_fellow_payenddate,s_fellow_subdate,s_fellow_otcdate,s_fellow_listdate,s_fellow_instlistdate,s_fellow_changedate,s_fellow_roadshowdate,s_fellow_refunddate,s_fellow_unfrozedate,s_fellow_preplandate,s_fellow_smtganncedate,s_fellow_passdate,s_fellow_approveddate,s_fellow_anncedate,s_fellow_ratioanncedate,s_fellow_offeringdate,s_fellow_listanndate,s_fellow_offeringobject,s_fellow_priceuplimit,s_fellow_pricedownlimit,s_seo_code,s_seo_name,s_seo_pe,s_seo_amtbyplacing,s_seo_amttojur,s_seo_holdersubsmode,s_seo_holdersubsrate,ann_dt,pricingmode,s_fellow_orgpricemin,s_fellow_discntratio,s_fellow_date,s_fellow_subinvitationdt,s_fellow_year,s_fellow_objective_code,pricingdate,is_no_public,expense,s_rightsissue_exdividenddate,is_exdividend,sub_mode,oldspla_mole,oldspla_mode,exp_collection,s_fellow_type,s_fellow_objective,s_fellow_offeringobject_des,event_id,price_condition,price_dt_type,orgprice_pct,actprice_pct,apprvbysassc_dt,s_fellow_initial_plan,leadunderwriter,currency_subscription_num,non_monetary_subscription_num,currency_subscription_amount,nocurrency_subscription_amount,is_contain_holder,oldspla_denominator,opdate,opmode from ${srcoradbname}.ashareseo"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_ashareseo",
+                        "fileName": "w_ashareseo",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"s_info_windcode","type":"STRING"},
+                        {"name":"s_fellow_progress","type":"DOUBLE"},
+                        {"name":"s_fellow_issuetype","type":"STRING"},
+                        {"name":"crncy_code","type":"STRING"},
+                        {"name":"s_fellow_price","type":"DOUBLE"},
+                        {"name":"s_fellow_amount","type":"DOUBLE"},
+                        {"name":"s_fellow_collection","type":"DOUBLE"},
+                        {"name":"s_fellow_recorddate","type":"STRING"},
+                        {"name":"s_fellow_paystartdate","type":"STRING"},
+                        {"name":"s_fellow_payenddate","type":"STRING"},
+                        {"name":"s_fellow_subdate","type":"STRING"},
+                        {"name":"s_fellow_otcdate","type":"STRING"},
+                        {"name":"s_fellow_listdate","type":"STRING"},
+                        {"name":"s_fellow_instlistdate","type":"STRING"},
+                        {"name":"s_fellow_changedate","type":"STRING"},
+                        {"name":"s_fellow_roadshowdate","type":"STRING"},
+                        {"name":"s_fellow_refunddate","type":"STRING"},
+                        {"name":"s_fellow_unfrozedate","type":"STRING"},
+                        {"name":"s_fellow_preplandate","type":"STRING"},
+                        {"name":"s_fellow_smtganncedate","type":"STRING"},
+                        {"name":"s_fellow_passdate","type":"STRING"},
+                        {"name":"s_fellow_approveddate","type":"STRING"},
+                        {"name":"s_fellow_anncedate","type":"STRING"},
+                        {"name":"s_fellow_ratioanncedate","type":"STRING"},
+                        {"name":"s_fellow_offeringdate","type":"STRING"},
+                        {"name":"s_fellow_listanndate","type":"STRING"},
+                        {"name":"s_fellow_offeringobject","type":"STRING"},
+                        {"name":"s_fellow_priceuplimit","type":"DOUBLE"},
+                        {"name":"s_fellow_pricedownlimit","type":"DOUBLE"},
+                        {"name":"s_seo_code","type":"STRING"},
+                        {"name":"s_seo_name","type":"STRING"},
+                        {"name":"s_seo_pe","type":"DOUBLE"},
+                        {"name":"s_seo_amtbyplacing","type":"DOUBLE"},
+                        {"name":"s_seo_amttojur","type":"DOUBLE"},
+                        {"name":"s_seo_holdersubsmode","type":"STRING"},
+                        {"name":"s_seo_holdersubsrate","type":"DOUBLE"},
+                        {"name":"ann_dt","type":"STRING"},
+                        {"name":"pricingmode","type":"DOUBLE"},
+                        {"name":"s_fellow_orgpricemin","type":"DOUBLE"},
+                        {"name":"s_fellow_discntratio","type":"DOUBLE"},
+                        {"name":"s_fellow_date","type":"STRING"},
+                        {"name":"s_fellow_subinvitationdt","type":"STRING"},
+                        {"name":"s_fellow_year","type":"STRING"},
+                        {"name":"s_fellow_objective_code","type":"DOUBLE"},
+                        {"name":"pricingdate","type":"STRING"},
+                        {"name":"is_no_public","type":"DOUBLE"},
+                        {"name":"expense","type":"DOUBLE"},
+                        {"name":"s_rightsissue_exdividenddate","type":"STRING"},
+                        {"name":"is_exdividend","type":"DOUBLE"},
+                        {"name":"sub_mode","type":"DOUBLE"},
+                        {"name":"oldspla_mole","type":"DOUBLE"},
+                        {"name":"oldspla_mode","type":"STRING"},
+                        {"name":"exp_collection","type":"DOUBLE"},
+                        {"name":"s_fellow_type","type":"STRING"},
+                        {"name":"s_fellow_objective","type":"STRING"},
+                        {"name":"s_fellow_offeringobject_des","type":"STRING"},
+                        {"name":"event_id","type":"STRING"},
+                        {"name":"price_condition","type":"STRING"},
+                        {"name":"price_dt_type","type":"STRING"},
+                        {"name":"orgprice_pct","type":"DOUBLE"},
+                        {"name":"actprice_pct","type":"DOUBLE"},
+                        {"name":"apprvbysassc_dt","type":"STRING"},
+                        {"name":"s_fellow_initial_plan","type":"STRING"},
+                        {"name":"leadunderwriter","type":"STRING"},
+                        {"name":"currency_subscription_num","type":"DOUBLE"},
+                        {"name":"non_monetary_subscription_num","type":"DOUBLE"},
+                        {"name":"currency_subscription_amount","type":"DOUBLE"},
+                        {"name":"nocurrency_subscription_amount","type":"DOUBLE"},
+                        {"name":"is_contain_holder","type":"DOUBLE"},
+                        {"name":"oldspla_denominator","type":"DOUBLE"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

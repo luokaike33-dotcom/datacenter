@@ -1,0 +1,84 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,s_info_windcode,trade_dt,pct_change_d,pct_change_w,pct_change_m,volume_w,volume_m,amount_w,amount_m,turnover_d,turnover_d_float,turnover_w,turnover_w_float,turnover_w_ave,turnover_w_ave_float,turnover_m,turnover_m_float,turnover_m_ave,turnover_m_ave_float,pct_change_ave_100w,std_deviation_100w,variance_100w,pct_change_ave_24m,std_deviation_24m,variance_24m,pct_change_ave_60m,std_deviation_60m,variance_60m,beta_day_1y,beta_day_2y,alpha_day_1y,alpha_day_2y,beta_100w,alpha_100w,beta_24m,beta_60m,alpha_24m,alpha_60m,opdate,opmode from ${srcoradbname}.hkshareyield  where trade_dt  between '${busi_month}'||'01' and to_char(add_months(to_date('${busi_month}'||01,'yyyyMMdd'),1)-1,'yyyyMMdd')"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_hkshareyield/busi_month=${busi_month}",
+                        "fileName": "w_hkshareyield",
+                        "column": [
+                            {"name":"object_id","type":"string"},
+                            {"name":"s_info_windcode","type":"string"},
+                            {"name":"trade_dt","type":"string"},
+                            {"name":"pct_change_d","type":"double"},
+                            {"name":"pct_change_w","type":"double"},
+                            {"name":"pct_change_m","type":"double"},
+                            {"name":"volume_w","type":"double"},
+                            {"name":"volume_m","type":"double"},
+                            {"name":"amount_w","type":"double"},
+                            {"name":"amount_m","type":"double"},
+                            {"name":"turnover_d","type":"double"},
+                            {"name":"turnover_d_float","type":"double"},
+                            {"name":"turnover_w","type":"double"},
+                            {"name":"turnover_w_float","type":"double"},
+                            {"name":"turnover_w_ave","type":"double"},
+                            {"name":"turnover_w_ave_float","type":"double"},
+                            {"name":"turnover_m","type":"double"},
+                            {"name":"turnover_m_float","type":"double"},
+                            {"name":"turnover_m_ave","type":"double"},
+                            {"name":"turnover_m_ave_float","type":"double"},
+                            {"name":"pct_change_ave_100w","type":"double"},
+                            {"name":"std_deviation_100w","type":"double"},
+                            {"name":"variance_100w","type":"double"},
+                            {"name":"pct_change_ave_24m","type":"double"},
+                            {"name":"std_deviation_24m","type":"double"},
+                            {"name":"variance_24m","type":"double"},
+                            {"name":"pct_change_ave_60m","type":"double"},
+                            {"name":"std_deviation_60m","type":"double"},
+                            {"name":"variance_60m","type":"double"},
+                            {"name":"beta_day_1y","type":"double"},
+                            {"name":"beta_day_2y","type":"double"},
+                            {"name":"alpha_day_1y","type":"double"},
+                            {"name":"alpha_day_2y","type":"double"},
+                            {"name":"beta_100w","type":"double"},
+                            {"name":"alpha_100w","type":"double"},
+                            {"name":"beta_24m","type":"double"},
+                            {"name":"beta_60m","type":"double"},
+                            {"name":"alpha_24m","type":"double"},
+                            {"name":"alpha_60m","type":"double"},
+                            {"name":"opdate","type":"date"},
+                            {"name":"opmode","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            }
+        }
+    }
+}

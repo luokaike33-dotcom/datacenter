@@ -1,0 +1,104 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select l_date,l_clear_date,l_deal_date,l_serial_no,l_fund_id,l_basecombi_id,c_invest_type,vc_stockholder_id,vc_seat_id,c_market_no,vc_inter_code,vc_contract_no,vc_deal_no,c_contract_type,c_zrt_type,c_entrust_direction,l_redeem_days,l_settle_speed,l_redeem_lawdate,l_deal_amount,en_deal_balance,en_deal_price,en_redeem_interest,en_fee,c_return_flag,l_return_date,l_operator_no,l_extend_times,vc_original_deal_no,l_return_amount,en_penalty,l_agree_no,vc_rival_stockholder_id,vc_rival_seat_id,l_create_date,l_original_create_date,vc_cloudplatform_no,vc_extend_cloudplatform_no,l_extend_limit_days,l_extend_deal_price,l_extend_end_date,l_extend_amount,c_extend_cldplat_sendstatus,c_cloudplatform_sendstatus,en_stock_price,c_strategy_placing,c_engaged_report,vc_summary,vc_rival_contract_no,l_rival_id,vc_rivaltrader_id,en_return_interest,l_redeem_liquidate,l_end_lawdate,l_end_liquidate,vc_engaged_no,vc_report_seat,c_extend_status,l_left_term,l_end_date,l_total_loan_days from ${srcoradbname}.thissecurityloan where l_date = ${p_dt}"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/o3_thissecurityloan/p_dt=${p_dt}",
+                        "fileName": "o3_thissecurityloan",
+                        "column": [
+					{"name":"l_date","type":"bigint"},
+					{"name":"l_clear_date","type":"bigint"},
+					{"name":"l_deal_date","type":"bigint"},
+					{"name":"l_serial_no","type":"bigint"},
+					{"name":"l_fund_id","type":"bigint"},
+					{"name":"l_basecombi_id","type":"bigint"},
+					{"name":"c_invest_type","type":"string"},
+					{"name":"vc_stockholder_id","type":"string"},
+					{"name":"vc_seat_id","type":"string"},
+					{"name":"c_market_no","type":"string"},
+					{"name":"vc_inter_code","type":"string"},
+					{"name":"vc_contract_no","type":"string"},
+					{"name":"vc_deal_no","type":"string"},
+					{"name":"c_contract_type","type":"string"},
+					{"name":"c_zrt_type","type":"string"},
+					{"name":"c_entrust_direction","type":"string"},
+					{"name":"l_redeem_days","type":"bigint"},
+					{"name":"l_settle_speed","type":"bigint"},
+					{"name":"l_redeem_lawdate","type":"bigint"},
+					{"name":"l_deal_amount","type":"double"},
+					{"name":"en_deal_balance","type":"double"},
+					{"name":"en_deal_price","type":"double"},
+					{"name":"en_redeem_interest","type":"double"},
+					{"name":"en_fee","type":"double"},
+					{"name":"c_return_flag","type":"string"},
+					{"name":"l_return_date","type":"bigint"},
+					{"name":"l_operator_no","type":"bigint"},
+					{"name":"l_extend_times","type":"bigint"},
+					{"name":"vc_original_deal_no","type":"string"},
+					{"name":"l_return_amount","type":"double"},
+					{"name":"en_penalty","type":"double"},
+					{"name":"l_agree_no","type":"bigint"},
+					{"name":"vc_rival_stockholder_id","type":"string"},
+					{"name":"vc_rival_seat_id","type":"string"},
+					{"name":"l_create_date","type":"bigint"},
+					{"name":"l_original_create_date","type":"bigint"},
+					{"name":"vc_cloudplatform_no","type":"string"},
+					{"name":"vc_extend_cloudplatform_no","type":"string"},
+					{"name":"l_extend_limit_days","type":"double"},
+					{"name":"l_extend_deal_price","type":"double"},
+					{"name":"l_extend_end_date","type":"double"},
+					{"name":"l_extend_amount","type":"double"},
+					{"name":"c_extend_cldplat_sendstatus","type":"string"},
+					{"name":"c_cloudplatform_sendstatus","type":"string"},
+					{"name":"en_stock_price","type":"bigint"},
+					{"name":"c_strategy_placing","type":"string"},
+					{"name":"c_engaged_report","type":"string"},
+					{"name":"vc_summary","type":"string"},
+					{"name":"vc_rival_contract_no","type":"string"},
+					{"name":"l_rival_id","type":"double"},
+					{"name":"vc_rivaltrader_id","type":"string"},
+					{"name":"en_return_interest","type":"double"},
+					{"name":"l_redeem_liquidate","type":"bigint"},
+					{"name":"l_end_lawdate","type":"bigint"},
+					{"name":"l_end_liquidate","type":"bigint"},
+					{"name":"vc_engaged_no","type":"string"},
+					{"name":"vc_report_seat","type":"string"},
+					{"name":"c_extend_status","type":"string"},
+					{"name":"l_left_term","type":"bigint"},
+					{"name":"l_end_date","type":"bigint"},
+					{"name":"l_total_loan_days","type":"bigint"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}

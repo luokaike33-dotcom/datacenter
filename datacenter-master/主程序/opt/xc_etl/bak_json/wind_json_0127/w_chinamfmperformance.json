@@ -1,0 +1,139 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["
+                                select 
+                                      object_id,
+                                      fundmanager_id,
+                                      trade_date,
+                                      fmindex_type,
+                                      fmindex_point,
+                                      totreturn_ytd,
+                                      ranking_ytd,
+                                      totreturn_1w,
+                                      ranking_1w,
+                                      totreturn_1m,
+                                      ranking_1m,
+                                      totreturn_3m,
+                                      ranking_3m,
+                                      totreturn_6m,
+                                      ranking_6m,
+                                      totreturn_1y,
+                                      ranking_1y,
+                                      totreturn_2y,
+                                      ranking_2y,
+                                      totreturn_3y,
+                                      ranking_3y,
+                                      totreturn_5y,
+                                      ranking_5y,
+                                      totreturn_10y,
+                                      ranking_10y,
+                                      totreturn_es,
+                                      annreturnes,
+                                      ranking_es,
+                                      worsttotreturn_6m,
+                                      besttotreturn_6m,
+                                      sucbasereturn_ytd,
+                                      sucbasereturn_1w,
+                                      sucbasereturn_1m,
+                                      sucbasereturn_3m,
+                                      sucbasereturn_6m,
+                                      sucbasereturn_1y,
+                                      sucbasereturn_2y,
+                                      sucbasereturn_3y,
+                                      sucbasereturn_5y,
+                                      sucbasereturn_10y,
+                                      sucbasereturn_es,
+                                      opdate,
+                                      opmode,
+                                      to_char(sysdate - 1, 'yyyymmdd') as bath_dt,
+                                      cast(sysdate as timestamp) as data_ins_time,
+                                      'w_chinamfmperformance.json' as task_rs_id
+                                from ${srcoradbname}.chinamfmperformance WHERE trade_date BETWEEN '${busi_month}'||'01' AND to_char(add_months(to_date('${busi_month}'||'01','yyyyMMdd'),1)-1,'yyyyMMdd') "],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos": "${haveKerberos}",
+                        "kerberosKeytabFilePath": "${kbsfilepath}",
+                        "kerberosPrincipal": "${kbsprincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamfmperformance/busi_month=${busi_month}",
+                        "fileName": "w_chinamfmperformance",
+                        "column": [
+                                      {"name":"object_id","type":"string"},
+                                      {"name":"fundmanager_id","type":"string"},
+                                      {"name":"trade_date","type":"string"},
+                                      {"name":"fmindex_type","type":"bigint"},
+                                      {"name":"fmindex_point","type":"double"},
+                                      {"name":"totreturn_ytd","type":"double"},
+                                      {"name":"ranking_ytd","type":"string"},
+                                      {"name":"totreturn_1w","type":"double"},
+                                      {"name":"ranking_1w","type":"string"},
+                                      {"name":"totreturn_1m","type":"double"},
+                                      {"name":"ranking_1m","type":"string"},
+                                      {"name":"totreturn_3m","type":"double"},
+                                      {"name":"ranking_3m","type":"string"},
+                                      {"name":"totreturn_6m","type":"double"},
+                                      {"name":"ranking_6m","type":"string"},
+                                      {"name":"totreturn_1y","type":"double"},
+                                      {"name":"ranking_1y","type":"string"},
+                                      {"name":"totreturn_2y","type":"double"},
+                                      {"name":"ranking_2y","type":"string"},
+                                      {"name":"totreturn_3y","type":"double"},
+                                      {"name":"ranking_3y","type":"string"},
+                                      {"name":"totreturn_5y","type":"double"},
+                                      {"name":"ranking_5y","type":"string"},
+                                      {"name":"totreturn_10y","type":"double"},
+                                      {"name":"ranking_10y","type":"string"},
+                                      {"name":"totreturn_es","type":"double"},
+                                      {"name":"annreturnes","type":"double"},
+                                      {"name":"ranking_es","type":"string"},
+                                      {"name":"worsttotreturn_6m","type":"double"},
+                                      {"name":"besttotreturn_6m","type":"double"},
+                                      {"name":"sucbasereturn_ytd","type":"double"},
+                                      {"name":"sucbasereturn_1w","type":"double"},
+                                      {"name":"sucbasereturn_1m","type":"double"},
+                                      {"name":"sucbasereturn_3m","type":"double"},
+                                      {"name":"sucbasereturn_6m","type":"double"},
+                                      {"name":"sucbasereturn_1y","type":"double"},
+                                      {"name":"sucbasereturn_2y","type":"double"},
+                                      {"name":"sucbasereturn_3y","type":"double"},
+                                      {"name":"sucbasereturn_5y","type":"double"},
+                                      {"name":"sucbasereturn_10y","type":"double"},
+                                      {"name":"sucbasereturn_es","type":"double"},
+                                      {"name":"opdate","type":"timestamp"},
+                                      {"name":"opmode","type":"string"},
+                                      {"name":"bath_dt","type":"string"},
+                                      {"name":"data_ins_time","type":"timestamp"},
+                                      {"name":"task_rs_id","type":"string"}
+                        ],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t",
+                        "encoding":"utf-8"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"
+            },
+            "errorLimit": {"record":1}
+            }
+    }
+}

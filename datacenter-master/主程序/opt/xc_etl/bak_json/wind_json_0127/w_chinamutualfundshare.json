@@ -1,0 +1,56 @@
+{
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "${srcorausername}",
+                        "password": "${srcorapassword}",
+                        "where": "",
+                        "connection": [
+                            {
+                                "querySql": ["select object_id,f_info_windcode,change_date,f_unit_total,f_info_share,fundshare,f_unit_mergedsharesornot,changereason,fundshare_total,cur_sign,ann_date,opdate,opmode from ${srcoradbname}.chinamutualfundshare"],
+                                "jdbcUrl": ["jdbc:oracle:thin:@${srcoraurl}"]
+                            }
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "hdfswriter",
+                    "parameter": {
+                        "defaultFS": "hdfs://${tgrhdfsurl}",
+                        "fileType": "orc",
+                        "haveKerberos":"${haveKerberos}",
+                        "kerberosKeytabFilePath":"${kerberosKeytabFilePath}",
+                        "kerberosPrincipal":"${kerberosPrincipal}",
+                        "path": "${tgrhivedbpath}/w_chinamutualfundshare",
+                        "fileName": "w_chinamutualfundshare",
+                        "column": [
+                        {"name":"object_id","type":"STRING"},
+                        {"name":"f_info_windcode","type":"STRING"},
+                        {"name":"change_date","type":"STRING"},
+                        {"name":"f_unit_total","type":"DOUBLE"},
+                        {"name":"f_info_share","type":"DOUBLE"},
+                        {"name":"fundshare","type":"DOUBLE"},
+                        {"name":"f_unit_mergedsharesornot","type":"DOUBLE"},
+                        {"name":"changereason","type":"STRING"},
+                        {"name":"fundshare_total","type":"DOUBLE"},
+                        {"name":"cur_sign","type":"DOUBLE"},
+                        {"name":"ann_date","type":"STRING"},
+                        {"name":"opdate","type":"DATE"},
+                        {"name":"opmode","type":"STRING"}
+],
+                        "writeMode": "append",
+                        "fieldDelimiter": "\t"
+                    }
+                }
+            }
+        ],
+        "setting": {
+            "speed": {
+                "channel": "1"},"errorLimit": {"record": "0","percentage": "0"
+            }
+        }
+    }
+}
